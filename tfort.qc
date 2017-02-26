@@ -857,7 +857,7 @@ void () TeamFortress_PrimeGrenade =
 				setorigin (newmis, self.origin);
 				return;
 			}
-			if ((gtype == enter))
+			if ((gtype == 10))
 			{
 				ptime = ftos (0.5);
 				sprint (self, 2, "Opening ");
@@ -1001,7 +1001,7 @@ void () TeamFortress_PrimeGrenade =
 	tGrenade.classname = "timer";
 	tGrenade.impulse = self.impulse;
 	tGrenade.nextthink = (time + 0.8);
-	if ((gtype == enter))
+	if ((gtype == 10))
 	{
 		tGrenade.heat = ((time + 0.5) + 0.5);
 	}
@@ -1025,7 +1025,7 @@ void () TeamFortress_GrenadePrimed =
 		{
 			dremove (self);
 		}
-		if ((time > self.heat))
+		if ((time > self.heat) && (self.weapon != GR_TYPE_CALTROP))
 		{
 			TeamFortress_ExplodePerson (self);
 		}

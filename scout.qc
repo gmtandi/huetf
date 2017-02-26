@@ -44,7 +44,7 @@ void () CaltropScatterThink =
 	{
 		if ((self.flags & 512))
 		{
-			self.nextthink = ((time + enter) + (random () * 5));
+			self.nextthink = ((time + 10) + (random () * 5));
 			self.think = SUB_Remove;
 			self.solid = 1;
 			self.movetype = 6;
@@ -56,7 +56,7 @@ void () CaltropScatterThink =
 		}
 		else
 		{
-			self.nextthink = ((time + enter) + (random () * 5));
+			self.nextthink = ((time + 10) + (random () * 5));
 			self.think = SUB_Remove;
 			self.solid = 1;
 			self.movetype = 6;
@@ -73,48 +73,51 @@ void () CaltropScatterThink =
 	}
 	self.velocity = (self.velocity * -1);
 	self.heat = (self.heat + 1);
-	if ((self.heat > enter))
+	if ((self.heat > 10))
 	{
 		remove (self);
 		return;
 	}
 };
 
-void () ScatterCaltrops =
-{
-	local float num;
-	local entity e;
 
-	num = 6;
-	while ((num > 0))
-	{
-		e = spawn ();
-		e.classname = "grenade";
-		e.weapon = enter;
-		e.owner = self.owner;
-		e.team_no = self.owner.team_no;
-		setmodel (e, "progs/caltrop.mdl");
-		e.mins = '-4 -4 -8';
-		e.maxs = '4 4 4';
-		e.angles = '0 0 0';
-		e.angles_x = (random () * 360);
-		e.velocity_x = (crandom () * _d);
-		e.velocity_y = (crandom () * _d);
-		e.velocity_z = (200 + (random () * _d));
-		e.avelocity_x = (crandom () * 400);
-		e.avelocity_y = (crandom () * 400);
-		e.avelocity_z = (crandom () * 400);
-		setorigin (e, self.owner.origin);
-		e.movedir = e.origin;
-		e.heat = 0;
-		e.movetype = enter;
-		e.solid = 0;
-		e.nextthink = (time + 0.2);
-		e.think = CaltropScatterThink;
-		num = (num - 1);
-	}
-	dremove (self);
+
+
+
+void () ScatterCaltrops = {
+    local float num;
+    local entity e;
+
+    num = 6;
+    while (num > 0) {
+        e = spawn();
+        e.classname = "grenade";
+        e.weapon = 10;
+        e.owner = self.owner;
+        e.team_no = self.owner.team_no;
+        setmodel(e, "progs/caltrop.mdl");
+        e.mins = '-4 -4 -8';
+        e.maxs = '4 4 4';
+        e.angles = '0 0 0';
+        e.angles_x = random() * 360;
+        e.velocity_x = crandom() * 100;
+        e.velocity_y = crandom() * 100;
+        e.velocity_z = 200 + random() * 100;
+        e.avelocity_x = crandom() * 400;
+        e.avelocity_y = crandom() * 400;
+        e.avelocity_z = crandom() * 400;
+        setorigin(e, self.owner.origin);
+        e.movedir = e.origin;
+        e.heat = 0;
+        e.movetype = 10;
+        e.solid = 0;
+        e.nextthink = time + 0.2;
+        e.think = CaltropScatterThink;
+        num = num - 1;
+    }
+    dremove(self);
 };
+
 
 void () ConcussionGrenadeTouch =
 {

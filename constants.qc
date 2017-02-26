@@ -23,3 +23,18 @@
 #define WEAP_LAST                               1048576
 
 
+
+// Grenades
+#define GR_PRIMETIME            3
+#define GR_TYPE_NONE            0
+#define GR_TYPE_NORMAL          1
+#define GR_TYPE_CONCUSSION      2
+#define GR_TYPE_NAIL            3
+#define GR_TYPE_MIRV            4
+#define GR_TYPE_NAPALM          5
+#define GR_TYPE_FLARE           6
+#define GR_TYPE_GAS             7
+#define GR_TYPE_EMP             8
+#define GR_TYPE_FLASH           9
+#define GR_TYPE_CALTROP         10
+
