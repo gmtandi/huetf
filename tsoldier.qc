@@ -9,7 +9,7 @@ void () NailGrenadeTouch =
 	{
 		return;
 	}
-	sound (self, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/bounce.wav", 1, 1);
 	if ((self.velocity == '0 0 0'))
 	{
 		self.avelocity = '0 0 0';
@@ -20,13 +20,13 @@ void () NailGrenadeExplode =
 {
 	local entity te;
 
-	self.owner.no_active_nail_grens = (self.owner.no_active_nail_grens + SBAR_GRENS);
+	self.owner.no_active_nail_grens = (self.owner.no_active_nail_grens + 1);
 	if ((self.owner.no_active_nail_grens > 0))
 	{
 		te = find (world, classname, "grenade");
 		while (te)
 		{
-			if (((te.owner == self.owner) && (te.no_active_nail_grens == SBAR_GRENS)))
+			if (((te.owner == self.owner) && (te.no_active_nail_grens == 1)))
 			{
 				te.weapon = 9;
 				te.think = GrenadeExplode;
@@ -60,7 +60,7 @@ void () NailGrenadeLaunchNail =
 	i = 0;
 	while ((i < AS_MELEE))
 	{
-		j = ((random () + SBAR_PRINT) * 5);
+		j = ((random () + 2) * 5);
 		cur_yaw = anglemod ((self.angles_y + j));
 		self.angles_y = cur_yaw;
 		self.angles_x = 0;
@@ -70,9 +70,9 @@ void () NailGrenadeLaunchNail =
 		launch_spike (self.origin, v_forward);
 		newmis.touch = superspike_touch;
 		newmis.weapon = 9;
-		i = (i + SBAR_GRENS);
+		i = (i + 1);
 	}
-	self.playerclass = (self.playerclass + SBAR_GRENS);
+	self.playerclass = (self.playerclass + 1);
 	self.nextthink = (time + 0.1);
 	if ((self.playerclass > _2))
 	{

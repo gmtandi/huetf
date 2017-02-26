@@ -8,23 +8,23 @@ void () button_wait =
 	self.think = button_return;
 	activator = self.enemy;
 	SUB_UseTargets ();
-	self.frame = SBAR_GRENS;
+	self.frame = 1;
 };
 
 void () button_done =
 {
-	self.state = SBAR_GRENS;
+	self.state = 1;
 };
 
 void () button_return =
 {
-	self.goal_state = SBAR_PRINT;
+	self.goal_state = 2;
 	self.state = AS_MELEE;
 	SUB_CalcMove (self.pos1, self.speed, button_done);
 	self.frame = 0;
 	if (self.health)
 	{
-		self.takedamage = SBAR_GRENS;
+		self.takedamage = 1;
 	}
 };
 
@@ -34,12 +34,12 @@ void () button_blocked =
 
 void () button_fire =
 {
-	if (((self.state == SBAR_PRINT) || (self.state == 0)))
+	if (((self.state == 2) || (self.state == 0)))
 	{
 		return;
 	}
-	sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
-	self.state = SBAR_PRINT;
+	sound (self, 2, self.noise, 1, 1);
+	self.state = 2;
 	SUB_CalcMove (self.pos2, self.speed, button_wait);
 };
 
@@ -112,12 +112,12 @@ void () func_button =
 		precache_sound ("buttons/airbut1.wav");
 		self.noise = "buttons/airbut1.wav";
 	}
-	if ((self.sounds == SBAR_GRENS))
+	if ((self.sounds == 1))
 	{
 		precache_sound ("buttons/switch21.wav");
 		self.noise = "buttons/switch21.wav";
 	}
-	if ((self.sounds == SBAR_PRINT))
+	if ((self.sounds == 2))
 	{
 		precache_sound ("buttons/switch02.wav");
 		self.noise = "buttons/switch02.wav";
@@ -137,7 +137,7 @@ void () func_button =
 	{
 		self.max_health = self.health;
 		self.th_die = button_killed;
-		self.takedamage = SBAR_GRENS;
+		self.takedamage = 1;
 	}
 	else
 	{
@@ -149,13 +149,13 @@ void () func_button =
 	}
 	if (!self.wait)
 	{
-		self.wait = SBAR_GRENS;
+		self.wait = 1;
 	}
 	if (!self.lip)
 	{
 		self.lip = AS_MISSILE;
 	}
-	self.state = SBAR_GRENS;
+	self.state = 1;
 	self.pos1 = self.origin;
 	self.pos2 = (self.pos1 + (self.movedir * (fabs ((self.movedir * self.size)) - self.lip)));
 	if ((self.spawnflags & space))

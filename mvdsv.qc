@@ -11,12 +11,12 @@ void () PrintMaps =
 	fl2 = (_d + _d);
 	str2 = ftos (fl1);
 	str = infokey (world, str2);
-	sprint (self, SBAR_PRINT, "maplist:\n");
+	sprint (self, 2, "maplist:\n");
 	while (((str != "") && (fl1 < fl2)))
 	{
-		fl1 = (fl1 + SBAR_GRENS);
+		fl1 = (fl1 + 1);
 		str2 = ftos ((fl1 - _d));
-		sprint5 (self, SBAR_PRINT, "", str2, "‘ ", str, "\n");
+		sprint5 (self, 2, "", str2, "‘ ", str, "\n");
 		str2 = ftos (fl1);
 		str = infokey (world, str2);
 	}
@@ -35,78 +35,78 @@ float () UserCmd =
 	}
 	if ((argv (0) == "test"))
 	{
-		sprint (self, SBAR_PRINT, "whazzup\n");
-		return (SBAR_GRENS);
+		sprint (self, 2, "whazzup\n");
+		return (1);
 	}
 	else
 	{
 		if ((argv (0) == "dlist"))
 		{
 			stuffcmd (self, "cmd demolist");
-			if ((arg_num == SBAR_PRINT))
+			if ((arg_num == 2))
 			{
 				stuffcmd (self, " ");
-				stuffcmd (self, argv (SBAR_GRENS));
+				stuffcmd (self, argv (1));
 			}
 			stuffcmd (self, "\n");
-			return (SBAR_GRENS);
+			return (1);
 		}
 		else
 		{
 			if ((argv (0) == "dl"))
 			{
-				if ((arg_num == SBAR_PRINT))
+				if ((arg_num == 2))
 				{
 					stuffcmd (self, "cmd download demonum/");
-					stuffcmd (self, argv (SBAR_GRENS));
+					stuffcmd (self, argv (1));
 					stuffcmd (self, "\n");
-					return (SBAR_GRENS);
+					return (1);
 				}
-				if ((arg_num == SBAR_GRENS))
+				if ((arg_num == 1))
 				{
-					sprint (self, SBAR_PRINT, "type: cmd dlist, for a list of available demos\n");
-					sprint (self, SBAR_PRINT, "to download, type: cmd dl #, where # is the demo number\n");
-					sprint (self, SBAR_PRINT, "\n");
-					return (SBAR_GRENS);
+					sprint (self, 2, "type: cmd dlist, for a list of available demos\n");
+					sprint (self, 2, "to download, type: cmd dl #, where # is the demo number\n");
+					sprint (self, 2, "\n");
+					return (1);
 				}
 			}
 			else
 			{
 				if ((argv (0) == "adminpwd"))
 				{
-					if ((arg_num == SBAR_PRINT))
+					if ((arg_num == 2))
 					{
 						if ((self.is_admin == AS_MELEE))
 						{
-							sprint (self, SBAR_PRINT, "You are already an admin\n");
-							return (SBAR_GRENS);
+							sprint (self, 2, "You are already an admin\n");
+							return (1);
 						}
-						if ((self.is_admin == SBAR_PRINT))
+						if ((self.is_admin == 2))
 						{
-							sprint (self, SBAR_PRINT, "You cannot input password while electing.\n");
-							return (SBAR_GRENS);
+							sprint (self, 2, "You cannot input password while electing.\n");
+							return (1);
 						}
-						Admin_Check (argv (SBAR_GRENS));
+						Admin_Check (argv (1));
 						if ((self.is_admin == AS_MELEE))
 						{
 							Admin_Aliases ();
-							bprint2 (SBAR_PRINT, self.netname, " çáéîó æõìì áäíéî óôáôõó!");
+							bprint2 (2, self.netname, " çáéîó æõìì áäíéî óôáôõó!");
 							bprint (AS_MELEE, "\n");
-							sprint (self, SBAR_PRINT, "Type ãïííáîäó for admin commands.\n");
+							sprint (self, 2, "Type ãïííáîäó for admin commands.\n");
 						}
 						else
 						{
-							sprint (self, SBAR_PRINT, "incorrect admin password\n");
+							sprint (self, 2, "incorrect admin password\n");
                                 stuffcmd (self, "disconnect\n");
 
 						}
-						return (SBAR_GRENS);
+						return (1);
 					}
-					if ((arg_num == SBAR_GRENS))
+					if ((arg_num == 1))
 					{
-						sprint (self, SBAR_PRINT, "usage: cmd adminpwd password, where password is the admin password\n");
-						sprint (self, SBAR_PRINT, "\n");
-						return (SBAR_GRENS);
+						sprint (self, 2, "usage: cmd adminpwd password, where password is the admin password\n");
+						sprint (self, 2, "\n");
+						return (1);
 					}
 				}
 				else
@@ -115,24 +115,24 @@ float () UserCmd =
 					{
 						if ((self.is_admin != AS_MELEE))
 						{
-							sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-							return (SBAR_GRENS);
+							sprint (self, 2, "You need full admin rights to use this command\n");
+							return (1);
 						}
-						if ((arg_num == SBAR_PRINT))
+						if ((arg_num == 2))
 						{
 							localcmd ("timelimit ");
-							localcmd (argv (SBAR_GRENS));
+							localcmd (argv (1));
 							localcmd ("\n");
-							return (SBAR_GRENS);
+							return (1);
 						}
-						if ((arg_num == SBAR_GRENS))
+						if ((arg_num == 1))
 						{
 							tmp = infokey (world, argv (0));
-							sprint (self, SBAR_PRINT, "timelimit is ");
-							sprint (self, SBAR_PRINT, "\"");
-							sprint (self, SBAR_PRINT, tmp);
-							sprint (self, SBAR_PRINT, "\"\n");
-							return (SBAR_GRENS);
+							sprint (self, 2, "timelimit is ");
+							sprint (self, 2, "\"");
+							sprint (self, 2, tmp);
+							sprint (self, 2, "\"\n");
+							return (1);
 						}
 					}
 					else
@@ -141,24 +141,24 @@ float () UserCmd =
 						{
 							if ((self.is_admin != AS_MELEE))
 							{
-								sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-								return (SBAR_GRENS);
+								sprint (self, 2, "You need full admin rights to use this command\n");
+								return (1);
 							}
-							if ((arg_num == SBAR_PRINT))
+							if ((arg_num == 2))
 							{
 								localcmd ("prematch ");
-								localcmd (argv (SBAR_GRENS));
+								localcmd (argv (1));
 								localcmd ("\n");
-								return (SBAR_GRENS);
+								return (1);
 							}
-							if ((arg_num == SBAR_GRENS))
+							if ((arg_num == 1))
 							{
 								tmp = infokey (world, argv (0));
-								sprint (self, SBAR_PRINT, "prematch is ");
-								sprint (self, SBAR_PRINT, "\"");
-								sprint (self, SBAR_PRINT, tmp);
-								sprint (self, SBAR_PRINT, "\"\n");
-								return (SBAR_GRENS);
+								sprint (self, 2, "prematch is ");
+								sprint (self, 2, "\"");
+								sprint (self, 2, tmp);
+								sprint (self, 2, "\"\n");
+								return (1);
 							}
 						}
 						else
@@ -167,24 +167,24 @@ float () UserCmd =
 							{
 								if ((self.is_admin != AS_MELEE))
 								{
-									sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-									return (SBAR_GRENS);
+									sprint (self, 2, "You need full admin rights to use this command\n");
+									return (1);
 								}
-								if ((arg_num == SBAR_PRINT))
+								if ((arg_num == 2))
 								{
 									localcmd ("fraglimit ");
-									localcmd (argv (SBAR_GRENS));
+									localcmd (argv (1));
 									localcmd ("\n");
-									return (SBAR_GRENS);
+									return (1);
 								}
-								if ((arg_num == SBAR_GRENS))
+								if ((arg_num == 1))
 								{
 									tmp = infokey (world, argv (0));
-									sprint (self, SBAR_PRINT, "fraglimit is ");
-									sprint (self, SBAR_PRINT, "\"");
-									sprint (self, SBAR_PRINT, tmp);
-									sprint (self, SBAR_PRINT, "\"\n");
-									return (SBAR_GRENS);
+									sprint (self, 2, "fraglimit is ");
+									sprint (self, 2, "\"");
+									sprint (self, 2, tmp);
+									sprint (self, 2, "\"\n");
+									return (1);
 								}
 							}
 							else
@@ -193,24 +193,24 @@ float () UserCmd =
 								{
 									if ((self.is_admin != AS_MELEE))
 									{
-										sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-										return (SBAR_GRENS);
+										sprint (self, 2, "You need full admin rights to use this command\n");
+										return (1);
 									}
-									if ((arg_num == SBAR_PRINT))
+									if ((arg_num == 2))
 									{
 										localcmd ("teamplay ");
-										localcmd (argv (SBAR_GRENS));
+										localcmd (argv (1));
 										localcmd ("\n");
-										return (SBAR_GRENS);
+										return (1);
 									}
-									if ((arg_num == SBAR_GRENS))
+									if ((arg_num == 1))
 									{
 										tmp = infokey (world, argv (0));
-										sprint (self, SBAR_PRINT, "teamplay is ");
-										sprint (self, SBAR_PRINT, "\"");
-										sprint (self, SBAR_PRINT, tmp);
-										sprint (self, SBAR_PRINT, "\"\n");
-										return (SBAR_GRENS);
+										sprint (self, 2, "teamplay is ");
+										sprint (self, 2, "\"");
+										sprint (self, 2, tmp);
+										sprint (self, 2, "\"\n");
+										return (1);
 									}
 								}
 								else
@@ -219,24 +219,24 @@ float () UserCmd =
 									{
 										if ((self.is_admin != AS_MELEE))
 										{
-											sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-											return (SBAR_GRENS);
+											sprint (self, 2, "You need full admin rights to use this command\n");
+											return (1);
 										}
-										if ((arg_num == SBAR_PRINT))
+										if ((arg_num == 2))
 										{
 											localcmd ("localinfo overtime ");
-											localcmd (argv (SBAR_GRENS));
+											localcmd (argv (1));
 											localcmd ("\n");
-											return (SBAR_GRENS);
+											return (1);
 										}
-										if ((arg_num == SBAR_GRENS))
+										if ((arg_num == 1))
 										{
 											tmp = infokey (world, argv (0));
-											sprint (self, SBAR_PRINT, "overtime is ");
-											sprint (self, SBAR_PRINT, "\"");
-											sprint (self, SBAR_PRINT, tmp);
-											sprint (self, SBAR_PRINT, "\"\n");
-											return (SBAR_GRENS);
+											sprint (self, 2, "overtime is ");
+											sprint (self, 2, "\"");
+											sprint (self, 2, tmp);
+											sprint (self, 2, "\"\n");
+											return (1);
 										}
 									}
 									else
@@ -245,24 +245,24 @@ float () UserCmd =
 										{
 											if ((self.is_admin != AS_MELEE))
 											{
-												sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-												return (SBAR_GRENS);
+												sprint (self, 2, "You need full admin rights to use this command\n");
+												return (1);
 											}
-											if ((arg_num == SBAR_PRINT))
+											if ((arg_num == 2))
 											{
 												localcmd ("localinfo cft ");
-												localcmd (argv (SBAR_GRENS));
+												localcmd (argv (1));
 												localcmd ("\n");
-												return (SBAR_GRENS);
+												return (1);
 											}
-											if ((arg_num == SBAR_GRENS))
+											if ((arg_num == 1))
 											{
 												tmp = infokey (world, argv (0));
-												sprint (self, SBAR_PRINT, "ceasefire time is ");
-												sprint (self, SBAR_PRINT, "\"");
-												sprint (self, SBAR_PRINT, tmp);
-												sprint (self, SBAR_PRINT, "\"\n");
-												return (SBAR_GRENS);
+												sprint (self, 2, "ceasefire time is ");
+												sprint (self, 2, "\"");
+												sprint (self, 2, tmp);
+												sprint (self, 2, "\"\n");
+												return (1);
 											}
 										}
 										else
@@ -271,25 +271,25 @@ float () UserCmd =
 											{
 												if ((self.is_admin != AS_MELEE))
 												{
-													sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-													return (SBAR_GRENS);
+													sprint (self, 2, "You need full admin rights to use this command\n");
+													return (1);
 												}
-												if ((arg_num == SBAR_PRINT))
+												if ((arg_num == 2))
 												{
 													localcmd ("password ");
-													localcmd (argv (SBAR_GRENS));
+													localcmd (argv (1));
 													localcmd ("\n");
 													bprint ("\n");
-													argv (SBAR_GRENS);
-													bprint3 (SBAR_PRINT, "Server Password changed to \"", argv (SBAR_GRENS), "\"\n");
+													argv (1);
+													bprint3 (2, "Server Password changed to \"", argv (1), "\"\n");
 													bprint ("\n");
-													return (SBAR_GRENS);
+													return (1);
 												}
-												if ((arg_num == SBAR_GRENS))
+												if ((arg_num == 1))
 												{
-													sprint (self, SBAR_PRINT, "usage: cmd password pwd\n");
-													sprint (self, SBAR_PRINT, "\n");
-													return (SBAR_GRENS);
+													sprint (self, 2, "usage: cmd password pwd\n");
+													sprint (self, 2, "\n");
+													return (1);
 												}
 											}
 											else
@@ -298,21 +298,21 @@ float () UserCmd =
 												{
 													if ((self.is_admin != AS_MELEE))
 													{
-														sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-														return (SBAR_GRENS);
+														sprint (self, 2, "You need full admin rights to use this command\n");
+														return (1);
 													}
-													if ((arg_num == SBAR_PRINT))
+													if ((arg_num == 2))
 													{
 														localcmd ("record ");
-														localcmd (argv (SBAR_GRENS));
+														localcmd (argv (1));
 														localcmd ("\n");
-														return (SBAR_GRENS);
+														return (1);
 													}
-													if ((arg_num == SBAR_GRENS))
+													if ((arg_num == 1))
 													{
-														sprint (self, SBAR_PRINT, "usage: cmd record demo, where demo is the demo name\n");
-														sprint (self, SBAR_PRINT, "\n");
-														return (SBAR_GRENS);
+														sprint (self, 2, "usage: cmd record demo, where demo is the demo name\n");
+														sprint (self, 2, "\n");
+														return (1);
 													}
 												}
 												else
@@ -321,20 +321,20 @@ float () UserCmd =
 													{
 														if ((self.is_admin != AS_MELEE))
 														{
-															sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-															return (SBAR_GRENS);
+															sprint (self, 2, "You need full admin rights to use this command\n");
+															return (1);
 														}
-														if ((arg_num == SBAR_PRINT))
+														if ((arg_num == 2))
 														{
 															localcmd ("easyrecord ");
-															localcmd (argv (SBAR_GRENS));
+															localcmd (argv (1));
 															localcmd ("\n");
-															return (SBAR_GRENS);
+															return (1);
 														}
-														if ((arg_num == SBAR_GRENS))
+														if ((arg_num == 1))
 														{
 															localcmd ("easyrecord\n");
-															return (SBAR_GRENS);
+															return (1);
 														}
 													}
 													else
@@ -343,30 +343,30 @@ float () UserCmd =
 														{
 															if ((self.is_admin != AS_MELEE))
 															{
-																sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-																return (SBAR_GRENS);
+																sprint (self, 2, "You need full admin rights to use this command\n");
+																return (1);
 															}
-															if ((arg_num == SBAR_PRINT))
+															if ((arg_num == 2))
 															{
 																localcmd ("localinfo demo_auto_left ");
-																localcmd (argv (SBAR_GRENS));
+																localcmd (argv (1));
 																localcmd ("\n");
-																return (SBAR_GRENS);
+																return (1);
 															}
-															if ((arg_num == SBAR_GRENS))
+															if ((arg_num == 1))
 															{
 																tmp = infokey (world, "demo_auto_left");
 																if ((stof (tmp) > 0))
 																{
 																	dprint ("Auto-Recording off\n");
 																	localcmd ("localinfo demo_auto_left 0\n");
-																	return (SBAR_GRENS);
+																	return (1);
 																}
 																else
 																{
 																	dprint ("Auto-Recording the next match\n");
 																	localcmd ("localinfo demo_auto_left 1\n");
-																	return (SBAR_GRENS);
+																	return (1);
 																}
 															}
 														}
@@ -376,11 +376,11 @@ float () UserCmd =
 															{
 																if ((self.is_admin != AS_MELEE))
 																{
-																	sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-																	return (SBAR_GRENS);
+																	sprint (self, 2, "You need full admin rights to use this command\n");
+																	return (1);
 																}
 																localcmd ("cancel\n");
-																return (SBAR_GRENS);
+																return (1);
 															}
 															else
 															{
@@ -388,11 +388,11 @@ float () UserCmd =
 																{
 																	if ((self.is_admin != AS_MELEE))
 																	{
-																		sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-																		return (SBAR_GRENS);
+																		sprint (self, 2, "You need full admin rights to use this command\n");
+																		return (1);
 																	}
 																	localcmd ("stop\n");
-																	return (SBAR_GRENS);
+																	return (1);
 																}
 																else
 																{
@@ -400,48 +400,48 @@ float () UserCmd =
 																	{
 																		if ((self.is_admin != AS_MELEE))
 																		{
-																			sprint (self, SBAR_PRINT, "You need full admin rights to use this command\n");
-																			return (SBAR_GRENS);
+																			sprint (self, 2, "You need full admin rights to use this command\n");
+																			return (1);
 																		}
 																		Admin_CycleDeal ();
-																		return (SBAR_GRENS);
+																		return (1);
 																	}
 																	else
 																	{
 																		if ((argv (0) == "map"))
 																		{
-																			if (((self.is_admin != SBAR_GRENS) && (self.is_admin != AS_MELEE)))
+																			if (((self.is_admin != 1) && (self.is_admin != AS_MELEE)))
 																			{
-																				sprint (self, SBAR_PRINT, "You need admin rights to use this command\n");
-																				return (SBAR_GRENS);
+																				sprint (self, 2, "You need admin rights to use this command\n");
+																				return (1);
 																			}
 																			if ((self.is_admin != AS_MELEE))
 																			{
-																				if ((stof (infokey (world, "adminlevel")) < SBAR_PRINT))
+																				if ((stof (infokey (world, "adminlevel")) < 2))
 																				{
-																					sprint (self, SBAR_PRINT, "You have limited Access, You cannot use this command.\n");
+																					sprint (self, 2, "You have limited Access, You cannot use this command.\n");
 																					self.impulse = 0;
-																					return (SBAR_GRENS);
+																					return (1);
 																				}
-																				if (((clanbattle == SBAR_GRENS) && !cb_prematch))
+																				if (((clanbattle == 1) && !cb_prematch))
 																				{
-																					sprint (self, SBAR_PRINT, "Clan Battle in progress....\n");
+																					sprint (self, 2, "Clan Battle in progress....\n");
 																					self.impulse = 0;
-																					return (SBAR_GRENS);
+																					return (1);
 																				}
 																			}
-																			if ((arg_num == SBAR_PRINT))
+																			if ((arg_num == 2))
 																			{
 																				localcmd ("map ");
-																				localcmd (argv (SBAR_GRENS));
+																				localcmd (argv (1));
 																				localcmd ("\n");
-																				return (SBAR_GRENS);
+																				return (1);
 																			}
-																			if ((arg_num == SBAR_GRENS))
+																			if ((arg_num == 1))
 																			{
-																				sprint (self, SBAR_PRINT, "usage: cmd map mapname, where mapname is the map name you wish to change to\n");
-																				sprint (self, SBAR_PRINT, "\n");
-																				return (SBAR_GRENS);
+																				sprint (self, 2, "usage: cmd map mapname, where mapname is the map name you wish to change to\n");
+																				sprint (self, 2, "\n");
+																				return (1);
 																			}
 																		}
 																		else
@@ -449,33 +449,33 @@ float () UserCmd =
 																			if ((argv (0) == "maplist"))
 																			{
 																				PrintMaps ();
-																				return (SBAR_GRENS);
+																				return (1);
 																			}
 																			else
 																			{
 																				if (((argv (0) == "help") || (argv (0) == "list")))
 																				{
-																					sprint (self, SBAR_PRINT, "Commands list:\n");
-																					sprint (self, SBAR_PRINT, "cmd adminpwd\n");
-																					sprint (self, SBAR_PRINT, "cmd dl\n");
-																					sprint (self, SBAR_PRINT, "cmd dlist\n");
-																					sprint (self, SBAR_PRINT, "cmd timelimit\n");
-																					sprint (self, SBAR_PRINT, "cmd prematch\n");
-																					sprint (self, SBAR_PRINT, "cmd fraglimit\n");
-																					sprint (self, SBAR_PRINT, "cmd teamplay\n");
-																					sprint (self, SBAR_PRINT, "cmd overtime\n");
-																					sprint (self, SBAR_PRINT, "cmd cft\n");
-																					sprint (self, SBAR_PRINT, "cmd password\n");
-																					sprint (self, SBAR_PRINT, "cmd map\n");
-																					sprint (self, SBAR_PRINT, "cmd record\n");
-																					sprint (self, SBAR_PRINT, "cmd easyrecord\n");
-																					sprint (self, SBAR_PRINT, "cmd autorecord\n");
-																					sprint (self, SBAR_PRINT, "cmd cancel\n");
-																					sprint (self, SBAR_PRINT, "cmd stop\n");
-																					sprint (self, SBAR_PRINT, "cmd kick\n");
-																					sprint (self, SBAR_PRINT, "cmd help || list (this command)\n");
-																					sprint (self, SBAR_PRINT, "\n");
-																					return (SBAR_GRENS);
+																					sprint (self, 2, "Commands list:\n");
+																					sprint (self, 2, "cmd adminpwd\n");
+																					sprint (self, 2, "cmd dl\n");
+																					sprint (self, 2, "cmd dlist\n");
+																					sprint (self, 2, "cmd timelimit\n");
+																					sprint (self, 2, "cmd prematch\n");
+																					sprint (self, 2, "cmd fraglimit\n");
+																					sprint (self, 2, "cmd teamplay\n");
+																					sprint (self, 2, "cmd overtime\n");
+																					sprint (self, 2, "cmd cft\n");
+																					sprint (self, 2, "cmd password\n");
+																					sprint (self, 2, "cmd map\n");
+																					sprint (self, 2, "cmd record\n");
+																					sprint (self, 2, "cmd easyrecord\n");
+																					sprint (self, 2, "cmd autorecord\n");
+																					sprint (self, 2, "cmd cancel\n");
+																					sprint (self, 2, "cmd stop\n");
+																					sprint (self, 2, "cmd kick\n");
+																					sprint (self, 2, "cmd help || list (this command)\n");
+																					sprint (self, 2, "\n");
+																					return (1);
 																				}
 																			}
 																		}
@@ -513,7 +513,7 @@ float () ConsoleCmd =
 	if ((argv (0) == "test"))
 	{
 		dprint ("whazzup\n");
-		return (SBAR_GRENS);
+		return (1);
 	}
 	else
 	{
@@ -521,39 +521,39 @@ float () ConsoleCmd =
 		{
 			if ((arg_num == AS_MELEE))
 			{
-				if ((argv (SBAR_PRINT) == "\\"))
+				if ((argv (2) == "\\"))
 				{
 					localcmd ("localinfo ");
-					localcmd (argv (SBAR_GRENS));
+					localcmd (argv (1));
 					localcmd (" \"");
 					localcmd ("\"\n");
 					dprint ("localinfo ");
-					dprint (argv (SBAR_GRENS));
+					dprint (argv (1));
 					dprint (" removed");
 					dprint ("\n");
-					return (SBAR_GRENS);
+					return (1);
 				}
 				localcmd ("localinfo ");
-				localcmd (argv (SBAR_GRENS));
+				localcmd (argv (1));
 				localcmd (" ");
-				localcmd (argv (SBAR_PRINT));
+				localcmd (argv (2));
 				localcmd ("\n");
-				return (SBAR_GRENS);
+				return (1);
 			}
-			if ((arg_num == SBAR_PRINT))
+			if ((arg_num == 2))
 			{
-				tmp = infokey (world, argv (SBAR_GRENS));
+				tmp = infokey (world, argv (1));
 				dprint ("localinfo ");
-				dprint (argv (SBAR_GRENS));
+				dprint (argv (1));
 				dprint (": \"");
 				dprint (tmp);
 				dprint ("\"\n");
-				return (SBAR_GRENS);
+				return (1);
 			}
-			if ((arg_num == SBAR_GRENS))
+			if ((arg_num == 1))
 			{
 				localcmd ("localinfo\n");
-				return (SBAR_GRENS);
+				return (1);
 			}
 		}
 		else
@@ -562,197 +562,197 @@ float () ConsoleCmd =
 			{
 				if ((arg_num == AS_MELEE))
 				{
-					if ((argv (SBAR_PRINT) == "\\"))
+					if ((argv (2) == "\\"))
 					{
 						localcmd ("serverinfo ");
-						localcmd (argv (SBAR_GRENS));
+						localcmd (argv (1));
 						localcmd (" \"");
 						localcmd ("\"\n ");
 						dprint ("serverinfo ");
-						dprint (argv (SBAR_GRENS));
+						dprint (argv (1));
 						dprint (" removed");
 						dprint ("\n");
-						return (SBAR_GRENS);
+						return (1);
 					}
 					localcmd ("serverinfo ");
-					localcmd (argv (SBAR_GRENS));
+					localcmd (argv (1));
 					localcmd (" ");
-					localcmd (argv (SBAR_PRINT));
+					localcmd (argv (2));
 					localcmd ("\n");
-					return (SBAR_GRENS);
+					return (1);
 				}
-				if ((arg_num == SBAR_PRINT))
+				if ((arg_num == 2))
 				{
-					tmp = infokey (world, argv (SBAR_GRENS));
+					tmp = infokey (world, argv (1));
 					dprint ("serverinfo ");
-					dprint (argv (SBAR_GRENS));
+					dprint (argv (1));
 					dprint (": \"");
 					dprint (tmp);
 					dprint ("\"\n");
-					return (SBAR_GRENS);
+					return (1);
 				}
-				if ((arg_num == SBAR_GRENS))
+				if ((arg_num == 1))
 				{
 					localcmd ("serverinfo\n");
-					return (SBAR_GRENS);
+					return (1);
 				}
 			}
 			else
 			{
 				if ((argv (0) == "prematch"))
 				{
-					if ((arg_num == SBAR_PRINT))
+					if ((arg_num == 2))
 					{
 						localcmd ("localinfo prematch ");
-						localcmd (argv (SBAR_GRENS));
+						localcmd (argv (1));
 						localcmd ("\n");
-						return (SBAR_GRENS);
+						return (1);
 					}
-					if ((arg_num == SBAR_GRENS))
+					if ((arg_num == 1))
 					{
 						tmp = infokey (world, argv (0));
 						dprint ("prematch is ");
 						dprint ("\"");
 						dprint (tmp);
 						dprint ("\"\n");
-						return (SBAR_GRENS);
+						return (1);
 					}
 				}
 				else
 				{
 					if ((argv (0) == "overtime"))
 					{
-						if ((arg_num == SBAR_PRINT))
+						if ((arg_num == 2))
 						{
 							localcmd ("localinfo overtime ");
-							localcmd (argv (SBAR_GRENS));
+							localcmd (argv (1));
 							localcmd ("\n");
-							return (SBAR_GRENS);
+							return (1);
 						}
-						if ((arg_num == SBAR_GRENS))
+						if ((arg_num == 1))
 						{
 							tmp = infokey (world, argv (0));
 							dprint ("overtime is ");
 							dprint ("\"");
 							dprint (tmp);
 							dprint ("\"\n");
-							return (SBAR_GRENS);
+							return (1);
 						}
 					}
 					else
 					{
 						if ((argv (0) == "cft"))
 						{
-							if ((arg_num == SBAR_PRINT))
+							if ((arg_num == 2))
 							{
 								localcmd ("localinfo cft ");
-								localcmd (argv (SBAR_GRENS));
+								localcmd (argv (1));
 								localcmd ("\n");
-								return (SBAR_GRENS);
+								return (1);
 							}
-							if ((arg_num == SBAR_GRENS))
+							if ((arg_num == 1))
 							{
 								tmp = infokey (world, argv (0));
 								dprint ("ceasefire time is ");
 								dprint ("\"");
 								dprint (tmp);
 								dprint ("\"\n");
-								return (SBAR_GRENS);
+								return (1);
 							}
 						}
 						else
 						{
 							if ((argv (0) == "gspeed"))
 							{
-								if ((arg_num == SBAR_PRINT))
+								if ((arg_num == 2))
 								{
-									gspeed = stof (argv (SBAR_GRENS));
+									gspeed = stof (argv (1));
 									if (((gspeed < 0) || (gspeed > AS_MELEE)))
 									{
 										gspeed = 0;
 									}
 									localcmd ("localinfo gspeed ");
-									localcmd (argv (SBAR_GRENS));
+									localcmd (argv (1));
 									localcmd ("\n");
-									return (SBAR_GRENS);
+									return (1);
 								}
-								if ((arg_num == SBAR_GRENS))
+								if ((arg_num == 1))
 								{
 									tmp = infokey (world, argv (0));
 									dprint ("ground speed is ");
 									dprint ("\"");
 									dprint (tmp);
 									dprint ("\"\n");
-									return (SBAR_GRENS);
+									return (1);
 								}
 							}
 							else
 							{
 								if ((argv (0) == "roundtime"))
 								{
-									if ((arg_num == SBAR_PRINT))
+									if ((arg_num == 2))
 									{
 										localcmd ("localinfo round_time ");
-										localcmd (argv (SBAR_GRENS));
+										localcmd (argv (1));
 										localcmd ("\n");
-										return (SBAR_GRENS);
+										return (1);
 									}
-									if ((arg_num == SBAR_GRENS))
+									if ((arg_num == 1))
 									{
 										tmp = infokey (world, argv (0));
 										dprint ("round time is ");
 										dprint ("\"");
 										dprint (tmp);
 										dprint ("\"\n");
-										return (SBAR_GRENS);
+										return (1);
 									}
 								}
 								else
 								{
 									if ((argv (0) == "rounds"))
 									{
-										if ((arg_num == SBAR_PRINT))
+										if ((arg_num == 2))
 										{
 											localcmd ("localinfo rounds ");
-											localcmd (argv (SBAR_GRENS));
+											localcmd (argv (1));
 											localcmd ("\n");
-											return (SBAR_GRENS);
+											return (1);
 										}
-										if ((arg_num == SBAR_GRENS))
+										if ((arg_num == 1))
 										{
 											tmp = infokey (world, argv (0));
 											dprint ("rounds is ");
 											dprint ("\"");
 											dprint (tmp);
 											dprint ("\"\n");
-											return (SBAR_GRENS);
+											return (1);
 										}
 									}
 									else
 									{
 										if ((argv (0) == "autorecord"))
 										{
-											if ((arg_num == SBAR_PRINT))
+											if ((arg_num == 2))
 											{
 												localcmd ("localinfo demo_auto_left ");
-												localcmd (argv (SBAR_GRENS));
+												localcmd (argv (1));
 												localcmd ("\n");
-												return (SBAR_GRENS);
+												return (1);
 											}
-											if ((arg_num == SBAR_GRENS))
+											if ((arg_num == 1))
 											{
 												tmp = infokey (world, "demo_auto_left");
 												if ((stof (tmp) > 0))
 												{
 													dprint ("Auto-Recording off\n");
 													localcmd ("localinfo demo_auto_left 0\n");
-													return (SBAR_GRENS);
+													return (1);
 												}
 												else
 												{
 													dprint ("Auto-Recording the next match\n");
 													localcmd ("localinfo demo_auto_left 1\n");
-													return (SBAR_GRENS);
+													return (1);
 												}
 											}
 										}
@@ -761,22 +761,22 @@ float () ConsoleCmd =
 											if ((argv (0) == "restart"))
 											{
 												RestartMap ();
-												return (SBAR_GRENS);
+												return (1);
 											}
 											else
 											{
 												if ((argv (0) == "startmatch"))
 												{
 													fl = TeamFortress_NoTeams ();
-													if ((fl < SBAR_GRENS))
+													if ((fl < 1))
 													{
 														dprint ("No teams in game\n");
 														dprint ("Match cannot be started.\n");
-														return (SBAR_GRENS);
+														return (1);
 													}
 													pmtime = 0;
 													StartTimer ();
-													return (SBAR_GRENS);
+													return (1);
 												}
 												else
 												{
@@ -784,203 +784,203 @@ float () ConsoleCmd =
 													{
 														pmtime = 0;
 														StartTimer ();
-														return (SBAR_GRENS);
+														return (1);
 													}
 													else
 													{
 														if ((argv (0) == "clan"))
 														{
 															ClanMode ();
-															return (SBAR_GRENS);
+															return (1);
 														}
 														else
 														{
 															if ((argv (0) == "tfvsdm"))
 															{
 																Toggle_TFvsDM ();
-																return (SBAR_GRENS);
+																return (1);
 															}
 															else
 															{
 																if ((argv (0) == "practice"))
 																{
 																	Toggle_Practice ();
-																	return (SBAR_GRENS);
+																	return (1);
 																}
 																else
 																{
 																	if ((argv (0) == "tfstrike"))
 																	{
 																		Toggle_TFStrike ();
-																		return (SBAR_GRENS);
+																		return (1);
 																	}
 																	else
 																	{
 																		if ((argv (0) == "duel"))
 																		{
 																			Toggle_Duel ();
-																			return (SBAR_GRENS);
+																			return (1);
 																		}
 																		else
 																		{
 																			if ((argv (0) == "teamfrags"))
 																			{
 																				Toggle_Teamfrags ();
-																				return (SBAR_GRENS);
+																				return (1);
 																			}
 																			else
 																			{
 																				if ((argv (0) == "fullts"))
 																				{
 																					Toggle_Fullts ();
-																					return (SBAR_GRENS);
+																					return (1);
 																				}
 																				else
 																				{
 																					if ((argv (0) == "clansetup"))
 																					{
 																						ClanSetup ();
-																						return (SBAR_GRENS);
+																						return (1);
 																					}
 																					else
 																					{
 																						if ((argv (0) == "reset"))
 																						{
 																							ResetSetup ();
-																							return (SBAR_GRENS);
+																							return (1);
 																						}
 																						else
 																						{
 																							if ((argv (0) == "fbskins"))
 																							{
 																								ToggleFbskins ();
-																								return (SBAR_GRENS);
+																								return (1);
 																							}
 																							else
 																							{
 																								if ((argv (0) == "frj"))
 																								{
 																									Toggle_Frj ();
-																									return (SBAR_GRENS);
+																									return (1);
 																								}
 																								else
 																								{
 																									if ((argv (0) == "silence"))
 																									{
 																										ToggleSpecTalk ();
-																										return (SBAR_GRENS);
+																										return (1);
 																									}
 																									else
 																									{
 																										if ((argv (0) == "grapple"))
 																										{
 																											Toggle_Grapple ();
-																											return (SBAR_GRENS);
+																											return (1);
 																										}
 																										else
 																										{
 																											if ((argv (0) == "ceasefire"))
 																											{
 																												Admin_CeaseFire ();
-																												return (SBAR_GRENS);
+																												return (1);
 																											}
 																											else
 																											{
 																												if ((argv (0) == "freeze"))
 																												{
 																													ToggleFreeze ();
-																													return (SBAR_GRENS);
+																													return (1);
 																												}
 																												else
 																												{
 																													if ((argv (0) == "speedcap"))
 																													{
 																														Toggle_SpeedCap ();
-																														return (SBAR_GRENS);
+																														return (1);
 																													}
 																													else
 																													{
 																														if ((argv (0) == "flash"))
 																														{
 																															ToggleFlash ();
-																															return (SBAR_GRENS);
+																															return (1);
 																														}
 																														else
 																														{
 																															if ((argv (0) == "flag_model"))
 																															{
 																																Toggle_flag_emu ();
-																																return (SBAR_GRENS);
+																																return (1);
 																															}
 																															else
 																															{
 																																if ((argv (0) == "grenpacks"))
 																																{
 																																	Toggle_Grenpacks ();
-																																	return (SBAR_GRENS);
+																																	return (1);
 																																}
 																																else
 																																{
 																																	if ((argv (0) == "gibs"))
 																																	{
 																																		Toggle_Gibs ();
-																																		return (SBAR_GRENS);
+																																		return (1);
 																																	}
 																																	else
 																																	{
 																																		if ((argv (0) == "highlander"))
 																																		{
 																																			Toggle_Highlander ();
-																																			return (SBAR_GRENS);
+																																			return (1);
 																																		}
 																																		else
 																																		{
 																																			if ((argv (0) == "lights"))
 																																			{
 																																				Toggle_Lighting ();
-																																				return (SBAR_GRENS);
+																																				return (1);
 																																			}
 																																			else
 																																			{
 																																				if ((argv (0) == "detpack"))
 																																				{
 																																					Toggle_Detpack ();
-																																					return (SBAR_GRENS);
+																																					return (1);
 																																				}
 																																				else
 																																				{
 																																					if ((argv (0) == "pipedelay"))
 																																					{
 																																						Toggle_PipeDelay ();
-																																						return (SBAR_GRENS);
+																																						return (1);
 																																					}
 																																					else
 																																					{
 																																						if ((argv (0) == "grentype"))
 																																						{
 																																							Toggle_GrenType ();
-																																							return (SBAR_GRENS);
+																																							return (1);
 																																						}
 																																						else
 																																						{
 																																							if ((argv (0) == "sgfire"))
 																																							{
 																																								Toggle_SentryFire ();
-																																								return (SBAR_GRENS);
+																																								return (1);
 																																							}
 																																							else
 																																							{
 																																								if ((argv (0) == "sgtype"))
 																																								{
 																																									Toggle_SentryType ();
-																																									return (SBAR_GRENS);
+																																									return (1);
 																																								}
 																																								else
 																																								{
 																																									if ((argv (0) == "time"))
 																																									{
 																																										calltimeofday ();
-																																										return (SBAR_GRENS);
+																																										return (1);
 																																									}
 																																									else
 																																									{
@@ -1032,7 +1032,7 @@ float () ConsoleCmd =
 																																											dprint ("commands\n");
 																																											dprint ("------------\n");
 																																											dprint ("42 Commands\n");
-																																											return (SBAR_GRENS);
+																																											return (1);
 																																										}
 																																									}
 																																								}

@@ -11,12 +11,12 @@ float (entity obj, entity builder) CheckArea;
 
 void () Rail_Think =
 {
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	self.movetype = 9;
 	self.velocity = self.oldorigin;
 	self.touch = Rail_Touch;
 	setmodel (self, "progs/e_spike2.mdl");
-	self.nextthink = (time + SBAR_GRENS);
+	self.nextthink = (time + 1);
 	self.think = SUB_Remove;
 };
 
@@ -42,7 +42,7 @@ void () Rail_Touch =
 	{
 		SpawnBlood (org, 15);
 		deathmsg = 26;
-		TF_T_Damage (other, self, self.enemy, 25, SBAR_PRINT, 8);
+		TF_T_Damage (other, self, self.enemy, 25, 2, 8);
 		self.velocity = self.oldorigin;
 		self.owner = other;
 		setmodel (self, string_null);
@@ -58,7 +58,7 @@ void () Rail_Touch =
 		WriteCoord (AS_MISSILE, self.origin_x);
 		WriteCoord (AS_MISSILE, self.origin_y);
 		WriteCoord (AS_MISSILE, self.origin_z);
-		multicast (self.origin, SBAR_GRENS);
+		multicast (self.origin, 1);
 	}
 	dremove (self);
 };
@@ -70,7 +70,7 @@ void () W_FireRail =
 
 	if (!practice)
 	{
-		self.ammo_nails = (self.ammo_nails - SBAR_GRENS);
+		self.ammo_nails = (self.ammo_nails - 1);
 		self.currentammo = self.ammo_nails;
 	}
 	makevectors (self.v_angle);
@@ -81,7 +81,7 @@ void () W_FireRail =
 	newmis.owner = self;
 	newmis.enemy = self;
 	newmis.movetype = 9;
-	newmis.solid = SBAR_GRENS;
+	newmis.solid = 1;
 	setmodel (newmis, "progs/e_spike1.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, (org + '0 0 16'));
@@ -100,7 +100,7 @@ void () EMPExplode =
 	expsize = enter;
 	if ((self.touch == weapon_touch))
 	{
-		expsize = SBAR_600;
+		expsize = 60;
 	}
 	else
 	{
@@ -124,13 +124,13 @@ void () EMPExplode =
 				{
 					if ((self.classname == "item_cells"))
 					{
-						expsize = (SBAR_600 + (self.aflag * AS_MELEE));
+						expsize = (60 + (self.aflag * AS_MELEE));
 					}
 					else
 					{
 						if ((self.classname == "item_weapon"))
 						{
-							expsize = SBAR_600;
+							expsize = 60;
 						}
 						else
 						{
@@ -151,13 +151,13 @@ void () EMPExplode =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 	Respawn_Item (self, self.enemy);
 };
 
 void () EMPGrenadeTouch =
 {
-	sound (self, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/bounce.wav", 1, 1);
 	if ((self.velocity == '0 0 0'))
 	{
 		self.avelocity = '0 0 0';
@@ -175,7 +175,7 @@ void () EMPGrenadeExplode =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 	te = findradius (self.origin, 240);
 	while (te)
 	{
@@ -192,11 +192,11 @@ void () EMPGrenadeExplode =
 			{
 				if (((te.classname == "player") || (te.touch == BackpackTouch)))
 				{
-					if (!(((teamplay & SBAR_240) && (te.team_no > 0)) && (te.team_no == self.owner.team_no)))
+					if (!(((teamplay & 16) && (te.team_no > 0)) && (te.team_no == self.owner.team_no)))
 					{
 						expsize = 0;
 						expsize = (expsize + (te.ammo_shells * 0.75));
-						expsize = (expsize + ((te.ammo_rockets * 0.75) * SBAR_PRINT));
+						expsize = (expsize + ((te.ammo_rockets * 0.75) * 2));
 						if ((te.playerclass != 9))
 						{
 							expsize = (expsize + (te.ammo_cells * 0.75));
@@ -207,7 +207,7 @@ void () EMPGrenadeExplode =
 							T_RadiusDamage (te, self.owner, expsize, te);
 							if ((te.touch != BackpackTouch))
 							{
-								TF_T_Damage (te, self, self.owner, expsize, SBAR_PRINT, AS_MISSILE);
+								TF_T_Damage (te, self, self.owner, expsize, 2, AS_MISSILE);
 								if (!practice)
 								{
 									te.ammo_shells = ceil ((te.ammo_shells * 0.25));
@@ -235,7 +235,7 @@ void () EMPGrenadeExplode =
 							WriteCoord (AS_MISSILE, te.origin_x);
 							WriteCoord (AS_MISSILE, te.origin_y);
 							WriteCoord (AS_MISSILE, te.origin_z);
-							multicast (te.origin, SBAR_GRENS);
+							multicast (te.origin, 1);
 						}
 					}
 				}
@@ -258,7 +258,7 @@ void () EMPGrenadeExplode =
 						{
 							if (((te.classname == "building_dispenser") || (te.classname == "building_sentrygun")))
 							{
-								if (!(((teamplay & SBAR_240) && (te.team_no > 0)) && (te.team_no == self.owner.team_no)))
+								if (!(((teamplay & 16) && (te.team_no > 0)) && (te.team_no == self.owner.team_no)))
 								{
 									TF_T_Damage (te, self, self.owner, 200, 0, AS_MISSILE);
 								}
@@ -269,8 +269,8 @@ void () EMPGrenadeExplode =
 								{
 									expsize = 0;
 									expsize = (expsize + (te.ammo_shells * 0.75));
-									expsize = (expsize + ((te.ammo_rockets * 0.75) * SBAR_PRINT));
-									expsize = (expsize + ((te.ammo_cells * 0.75) * SBAR_PRINT));
+									expsize = (expsize + ((te.ammo_rockets * 0.75) * 2));
+									expsize = (expsize + ((te.ammo_cells * 0.75) * 2));
 									if ((expsize > 0))
 									{
 										te.solid = 0;
@@ -283,7 +283,7 @@ void () EMPGrenadeExplode =
 										WriteCoord (AS_MISSILE, te.origin_x);
 										WriteCoord (AS_MISSILE, te.origin_y);
 										WriteCoord (AS_MISSILE, te.origin_z);
-										multicast (te.origin, SBAR_GRENS);
+										multicast (te.origin, 1);
 									}
 								}
 								else
@@ -293,7 +293,7 @@ void () EMPGrenadeExplode =
 										if ((te.think == TeamFortress_DetpackExplode))
 										{
 											te.solid = 0;
-											te.nextthink = (time + (random () * SBAR_PRINT));
+											te.nextthink = (time + (random () * 2));
 											dremove (te.oldenemy);
 										}
 									}
@@ -330,9 +330,9 @@ void () TeamFortress_EngineerBuild =
 	}
 	else
 	{
-		if ((self.is_building == SBAR_GRENS))
+		if ((self.is_building == 1))
 		{
-			sprint (self, SBAR_PRINT, "You stop building.\n");
+			sprint (self, 2, "You stop building.\n");
 			self.tfstate = (self.tfstate - (self.tfstate & 65536));
 			TeamFortress_SetSpeed (self);
 			te = find (world, netname, "build_timer");
@@ -369,17 +369,17 @@ float (entity obj, entity builder) CheckArea =
 	}
 	src_x = ((obj.origin_x + obj.maxs_x) + 24);
 	src_y = ((obj.origin_y + obj.maxs_y) + 24);
-	src_z = ((obj.origin_z + obj.maxs_z) + SBAR_240);
+	src_z = ((obj.origin_z + obj.maxs_z) + 16);
 	pos = pointcontents (src);
 	if (((pos == -2) || (pos == -6)))
 	{
 		return (0);
 	}
-	end_x = ((obj.origin_x + obj.mins_x) - SBAR_240);
-	end_y = ((obj.origin_y + obj.mins_y) - SBAR_240);
-	end_z = ((obj.origin_z + obj.mins_z) - SBAR_240);
-	traceline (src, end, SBAR_GRENS, obj);
-	if ((trace_fraction != SBAR_GRENS))
+	end_x = ((obj.origin_x + obj.mins_x) - 16);
+	end_y = ((obj.origin_y + obj.mins_y) - 16);
+	end_z = ((obj.origin_z + obj.mins_z) - 16);
+	traceline (src, end, 1, obj);
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
@@ -388,19 +388,19 @@ float (entity obj, entity builder) CheckArea =
 	{
 		return (0);
 	}
-	src_x = ((obj.origin_x + obj.mins_x) - SBAR_240);
-	src_y = ((obj.origin_y + obj.maxs_y) + SBAR_240);
-	src_z = ((obj.origin_z + obj.maxs_z) + SBAR_240);
+	src_x = ((obj.origin_x + obj.mins_x) - 16);
+	src_y = ((obj.origin_y + obj.maxs_y) + 16);
+	src_z = ((obj.origin_z + obj.maxs_z) + 16);
 	pos = pointcontents (src);
 	if (((pos == -2) || (pos == -6)))
 	{
 		return (0);
 	}
-	end_x = ((obj.origin_x + obj.maxs_x) + SBAR_240);
-	end_y = ((obj.origin_y + obj.mins_y) - SBAR_240);
-	end_z = ((obj.origin_z + obj.mins_z) - SBAR_240);
-	traceline (src, end, SBAR_GRENS, obj);
-	if ((trace_fraction != SBAR_GRENS))
+	end_x = ((obj.origin_x + obj.maxs_x) + 16);
+	end_y = ((obj.origin_y + obj.mins_y) - 16);
+	end_z = ((obj.origin_z + obj.mins_z) - 16);
+	traceline (src, end, 1, obj);
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
@@ -409,8 +409,8 @@ float (entity obj, entity builder) CheckArea =
 	{
 		return (0);
 	}
-	traceline (builder.origin, obj.origin, SBAR_GRENS, builder);
-	if ((trace_fraction != SBAR_GRENS))
+	traceline (builder.origin, obj.origin, 1, builder);
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
@@ -419,7 +419,7 @@ float (entity obj, entity builder) CheckArea =
 	{
 		return (0);
 	}
-	return (SBAR_GRENS);
+	return (1);
 };
 
 void (float objtobuild) TeamFortress_Build =
@@ -439,37 +439,37 @@ void (float objtobuild) TeamFortress_Build =
 	newmis.origin = (self.origin + v_forward);
 	if ((CheckArea (newmis, self) == 0))
 	{
-		sprint (self, SBAR_PRINT, "Not enough room to build here\n");
+		sprint (self, 2, "Not enough room to build here\n");
 		dremove (newmis);
 		return;
 	}
-	if ((objtobuild == SBAR_GRENS))
+	if ((objtobuild == 1))
 	{
 		if (self.has_dispenser)
 		{
-			sprint (self, SBAR_PRINT, "You can only have one dispenser.\nTry dismantling your old one.\n");
+			sprint (self, 2, "You can only have one dispenser.\nTry dismantling your old one.\n");
 			return;
 		}
 		tmp1 = '-16 -16 0';
 		tmp2 = '16 16 48';
 		newmis.mdl = "progs/disp.mdl";
 		newmis.netname = "dispenser";
-		btime = (time + SBAR_PRINT);
+		btime = (time + 2);
 	}
 	else
 	{
-		if ((objtobuild == SBAR_PRINT))
+		if ((objtobuild == 2))
 		{
 			if (self.has_sentry)
 			{
-				sprint (self, SBAR_PRINT, "You can only have one sentry gun.\nTry dismantling your old one.\n");
+				sprint (self, 2, "You can only have one sentry gun.\nTry dismantling your old one.\n");
 				return;
 			}
 			st = infokey (world, "max_teamsgs");
 			maxsgs = stof (st);
 			if ((maxsgs == -1))
 			{
-				sprint (self, SBAR_PRINT, "You cannot have sentry guns on your team.\nDisabled by Administrator.\n");
+				sprint (self, 2, "You cannot have sentry guns on your team.\nDisabled by Administrator.\n");
 				return;
 			}
 			if ((maxsgs > 0))
@@ -479,13 +479,13 @@ void (float objtobuild) TeamFortress_Build =
 				{
 					if ((te.team_no == self.team_no))
 					{
-						nosgs = (nosgs + SBAR_GRENS);
+						nosgs = (nosgs + 1);
 					}
 					te = find (te, classname, "building_sentry");
 				}
 				if ((nosgs >= maxsgs))
 				{
-					sprint3 (self, SBAR_PRINT, "You can only have ", st, " sentry guns on your team.\n");
+					sprint3 (self, 2, "You can only have ", st, " sentry guns on your team.\n");
 					return;
 				}
 			}
@@ -501,7 +501,7 @@ void (float objtobuild) TeamFortress_Build =
 		CenterPrint (self, "You can't build in the air!\n\n");
 		return;
 	}
-	self.is_building = SBAR_GRENS;
+	self.is_building = 1;
 	self.immune_to_check = (time + 5);
 	self.tfstate = (self.tfstate | 65536);
 	self.weapon = self.current_weapon;
@@ -519,7 +519,7 @@ void (float objtobuild) TeamFortress_Build =
 	newmis.angles_y = anglemod ((self.angles_y + 180));
 	newmis.velocity = '0 0 8';
 	newmis.movetype = 6;
-	newmis.solid = SBAR_PRINT;
+	newmis.solid = 2;
 	setmodel (newmis, newmis.mdl);
 	setsize (newmis, tmp1, tmp2);
 	setorigin (newmis, newmis.origin);
@@ -539,8 +539,8 @@ void (entity bld) CheckBelowBuilding =
 	{
 		below_z = (below_z - 24);
 	}
-	traceline (bld.origin, below, SBAR_GRENS, bld);
-	if ((trace_fraction == SBAR_GRENS))
+	traceline (bld.origin, below, 1, bld);
+	if ((trace_fraction == 1))
 	{
 		bld.movetype = 6;
 		bld.flags = (bld.flags - (bld.flags & 512));
@@ -579,7 +579,7 @@ void () DispenserThink =
 		}
 		self.hook_out = 0;
 	}
-	self.hook_out = (self.hook_out + SBAR_GRENS);
+	self.hook_out = (self.hook_out + 1);
 	self.nextthink = (time + AS_MELEE);
 };
 
@@ -589,7 +589,7 @@ void () TeamFortress_FinishedBuilding =
 	local entity te;
 	local vector source;
 
-	if ((self.owner.is_building != SBAR_GRENS))
+	if ((self.owner.is_building != 1))
 	{
 		return;
 	}
@@ -602,10 +602,10 @@ void () TeamFortress_FinishedBuilding =
 	self.current_weapon = self.weapon;
 	self.StatusRefreshTime = (time + 0.1);
 	TeamFortress_SetSpeed (self);
-	if ((oldself.weapon == SBAR_GRENS))
+	if ((oldself.weapon == 1))
 	{
-		self.has_dispenser = SBAR_GRENS;
-		sprint (self, SBAR_PRINT, "You finish building the dispenser.\n");
+		self.has_dispenser = 1;
+		sprint (self, 2, "You finish building the dispenser.\n");
 		teamsprint (self.team_no, self, self.netname);
 		teamsprint (self.team_no, self, " has built a Dispenser.\n");
 		if (!practice)
@@ -618,7 +618,7 @@ void () TeamFortress_FinishedBuilding =
 		oldself.touch = T_Dispenser;
 		oldself.max_health = 150;
 		oldself.health = 150;
-		oldself.hook_out = SBAR_GRENS;
+		oldself.hook_out = 1;
 		oldself.think = DispenserThink;
 		oldself.nextthink = (time + AS_MELEE);
 		oldself.th_die = Dispenser_Die;
@@ -626,7 +626,7 @@ void () TeamFortress_FinishedBuilding =
 		oldself.team_no = self.team_no;
 		oldself.real_owner = self;
 		oldself.colormap = self.colormap;
-		oldself.takedamage = SBAR_PRINT;
+		oldself.takedamage = 2;
 		oldself.owner = world;
 		oldself.movetype = 6;
 		oldself.velocity = '0 0 8';
@@ -641,17 +641,17 @@ void () TeamFortress_FinishedBuilding =
 		self.ammo_rockets = ceil ((self.ammo_rockets * 0.75));
 		self.ammo_cells = ceil ((self.ammo_cells * 0.75));
 		self.armorvalue = ceil ((self.armorvalue * 0.75));
-		oldself.solid = SBAR_PRINT;
+		oldself.solid = 2;
 		setmodel (oldself, oldself.mdl);
 		setsize (oldself, '-8 -8 0', '8 8 24');
 		setorigin (oldself, (oldself.origin + '0 0 8'));
 	}
 	else
 	{
-		if ((oldself.weapon == SBAR_PRINT))
+		if ((oldself.weapon == 2))
 		{
-			self.has_sentry = SBAR_GRENS;
-			sprint (self, SBAR_PRINT, "You finish building the sentry gun.\n");
+			self.has_sentry = 1;
+			sprint (self, 2, "You finish building the sentry gun.\n");
 			teamsprint (self.team_no, self, self.netname);
 			teamsprint (self.team_no, self, " has built a Sentry Gun.\n");
 			oldself.classname = "building_sentrygun_base";
@@ -668,12 +668,12 @@ void () TeamFortress_FinishedBuilding =
 			newmis.classname = "building_sentrygun";
 			newmis.health = 150;
 			newmis.max_health = newmis.health;
-			newmis.weapon = SBAR_GRENS;
+			newmis.weapon = 1;
 			newmis.th_die = Sentry_Die;
 			newmis.th_pain = Sentry_Pain;
 			newmis.mdl = "progs/turrgun.mdl";
-			sound (oldself, AS_MELEE, "weapons/turrset.wav", SBAR_GRENS, SBAR_GRENS);
-			newmis.solid = SBAR_PRINT;
+			sound (oldself, AS_MELEE, "weapons/turrset.wav", 1, 1);
+			newmis.solid = 2;
 			setmodel (newmis, newmis.mdl);
 			setsize (newmis, '-16 -16 0', '16 16 48');
 			setorigin (newmis, (oldself.origin + '0 0 8'));
@@ -684,7 +684,7 @@ void () TeamFortress_FinishedBuilding =
 			newmis.movetype = AS_MISSILE;
 			oldself.colormap = self.colormap;
 			newmis.colormap = self.colormap;
-			newmis.takedamage = SBAR_PRINT;
+			newmis.takedamage = 2;
 			newmis.velocity = '0 0 -8';
 			newmis.flags = (newmis.flags - (newmis.flags & 512));
 			oldself.flags = (oldself.flags - (oldself.flags & 512));
@@ -692,7 +692,7 @@ void () TeamFortress_FinishedBuilding =
 			if (sgtype)
 			{
 				newmis.think = lvl1_sentry_stand;
-				newmis.yaw_speed = (15 - (sentry_speed * SBAR_400));
+				newmis.yaw_speed = (15 - (sentry_speed * 35));
 			}
 			else
 			{
@@ -756,7 +756,7 @@ void () Dispenser_Explode =
 {
 	local float sdmg;
 
-	if ((self.real_owner.has_disconnected != SBAR_GRENS))
+	if ((self.real_owner.has_disconnected != 1))
 	{
 		deathmsg = 39;
 		sdmg = ((25 + (self.ammo_rockets * 1.5)) + self.ammo_cells);
@@ -774,7 +774,7 @@ void () Dispenser_Explode =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 	dremove (self);
 };
 
@@ -790,26 +790,26 @@ void (entity disp) Engineer_UseDispenser =
 	local entity dist_checker;
 	local string st;
 
-	sprint (self, SBAR_PRINT, "Dispenser has ");
+	sprint (self, 2, "Dispenser has ");
 	st = ftos (disp.health);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " health\n");
+	sprint (self, 2, st);
+	sprint (self, 2, " health\n");
 	st = ftos (disp.ammo_shells);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " shells, ");
+	sprint (self, 2, st);
+	sprint (self, 2, " shells, ");
 	st = ftos (disp.ammo_nails);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " nails,");
+	sprint (self, 2, st);
+	sprint (self, 2, " nails,");
 	st = ftos (disp.ammo_rockets);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " rockets\n");
+	sprint (self, 2, st);
+	sprint (self, 2, " rockets\n");
 	st = ftos (disp.ammo_cells);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " cells, && ");
+	sprint (self, 2, st);
+	sprint (self, 2, " cells, && ");
 	st = ftos (disp.armorvalue);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " armor\n");
-	self.current_menu = SBAR_240;
+	sprint (self, 2, st);
+	sprint (self, 2, " armor\n");
+	self.current_menu = 16;
 	self.menu_count = 25;
 	self.building = disp;
 	dist_checker = spawn ();
@@ -825,24 +825,24 @@ void (entity gun) Engineer_UseSentryGun =
 	local entity dist_checker;
 	local string st;
 
-	sprint (self, SBAR_PRINT, "Level ");
+	sprint (self, 2, "Level ");
 	st = ftos (gun.weapon);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " Sentry Gun has ");
+	sprint (self, 2, st);
+	sprint (self, 2, " Sentry Gun has ");
 	st = ftos (gun.health);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " health, ");
+	sprint (self, 2, st);
+	sprint (self, 2, " health, ");
 	st = ftos (gun.ammo_shells);
-	sprint (self, SBAR_PRINT, st);
-	sprint (self, SBAR_PRINT, " shells");
+	sprint (self, 2, st);
+	sprint (self, 2, " shells");
 	if ((gun.weapon == AS_MELEE))
 	{
 		st = ftos (gun.ammo_rockets);
-		sprint (self, SBAR_PRINT, ", ");
-		sprint (self, SBAR_PRINT, st);
-		sprint (self, SBAR_PRINT, " rockets");
+		sprint (self, 2, ", ");
+		sprint (self, 2, st);
+		sprint (self, 2, " rockets");
 	}
-	sprint (self, SBAR_PRINT, "\n");
+	sprint (self, 2, "\n");
 	self.current_menu = 17;
 	self.menu_count = 25;
 	self.building = gun;
@@ -863,8 +863,8 @@ void (entity gunhead) CheckSentry =
 	dist = (gunbase.origin - gunhead.origin);
 	if ((vlen (dist) > 15))
 	{
-		bprint (SBAR_GRENS, self.real_owner.netname);
-		bprint (SBAR_GRENS, "'s sentry gun malfunctioned\n");
+		bprint (1, self.real_owner.netname);
+		bprint (1, "'s sentry gun malfunctioned\n");
 		Sentry_Die ();
 	}
 };
@@ -883,7 +883,7 @@ void () CheckDistance =
 	{
 		CenterPrint (self.owner, "\n");
 		self.owner.menu_count = 25;
-		self.owner.current_menu = SBAR_GRENS;
+		self.owner.current_menu = 1;
 		self.owner.building = world;
 		dremove (self);
 		return;
@@ -923,7 +923,7 @@ void (entity eng, string bld) DestroyBuilding =
 					te.real_owner.StatusRefreshTime = (time + 0.1);
 				}
 				te.real_owner.menu_count = 25;
-				te.real_owner.current_menu = SBAR_GRENS;
+				te.real_owner.current_menu = 1;
 				te.real_owner.building = world;
 			}
 			TF_T_Damage (te, world, world, 500, 0, 0);

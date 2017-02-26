@@ -33,15 +33,15 @@ void () CheckModel =
 	if ((self.mdl == "models/flag.mdl"))
 	{
 		self.mdl = "progs/tf_stan.mdl";
-		if ((self.skin == SBAR_GRENS))
+		if ((self.skin == 1))
 		{
-			self.skin = SBAR_PRINT;
+			self.skin = 2;
 		}
 		else
 		{
-			if ((self.skin == SBAR_PRINT))
+			if ((self.skin == 2))
 			{
-				self.skin = SBAR_GRENS;
+				self.skin = 1;
 			}
 		}
 	}
@@ -51,13 +51,13 @@ void () CheckModel =
 	}
 	if ((self.mdl == "models/keycard.mdl"))
 	{
-		if ((self.owned_by == SBAR_GRENS))
+		if ((self.owned_by == 1))
 		{
 			self.mdl = "progs/basbkey.bsp";
 		}
 		else
 		{
-			if ((self.owned_by == SBAR_PRINT))
+			if ((self.owned_by == 2))
 			{
 				self.mdl = "progs/basrkey.bsp";
 			}
@@ -226,16 +226,16 @@ void (entity Goal) UpdateAbbreviations =
 			st = infokey (world, "flag_solid");
 			if ((st == "on"))
 			{
-				toggleflags = (toggleflags | SBAR_240);
+				toggleflags = (toggleflags | 16);
 			}
 			flag = stof (infokey (world, "flag_model"));
-			if ((flag == SBAR_GRENS))
+			if ((flag == 1))
 			{
 				toggleflags = (toggleflags | 4096);
 			}
 			else
 			{
-				if ((flag == SBAR_PRINT))
+				if ((flag == 2))
 				{
 					toggleflags = (toggleflags | 8192);
 				}
@@ -247,7 +247,7 @@ void (entity Goal) UpdateAbbreviations =
 					}
 				}
 			}
-			flagem_checked = SBAR_GRENS;
+			flagem_checked = 1;
 		}
 		if ((toggleflags & 4096))
 		{
@@ -255,7 +255,7 @@ void (entity Goal) UpdateAbbreviations =
 			{
 				precache_model2 ("progs/tf_flag.mdl");
 				Goal.mdl = "progs/tf_flag.mdl";
-				Goal.skin = SBAR_GRENS;
+				Goal.skin = 1;
 			}
 			else
 			{
@@ -263,7 +263,7 @@ void (entity Goal) UpdateAbbreviations =
 				{
 					precache_model2 ("progs/tf_flag.mdl");
 					Goal.mdl = "progs/tf_flag.mdl";
-					Goal.skin = SBAR_PRINT;
+					Goal.skin = 2;
 				}
 				else
 				{
@@ -283,7 +283,7 @@ void (entity Goal) UpdateAbbreviations =
 				{
 					precache_model2 ("progs/tf_stan.mdl");
 					Goal.mdl = "progs/tf_stan.mdl";
-					Goal.skin = SBAR_GRENS;
+					Goal.skin = 1;
 				}
 				else
 				{
@@ -291,7 +291,7 @@ void (entity Goal) UpdateAbbreviations =
 					{
 						precache_model2 ("progs/tf_stan.mdl");
 						Goal.mdl = "progs/tf_stan.mdl";
-						Goal.skin = SBAR_PRINT;
+						Goal.skin = 2;
 					}
 					else
 					{
@@ -311,7 +311,7 @@ void (entity Goal) UpdateAbbreviations =
 					{
 						precache_model2 ("progs/flag.mdl");
 						Goal.mdl = "progs/flag.mdl";
-						Goal.skin = SBAR_GRENS;
+						Goal.skin = 1;
 					}
 					else
 					{
@@ -319,7 +319,7 @@ void (entity Goal) UpdateAbbreviations =
 						{
 							precache_model2 ("progs/flag.mdl");
 							Goal.mdl = "progs/flag.mdl";
-							Goal.skin = SBAR_PRINT;
+							Goal.skin = 2;
 						}
 						else
 						{
@@ -333,7 +333,7 @@ void (entity Goal) UpdateAbbreviations =
 				}
 			}
 		}
-		Goal.has_abbreviated = SBAR_GRENS;
+		Goal.has_abbreviated = 1;
 	}
 };
 
@@ -361,13 +361,13 @@ void () TF_PlaceItem =
 	self.oldorigin = self.origin;
 	if ((self.goal_activation & 512))
 	{
-		if ((self.owned_by == SBAR_GRENS))
+		if ((self.owned_by == 1))
 		{
 			self.effects = (self.effects | 64);
 		}
 		else
 		{
-			if ((self.owned_by == SBAR_PRINT))
+			if ((self.owned_by == 2))
 			{
 				self.effects = (self.effects | 128);
 			}
@@ -379,10 +379,10 @@ void () TF_PlaceItem =
 	}
 	if ((item_list_bit == 0))
 	{
-		item_list_bit = SBAR_GRENS;
+		item_list_bit = 1;
 	}
 	self.item_list = item_list_bit;
-	item_list_bit = (item_list_bit * SBAR_PRINT);
+	item_list_bit = (item_list_bit * 2);
 };
 
 void () TF_StartItem =
@@ -402,7 +402,7 @@ void () TF_PlaceGoal =
 
 	if ((self.classname != "info_tfgoal_timer"))
 	{
-		if ((self.goal_activation & SBAR_GRENS))
+		if ((self.goal_activation & 1))
 		{
 			self.touch = tfgoal_touch;
 		}
@@ -471,7 +471,7 @@ float () CheckExistence =
 			return (0);
 		}
 	}
-	return (SBAR_GRENS);
+	return (1);
 };
 
 void () info_tfdetect =
@@ -498,13 +498,13 @@ void () info_player_teamspawn =
 	{
 		number_of_teams = self.team_no;
 	}
-	if ((self.team_no == SBAR_GRENS))
+	if ((self.team_no == 1))
 	{
 		self.team_str_home = "ts1";
 	}
 	else
 	{
-		if ((self.team_no == SBAR_PRINT))
+		if ((self.team_no == 2))
 		{
 			self.team_str_home = "ts2";
 		}
@@ -557,7 +557,7 @@ void () info_tfgoal =
 	precache_sound ("items/damage.wav");
 	precache_sound ("items/damage2.wav");
 	precache_sound ("items/damage3.wav");
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	if ((mapversion == 30))
 	{
 		CheckModel ();
@@ -606,7 +606,7 @@ void () info_tfgoal =
 	}
 	if ((self.goal_state == 0))
 	{
-		self.goal_state = SBAR_PRINT;
+		self.goal_state = 2;
 	}
 };
 
@@ -643,7 +643,7 @@ void () info_tfgoal_timer =
 	self.solid = 0;
 	if ((self.goal_state == 0))
 	{
-		self.goal_state = SBAR_PRINT;
+		self.goal_state = 2;
 	}
 	if ((self.goal_min == '0 0 0'))
 	{
@@ -691,15 +691,15 @@ void () item_tfgoal =
 	self.touch = item_tfgoal_touch;
 	if ((self.goal_state == 0))
 	{
-		self.goal_state = SBAR_PRINT;
+		self.goal_state = 2;
 	}
-	if (((self.goal_activation & 8192) || (toggleflags & SBAR_240)))
+	if (((self.goal_activation & 8192) || (toggleflags & 16)))
 	{
-		self.solid = SBAR_PRINT;
+		self.solid = 2;
 	}
 	else
 	{
-		self.solid = SBAR_GRENS;
+		self.solid = 1;
 	}
 	setorigin (self, self.origin);
 	if (!self.netname)
@@ -736,9 +736,9 @@ void (entity AD) ParseTFDetect =
 	}
 	localcmd (AD.message);
 	cvar_set ("sv_maxspeed", "600");
-	if ((AD.hook_out == SBAR_GRENS))
+	if ((AD.hook_out == 1))
 	{
-		allow_hook = SBAR_GRENS;
+		allow_hook = 1;
 	}
 	fl = stof (infokey (world, "t1maxplayers"));
 	if (fl)
@@ -760,19 +760,19 @@ void (entity AD) ParseTFDetect =
 	{
 		AD.maxammo_detpack = fl;
 	}
-	if ((AD.ammo_medikit < SBAR_GRENS))
+	if ((AD.ammo_medikit < 1))
 	{
 		AD.ammo_medikit = _d;
 	}
-	if ((AD.ammo_detpack < SBAR_GRENS))
+	if ((AD.ammo_detpack < 1))
 	{
 		AD.ammo_detpack = _d;
 	}
-	if ((AD.maxammo_medikit < SBAR_GRENS))
+	if ((AD.maxammo_medikit < 1))
 	{
 		AD.maxammo_medikit = _d;
 	}
-	if ((AD.maxammo_detpack < SBAR_GRENS))
+	if ((AD.maxammo_detpack < 1))
 	{
 		AD.maxammo_detpack = _d;
 	}
@@ -804,11 +804,11 @@ void (entity AD) ParseTFDetect =
 	civilianteams = 0;
 	if ((AD.maxammo_shells == -1))
 	{
-		civilianteams = (civilianteams | SBAR_GRENS);
+		civilianteams = (civilianteams | 1);
 	}
 	if ((AD.maxammo_nails == -1))
 	{
-		civilianteams = (civilianteams | SBAR_PRINT);
+		civilianteams = (civilianteams | 2);
 	}
 	if ((AD.maxammo_rockets == -1))
 	{
@@ -882,20 +882,20 @@ entity (float gno) Findteamspawn =
 
 void (entity Goal) InactivateGoal =
 {
-	if ((Goal.goal_state == SBAR_GRENS))
+	if ((Goal.goal_state == 1))
 	{
 		if ((Goal.search_time == 0))
 		{
-			if ((((Goal.goal_activation & 8192) || (toggleflags & SBAR_240)) && (Goal.classname == "item_tfgoal")))
+			if ((((Goal.goal_activation & 8192) || (toggleflags & 16)) && (Goal.classname == "item_tfgoal")))
 			{
-				Goal.solid = SBAR_PRINT;
+				Goal.solid = 2;
 			}
 			else
 			{
-				Goal.solid = SBAR_GRENS;
+				Goal.solid = 1;
 			}
 		}
-		Goal.goal_state = SBAR_PRINT;
+		Goal.goal_state = 2;
 		if ((Goal.mdl != string_null))
 		{
 			setmodel (Goal, Goal.mdl);
@@ -909,20 +909,20 @@ void (entity Goal) RestoreGoal =
 	{
 		if ((Goal.search_time == 0))
 		{
-			if ((((Goal.goal_activation & 8192) || (toggleflags & SBAR_240)) && (Goal.classname == "item_tfgoal")))
+			if ((((Goal.goal_activation & 8192) || (toggleflags & 16)) && (Goal.classname == "item_tfgoal")))
 			{
-				Goal.solid = SBAR_PRINT;
+				Goal.solid = 2;
 			}
 			else
 			{
-				Goal.solid = SBAR_GRENS;
+				Goal.solid = 1;
 			}
 		}
 		else
 		{
 			Goal.nextthink = (time + Goal.search_time);
 		}
-		Goal.goal_state = SBAR_PRINT;
+		Goal.goal_state = 2;
 		if ((Goal.mdl != string_null))
 		{
 			setmodel (Goal, Goal.mdl);
@@ -960,46 +960,46 @@ float (entity Goal, entity Player, entity AP) IsAffectedBy =
 	{
 		if ((vlen ((Goal.origin - Player.origin)) <= Goal.t_length))
 		{
-			if ((Goal.goal_effects & SBAR_240))
+			if ((Goal.goal_effects & 16))
 			{
-				traceline (Goal.origin, Player.origin, SBAR_GRENS, Goal);
-				if ((trace_fraction == SBAR_GRENS))
+				traceline (Goal.origin, Player.origin, 1, Goal);
+				if ((trace_fraction == 1))
 				{
-					return (SBAR_GRENS);
+					return (1);
 				}
 			}
 			else
 			{
-				return (SBAR_GRENS);
+				return (1);
 			}
 		}
 	}
 	if ((Goal.classname != "info_tfgoal_timer"))
 	{
-		if (((Goal.goal_effects & SBAR_GRENS) && (Player == AP)))
+		if (((Goal.goal_effects & 1) && (Player == AP)))
 		{
-			return (SBAR_GRENS);
+			return (1);
 		}
-		if (((Goal.goal_effects & SBAR_PRINT) && (AP.team_no == Player.team_no)))
+		if (((Goal.goal_effects & 2) && (AP.team_no == Player.team_no)))
 		{
-			return (SBAR_GRENS);
+			return (1);
 		}
 		if (((Goal.goal_effects & AS_MISSILE) && (AP.team_no != Player.team_no)))
 		{
-			return (SBAR_GRENS);
+			return (1);
 		}
 		if (((Goal.goal_effects & 8) && (Player != AP)))
 		{
-			return (SBAR_GRENS);
+			return (1);
 		}
 	}
 	if (((Goal.maxammo_shells != 0) && (Player.team_no == Goal.maxammo_shells)))
 	{
-		return (SBAR_GRENS);
+		return (1);
 	}
 	if (((Goal.maxammo_nails != 0) && (Player.team_no != Goal.maxammo_shells)))
 	{
-		return (SBAR_GRENS);
+		return (1);
 	}
 	return (0);
 };
@@ -1032,10 +1032,10 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 						if ((captime != 0))
 						{
 							st = ftos (captime);
-							bprint (SBAR_PRINT, Player.netname);
-							bprint (SBAR_PRINT, " Captured the flag in ");
-							bprint (SBAR_PRINT, st);
-							bprint (SBAR_PRINT, " seconds\n");
+							bprint (2, Player.netname);
+							bprint (2, " Captured the flag in ");
+							bprint (2, st);
+							bprint (2, " seconds\n");
 						}
 					}
 					if (round_active)
@@ -1044,7 +1044,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 					}
 				}
 				TeamFortress_TeamIncreaseScore (Player.team_no, Goal.count);
-				TeamFortress_TeamShowScores (SBAR_PRINT);
+				TeamFortress_TeamShowScores (2);
 			}
 		}
 	}
@@ -1060,11 +1060,11 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			{
 				if (((0 - Player.health) > Goal.health))
 				{
-					TF_T_Damage (Player, Goal, Goal, (Player.health - Goal.health), SBAR_GRENS, 0);
+					TF_T_Damage (Player, Goal, Goal, (Player.health - Goal.health), 1, 0);
 				}
 				else
 				{
-					TF_T_Damage (Player, Goal, Goal, (0 - Goal.health), SBAR_GRENS, 0);
+					TF_T_Damage (Player, Goal, Goal, (0 - Goal.health), 1, 0);
 				}
 			}
 		}
@@ -1102,19 +1102,19 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			{
 				Player.no_grenades_2 = AS_MISSILE;
 			}
-			if (((Player.tp_grenades_1 == AS_MELEE) && (Player.no_grenades_1 > SBAR_PRINT)))
+			if (((Player.tp_grenades_1 == AS_MELEE) && (Player.no_grenades_1 > 2)))
 			{
-				Player.no_grenades_1 = SBAR_PRINT;
+				Player.no_grenades_1 = 2;
 			}
-			if (((Player.tp_grenades_2 == AS_MELEE) && (Player.no_grenades_2 > SBAR_PRINT)))
+			if (((Player.tp_grenades_2 == AS_MELEE) && (Player.no_grenades_2 > 2)))
 			{
-				Player.no_grenades_2 = SBAR_PRINT;
+				Player.no_grenades_2 = 2;
 			}
 			if ((Player.ammo_detpack > Player.maxammo_detpack))
 			{
 				Player.ammo_detpack = Player.maxammo_detpack;
 			}
-			if ((Player.tfstate & SBAR_GRENS))
+			if ((Player.tfstate & 1))
 			{
 				te = find (world, classname, "primer");
 				while (te)
@@ -1123,7 +1123,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 					{
 						if (((te.impulse == 151) && (Player.no_grenades_2 <= 0)))
 						{
-							Player.tfstate = (Player.tfstate - (Player.tfstate & SBAR_GRENS));
+							Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
 							Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
 							dremove (te);
 						}
@@ -1131,7 +1131,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 						{
 							if (((te.impulse == 150) && (Player.no_grenades_1 <= 0)))
 							{
-								Player.tfstate = (Player.tfstate - (Player.tfstate & SBAR_GRENS));
+								Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
 								Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
 								dremove (te);
 							}
@@ -1147,7 +1147,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			if ((Goal.invincible_finished > 0))
 			{
 				Player.items = (Player.items | 1048576);
-				Player.invincible_time = SBAR_GRENS;
+				Player.invincible_time = 1;
 				Player.invincible_finished = (time + Goal.invincible_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
@@ -1158,7 +1158,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			if ((Goal.invisible_finished > 0))
 			{
 				Player.items = (Player.items | 524288);
-				Player.invisible_time = SBAR_GRENS;
+				Player.invisible_time = 1;
 				Player.invisible_finished = (time + Goal.invisible_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
@@ -1169,7 +1169,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			if ((Goal.super_damage_finished > 0))
 			{
 				Player.items = (Player.items | 4194304);
-				Player.super_time = SBAR_GRENS;
+				Player.super_time = 1;
 				Player.super_damage_finished = (time + Goal.super_damage_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
@@ -1180,7 +1180,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			if ((Goal.radsuit_finished > 0))
 			{
 				Player.items = (Player.items | 2097152);
-				Player.rad_time = SBAR_GRENS;
+				Player.rad_time = 1;
 				Player.radsuit_finished = (time + Goal.radsuit_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
@@ -1191,7 +1191,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		}
 		if (Goal.frags)
 		{
-			if (((Goal.goal_effects == SBAR_GRENS) || !(toggleflags & 2048)))
+			if (((Goal.goal_effects == 1) || !(toggleflags & 2048)))
 			{
 				TF_AddFrags (Player, Goal.frags, 0);
 			}
@@ -1202,7 +1202,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		W_SetCurrentAmmo ();
 		self = oldself;
 	}
-	if (((Player.playerclass == 8) && (Goal.goal_result & SBAR_240)))
+	if (((Player.playerclass == 8) && (Goal.goal_result & 16)))
 	{
 		self.immune_to_check = (time + 5);
 		Spy_RemoveDisguise (Player);
@@ -1220,7 +1220,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		te = Finditem (Goal.axhitme);
 		if ((te.owner == Player))
 		{
-			tfgoalitem_RemoveFromPlayer (te, Player, SBAR_GRENS);
+			tfgoalitem_RemoveFromPlayer (te, Player, 1);
 		}
 	}
 	if ((Goal.remove_item_group != 0))
@@ -1232,7 +1232,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			{
 				oldte = te;
 				te = find (te, classname, "item_tfgoal");
-				tfgoalitem_RemoveFromPlayer (oldte, Player, SBAR_GRENS);
+				tfgoalitem_RemoveFromPlayer (oldte, Player, 1);
 			}
 			else
 			{
@@ -1249,7 +1249,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		}
 		else
 		{
-			sprint (Player, SBAR_PRINT, "Item is missing.\n");
+			sprint (Player, 2, "Item is missing.\n");
 		}
 	}
 	if ((Goal.display_item_status2 != 0))
@@ -1261,7 +1261,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		}
 		else
 		{
-			sprint (Player, SBAR_PRINT, "Item is missing.\n");
+			sprint (Player, 2, "Item is missing.\n");
 		}
 	}
 	if ((Goal.display_item_status3 != 0))
@@ -1273,7 +1273,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		}
 		else
 		{
-			sprint (Player, SBAR_PRINT, "Item is missing.\n");
+			sprint (Player, 2, "Item is missing.\n");
 		}
 	}
 	if ((Goal.display_item_status4 != 0))
@@ -1285,7 +1285,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		}
 		else
 		{
-			sprint (Player, SBAR_PRINT, "Item is missing.\n");
+			sprint (Player, 2, "Item is missing.\n");
 		}
 	}
 	if ((Goal.goal_result & space))
@@ -1317,7 +1317,7 @@ void (entity Goal, entity Player) RemoveResults =
 	}
 	if ((Goal.health > 0))
 	{
-		TF_T_Damage (Player, Goal, Goal, Goal.health, SBAR_GRENS, 0);
+		TF_T_Damage (Player, Goal, Goal, Goal.health, 1, 0);
 	}
 	if ((Goal.health < 0))
 	{
@@ -1328,7 +1328,7 @@ void (entity Goal, entity Player) RemoveResults =
 	Player.armorclass = (Player.armorclass - (Player.armorclass & Goal.armorclass));
 	if (Goal.frags)
 	{
-		if (((Goal.goal_effects == SBAR_GRENS) || !(toggleflags & 2048)))
+		if (((Goal.goal_effects == 1) || !(toggleflags & 2048)))
 		{
 			TF_AddFrags (Player, Goal.frags, 0);
 		}
@@ -1349,19 +1349,19 @@ void (entity Goal, entity Player) RemoveResults =
 	{
 		Player.no_grenades_2 = AS_MISSILE;
 	}
-	if (((Player.tp_grenades_1 == AS_MELEE) && (Player.no_grenades_1 > SBAR_PRINT)))
+	if (((Player.tp_grenades_1 == AS_MELEE) && (Player.no_grenades_1 > 2)))
 	{
-		Player.no_grenades_1 = SBAR_PRINT;
+		Player.no_grenades_1 = 2;
 	}
-	if (((Player.tp_grenades_2 == AS_MELEE) && (Player.no_grenades_2 > SBAR_PRINT)))
+	if (((Player.tp_grenades_2 == AS_MELEE) && (Player.no_grenades_2 > 2)))
 	{
-		Player.no_grenades_2 = SBAR_PRINT;
+		Player.no_grenades_2 = 2;
 	}
 	if ((Player.ammo_detpack > Player.maxammo_detpack))
 	{
 		Player.ammo_detpack = Player.maxammo_detpack;
 	}
-	if ((Player.tfstate & SBAR_GRENS))
+	if ((Player.tfstate & 1))
 	{
 		te = find (world, classname, "primer");
 		while (te)
@@ -1370,7 +1370,7 @@ void (entity Goal, entity Player) RemoveResults =
 			{
 				if (((te.impulse == 151) && (Player.no_grenades_2 <= 0)))
 				{
-					Player.tfstate = (Player.tfstate - (Player.tfstate & SBAR_GRENS));
+					Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
 					Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
 					dremove (te);
 				}
@@ -1378,7 +1378,7 @@ void (entity Goal, entity Player) RemoveResults =
 				{
 					if (((te.impulse == 150) && (Player.no_grenades_1 <= 0)))
 					{
-						Player.tfstate = (Player.tfstate - (Player.tfstate & SBAR_GRENS));
+						Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
 						Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
 						dremove (te);
 					}
@@ -1402,19 +1402,19 @@ void (entity Goal, entity Player) RemoveResults =
 		{
 			if ((te.invincible_finished > 0))
 			{
-				puinvin = SBAR_GRENS;
+				puinvin = 1;
 			}
 			if ((te.invisible_finished > 0))
 			{
-				puinvis = SBAR_GRENS;
+				puinvis = 1;
 			}
 			if ((te.super_damage_finished > 0))
 			{
-				puquad = SBAR_GRENS;
+				puquad = 1;
 			}
 			if ((te.radsuit_finished > 0))
 			{
-				purad = SBAR_GRENS;
+				purad = 1;
 			}
 		}
 		te = find (te, classname, "item_tfgoal");
@@ -1423,28 +1423,28 @@ void (entity Goal, entity Player) RemoveResults =
 	{
 		Player.tfstate = (Player.tfstate - (Player.tfstate & space));
 		Player.items = (Player.items | 1048576);
-		Player.invincible_time = SBAR_GRENS;
+		Player.invincible_time = 1;
 		Player.invincible_finished = (time + Goal.invincible_finished);
 	}
 	if (((Goal.invisible_finished > 0) && !puinvis))
 	{
 		Player.tfstate = (Player.tfstate - (Player.tfstate & 64));
 		Player.items = (Player.items | 524288);
-		Player.invisible_time = SBAR_GRENS;
+		Player.invisible_time = 1;
 		Player.invisible_finished = (time + Goal.invisible_finished);
 	}
 	if (((Goal.super_damage_finished > 0) && !puquad))
 	{
 		Player.tfstate = (Player.tfstate - (Player.tfstate & 128));
 		Player.items = (Player.items | 4194304);
-		Player.super_time = SBAR_GRENS;
+		Player.super_time = 1;
 		Player.super_damage_finished = (time + Goal.super_damage_finished);
 	}
 	if (((Goal.radsuit_finished > 0) && !purad))
 	{
 		Player.tfstate = (Player.tfstate - (Player.tfstate & 256));
 		Player.items = (Player.items | 2097152);
-		Player.rad_time = SBAR_GRENS;
+		Player.rad_time = 1;
 		Player.radsuit_finished = (time + Goal.radsuit_finished);
 	}
 	oldself = self;
@@ -1488,7 +1488,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 	if (Goal.if_goal_is_active)
 	{
 		te = Findgoal (Goal.if_goal_is_active);
-		if ((te.goal_state != SBAR_GRENS))
+		if ((te.goal_state != 1))
 		{
 			return (0);
 		}
@@ -1496,7 +1496,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 	if (Goal.if_goal_is_inactive)
 	{
 		te = Findgoal (Goal.if_goal_is_inactive);
-		if ((te.goal_state != SBAR_PRINT))
+		if ((te.goal_state != 2))
 		{
 			return (0);
 		}
@@ -1516,7 +1516,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 		{
 			if ((te.group_no == Goal.if_group_is_active))
 			{
-				if ((te.goal_state != SBAR_GRENS))
+				if ((te.goal_state != 1))
 				{
 					return (0);
 				}
@@ -1531,7 +1531,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 		{
 			if ((te.group_no == Goal.if_group_is_inactive))
 			{
-				if ((te.goal_state != SBAR_PRINT))
+				if ((te.goal_state != 2))
 				{
 					return (0);
 				}
@@ -1559,7 +1559,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 		te = Finditem (Goal.if_item_has_moved);
 		if (te)
 		{
-			if (((te.goal_state != SBAR_GRENS) && (te.origin == te.oldorigin)))
+			if (((te.goal_state != 1) && (te.origin == te.oldorigin)))
 			{
 				return (0);
 			}
@@ -1570,7 +1570,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 		te = Finditem (Goal.if_item_hasnt_moved);
 		if (te)
 		{
-			if (((te.goal_state == SBAR_GRENS) || (te.origin != te.oldorigin)))
+			if (((te.goal_state == 1) || (te.origin != te.oldorigin)))
 			{
 				return (0);
 			}
@@ -1586,7 +1586,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 			{
 				if (((te.group_no == Goal.has_item_from_group) && (te.owner == AP)))
 				{
-					gotone = SBAR_GRENS;
+					gotone = 1;
 				}
 				te = find (te, classname, "item_tfgoal");
 			}
@@ -1608,7 +1608,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 			}
 		}
 	}
-	return (SBAR_GRENS);
+	return (1);
 };
 
 void (entity Goal) SetupRespawn =
@@ -1620,7 +1620,7 @@ void (entity Goal) SetupRespawn =
 		Goal.nextthink = (time + Goal.search_time);
 		return;
 	}
-	if ((Goal.goal_result & SBAR_GRENS))
+	if ((Goal.goal_result & 1))
 	{
 		RemoveGoal (Goal);
 		return;
@@ -1653,7 +1653,7 @@ float (entity Goal, entity AP) Activated =
 	local float RevAct;
 	local float Act;
 
-	if ((Goal.goal_state == SBAR_GRENS))
+	if ((Goal.goal_state == 1))
 	{
 		return (0);
 	}
@@ -1679,14 +1679,14 @@ float (entity Goal, entity AP) Activated =
 	{
 		if (!RevAct)
 		{
-			Act = SBAR_GRENS;
+			Act = 1;
 		}
 	}
 	else
 	{
 		if (RevAct)
 		{
-			Act = SBAR_GRENS;
+			Act = 1;
 		}
 	}
 	return (Act);
@@ -1709,13 +1709,13 @@ void (entity Goal, entity AP, entity ActivatingGoal) AttemptToActivate =
 	{
 		if ((ActivatingGoal == Goal))
 		{
-			DoResults (Goal, AP, SBAR_GRENS);
+			DoResults (Goal, AP, 1);
 		}
 		else
 		{
 			if ((ActivatingGoal != world))
 			{
-				DoResults (Goal, AP, (ActivatingGoal.goal_result & SBAR_PRINT));
+				DoResults (Goal, AP, (ActivatingGoal.goal_result & 2));
 			}
 			else
 			{
@@ -1778,13 +1778,13 @@ void (entity Goal, entity AP) DoGoalWork =
 		te = Finditem (Goal.return_item_no);
 		if (te)
 		{
-			if ((te.goal_state == SBAR_GRENS))
+			if ((te.goal_state == 1))
 			{
-				tfgoalitem_RemoveFromPlayer (te, te.owner, SBAR_GRENS);
+				tfgoalitem_RemoveFromPlayer (te, te.owner, 1);
 			}
 			RI = spawn ();
 			RI.enemy = te;
-			RI.weapon = SBAR_PRINT;
+			RI.weapon = 2;
 			RI.think = ReturnItem;
 			RI.nextthink = (time + 0.1);
 			te.solid = 0;
@@ -1806,14 +1806,14 @@ void (entity Goal, entity AP) DoGoalWork =
 		{
 			if ((te.goal_state == AS_MELEE))
 			{
-				te.goal_state = SBAR_PRINT;
-				if ((te.team_no == SBAR_GRENS))
+				te.goal_state = 2;
+				if ((te.team_no == 1))
 				{
 					te.team_str_home = "ts1";
 				}
 				else
 				{
-					if ((te.team_no == SBAR_PRINT))
+					if ((te.team_no == 2))
 					{
 						te.team_str_home = "ts2";
 					}
@@ -1854,13 +1854,13 @@ void (entity Goal, entity AP) DoGroupWork =
 		}
 		else
 		{
-			allset = SBAR_GRENS;
+			allset = 1;
 			tg = find (world, classname, "info_tfgoal");
 			while (tg)
 			{
 				if ((tg.group_no == Goal.all_active))
 				{
-					if ((tg.goal_state != SBAR_GRENS))
+					if ((tg.goal_state != 1))
 					{
 						allset = 0;
 					}
@@ -1872,7 +1872,7 @@ void (entity Goal, entity AP) DoGroupWork =
 				tg = Findgoal (Goal.last_impulse);
 				if (tg)
 				{
-					DoResults (tg, AP, (Goal.goal_result & SBAR_PRINT));
+					DoResults (tg, AP, (Goal.goal_result & 2));
 				}
 			}
 		}
@@ -1945,14 +1945,14 @@ void (entity Goal, entity AP) DoGroupWork =
 		{
 			if ((tg.group_no == Goal.restore_spawngroup))
 			{
-				tg.goal_state = SBAR_PRINT;
-				if ((tg.team_no == SBAR_GRENS))
+				tg.goal_state = 2;
+				if ((tg.team_no == 1))
 				{
 					tg.team_str_home = "ts1";
 				}
 				else
 				{
-					if ((tg.team_no == SBAR_PRINT))
+					if ((tg.team_no == 2))
 					{
 						tg.team_str_home = "ts2";
 					}
@@ -1984,7 +1984,7 @@ void (entity Item, entity AP) DoItemGroupWork =
 	local float allcarried;
 	local string st;
 
-	allcarried = SBAR_GRENS;
+	allcarried = 1;
 	if ((Item.distance != 0))
 	{
 		if ((Item.pain_finished == 0))
@@ -1999,23 +1999,23 @@ void (entity Item, entity AP) DoItemGroupWork =
 		{
 			if ((tg.group_no == Item.distance))
 			{
-				if ((tg.goal_state != SBAR_GRENS))
+				if ((tg.goal_state != 1))
 				{
 					allcarried = 0;
 				}
 			}
 			tg = find (tg, classname, "item_tfgoal");
 		}
-		if ((allcarried == SBAR_GRENS))
+		if ((allcarried == 1))
 		{
 			tg = Findgoal (Item.pain_finished);
 			if (tg)
 			{
-				DoResults (tg, AP, (Item.goal_result & SBAR_PRINT));
+				DoResults (tg, AP, (Item.goal_result & 2));
 			}
 		}
 	}
-	allcarried = SBAR_GRENS;
+	allcarried = 1;
 	if ((Item.speed != 0))
 	{
 		if ((Item.attack_finished == 0))
@@ -2031,7 +2031,7 @@ void (entity Item, entity AP) DoItemGroupWork =
 		{
 			if ((tg.group_no == Item.speed))
 			{
-				if ((tg.goal_state != SBAR_GRENS))
+				if ((tg.goal_state != 1))
 				{
 					allcarried = 0;
 				}
@@ -2052,12 +2052,12 @@ void (entity Item, entity AP) DoItemGroupWork =
 			}
 			tg = find (tg, classname, "item_tfgoal");
 		}
-		if ((allcarried == SBAR_GRENS))
+		if ((allcarried == 1))
 		{
 			tg = Findgoal (Item.attack_finished);
 			if (tg)
 			{
-				DoResults (tg, AP, (Item.goal_result & SBAR_PRINT));
+				DoResults (tg, AP, (Item.goal_result & 2));
 			}
 		}
 	}
@@ -2135,7 +2135,7 @@ void (entity Goal, entity AP, float addb) DoResults =
 	{
 		return;
 	}
-	if ((Goal.goal_state == SBAR_GRENS))
+	if ((Goal.goal_state == 1))
 	{
 		return;
 	}
@@ -2151,39 +2151,39 @@ void (entity Goal, entity AP, float addb) DoResults =
 		return;
 	}
 	UpdateAbbreviations (Goal);
-	Goal.goal_state = SBAR_PRINT;
+	Goal.goal_state = 2;
 	if (((Goal.classname == "info_tfgoal") && (Goal.mdl != string_null)))
 	{
 		setmodel (Goal, string_null);
 	}
 	if (Goal.noise)
 	{
-		sound (other, AS_MELEE, Goal.noise, SBAR_GRENS, SBAR_GRENS);
+		sound (other, AS_MELEE, Goal.noise, 1, 1);
 	}
 	winners = 0;
 	if ((Goal.increase_team1 != 0))
 	{
-		TeamFortress_TeamIncreaseScore (SBAR_GRENS, Goal.increase_team1);
-		winners = SBAR_GRENS;
+		TeamFortress_TeamIncreaseScore (1, Goal.increase_team1);
+		winners = 1;
 	}
 	if ((Goal.increase_team2 != 0))
 	{
-		TeamFortress_TeamIncreaseScore (SBAR_PRINT, Goal.increase_team2);
-		winners = SBAR_GRENS;
+		TeamFortress_TeamIncreaseScore (2, Goal.increase_team2);
+		winners = 1;
 	}
 	if ((Goal.increase_team3 != 0))
 	{
 		TeamFortress_TeamIncreaseScore (AS_MELEE, Goal.increase_team3);
-		winners = SBAR_GRENS;
+		winners = 1;
 	}
 	if ((Goal.increase_team4 != 0))
 	{
 		TeamFortress_TeamIncreaseScore (AS_MISSILE, Goal.increase_team4);
-		winners = SBAR_GRENS;
+		winners = 1;
 	}
-	if ((winners == SBAR_GRENS))
+	if ((winners == 1))
 	{
-		TeamFortress_TeamShowScores (SBAR_PRINT);
+		TeamFortress_TeamShowScores (2);
 		te = find (world, classname, "observer");
 		while ((te != world))
 		{
@@ -2194,16 +2194,16 @@ void (entity Goal, entity AP, float addb) DoResults =
 			te = find (te, classname, "observer");
 		}
 	}
-	if ((CTF_Map == SBAR_GRENS))
+	if ((CTF_Map == 1))
 	{
 		if ((AP != world))
 		{
-			if ((Goal.goal_no == SBAR_GRENS))
+			if ((Goal.goal_no == 1))
 			{
 				te = find (world, classname, "player");
 				while ((te != world))
 				{
-					if ((te.team_no == SBAR_PRINT))
+					if ((te.team_no == 2))
 					{
 						if ((te == AP))
 						{
@@ -2263,19 +2263,19 @@ void (entity Goal, entity AP, float addb) DoResults =
 					}
 					te = find (te, classname, "player");
 				}
-				bprint (SBAR_PRINT, AP.netname);
-				bprint (SBAR_PRINT, " гот the блуе flag!\n");
+				bprint (2, AP.netname);
+				bprint (2, " гот the блуе flag!\n");
 				AP.items = (AP.items | 131072);
 				AP.effects = (AP.effects | _P);
 			}
 			else
 			{
-				if ((Goal.goal_no == SBAR_PRINT))
+				if ((Goal.goal_no == 2))
 				{
 					te = find (world, classname, "player");
 					while ((te != world))
 					{
-						if ((te.team_no == SBAR_GRENS))
+						if ((te.team_no == 1))
 						{
 							if ((te == AP))
 							{
@@ -2335,8 +2335,8 @@ void (entity Goal, entity AP, float addb) DoResults =
 						}
 						te = find (te, classname, "player");
 					}
-					bprint (SBAR_PRINT, AP.netname);
-					bprint (SBAR_PRINT, " гот the ред flag!\n");
+					bprint (2, AP.netname);
+					bprint (2, " гот the ред flag!\n");
 					AP.items = (AP.items | 262144);
 					AP.effects = (AP.effects | 160);
 				}
@@ -2347,7 +2347,7 @@ void (entity Goal, entity AP, float addb) DoResults =
 						te = find (world, classname, "player");
 						while ((te != world))
 						{
-							if ((te.team_no == SBAR_PRINT))
+							if ((te.team_no == 2))
 							{
 								if ((te == AP))
 								{
@@ -2364,8 +2364,8 @@ void (entity Goal, entity AP, float addb) DoResults =
 							}
 							te = find (te, classname, "player");
 						}
-						bprint (SBAR_PRINT, AP.netname);
-						bprint (SBAR_PRINT, " цаптуред the ред flag!\n");
+						bprint (2, AP.netname);
+						bprint (2, " цаптуред the ред flag!\n");
 						AP.items = (AP.items - (AP.items & 262144));
 						AP.effects = (AP.effects - (AP.effects & 160));
 					}
@@ -2376,7 +2376,7 @@ void (entity Goal, entity AP, float addb) DoResults =
 							te = find (world, classname, "player");
 							while ((te != world))
 							{
-								if ((te.team_no == SBAR_GRENS))
+								if ((te.team_no == 1))
 								{
 									if ((te == AP))
 									{
@@ -2393,8 +2393,8 @@ void (entity Goal, entity AP, float addb) DoResults =
 								}
 								te = find (te, classname, "player");
 							}
-							bprint (SBAR_PRINT, AP.netname);
-							bprint (SBAR_PRINT, " цаптуред the блуе flag!\n");
+							bprint (2, AP.netname);
+							bprint (2, " цаптуред the блуе flag!\n");
 							AP.items = (AP.items - (AP.items & 131072));
 							AP.effects = (AP.effects - (AP.effects & _P));
 						}
@@ -2413,8 +2413,8 @@ void (entity Goal, entity AP, float addb) DoResults =
 		}
 		if (((Goal.netname_broadcast != string_null) && (CTF_Map == 0)))
 		{
-			sprint (te, SBAR_PRINT, AP.netname);
-			sprint (te, SBAR_PRINT, Goal.netname_broadcast);
+			sprint (te, 2, AP.netname);
+			sprint (te, 2, Goal.netname_broadcast);
 		}
 		if ((AP == te))
 		{
@@ -2440,15 +2440,15 @@ void (entity Goal, entity AP, float addb) DoResults =
 				}
 				if (((Goal.netname_owners_team_broadcast != string_null) && (te.team_no == Goal.owned_by)))
 				{
-					sprint (te, SBAR_PRINT, AP.netname);
-					sprint (te, SBAR_PRINT, Goal.netname_owners_team_broadcast);
+					sprint (te, 2, AP.netname);
+					sprint (te, 2, Goal.netname_owners_team_broadcast);
 				}
 				else
 				{
 					if ((Goal.netname_team_broadcast != string_null))
 					{
-						sprint (te, SBAR_PRINT, AP.netname);
-						sprint (te, SBAR_PRINT, Goal.netname_team_broadcast);
+						sprint (te, 2, AP.netname);
+						sprint (te, 2, Goal.netname_team_broadcast);
 					}
 				}
 			}
@@ -2467,15 +2467,15 @@ void (entity Goal, entity AP, float addb) DoResults =
 				}
 				if (((Goal.netname_owners_team_broadcast != string_null) && (te.team_no == Goal.owned_by)))
 				{
-					sprint (te, SBAR_PRINT, AP.netname);
-					sprint (te, SBAR_PRINT, Goal.netname_owners_team_broadcast);
+					sprint (te, 2, AP.netname);
+					sprint (te, 2, Goal.netname_owners_team_broadcast);
 				}
 				else
 				{
 					if ((Goal.netname_non_team_broadcast != string_null))
 					{
-						sprint (te, SBAR_PRINT, AP.netname);
-						sprint (te, SBAR_PRINT, Goal.netname_non_team_broadcast);
+						sprint (te, 2, AP.netname);
+						sprint (te, 2, Goal.netname_non_team_broadcast);
 					}
 				}
 			}
@@ -2487,13 +2487,13 @@ void (entity Goal, entity AP, float addb) DoResults =
 				if (APMeetsCriteria (Goal, te))
 				{
 					Apply_Results (Goal, te, AP, addb);
-					gotone = SBAR_GRENS;
+					gotone = 1;
 				}
 			}
 			else
 			{
 				Apply_Results (Goal, te, AP, addb);
-				gotone = SBAR_GRENS;
+				gotone = 1;
 			}
 		}
 		te = find (te, classname, "player");
@@ -2512,11 +2512,11 @@ void (entity Goal, entity AP, float addb) DoResults =
 	}
 	if ((Goal.classname != "item_tfgoal"))
 	{
-		Goal.goal_state = SBAR_GRENS;
+		Goal.goal_state = 1;
 	}
 	if ((Goal.goal_result & AS_MISSILE))
 	{
-		TeamFortress_TeamShowScores (SBAR_GRENS);
+		TeamFortress_TeamShowScores (1);
 		winners = TeamFortress_TeamGetWinner ();
 		te = find (world, classname, "player");
 		while (te)
@@ -2546,7 +2546,7 @@ void () tfgoal_touch =
 {
 	local entity te;
 
-	if (!(self.goal_activation & SBAR_GRENS))
+	if (!(self.goal_activation & 1))
 	{
 		return;
 	}
@@ -2562,24 +2562,24 @@ void () tfgoal_touch =
 	{
 		return;
 	}
-	if ((self.goal_state == SBAR_GRENS))
+	if ((self.goal_state == 1))
 	{
 		return;
 	}
-	if ((CTF_Map == SBAR_GRENS))
+	if ((CTF_Map == 1))
 	{
-		if (((self.goal_no == AS_MELEE) && (other.team_no == SBAR_GRENS)))
+		if (((self.goal_no == AS_MELEE) && (other.team_no == 1)))
 		{
-			te = Finditem (SBAR_GRENS);
-			if (((te.goal_state == SBAR_GRENS) || (te.origin != te.oldorigin)))
+			te = Finditem (1);
+			if (((te.goal_state == 1) || (te.origin != te.oldorigin)))
 			{
 				return;
 			}
 		}
-		if (((self.goal_no == AS_MISSILE) && (other.team_no == SBAR_PRINT)))
+		if (((self.goal_no == AS_MISSILE) && (other.team_no == 2)))
 		{
-			te = Finditem (SBAR_PRINT);
-			if (((te.goal_state == SBAR_GRENS) || (te.origin != te.oldorigin)))
+			te = Finditem (2);
+			if (((te.goal_state == 1) || (te.origin != te.oldorigin)))
 			{
 				return;
 			}
@@ -2607,7 +2607,7 @@ void () tfgoal_timer_tick =
 	{
 		if (APMeetsCriteria (self, world))
 		{
-			DoResults (self, world, SBAR_GRENS);
+			DoResults (self, world, 1);
 		}
 		else
 		{
@@ -2647,20 +2647,20 @@ void () item_tfgoal_touch =
 	{
 		return;
 	}
-	if ((CTF_Map == SBAR_GRENS))
+	if ((CTF_Map == 1))
 	{
-		if ((self.goal_no == SBAR_GRENS))
+		if ((self.goal_no == 1))
 		{
 			if ((self.origin != self.oldorigin))
 			{
-				if ((other.team_no == SBAR_GRENS))
+				if ((other.team_no == 1))
 				{
-					bprint (SBAR_PRINT, other.netname);
-					bprint (SBAR_PRINT, " ретурнед the блуе flag!\n");
+					bprint (2, other.netname);
+					bprint (2, " ретурнед the блуе flag!\n");
 					te = find (world, classname, "player");
 					while ((te != world))
 					{
-						if ((te.team_no == SBAR_GRENS))
+						if ((te.team_no == 1))
 						{
 							CenterPrint2 (te, "\n\n\n", "Your flag was ретурнед!!");
 						}
@@ -2670,19 +2670,19 @@ void () item_tfgoal_touch =
 						}
 						te = find (te, classname, "player");
 					}
-					self.goal_state = SBAR_PRINT;
-					self.solid = SBAR_GRENS;
+					self.goal_state = 2;
+					self.solid = 1;
 					self.touch = item_tfgoal_touch;
 					self.origin = self.oldorigin;
 					setmodel (self, self.mdl);
 					setorigin (self, self.origin);
-					sound (self, SBAR_PRINT, "items/itembk2.wav", SBAR_GRENS, SBAR_GRENS);
+					sound (self, 2, "items/itembk2.wav", 1, 1);
 					return;
 				}
 			}
 			else
 			{
-				if ((other.team_no == SBAR_GRENS))
+				if ((other.team_no == 1))
 				{
 					return;
 				}
@@ -2690,18 +2690,18 @@ void () item_tfgoal_touch =
 		}
 		else
 		{
-			if ((self.goal_no == SBAR_PRINT))
+			if ((self.goal_no == 2))
 			{
 				if ((self.origin != self.oldorigin))
 				{
-					if ((other.team_no == SBAR_PRINT))
+					if ((other.team_no == 2))
 					{
-						bprint (SBAR_PRINT, other.netname);
-						bprint (SBAR_PRINT, " ретурнед the ред flag!\n");
+						bprint (2, other.netname);
+						bprint (2, " ретурнед the ред flag!\n");
 						te = find (world, classname, "player");
 						while ((te != world))
 						{
-							if ((te.team_no == SBAR_PRINT))
+							if ((te.team_no == 2))
 							{
 								CenterPrint (te, "\n\n\n Your flag was ретурнед!!");
 							}
@@ -2711,19 +2711,19 @@ void () item_tfgoal_touch =
 							}
 							te = find (te, classname, "player");
 						}
-						self.goal_state = SBAR_PRINT;
-						self.solid = SBAR_GRENS;
+						self.goal_state = 2;
+						self.solid = 1;
 						self.touch = item_tfgoal_touch;
 						self.origin = self.oldorigin;
 						setmodel (self, self.mdl);
 						setorigin (self, self.origin);
-						sound (self, SBAR_PRINT, "items/itembk2.wav", SBAR_GRENS, SBAR_GRENS);
+						sound (self, 2, "items/itembk2.wav", 1, 1);
 						return;
 					}
 				}
 				else
 				{
-					if ((other.team_no == SBAR_PRINT))
+					if ((other.team_no == 2))
 					{
 						return;
 					}
@@ -2736,7 +2736,7 @@ void () item_tfgoal_touch =
 		tfgoalitem_GiveToPlayer (self, other, self);
 		if ((other.health > 0))
 		{
-			self.goal_state = SBAR_GRENS;
+			self.goal_state = 1;
 		}
 	}
 	else
@@ -2762,37 +2762,37 @@ void (entity Item, entity AP, entity Goal) tfgoalitem_GiveToPlayer =
 		setmodel (Item, string_null);
 	}
 	Item.solid = 0;
-	if ((Item.goal_activation & SBAR_GRENS))
+	if ((Item.goal_activation & 1))
 	{
 		if ((Item.mdl == "progs/flag.mdl"))
 		{
-			if ((Item.owned_by == SBAR_GRENS))
+			if ((Item.owned_by == 1))
 			{
 				AP.effects = (AP.effects | space);
 			}
 			else
 			{
-				if ((Item.owned_by == SBAR_PRINT))
+				if ((Item.owned_by == 2))
 				{
-					AP.effects = (AP.effects | SBAR_240);
+					AP.effects = (AP.effects | 16);
 				}
 			}
 		}
 		AP.effects = (AP.effects | 8);
 	}
-	if ((Item.goal_activation & SBAR_PRINT))
+	if ((Item.goal_activation & 2))
 	{
 		TeamFortress_SetSpeed (AP);
 	}
 	if ((Item.goal_activation & 512))
 	{
-		if ((Item.owned_by == SBAR_GRENS))
+		if ((Item.owned_by == 1))
 		{
 			Item.effects = (Item.effects | 64);
 		}
 		else
 		{
-			if ((Item.owned_by == SBAR_PRINT))
+			if ((Item.owned_by == 2))
 			{
 				Item.effects = (Item.effects | 128);
 			}
@@ -2814,15 +2814,15 @@ void (entity Item, entity AP, entity Goal) tfgoalitem_GiveToPlayer =
 	{
 		if ((Goal.goal_result & 8))
 		{
-			Item.goal_state = SBAR_GRENS;
+			Item.goal_state = 1;
 			return;
 		}
 	}
-	if (((AP.playerclass == 8) && (Item.goal_result & SBAR_240)))
+	if (((AP.playerclass == 8) && (Item.goal_result & 16)))
 	{
-		AP.is_unabletospy = SBAR_GRENS;
+		AP.is_unabletospy = 1;
 	}
-	DoResults (Item, AP, SBAR_GRENS);
+	DoResults (Item, AP, 1);
 	DoItemGroupWork (Item, AP);
 };
 
@@ -2830,16 +2830,16 @@ void () ReturnItem =
 {
 	local entity te;
 
-	self.enemy.goal_state = SBAR_PRINT;
+	self.enemy.goal_state = 2;
 	if ((self.enemy.classname == "item_tfgoal"))
 	{
-		if (((self.enemy.goal_activation & 8192) || (toggleflags & SBAR_240)))
+		if (((self.enemy.goal_activation & 8192) || (toggleflags & 16)))
 		{
-			self.enemy.solid = SBAR_PRINT;
+			self.enemy.solid = 2;
 		}
 		else
 		{
-			self.enemy.solid = SBAR_GRENS;
+			self.enemy.solid = 1;
 		}
 	}
 	self.flags = (self.flags - (self.flags & 512));
@@ -2851,9 +2851,9 @@ void () ReturnItem =
 		setmodel (self.enemy, self.enemy.mdl);
 	}
 	setorigin (self.enemy, self.enemy.origin);
-	sound (self.enemy, SBAR_PRINT, "items/itembk2.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self.enemy, 2, "items/itembk2.wav", 1, 1);
 	tfgoalitem_checkgoalreturn (self.enemy);
-	if ((self.weapon != SBAR_PRINT))
+	if ((self.weapon != 2))
 	{
 		if (((self.enemy.noise3 != string_null) || (self.enemy.noise4 != string_null)))
 		{
@@ -2901,25 +2901,25 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 	{
 		if (((te.owner == AP) && (te != Item)))
 		{
-			if ((te.goal_activation & SBAR_GRENS))
+			if ((te.goal_activation & 1))
 			{
-				lighton = SBAR_GRENS;
+				lighton = 1;
 			}
-			if ((te.goal_activation & SBAR_PRINT))
+			if ((te.goal_activation & 2))
 			{
-				slowon = SBAR_GRENS;
+				slowon = 1;
 			}
 			if ((te.items & 131072))
 			{
-				key1on = SBAR_GRENS;
+				key1on = 1;
 			}
 			if ((te.items & 262144))
 			{
-				key2on = SBAR_GRENS;
+				key2on = 1;
 			}
-			if ((te.goal_result & SBAR_240))
+			if ((te.goal_result & 16))
 			{
-				spyoff = SBAR_GRENS;
+				spyoff = 1;
 			}
 		}
 		te = find (te, classname, "item_tfgoal");
@@ -2928,13 +2928,13 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 	{
 		if ((AP.invincible_finished > (time + AS_MELEE)))
 		{
-			lighton = SBAR_GRENS;
+			lighton = 1;
 		}
 		else
 		{
 			if ((AP.super_damage_finished > (time + AS_MELEE)))
 			{
-				lighton = SBAR_GRENS;
+				lighton = 1;
 			}
 		}
 	}
@@ -2946,13 +2946,13 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 	}
 	if ((Item.goal_activation & 512))
 	{
-		if ((Item.owned_by == SBAR_GRENS))
+		if ((Item.owned_by == 1))
 		{
 			Item.effects = (Item.effects | 64);
 		}
 		else
 		{
-			if ((Item.owned_by == SBAR_PRINT))
+			if ((Item.owned_by == 2))
 			{
 				Item.effects = (Item.effects | 128);
 			}
@@ -2983,7 +2983,7 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 		}
 		te = find (te, classname, "player");
 	}
-	if (((method == 0) || (method == SBAR_PRINT)))
+	if (((method == 0) || (method == 2)))
 	{
 		te = find (world, classname, "player");
 		while ((te != world))
@@ -2998,15 +2998,15 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 				{
 					if ((stof (infokey (world, "*bspversion")) == 30))
 					{
-						sprint (te, SBAR_PRINT, AP.netname);
-						sprint (te, SBAR_PRINT, " ");
-						sprint (te, SBAR_PRINT, Item.netname_team_drop);
-						sprint (te, SBAR_PRINT, "\n");
+						sprint (te, 2, AP.netname);
+						sprint (te, 2, " ");
+						sprint (te, 2, Item.netname_team_drop);
+						sprint (te, 2, "\n");
 					}
 					else
 					{
-						sprint (te, SBAR_PRINT, AP.netname);
-						sprint (te, SBAR_PRINT, Item.netname_team_drop);
+						sprint (te, 2, AP.netname);
+						sprint (te, 2, Item.netname_team_drop);
 					}
 				}
 			}
@@ -3020,15 +3020,15 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 				{
 					if ((stof (infokey (world, "*bspversion")) == 30))
 					{
-						sprint (te, SBAR_PRINT, AP.netname);
-						sprint (te, SBAR_PRINT, " ");
-						sprint (te, SBAR_PRINT, Item.netname_non_team_drop);
-						sprint (te, SBAR_PRINT, "\n");
+						sprint (te, 2, AP.netname);
+						sprint (te, 2, " ");
+						sprint (te, 2, Item.netname_non_team_drop);
+						sprint (te, 2, "\n");
 					}
 					else
 					{
-						sprint (te, SBAR_PRINT, AP.netname);
-						sprint (te, SBAR_PRINT, Item.netname_non_team_drop);
+						sprint (te, 2, AP.netname);
+						sprint (te, 2, Item.netname_non_team_drop);
 					}
 				}
 			}
@@ -3044,7 +3044,7 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 			}
 			else
 			{
-				DelayReturn.weapon = SBAR_GRENS;
+				DelayReturn.weapon = 1;
 			}
 			DelayReturn.think = ReturnItem;
 			DelayReturn.nextthink = (time + 0.5);
@@ -3053,9 +3053,9 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 		{
 			if ((Item.goal_activation & AS_MISSILE))
 			{
-				if (((method == SBAR_PRINT) && ((Item.goal_activation & 4096) || (toggleflags & 8))))
+				if (((method == 2) && ((Item.goal_activation & 4096) || (toggleflags & 8))))
 				{
-					tfgoalitem_drop (Item, SBAR_GRENS, AP);
+					tfgoalitem_drop (Item, 1, AP);
 				}
 				else
 				{
@@ -3078,13 +3078,13 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 	}
 	else
 	{
-		if ((method == SBAR_GRENS))
+		if ((method == 1))
 		{
-			if ((Item.goal_activation & SBAR_240))
+			if ((Item.goal_activation & 16))
 			{
 				DelayReturn = spawn ();
 				DelayReturn.enemy = Item;
-				DelayReturn.weapon = SBAR_PRINT;
+				DelayReturn.weapon = 2;
 				DelayReturn.think = ReturnItem;
 				DelayReturn.nextthink = (time + 0.5);
 				Item.owner = world;
@@ -3130,29 +3130,29 @@ void () tfgoalitem_dropthink =
 						self.velocity_z = 400;
 						self.velocity_x = (-50 + (random () * _d));
 						self.velocity_y = (-50 + (random () * _d));
-						self.goal_state = SBAR_PRINT;
+						self.goal_state = 2;
 						self.movetype = 6;
-						if (((self.goal_activation & 8192) || (toggleflags & SBAR_240)))
+						if (((self.goal_activation & 8192) || (toggleflags & 16)))
 						{
-							self.solid = SBAR_PRINT;
+							self.solid = 2;
 						}
 						else
 						{
-							self.solid = SBAR_GRENS;
+							self.solid = 1;
 						}
 						if ((self.mdl != string_null))
 						{
 							setmodel (self, self.mdl);
 						}
 						setsize (self, self.goal_min, self.goal_max);
-						self.camdist = (self.camdist + SBAR_GRENS);
+						self.camdist = (self.camdist + 1);
 						self.nextthink = (time + 5);
 						self.think = tfgoalitem_dropthink;
 						return;
 					}
 					else
 					{
-						self.nextthink = (time + SBAR_PRINT);
+						self.nextthink = (time + 2);
 					}
 				}
 				else
@@ -3185,15 +3185,15 @@ void (entity Item, float PAlive, entity P) tfgoalitem_drop =
 	Item.velocity_z = 400;
 	Item.velocity_x = (-50 + (random () * _d));
 	Item.velocity_y = (-50 + (random () * _d));
-	Item.goal_state = SBAR_PRINT;
+	Item.goal_state = 2;
 	Item.movetype = 6;
-	if (((Item.goal_activation & 8192) || (toggleflags & SBAR_240)))
+	if (((Item.goal_activation & 8192) || (toggleflags & 16)))
 	{
-		Item.solid = SBAR_PRINT;
+		Item.solid = 2;
 	}
 	else
 	{
-		Item.solid = SBAR_GRENS;
+		Item.solid = 1;
 	}
 	if ((Item.mdl != string_null))
 	{
@@ -3201,7 +3201,7 @@ void (entity Item, float PAlive, entity P) tfgoalitem_drop =
 	}
 	setsize (Item, Item.goal_min, Item.goal_max);
 	Item.owner = P;
-	if ((PAlive == SBAR_GRENS))
+	if ((PAlive == 1))
 	{
 		makevectors (P.v_angle);
 		if (P.v_angle_x)
@@ -3230,7 +3230,7 @@ void () tfgoalitem_remove =
 {
 	local entity te;
 
-	if ((self.goal_state == SBAR_GRENS))
+	if ((self.goal_state == 1))
 	{
 		return;
 	}
@@ -3267,28 +3267,28 @@ void (entity Item) tfgoalitem_checkgoalreturn =
 
 void (entity Goal, entity Player, entity Item) DisplayItemStatus =
 {
-	if ((Item.goal_state == SBAR_GRENS))
+	if ((Item.goal_state == 1))
 	{
 		if (((Goal.team_str_carried != string_null) || (Goal.non_team_str_carried != string_null)))
 		{
 			if ((Player.team_no == Item.owned_by))
 			{
-				sprint (Player, SBAR_PRINT, Goal.team_str_carried);
+				sprint (Player, 2, Goal.team_str_carried);
 			}
 			else
 			{
-				sprint (Player, SBAR_PRINT, Goal.non_team_str_carried);
+				sprint (Player, 2, Goal.non_team_str_carried);
 			}
-			sprint (Player, SBAR_PRINT, " ");
+			sprint (Player, 2, " ");
 			if ((Player == Item.owner))
 			{
-				sprint (Player, SBAR_PRINT, "You");
+				sprint (Player, 2, "You");
 			}
 			else
 			{
-				sprint (Player, SBAR_PRINT, Item.owner.netname);
+				sprint (Player, 2, Item.owner.netname);
 			}
-			sprint (Player, SBAR_PRINT, ".\n");
+			sprint (Player, 2, ".\n");
 		}
 	}
 	else
@@ -3299,13 +3299,13 @@ void (entity Goal, entity Player, entity Item) DisplayItemStatus =
 			{
 				if ((Player.team_no == Item.owned_by))
 				{
-					sprint (Player, SBAR_PRINT, Goal.team_str_moved);
+					sprint (Player, 2, Goal.team_str_moved);
 				}
 				else
 				{
-					sprint (Player, SBAR_PRINT, Goal.non_team_str_moved);
+					sprint (Player, 2, Goal.non_team_str_moved);
 				}
-				sprint (Player, SBAR_PRINT, "\n");
+				sprint (Player, 2, "\n");
 			}
 		}
 		else
@@ -3314,13 +3314,13 @@ void (entity Goal, entity Player, entity Item) DisplayItemStatus =
 			{
 				if ((Player.team_no == Item.owned_by))
 				{
-					sprint (Player, SBAR_PRINT, Goal.team_str_home);
+					sprint (Player, 2, Goal.team_str_home);
 				}
 				else
 				{
-					sprint (Player, SBAR_PRINT, Goal.non_team_str_home);
+					sprint (Player, 2, Goal.non_team_str_home);
 				}
-				sprint (Player, SBAR_PRINT, "\n");
+				sprint (Player, 2, "\n");
 			}
 		}
 	}
@@ -3328,19 +3328,19 @@ void (entity Goal, entity Player, entity Item) DisplayItemStatus =
 
 void () info_player_team2 =
 {
-	CTF_Map = SBAR_GRENS;
+	CTF_Map = 1;
 	self.classname = "info_player_teamspawn";
-	self.team_no = SBAR_PRINT;
-	self.goal_effects = SBAR_GRENS;
+	self.team_no = 2;
+	self.goal_effects = 1;
 	self.team_str_home = "ts2";
 };
 
 void () info_player_team1 =
 {
-	CTF_Map = SBAR_GRENS;
+	CTF_Map = 1;
 	self.classname = "info_player_teamspawn";
-	self.team_no = SBAR_GRENS;
-	self.goal_effects = SBAR_GRENS;
+	self.team_no = 1;
+	self.goal_effects = 1;
 	self.team_str_home = "ts1";
 };
 
@@ -3348,7 +3348,7 @@ void () item_flag_team1 =
 {
 	local entity dp;
 
-	CTF_Map = SBAR_GRENS;
+	CTF_Map = 1;
 	UpdateAbbreviations (self);
 	precache_model ("progs/flag.mdl");
 	precache_sound ("ogre/ogwake.wav");
@@ -3359,40 +3359,40 @@ void () item_flag_team1 =
 	self.deathtype = "You've got the enemy flag!\n";
 	self.noise = "ogre/ogwake.wav";
 	self.mdl = "progs/flag.mdl";
-	self.skin = SBAR_GRENS;
+	self.skin = 1;
 	setmodel (self, self.mdl);
-	self.goal_no = SBAR_GRENS;
-	self.goal_activation = (((((SBAR_GRENS | AS_MISSILE) | 128) | space) | SBAR_240) | 512);
-	self.goal_effects = SBAR_GRENS;
+	self.goal_no = 1;
+	self.goal_activation = (((((1 | AS_MISSILE) | 128) | space) | 16) | 512);
+	self.goal_effects = 1;
 	self.effects = 128;
 	self.pausetime = 128;
 	self.goal_min = '-16 -16 -24';
 	self.goal_max = '16 16 32';
 	setsize (self, self.goal_min, self.goal_max);
 	self.touch = item_tfgoal_touch;
-	self.goal_state = SBAR_PRINT;
-	self.solid = SBAR_GRENS;
+	self.goal_state = 2;
+	self.solid = 1;
 	setorigin (self, self.origin);
 	self.nextthink = (time + 0.2);
 	self.think = TF_PlaceItem;
 	dp = spawn ();
 	dp.origin = self.origin;
 	dp.classname = "info_tfgoal";
-	dp.goal_activation = SBAR_GRENS;
-	dp.team_no = SBAR_GRENS;
-	dp.items_allowed = SBAR_PRINT;
+	dp.goal_activation = 1;
+	dp.team_no = 1;
+	dp.items_allowed = 2;
 	dp.goal_no = AS_MELEE;
 	dp.goal_effects = AS_MELEE;
 	dp.broadcast = " цаптуред the enemy flag!\n";
 	dp.message = "You цаптуред the enemy flag!\n";
 	dp.noise = "boss2/pop2.wav";
-	dp.goal_result = SBAR_PRINT;
+	dp.goal_result = 2;
 	dp.activate_goal_no = 5;
-	dp.axhitme = SBAR_PRINT;
+	dp.axhitme = 2;
 	dp.count = enter;
 	dp.frags = enter;
-	dp.solid = SBAR_GRENS;
-	dp.goal_state = SBAR_PRINT;
+	dp.solid = 1;
+	dp.goal_state = 2;
 	dp.goal_min = '-16 -16 -24';
 	dp.goal_max = '16 16 32';
 	setsize (dp, dp.goal_min, dp.goal_max);
@@ -3401,12 +3401,12 @@ void () item_flag_team1 =
 	dp = spawn ();
 	dp.origin = dp.origin;
 	dp.classname = "info_tfgoal";
-	dp.goal_effects = SBAR_GRENS;
+	dp.goal_effects = 1;
 	dp.frags = 5;
 	dp.goal_activation = 0;
 	dp.goal_no = 5;
 	dp.solid = 0;
-	dp.goal_state = SBAR_PRINT;
+	dp.goal_state = 2;
 	dp.goal_min = '-16 -16 -24';
 	dp.goal_max = '16 16 32';
 	setsize (dp, dp.goal_min, dp.goal_max);
@@ -3418,7 +3418,7 @@ void () item_flag_team2 =
 {
 	local entity dp;
 
-	CTF_Map = SBAR_GRENS;
+	CTF_Map = 1;
 	UpdateAbbreviations (self);
 	precache_model ("progs/flag.mdl");
 	precache_sound ("ogre/ogwake.wav");
@@ -3430,39 +3430,39 @@ void () item_flag_team2 =
 	self.noise = "ogre/ogwake.wav";
 	self.mdl = "progs/flag.mdl";
 	setmodel (self, self.mdl);
-	self.skin = SBAR_PRINT;
-	self.goal_no = SBAR_PRINT;
-	self.goal_activation = (((((SBAR_GRENS | AS_MISSILE) | 128) | space) | SBAR_240) | 512);
-	self.goal_effects = SBAR_GRENS;
+	self.skin = 2;
+	self.goal_no = 2;
+	self.goal_activation = (((((1 | AS_MISSILE) | 128) | space) | 16) | 512);
+	self.goal_effects = 1;
 	self.pausetime = 128;
 	self.effects = 64;
 	self.goal_min = '-16 -16 -24';
 	self.goal_max = '16 16 32';
 	setsize (self, self.goal_min, self.goal_max);
 	self.touch = item_tfgoal_touch;
-	self.goal_state = SBAR_PRINT;
-	self.solid = SBAR_GRENS;
+	self.goal_state = 2;
+	self.solid = 1;
 	setorigin (self, self.origin);
 	self.nextthink = (time + 0.2);
 	self.think = TF_PlaceItem;
 	dp = spawn ();
 	dp.origin = self.origin;
 	dp.classname = "info_tfgoal";
-	dp.goal_activation = SBAR_GRENS;
-	dp.team_no = SBAR_PRINT;
-	dp.items_allowed = SBAR_GRENS;
+	dp.goal_activation = 1;
+	dp.team_no = 2;
+	dp.items_allowed = 1;
 	dp.goal_no = AS_MISSILE;
 	dp.goal_effects = AS_MELEE;
 	dp.broadcast = " цаптуред the enemy flag!\n";
 	dp.message = "You цаптуред the enemy flag!\n";
 	dp.noise = "boss2/pop2.wav";
-	dp.goal_result = SBAR_PRINT;
+	dp.goal_result = 2;
 	dp.activate_goal_no = 6;
-	dp.axhitme = SBAR_GRENS;
+	dp.axhitme = 1;
 	dp.count = enter;
 	dp.frags = enter;
-	dp.solid = SBAR_GRENS;
-	dp.goal_state = SBAR_PRINT;
+	dp.solid = 1;
+	dp.goal_state = 2;
 	dp.goal_min = '-16 -16 -24';
 	dp.goal_max = '16 16 32';
 	setsize (dp, dp.goal_min, dp.goal_max);
@@ -3471,12 +3471,12 @@ void () item_flag_team2 =
 	dp = spawn ();
 	dp.origin = dp.origin;
 	dp.classname = "info_tfgoal";
-	dp.goal_effects = SBAR_GRENS;
+	dp.goal_effects = 1;
 	dp.frags = 5;
 	dp.goal_activation = 0;
 	dp.goal_no = 6;
 	dp.solid = 0;
-	dp.goal_state = SBAR_PRINT;
+	dp.goal_state = 2;
 	dp.goal_min = '-16 -16 -24';
 	dp.goal_max = '16 16 32';
 	setsize (dp, dp.goal_min, dp.goal_max);
@@ -3495,7 +3495,7 @@ void () CTF_FlagCheck =
 	te = find (world, classname, "item_tfgoal");
 	while ((te != world))
 	{
-		if ((te.goal_no == SBAR_GRENS))
+		if ((te.goal_no == 1))
 		{
 			pos = pointcontents (te.origin);
 			if (((pos == -2) || (pos == -6)))
@@ -3504,11 +3504,11 @@ void () CTF_FlagCheck =
 				te.nextthink = (time + 0.2);
 				te.think = tfgoalitem_remove;
 			}
-			flagcount = (flagcount + SBAR_GRENS);
+			flagcount = (flagcount + 1);
 		}
 		else
 		{
-			if ((te.goal_no == SBAR_PRINT))
+			if ((te.goal_no == 2))
 			{
 				pos = pointcontents (te.origin);
 				if (((pos == -2) || (pos == -6)))
@@ -3517,14 +3517,14 @@ void () CTF_FlagCheck =
 					te.nextthink = (time + 0.2);
 					te.think = tfgoalitem_remove;
 				}
-				flagcount = (flagcount + SBAR_GRENS);
+				flagcount = (flagcount + 1);
 			}
 		}
 		te = find (te, classname, "item_tfgoal");
 	}
 	if (!rounds)
 	{
-		if ((flagcount != SBAR_PRINT))
+		if ((flagcount != 2))
 		{
 			dprint ("*****BUG*****\nFlag(s) missing.\n");
 		}
@@ -3549,7 +3549,7 @@ void (entity P) ForceRespawn =
 	self.observer_list = spot;
 	self.origin = (spot.origin + '0 0 1');
 	self.angles = spot.angles;
-	self.fixangle = SBAR_GRENS;
+	self.fixangle = 1;
 	if (((spot.classname == "info_player_teamspawn") && !cb_prematch))
 	{
 		if ((spot.items != 0))
@@ -3559,7 +3559,7 @@ void (entity P) ForceRespawn =
 			{
 				tfgoalitem_GiveToPlayer (te, self, self);
 			}
-			if (!(spot.goal_activation & SBAR_GRENS))
+			if (!(spot.goal_activation & 1))
 			{
 				spot.items = 0;
 			}
@@ -3567,7 +3567,7 @@ void (entity P) ForceRespawn =
 		if (spot.message)
 		{
 			CenterPrint (self, spot.message);
-			if (!(spot.goal_activation & SBAR_PRINT))
+			if (!(spot.goal_activation & 2))
 			{
 				spot.message = string_null;
 			}
@@ -3580,11 +3580,11 @@ void (entity P) ForceRespawn =
 				AttemptToActivate (te, self, spot);
 			}
 		}
-		if ((spot.goal_effects == SBAR_GRENS))
+		if ((spot.goal_effects == 1))
 		{
 			spot.classname = "deadpoint";
 			spot.team_str_home = string_null;
-			spot.nextthink = (time + SBAR_GRENS);
+			spot.nextthink = (time + 1);
 			spot.think = SUB_Remove;
 		}
 	}
@@ -3610,7 +3610,7 @@ void () DropGoalItems =
 		{
 			if (((te.goal_activation & 4096) || (toggleflags & 8)))
 			{
-				tfgoalitem_RemoveFromPlayer (te, self, SBAR_PRINT);
+				tfgoalitem_RemoveFromPlayer (te, self, 2);
 			}
 		}
 		te = find (te, classname, "item_tfgoal");

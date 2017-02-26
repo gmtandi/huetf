@@ -53,9 +53,9 @@ void () CheckAllRates =
 				player_rate = stof (infokey (p, "rate"));
 				if (((player_rate > maxrate) && (maxrate != 0)))
 				{
-					sprint (p, SBAR_PRINT, "\nYour עבפו setting is too high for this server.\n");
+					sprint (p, 2, "\nYour עבפו setting is too high for this server.\n");
 					tmp = ftos (maxrate);
-					sprint (p, SBAR_PRINT, "Rate set to ");
+					sprint (p, 2, "Rate set to ");
 					sprint2 (p, AS_MELEE, tmp, "\n");
 					stuffcmd (p, "rate ");
 					stuffcmd (p, tmp);
@@ -63,9 +63,9 @@ void () CheckAllRates =
 				}
 				if (((player_rate < minrate) && (minrate < maxrate)))
 				{
-					sprint (p, SBAR_PRINT, "\nYour עבפו setting is too low for this server.\n");
+					sprint (p, 2, "\nYour עבפו setting is too low for this server.\n");
 					tmp = ftos (minrate);
-					sprint (p, SBAR_PRINT, "Rate set to ");
+					sprint (p, 2, "Rate set to ");
 					sprint2 (p, AS_MELEE, tmp, "\n");
 					stuffcmd (p, "rate ");
 					stuffcmd (p, tmp);
@@ -91,9 +91,9 @@ void () CheckConnectRate =
 	{
 		if (((player_rate > maxrate) && (maxrate != 0)))
 		{
-			sprint (self, SBAR_PRINT, "\nYour עבפו setting is too high for this server.\n");
+			sprint (self, 2, "\nYour עבפו setting is too high for this server.\n");
 			tmp = ftos (maxrate);
-			sprint (self, SBAR_PRINT, "Rate set to ");
+			sprint (self, 2, "Rate set to ");
 			sprint2 (self, AS_MELEE, tmp, "\n");
 			stuffcmd (self, "rate ");
 			stuffcmd (self, tmp);
@@ -101,9 +101,9 @@ void () CheckConnectRate =
 		}
 		if (((player_rate < minrate) && (minrate < maxrate)))
 		{
-			sprint (self, SBAR_PRINT, "\nYour עבפו setting is too low for this server.\n");
+			sprint (self, 2, "\nYour עבפו setting is too low for this server.\n");
 			tmp = ftos (minrate);
-			sprint (self, SBAR_PRINT, "Rate set to ");
+			sprint (self, 2, "Rate set to ");
 			sprint2 (self, AS_MELEE, tmp, "\n");
 			stuffcmd (self, "rate ");
 			stuffcmd (self, tmp);
@@ -170,7 +170,7 @@ void () SetNewParms =
 	parm5 = 0;
 	parm6 = 0;
 	parm7 = 0;
-	parm8 = SBAR_GRENS;
+	parm8 = 1;
 	parm9 = 0;
 	parm10 = 0;
 	parm11 = 0;
@@ -216,7 +216,7 @@ void () DecodeLevelParms =
 		flagem_checked = 0;
 		if ((coop || !deathmatch))
 		{
-			toggleflags = (toggleflags | SBAR_GRENS);
+			toggleflags = (toggleflags | 1);
 		}
 		nextmap = mapname;
 		ent = find (world, classname, "info_tfdetect");
@@ -235,9 +235,9 @@ void () DecodeLevelParms =
 		else
 		{
 			ent = find (world, classname, "info_player_team1");
-			if (((ent != world) || (CTF_Map == SBAR_GRENS)))
+			if (((ent != world) || (CTF_Map == 1)))
 			{
-				CTF_Map = SBAR_GRENS;
+				CTF_Map = 1;
 				if ((teamplay == 0))
 				{
 					cvar_set ("teamplay", "21?TeamFortress");
@@ -245,7 +245,7 @@ void () DecodeLevelParms =
 				ent = spawn ();
 				ent.nextthink = (time + 30);
 				ent.think = CTF_FlagCheck;
-				number_of_teams = SBAR_PRINT;
+				number_of_teams = 2;
 			}
 			else
 			{
@@ -259,25 +259,25 @@ void () DecodeLevelParms =
 		ent = find (world, classname, "func_bomb_target");
 		if ((ent != world))
 		{
-			tfstrike = SBAR_GRENS;
+			tfstrike = 1;
 			rounds = -1;
-			number_of_teams = SBAR_PRINT;
+			number_of_teams = 2;
 		}
 		ent = find (world, classname, "func_hostage_rescue");
 		if ((ent != world))
 		{
-			tfstrike = SBAR_GRENS;
+			tfstrike = 1;
 			rounds = -1;
-			number_of_teams = SBAR_PRINT;
+			number_of_teams = 2;
 		}
 		ent = find (world, classname, "info_soccer_goal");
 		if ((ent != world))
 		{
 			rounds = -1;
 		}
-		bprint (SBAR_PRINT, "Mapname: ");
-		bprint (SBAR_PRINT, mapname);
-		bprint (SBAR_PRINT, "\n");
+		bprint (2, "Mapname: ");
+		bprint (2, mapname);
+		bprint (2, "\n");
 		team4frags = 0;
 		team3frags = 0;
 		team2frags = 0;
@@ -289,7 +289,7 @@ void () DecodeLevelParms =
 		autokick_kills = 0;
 		autokick_time = 0;
 		cease_fire = 0;
-		if (SBAR_GRENS)
+		if (1)
 		{
 			toggleflags = (toggleflags - (toggleflags & 128));
 		}
@@ -297,7 +297,7 @@ void () DecodeLevelParms =
 		{
 			toggleflags = (toggleflags | 128);
 		}
-		toggleflags = (toggleflags - (toggleflags & SBAR_PRINT));
+		toggleflags = (toggleflags - (toggleflags & 2));
 		toggleflags = (toggleflags | 256);
 		st = infokey (world, "temp1");
 		fl = stof (st);
@@ -326,19 +326,19 @@ void () DecodeLevelParms =
 		st = infokey (world, "tfstrike");
 		if ((st == "on"))
 		{
-			tfstrike = SBAR_GRENS;
+			tfstrike = 1;
 			rounds = -1;
 		}
 		st = infokey (world, "duel");
 		if ((st == "on"))
 		{
-			duel = SBAR_GRENS;
+			duel = 1;
 			rounds = -1;
 		}
 		st = infokey (world, "speedcap");
 		if ((st == "on"))
 		{
-			speedcap = SBAR_GRENS;
+			speedcap = 1;
 			rounds = -1;
 		}
 		st = infokey (world, "rounds");
@@ -350,13 +350,13 @@ void () DecodeLevelParms =
 		{
 			if ((stof (st) > 0))
 			{
-				rounds = (stof (st) + SBAR_GRENS);
+				rounds = (stof (st) + 1);
 			}
 		}
 		st = infokey (world, "practice");
 		if ((st == "on"))
 		{
-			practice = SBAR_GRENS;
+			practice = 1;
 		}
 		else
 		{
@@ -366,20 +366,20 @@ void () DecodeLevelParms =
 		if ((st == "on"))
 		{
 			localcmd ("serverinfo status Standby\n");
-			clanbattle = SBAR_GRENS;
+			clanbattle = 1;
 			practice = 0;
-			cb_prematch = SBAR_GRENS;
+			cb_prematch = 1;
 			st = infokey (world, "freeze");
 			if ((st == "on"))
 			{
-				freeze = SBAR_GRENS;
+				freeze = 1;
 			}
 			else
 			{
 				if (((mapname == "spaz4") || (mapname == "canalzon")))
 				{
 					localcmd ("localinfo freeze on\n");
-					freeze = SBAR_GRENS;
+					freeze = 1;
 				}
 			}
 			pmtime = stof (infokey (world, "prematch"));
@@ -393,8 +393,8 @@ void () DecodeLevelParms =
 				pmtime = stof (st);
 				if (pmtime)
 				{
-					cease_fire = SBAR_GRENS;
-					bprint (SBAR_PRINT, "CEASE FIRE\n");
+					cease_fire = 1;
+					bprint (2, "CEASE FIRE\n");
 					te = find (world, classname, "player");
 					while (te)
 					{
@@ -408,7 +408,7 @@ void () DecodeLevelParms =
 					te.classname = "ceasefire";
 					te.think = CeaseFire_think;
 					te.nextthink = (time + 5);
-					te.weapon = SBAR_GRENS;
+					te.weapon = 1;
 					StartTimer ();
 				}
 			}
@@ -430,7 +430,7 @@ void () DecodeLevelParms =
 				allow_grenpack = 0;
 			}
 			st = infokey (world, "round_time");
-			round_over = SBAR_GRENS;
+			round_over = 1;
 			te = spawn ();
 			te.owner = world;
 			te.classname = "round";
@@ -444,7 +444,7 @@ void () DecodeLevelParms =
 		if ((st == "on"))
 		{
 			civilianteams = enter;
-			tfvsdm = SBAR_GRENS;
+			tfvsdm = 1;
 		}
 		Calibrate_Level ();
 	}
@@ -478,7 +478,7 @@ entity () FindIntermission =
 	spot = find (world, classname, "info_intermission");
 	if (spot)
 	{
-		cyc = (random () * SBAR_GRENS);
+		cyc = (random () * 1);
 		return (spot);
 	}
 	spot = find (world, classname, "info_player_start");
@@ -490,14 +490,14 @@ entity () FindIntermission =
 	if (spot)
 	{
 		cyc = (random () * 6);
-		while ((cyc > SBAR_GRENS))
+		while ((cyc > 1))
 		{
 			spot = find (spot, classname, "info_player_deathmatch");
 			if (!spot)
 			{
 				spot = find (spot, classname, "info_player_deathmatch");
 			}
-			cyc = (cyc - SBAR_GRENS);
+			cyc = (cyc - 1);
 		}
 		return (spot);
 	}
@@ -561,7 +561,7 @@ void () TF_MovePlayer =
 	self.observer_list = place;
 	setorigin (self, (place.origin + '0 0 1'));
 	self.angles = place.angles;
-	self.fixangle = SBAR_GRENS;
+	self.fixangle = 1;
 };
 
 void () GotoNextMap =
@@ -574,20 +574,20 @@ void () GotoNextMap =
 	if ((nextmap != mapname))
 	{
 		changelevel (nextmap);
-		already_chosen_map = SBAR_GRENS;
+		already_chosen_map = 1;
 	}
 	sl = infokey (world, mapname);
 	if ((sl != string_null))
 	{
 		nextmap = sl;
-		already_chosen_map = SBAR_GRENS;
+		already_chosen_map = 1;
 		return;
 	}
 	if (!already_chosen_map)
 	{
 		sl = infokey (world, "n");
 		nextlevel = stof (sl);
-		nextlevel = (nextlevel + SBAR_GRENS);
+		nextlevel = (nextlevel + 1);
 		sl = ftos (nextlevel);
 		localcmd ("localinfo n ");
 		localcmd (sl);
@@ -609,7 +609,7 @@ void () GotoNextMap =
 		}
 		localcmd (sl);
 		localcmd (".cfg\n");
-		already_chosen_map = SBAR_GRENS;
+		already_chosen_map = 1;
 	}
 	if ((infokey (world, "n") == "0"))
 	{
@@ -626,24 +626,24 @@ void () ExitIntermission =
 		GotoNextMap ();
 		return;
 	}
-	intermission_exittime = (time + SBAR_GRENS);
-	intermission_running = (intermission_running + SBAR_GRENS);
-	if ((intermission_running == SBAR_PRINT))
+	intermission_exittime = (time + 1);
+	intermission_running = (intermission_running + 1);
+	if ((intermission_running == 2))
 	{
 		if ((world.model == "maps/e1m7.bsp"))
 		{
-			WriteByte (SBAR_PRINT, space);
-			WriteByte (SBAR_PRINT, SBAR_PRINT);
-			WriteByte (SBAR_PRINT, AS_MELEE);
+			WriteByte (2, space);
+			WriteByte (2, 2);
+			WriteByte (2, AS_MELEE);
 			if (!cvar ("registered"))
 			{
-				WriteByte (SBAR_PRINT, 31);
-				WriteString (SBAR_PRINT, "As the corpse of the monstrous entity\nChthon sinks back into the lava whence\nit rose, you grip the Rune of Earth\nMagic tightly. Now that you have\nconquered the Dimension of the Doomed,\nrealm of Earth Magic, you are ready to\ncomplete your task in...");
+				WriteByte (2, 31);
+				WriteString (2, "As the corpse of the monstrous entity\nChthon sinks back into the lava whence\nit rose, you grip the Rune of Earth\nMagic tightly. Now that you have\nconquered the Dimension of the Doomed,\nrealm of Earth Magic, you are ready to\ncomplete your task in...");
 			}
 			else
 			{
-				WriteByte (SBAR_PRINT, 31);
-				WriteString (SBAR_PRINT, "As the corpse of the monstrous entity\nChthon sinks back into the lava whence\nit rose, you grip the Rune of Earth\nMagic tightly. Now that you have\nconquered the Dimension of the Doomed,\nrealm of Earth Magic, you are ready to\ncomplete your task. A...");
+				WriteByte (2, 31);
+				WriteString (2, "As the corpse of the monstrous entity\nChthon sinks back into the lava whence\nit rose, you grip the Rune of Earth\nMagic tightly. Now that you have\nconquered the Dimension of the Doomed,\nrealm of Earth Magic, you are ready to\ncomplete your task. A...");
 			}
 			return;
 		}
@@ -651,33 +651,33 @@ void () ExitIntermission =
 		{
 			if ((world.model == "maps/e2m6.bsp"))
 			{
-				WriteByte (SBAR_PRINT, space);
-				WriteByte (SBAR_PRINT, SBAR_PRINT);
-				WriteByte (SBAR_PRINT, AS_MELEE);
-				WriteByte (SBAR_PRINT, 31);
-				WriteString (SBAR_PRINT, "The Rune of Black Magic throbs evilly in\nyour hand && whispers dark thoughts\ninto your brain. You learn the inmost\nlore of the Hell-Mother; Shub-Niggurath!\nYou now know that she is behind all the\nterrible plotting which has led to so\nmuch death...");
+				WriteByte (2, space);
+				WriteByte (2, 2);
+				WriteByte (2, AS_MELEE);
+				WriteByte (2, 31);
+				WriteString (2, "The Rune of Black Magic throbs evilly in\nyour hand && whispers dark thoughts\ninto your brain. You learn the inmost\nlore of the Hell-Mother; Shub-Niggurath!\nYou now know that she is behind all the\nterrible plotting which has led to so\nmuch death...");
 				return;
 			}
 			else
 			{
 				if ((world.model == "maps/e3m6.bsp"))
 				{
-					WriteByte (SBAR_PRINT, space);
-					WriteByte (SBAR_PRINT, SBAR_PRINT);
-					WriteByte (SBAR_PRINT, AS_MELEE);
-					WriteByte (SBAR_PRINT, 31);
-					WriteString (SBAR_PRINT, "The charred viscera of diabolic horrors\nbubble viscously as you seize the Rune\nof Hell Magic. Its heat scorches your\nhand, && its terrible secrets blight\nyour mind. Gathering the shreds of your\ncourage, you shake the devil's shackles\nfrom your ...");
+					WriteByte (2, space);
+					WriteByte (2, 2);
+					WriteByte (2, AS_MELEE);
+					WriteByte (2, 31);
+					WriteString (2, "The charred viscera of diabolic horrors\nbubble viscously as you seize the Rune\nof Hell Magic. Its heat scorches your\nhand, && its terrible secrets blight\nyour mind. Gathering the shreds of your\ncourage, you shake the devil's shackles\nfrom your ...");
 					return;
 				}
 				else
 				{
 					if ((world.model == "maps/e4m7.bsp"))
 					{
-						WriteByte (SBAR_PRINT, space);
-						WriteByte (SBAR_PRINT, SBAR_PRINT);
-						WriteByte (SBAR_PRINT, AS_MELEE);
-						WriteByte (SBAR_PRINT, 31);
-						WriteString (SBAR_PRINT, "Despite the awful might of the Elder\nWorld, you have achieved the Rune of\nElder Magic, capstone of all types of\narcane wisdom. Beyond good && evil,\nbeyond life && death, the Rune\npulsates, heavy with import. Patient and\npotent, the Elder Being...");
+						WriteByte (2, space);
+						WriteByte (2, 2);
+						WriteByte (2, AS_MELEE);
+						WriteByte (2, 31);
+						WriteString (2, "Despite the awful might of the Elder\nWorld, you have achieved the Rune of\nElder Magic, capstone of all types of\narcane wisdom. Beyond good && evil,\nbeyond life && death, the Rune\npulsates, heavy with import. Patient and\npotent, the Elder Being...");
 						return;
 					}
 				}
@@ -689,13 +689,13 @@ void () ExitIntermission =
 	{
 		if (!cvar ("registered"))
 		{
-			WriteByte (SBAR_PRINT, SBAR_384);
+			WriteByte (2, 33);
 			return;
 		}
 		if (((serverflags & 15) == 15))
 		{
-			WriteByte (SBAR_PRINT, 31);
-			WriteString (SBAR_PRINT, "Now, you have all four Runes. You sense\ntremendous invisible forces moving to\nunseal ancient barriers. Shub-Niggurath\nhad hoped to use the Runes Herself to\nclear off the Earth, but now instead,\nyou will use them to enter her home and\nconfront he...");
+			WriteByte (2, 31);
+			WriteString (2, "Now, you have all four Runes. You sense\ntremendous invisible forces moving to\nunseal ancient barriers. Shub-Niggurath\nhad hoped to use the Runes Herself to\nclear off the Earth, but now instead,\nyou will use them to enter her home and\nconfront he...");
 			return;
 		}
 	}
@@ -722,7 +722,7 @@ void () IntermissionThink =
 		currp = stof (st);
 		if ((currp > 0))
 		{
-			currp = (currp - SBAR_GRENS);
+			currp = (currp - 1);
 			st = ftos (currp);
 			localcmd ("localinfo demo_auto_left ");
 			localcmd (st);
@@ -781,18 +781,18 @@ void () execute_changelevel =
 	local entity pos;
 
 	dprint ("execute_changelevel()\n");
-	intermission_running = SBAR_GRENS;
+	intermission_running = 1;
 	intermission_exittime = (time + 5);
 	pos = FindIntermission ();
-	WriteByte (SBAR_PRINT, space);
-	WriteByte (SBAR_PRINT, AS_MELEE);
-	WriteByte (SBAR_PRINT, 30);
-	WriteCoord (SBAR_PRINT, pos.origin_x);
-	WriteCoord (SBAR_PRINT, pos.origin_y);
-	WriteCoord (SBAR_PRINT, pos.origin_z);
-	WriteAngle (SBAR_PRINT, pos.mangle_x);
-	WriteAngle (SBAR_PRINT, pos.mangle_y);
-	WriteAngle (SBAR_PRINT, pos.mangle_z);
+	WriteByte (2, space);
+	WriteByte (2, AS_MELEE);
+	WriteByte (2, 30);
+	WriteCoord (2, pos.origin_x);
+	WriteCoord (2, pos.origin_y);
+	WriteCoord (2, pos.origin_z);
+	WriteAngle (2, pos.mangle_x);
+	WriteAngle (2, pos.mangle_y);
+	WriteAngle (2, pos.mangle_z);
 	localcmd ("serverinfo status Standby\n");
 	other = find (world, classname, "player");
 	while ((other != world))
@@ -817,15 +817,15 @@ void () changelevel_touch =
 	{
 		return;
 	}
-	if (((cvar ("samelevel") == SBAR_PRINT) || ((cvar ("samelevel") == AS_MELEE) && (mapname != "start"))))
+	if (((cvar ("samelevel") == 2) || ((cvar ("samelevel") == AS_MELEE) && (mapname != "start"))))
 	{
 		return;
 	}
-	bprint (SBAR_PRINT, other.netname);
-	bprint (SBAR_PRINT, " exited the level\n");
+	bprint (2, other.netname);
+	bprint (2, " exited the level\n");
 	nextmap = self.map;
 	SUB_UseTargets ();
-	if (((self.spawnflags & SBAR_GRENS) && (deathmatch == 0)))
+	if (((self.spawnflags & 1) && (deathmatch == 0)))
 	{
 		GotoNextMap ();
 		return;
@@ -853,7 +853,7 @@ void () set_suicide_frame;
 
 void () respawn =
 {
-	if ((self.has_disconnected == SBAR_GRENS))
+	if ((self.has_disconnected == 1))
 	{
 		return;
 	}
@@ -870,7 +870,7 @@ void () ClientKill =
 {
 	local entity te;
 
-	if ((self.has_disconnected == SBAR_GRENS))
+	if ((self.has_disconnected == 1))
 	{
 		return;
 	}
@@ -888,7 +888,7 @@ void () ClientKill =
 	}
 	if (practice)
 	{
-		self.respawn_time = (time + SBAR_GRENS);
+		self.respawn_time = (time + 1);
 	}
 	else
 	{
@@ -896,12 +896,12 @@ void () ClientKill =
 	}
 	if (self.playerclass)
 	{
-		bprint (SBAR_GRENS, self.netname);
-		bprint (SBAR_GRENS, " suicides\n");
+		bprint (1, self.netname);
+		bprint (1, " suicides\n");
 		TF_AddFrags (self, -1, 0);
 		set_suicide_frame ();
 		self.modelindex = modelindex_player;
-		if ((self.tfstate & SBAR_240))
+		if ((self.tfstate & 16))
 		{
 			te = find (world, classname, "timer");
 			while (te)
@@ -909,7 +909,7 @@ void () ClientKill =
 				if (((te.owner == self) && (te.think == BioInfection_Decay)))
 				{
 					logfrag (te, self);
-					TF_AddFrags (te.enemy, SBAR_GRENS, SBAR_GRENS);
+					TF_AddFrags (te.enemy, 1, 1);
 				}
 				te = find (te, classname, "timer");
 			}
@@ -941,13 +941,13 @@ entity (float team_num) FindTeamSpawnPoint =
 	local float spot_found;
 	local float attempts;
 
-	if ((team_num == SBAR_GRENS))
+	if ((team_num == 1))
 	{
 		spot = lastspawn_team1;
 		attempts = 0;
-		while (SBAR_GRENS)
+		while (1)
 		{
-			attempts = (attempts + SBAR_GRENS);
+			attempts = (attempts + 1);
 			if (tfstrike)
 			{
 				spot = find (spot, classname, "info_player_start");
@@ -972,7 +972,7 @@ entity (float team_num) FindTeamSpawnPoint =
 				return (world);
 			}
 			at_spot = findradius (spot.origin, 40);
-			spot_found = SBAR_GRENS;
+			spot_found = 1;
 			while ((at_spot != world))
 			{
 				if (((at_spot.classname == "player") && (at_spot.deadflag == 0)))
@@ -994,13 +994,13 @@ entity (float team_num) FindTeamSpawnPoint =
 	}
 	else
 	{
-		if ((team_num == SBAR_PRINT))
+		if ((team_num == 2))
 		{
 			spot = lastspawn_team2;
 			attempts = 0;
-			while (SBAR_GRENS)
+			while (1)
 			{
-				attempts = (attempts + SBAR_GRENS);
+				attempts = (attempts + 1);
 				if (tfstrike)
 				{
 					spot = find (spot, classname, "info_player_deathmatch");
@@ -1025,7 +1025,7 @@ entity (float team_num) FindTeamSpawnPoint =
 					return (world);
 				}
 				at_spot = findradius (spot.origin, 40);
-				spot_found = SBAR_GRENS;
+				spot_found = 1;
 				while ((at_spot != world))
 				{
 					if (((at_spot.classname == "player") && (at_spot.deadflag == 0)))
@@ -1051,9 +1051,9 @@ entity (float team_num) FindTeamSpawnPoint =
 			{
 				spot = lastspawn_team3;
 				attempts = 0;
-				while (SBAR_GRENS)
+				while (1)
 				{
-					attempts = (attempts + SBAR_GRENS);
+					attempts = (attempts + 1);
 					spot = find (spot, team_str_home, "ts3");
 					if ((spot == world))
 					{
@@ -1064,7 +1064,7 @@ entity (float team_num) FindTeamSpawnPoint =
 						return (world);
 					}
 					at_spot = findradius (spot.origin, 40);
-					spot_found = SBAR_GRENS;
+					spot_found = 1;
 					while ((at_spot != world))
 					{
 						if (((at_spot.classname == "player") && (at_spot.deadflag == 0)))
@@ -1090,9 +1090,9 @@ entity (float team_num) FindTeamSpawnPoint =
 				{
 					spot = lastspawn_team4;
 					attempts = 0;
-					while (SBAR_GRENS)
+					while (1)
 					{
-						attempts = (attempts + SBAR_GRENS);
+						attempts = (attempts + 1);
 						spot = find (spot, team_str_home, "ts4");
 						if ((spot == world))
 						{
@@ -1103,7 +1103,7 @@ entity (float team_num) FindTeamSpawnPoint =
 							return (world);
 						}
 						at_spot = findradius (spot.origin, 40);
-						spot_found = SBAR_GRENS;
+						spot_found = 1;
 						while ((at_spot != world))
 						{
 							if (((at_spot.classname == "player") && (at_spot.deadflag == 0)))
@@ -1172,9 +1172,9 @@ entity () SelectSpawnPoint =
 			attempts = 0;
 			while (((spot != world) && (attempts < _d)))
 			{
-				attempts = (attempts + SBAR_GRENS);
+				attempts = (attempts + 1);
 				at_spot = findradius (spot.origin, 40);
-				spot_found = SBAR_GRENS;
+				spot_found = 1;
 				while (at_spot)
 				{
 					if (((at_spot.classname == "player") && (at_spot.deadflag == 0)))
@@ -1234,7 +1234,7 @@ void () PutClientInServer =
 	self.max_health = _d;
 	self.flags = 8;
 	self.air_finished = (time + 12);
-	self.dmg = SBAR_PRINT;
+	self.dmg = 2;
 	self.super_damage_finished = 0;
 	self.radsuit_finished = 0;
 	self.invisible_finished = 0;
@@ -1249,7 +1249,7 @@ void () PutClientInServer =
 	self.hook_out = 0;
 	self.fire_held_down = 0;
 	self.mapcount = _d;
-	self.gravity = SBAR_GRENS;
+	self.gravity = 1;
 	self.camdist = 0;
 	DecodeLevelParms ();
 	if (self.team_no)
@@ -1258,14 +1258,14 @@ void () PutClientInServer =
 		{
 			if (TeamFortress_TeamIsCivilian (self.team_no))
 			{
-				self.nextpc = SBAR_200;
+				self.nextpc = 11;
 			}
 		}
 	}
 	iszoom = 0;
 	if ((self.tfstate & 4096))
 	{
-		iszoom = SBAR_GRENS;
+		iszoom = 1;
 	}
 	if (round_active)
 	{
@@ -1299,15 +1299,15 @@ void () PutClientInServer =
 			if (CheckClassAvailable (self.team_no))
 			{
 				oldclass = self.playerclass;
-				self.playerclass = (SBAR_GRENS + floor ((random () * (enter - SBAR_GRENS))));
+				self.playerclass = (1 + floor ((random () * (enter - 1))));
 				while (((!IsLegalClass (self.playerclass) || (self.playerclass == oldclass)) || ClassIsRestricted (self.team_no, self.playerclass)))
 				{
-					self.playerclass = (SBAR_GRENS + floor ((random () * (enter - SBAR_GRENS))));
+					self.playerclass = (1 + floor ((random () * (enter - 1))));
 				}
 			}
 			else
 			{
-				sprint (self, SBAR_PRINT, "All classes disabled, returning to Observer mode.\n");
+				sprint (self, 2, "All classes disabled, returning to Observer mode.\n");
 				self.playerclass = 0;
 			}
 			self.tfstate = 8;
@@ -1318,7 +1318,7 @@ void () PutClientInServer =
 	{
 		self.tfstate = 0;
 	}
-	if ((iszoom == SBAR_GRENS))
+	if ((iszoom == 1))
 	{
 		self.oldheight = stof (infokey (self, "fov"));
 		self.tfstate = (self.tfstate | 4096);
@@ -1327,7 +1327,7 @@ void () PutClientInServer =
 	{
 		Engineer_RemoveBuildings (self);
 	}
-	self.takedamage = SBAR_PRINT;
+	self.takedamage = 2;
 	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & 8));
 	TeamFortress_SetEquipment ();
 	TeamFortress_SetHealth ();
@@ -1348,7 +1348,7 @@ void () PutClientInServer =
 	self.observer_list = spot;
 	self.origin = (spot.origin + '0 0 1');
 	self.angles = spot.angles;
-	self.fixangle = SBAR_GRENS;
+	self.fixangle = 1;
 	if (((spot.classname == "info_player_teamspawn") && !cb_prematch))
 	{
 		if ((spot.items != 0))
@@ -1358,7 +1358,7 @@ void () PutClientInServer =
 			{
 				tfgoalitem_GiveToPlayer (te, self, self);
 			}
-			if (!(spot.goal_activation & SBAR_GRENS))
+			if (!(spot.goal_activation & 1))
 			{
 				spot.items = 0;
 			}
@@ -1366,7 +1366,7 @@ void () PutClientInServer =
 		if (spot.message)
 		{
 			CenterPrint (self, spot.message);
-			if (!(spot.goal_activation & SBAR_PRINT))
+			if (!(spot.goal_activation & 2))
 			{
 				spot.message = string_null;
 			}
@@ -1379,11 +1379,11 @@ void () PutClientInServer =
 				AttemptToActivate (te, self, spot);
 			}
 		}
-		if ((spot.goal_effects == SBAR_GRENS))
+		if ((spot.goal_effects == 1))
 		{
 			spot.classname = "deadpoint";
 			spot.team_str_home = string_null;
-			spot.nextthink = (time + SBAR_GRENS);
+			spot.nextthink = (time + 1);
 			spot.think = SUB_Remove;
 		}
 	}
@@ -1406,7 +1406,7 @@ void () PutClientInServer =
 		}
 		self.movetype = 5;
 		stuffcmd (self, "color ");
-		iszoom = (TeamFortress_TeamGetColor (self.team_no) - SBAR_GRENS);
+		iszoom = (TeamFortress_TeamGetColor (self.team_no) - 1);
 		st = ftos (iszoom);
 		stuffcmd (self, st);
 		stuffcmd (self, "\n");
@@ -1430,11 +1430,11 @@ void () PutClientInServer =
 	}
 	else
 	{
-		rj = SBAR_GRENS;
+		rj = 1;
 	}
 	if (cease_fire)
 	{
-		sprint (self, SBAR_PRINT, "\n\nCEASE FIRE MODE\n");
+		sprint (self, 2, "\n\nCEASE FIRE MODE\n");
 		self.immune_to_check = (time + 5);
 		self.tfstate = (self.tfstate | 65536);
 		TeamFortress_SetSpeed (self);
@@ -1490,7 +1490,7 @@ void (entity c) PrintClientScore =
 {
 	if (((c.frags > -10) && (c.frags < 0)))
 	{
-		bprint (SBAR_GRENS, " ");
+		bprint (1, " ");
 	}
 	else
 	{
@@ -1498,18 +1498,18 @@ void (entity c) PrintClientScore =
 		{
 			if ((c.frags < _d))
 			{
-				bprint (SBAR_GRENS, " ");
+				bprint (1, " ");
 			}
 			if ((c.frags < enter))
 			{
-				bprint (SBAR_GRENS, " ");
+				bprint (1, " ");
 			}
 		}
 	}
 	bprint (c.frags, ftos (c.frags));
-	bprint (SBAR_GRENS, " ");
-	bprint (SBAR_GRENS, c.netname);
-	bprint (SBAR_GRENS, "\n");
+	bprint (1, " ");
+	bprint (1, c.netname);
+	bprint (1, "\n");
 };
 
 void () DumpScore =
@@ -1566,13 +1566,13 @@ void () DumpScore =
 		}
 		e = find (e, classname, "player");
 	}
-	bprint (SBAR_GRENS, "\n");
+	bprint (1, "\n");
 	while (sort)
 	{
 		PrintClientScore (sort);
 		sort = sort.chain;
 	}
-	bprint (SBAR_GRENS, "\n");
+	bprint (1, "\n");
 };
 float already_cycled;
 
@@ -1584,7 +1584,7 @@ void () NextLevel =
 	{
 		return;
 	}
-	already_cycled = SBAR_GRENS;
+	already_cycled = 1;
 	o = spawn ();
 	o.map = nextmap;
 	o.think = execute_changelevel;
@@ -1623,7 +1623,7 @@ void () PlayerDeathThink =
 			self.velocity = (fwd * normalize (self.velocity));
 		}
 	}
-	if ((self.deadflag == SBAR_PRINT))
+	if ((self.deadflag == 2))
 	{
 		if (((self.button2 || self.button1) || self.button0))
 		{
@@ -1632,7 +1632,7 @@ void () PlayerDeathThink =
 		self.deadflag = AS_MELEE;
 		return;
 	}
-	if ((round_over == SBAR_PRINT))
+	if ((round_over == 2))
 	{
 		self.button0 = 0;
 		self.button1 = 0;
@@ -1693,7 +1693,7 @@ void () PlayerJump =
 	local entity te;
 	local float stumble;
 
-	if ((self.has_disconnected == SBAR_GRENS))
+	if ((self.has_disconnected == 1))
 	{
 		return;
 	}
@@ -1707,7 +1707,7 @@ void () PlayerJump =
 	}
 	if (!self.playerclass)
 	{
-		if ((self.waterlevel >= SBAR_PRINT))
+		if ((self.waterlevel >= 2))
 		{
 			self.velocity_z = 350;
 		}
@@ -1722,7 +1722,7 @@ void () PlayerJump =
 		self.button2 = 0;
 		return;
 	}
-	if ((self.waterlevel >= SBAR_PRINT))
+	if ((self.waterlevel >= 2))
 	{
 		if ((self.watertype == -3))
 		{
@@ -1741,14 +1741,14 @@ void () PlayerJump =
 		}
 		if ((self.swim_flag < time))
 		{
-			self.swim_flag = (time + SBAR_GRENS);
+			self.swim_flag = (time + 1);
 			if ((random () < 0.5))
 			{
-				sound (self, AS_MISSILE, "misc/water1.wav", SBAR_GRENS, SBAR_GRENS);
+				sound (self, AS_MISSILE, "misc/water1.wav", 1, 1);
 			}
 			else
 			{
-				sound (self, AS_MISSILE, "misc/water2.wav", SBAR_GRENS, SBAR_GRENS);
+				sound (self, AS_MISSILE, "misc/water2.wav", 1, 1);
 			}
 		}
 		if ((self.fire_held_down && (self.current_weapon == 32768)))
@@ -1757,7 +1757,7 @@ void () PlayerJump =
 			TeamFortress_SetSpeed (self);
 			self.weaponframe = 0;
 			self.heat = 0;
-			self.count = SBAR_GRENS;
+			self.count = 1;
 			player_assaultcannondown1 ();
 		}
 		return;
@@ -1772,7 +1772,7 @@ void () PlayerJump =
 	}
 	self.flags = (self.flags - (self.flags & 4096));
 	self.button2 = 0;
-	sound (self, AS_MISSILE, "player/plyrjmp8.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, AS_MISSILE, "player/plyrjmp8.wav", 1, 1);
 	te = find (world, classname, "timer");
 	while ((((te.owner != self) || (te.think != ConcussionGrenadeTimer)) && (te != world)))
 	{
@@ -1799,11 +1799,11 @@ void () PlayerJump =
 	}
 	if ((self.button0 && (self.current_weapon == 32768)))
 	{
-		sprint (self, SBAR_GRENS, "You cannot fire the assault cannon without your feet on the ground...\n");
+		sprint (self, 1, "You cannot fire the assault cannon without your feet on the ground...\n");
 		self.tfstate = (self.tfstate - (self.tfstate & 2048));
 		TeamFortress_SetSpeed (self);
 		self.weaponframe = 0;
-		self.count = SBAR_GRENS;
+		self.count = 1;
 		self.heat = 0;
 		player_assaultcannondown1 ();
 	}
@@ -1825,17 +1825,17 @@ void () WaterMove =
 	{
 		if ((self.air_finished < time))
 		{
-			sound (self, SBAR_PRINT, "player/gasp2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 2, "player/gasp2.wav", 1, 1);
 		}
 		else
 		{
 			if ((self.air_finished < (time + 9)))
 			{
-				sound (self, SBAR_PRINT, "player/gasp1.wav", SBAR_GRENS, SBAR_GRENS);
+				sound (self, 2, "player/gasp1.wav", 1, 1);
 			}
 		}
 		self.air_finished = (time + 12);
-		self.dmg = SBAR_PRINT;
+		self.dmg = 2;
 	}
 	else
 	{
@@ -1843,22 +1843,22 @@ void () WaterMove =
 		{
 			if ((self.pain_finished < time))
 			{
-				self.dmg = (self.dmg + SBAR_PRINT);
+				self.dmg = (self.dmg + 2);
 				if ((self.dmg > 15))
 				{
 					self.dmg = enter;
 				}
-				TF_T_Damage (self, world, world, self.dmg, SBAR_GRENS, 0);
-				self.pain_finished = (time + SBAR_GRENS);
+				TF_T_Damage (self, world, world, self.dmg, 1, 0);
+				self.pain_finished = (time + 1);
 			}
 		}
 	}
 	if (!self.waterlevel)
 	{
-		if ((self.flags & SBAR_240))
+		if ((self.flags & 16))
 		{
-			sound (self, AS_MISSILE, "misc/outwater.wav", SBAR_GRENS, SBAR_GRENS);
-			self.flags = (self.flags - SBAR_240);
+			sound (self, AS_MISSILE, "misc/outwater.wav", 1, 1);
+			self.flags = (self.flags - 16);
 		}
 		return;
 	}
@@ -1868,13 +1868,13 @@ void () WaterMove =
 		{
 			if ((self.radsuit_finished > time))
 			{
-				self.dmgtime = (time + SBAR_GRENS);
+				self.dmgtime = (time + 1);
 			}
 			else
 			{
 				self.dmgtime = (time + 0.2);
 			}
-			TF_T_Damage (self, world, world, (enter * self.waterlevel), 0, SBAR_240);
+			TF_T_Damage (self, world, world, (enter * self.waterlevel), 0, 16);
 		}
 	}
 	else
@@ -1883,26 +1883,26 @@ void () WaterMove =
 		{
 			if (((self.dmgtime < time) && (self.radsuit_finished < time)))
 			{
-				self.dmgtime = (time + SBAR_GRENS);
+				self.dmgtime = (time + 1);
 				T_Damage (self, world, world, (AS_MISSILE * self.waterlevel));
 			}
 		}
 	}
-	if (!(self.flags & SBAR_240))
+	if (!(self.flags & 16))
 	{
 		if ((self.watertype == -5))
 		{
-			sound (self, AS_MISSILE, "player/inlava.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, AS_MISSILE, "player/inlava.wav", 1, 1);
 		}
 		if ((self.watertype == -3))
 		{
-			sound (self, AS_MISSILE, "player/inh2o.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, AS_MISSILE, "player/inh2o.wav", 1, 1);
 		}
 		if ((self.watertype == -4))
 		{
-			sound (self, AS_MISSILE, "player/slimbrn2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, AS_MISSILE, "player/slimbrn2.wav", 1, 1);
 		}
-		self.flags = (self.flags + SBAR_240);
+		self.flags = (self.flags + 16);
 		self.dmgtime = 0;
 	}
 };
@@ -1918,19 +1918,19 @@ void () CheckWaterJump =
 	v_forward_z = 0;
 	normalize (v_forward);
 	end = (start + (v_forward * 24));
-	traceline (start, end, SBAR_GRENS, self);
-	if ((trace_fraction < SBAR_GRENS))
+	traceline (start, end, 1, self);
+	if ((trace_fraction < 1))
 	{
 		start_z = ((start_z + self.maxs_z) - 8);
 		end = (start + (v_forward * 24));
 		self.movedir = (trace_plane_normal * -50);
-		traceline (start, end, SBAR_GRENS, self);
-		if ((trace_fraction == SBAR_GRENS))
+		traceline (start, end, 1, self);
+		if ((trace_fraction == 1))
 		{
 			self.flags = (self.flags | 2048);
 			self.velocity_z = 225;
 			self.flags = (self.flags - (self.flags & 4096));
-			self.teleport_time = (time + SBAR_PRINT);
+			self.teleport_time = (time + 2);
 			return;
 		}
 	}
@@ -1938,7 +1938,7 @@ void () CheckWaterJump =
 
 void () PlayerPreThink =
 {
-	if ((self.is_feigning && (self.waterlevel == SBAR_GRENS)))
+	if ((self.is_feigning && (self.waterlevel == 1)))
 	{
 		self.watertype = -3;
 		self.waterlevel = AS_MELEE;
@@ -1955,7 +1955,7 @@ void () PlayerPreThink =
 		return;
 	}
 	CheckRules ();
-	if ((self.deadflag >= SBAR_PRINT))
+	if ((self.deadflag >= 2))
 	{
 		self.movetype = 6;
 		PlayerDeathThink ();
@@ -1965,16 +1965,16 @@ void () PlayerPreThink =
 	{
 		if ((self.effects & (8 | AS_MISSILE)))
 		{
-			sprint (self, SBAR_GRENS, "The glowing removes your disguise.\n");
+			sprint (self, 1, "The glowing removes your disguise.\n");
 			Spy_RemoveDisguise (self);
 		}
 		if ((tfstrike && self.ammo_detpack))
 		{
-			sprint (self, SBAR_GRENS, "The bomb removes your disguise.\n");
+			sprint (self, 1, "The bomb removes your disguise.\n");
 			Spy_RemoveDisguise (self);
 		}
 	}
-	if ((self.deadflag == SBAR_GRENS))
+	if ((self.deadflag == 1))
 	{
 		return;
 	}
@@ -1996,11 +1996,11 @@ void () PlayerPreThink =
 			self.velocity_z = -100;
 		}
 	}
-	if (((time < self.pausetime) || (cease_fire == SBAR_GRENS)))
+	if (((time < self.pausetime) || (cease_fire == 1)))
 	{
 		self.velocity = '0 0 0';
 	}
-	if ((((time > self.attack_finished) && (self.currentammo == 0)) && (self.weapon > SBAR_240)))
+	if ((((time > self.attack_finished) && (self.currentammo == 0)) && (self.weapon > 16)))
 	{
 		self.weapon = W_BestWeapon ();
 		W_SetCurrentAmmo ();
@@ -2037,21 +2037,21 @@ void () CheckPowerups =
 			}
 			if ((self.invisible_sound < time))
 			{
-				sound (self, 0, "items/inv3.wav", 0.5, SBAR_PRINT);
-				self.invisible_sound = (time + ((random () * AS_MELEE) + SBAR_GRENS));
+				sound (self, 0, "items/inv3.wav", 0.5, 2);
+				self.invisible_sound = (time + ((random () * AS_MELEE) + 1));
 			}
 			if ((self.invisible_finished < (time + AS_MELEE)))
 			{
-				if ((self.invisible_time == SBAR_GRENS))
+				if ((self.invisible_time == 1))
 				{
-					sprint (self, SBAR_PRINT, "Ring of Shadows magic is fading\n");
+					sprint (self, 2, "Ring of Shadows magic is fading\n");
 					stuffcmd (self, "bf\n");
-					sound (self, 0, "items/inv2.wav", SBAR_GRENS, SBAR_GRENS);
-					self.invisible_time = (time + SBAR_GRENS);
+					sound (self, 0, "items/inv2.wav", 1, 1);
+					self.invisible_time = (time + 1);
 				}
 				if ((self.invisible_time < time))
 				{
-					self.invisible_time = (time + SBAR_GRENS);
+					self.invisible_time = (time + 1);
 					stuffcmd (self, "bf\n");
 				}
 			}
@@ -2080,16 +2080,16 @@ void () CheckPowerups =
 		}
 		if ((self.invincible_finished < (time + AS_MELEE)))
 		{
-			if ((self.invincible_time == SBAR_GRENS))
+			if ((self.invincible_time == 1))
 			{
-				sprint (self, SBAR_PRINT, "Protection is almost burned out\n");
+				sprint (self, 2, "Protection is almost burned out\n");
 				stuffcmd (self, "bf\n");
-				sound (self, 0, "items/protect2.wav", SBAR_GRENS, SBAR_GRENS);
-				self.invincible_time = (time + SBAR_GRENS);
+				sound (self, 0, "items/protect2.wav", 1, 1);
+				self.invincible_time = (time + 1);
 			}
 			if ((self.invincible_time < time))
 			{
-				self.invincible_time = (time + SBAR_GRENS);
+				self.invincible_time = (time + 1);
 				stuffcmd (self, "bf\n");
 			}
 		}
@@ -2112,9 +2112,9 @@ void () CheckPowerups =
 			{
 				if ((te.owner == self))
 				{
-					if ((te.goal_activation & SBAR_GRENS))
+					if ((te.goal_activation & 1))
 					{
-						lighton = SBAR_GRENS;
+						lighton = 1;
 					}
 				}
 				te = find (te, classname, "item_tfgoal");
@@ -2138,16 +2138,16 @@ void () CheckPowerups =
 		}
 		if ((self.super_damage_finished < (time + AS_MELEE)))
 		{
-			if ((self.super_time == SBAR_GRENS))
+			if ((self.super_time == 1))
 			{
-				sprint (self, SBAR_PRINT, "Quad Damage is wearing off\n");
+				sprint (self, 2, "Quad Damage is wearing off\n");
 				stuffcmd (self, "bf\n");
-				sound (self, 0, "items/damage2.wav", SBAR_GRENS, SBAR_GRENS);
-				self.super_time = (time + SBAR_GRENS);
+				sound (self, 0, "items/damage2.wav", 1, 1);
+				self.super_time = (time + 1);
 			}
 			if ((self.super_time < time))
 			{
-				self.super_time = (time + SBAR_GRENS);
+				self.super_time = (time + 1);
 				stuffcmd (self, "bf\n");
 			}
 		}
@@ -2170,9 +2170,9 @@ void () CheckPowerups =
 			{
 				if ((te.owner == self))
 				{
-					if ((te.goal_activation & SBAR_GRENS))
+					if ((te.goal_activation & 1))
 					{
-						lighton = SBAR_GRENS;
+						lighton = 1;
 					}
 				}
 				te = find (te, classname, "item_tfgoal");
@@ -2180,7 +2180,7 @@ void () CheckPowerups =
 			if (!lighton)
 			{
 				self.effects = (self.effects - (self.effects & 8));
-				self.effects = (self.effects - (self.effects & SBAR_240));
+				self.effects = (self.effects - (self.effects & 16));
 				self.effects = (self.effects - (self.effects & 64));
 			}
 		}
@@ -2197,16 +2197,16 @@ void () CheckPowerups =
 		}
 		if ((self.radsuit_finished < (time + AS_MELEE)))
 		{
-			if ((self.rad_time == SBAR_GRENS))
+			if ((self.rad_time == 1))
 			{
-				sprint (self, SBAR_PRINT, "Air supply in Biosuit expiring\n");
+				sprint (self, 2, "Air supply in Biosuit expiring\n");
 				stuffcmd (self, "bf\n");
-				sound (self, 0, "items/suit2.wav", SBAR_GRENS, SBAR_GRENS);
-				self.rad_time = (time + SBAR_GRENS);
+				sound (self, 0, "items/suit2.wav", 1, 1);
+				self.rad_time = (time + 1);
 			}
 			if ((self.rad_time < time))
 			{
-				self.rad_time = (time + SBAR_GRENS);
+				self.rad_time = (time + 1);
 				stuffcmd (self, "bf\n");
 			}
 		}
@@ -2320,7 +2320,7 @@ void () PlayerPostThink =
 		WaterMove ();
 		if ((self.flags & 512))
 		{
-			if ((gspeed >= SBAR_GRENS))
+			if ((gspeed >= 1))
 			{
 				speedpos = (0 + (self.maxspeed * gspeed));
 				speedneg = (0 - (self.maxspeed * gspeed));
@@ -2345,7 +2345,7 @@ void () PlayerPostThink =
 			{
 				if ((self.watertype == -3))
 				{
-					sound (self, AS_MISSILE, "player/h2ojump.wav", SBAR_GRENS, SBAR_GRENS);
+					sound (self, AS_MISSILE, "player/h2ojump.wav", 1, 1);
 				}
 				else
 				{
@@ -2355,9 +2355,9 @@ void () PlayerPostThink =
 						{
 							fdmg = 5;
 							fdmg = ((fdmg * (self.jump_flag / 300)) * -1);
-							if ((self.playerclass == SBAR_GRENS))
+							if ((self.playerclass == 1))
 							{
-								fdmg = (fdmg / SBAR_PRINT);
+								fdmg = (fdmg / 2);
 							}
 							else
 							{
@@ -2367,14 +2367,14 @@ void () PlayerPostThink =
 								}
 							}
 							fdmg = rint (fdmg);
-							TF_T_Damage (self, world, world, fdmg, SBAR_GRENS, 0);
+							TF_T_Damage (self, world, world, fdmg, 1, 0);
 							self.deathtype = "falling";
 						}
-						sound (self, SBAR_PRINT, "player/land2.wav", SBAR_GRENS, SBAR_GRENS);
+						sound (self, 2, "player/land2.wav", 1, 1);
 					}
 					else
 					{
-						sound (self, SBAR_PRINT, "player/land.wav", SBAR_GRENS, SBAR_GRENS);
+						sound (self, 2, "player/land.wav", 1, 1);
 					}
 				}
 			}
@@ -2398,7 +2398,7 @@ void () PlayerPostThink =
 	if ((self.cheat_check <= time))
 	{
 		TeamFortress_CheckTeamCheats ();
-		self.cheat_check = (time + SBAR_PRINT);
+		self.cheat_check = (time + 2);
 	}
 };
 
@@ -2453,13 +2453,13 @@ void () ClientConnect =
 		dprint ("Client version: ");
 		dprint (st);
 		dprint ("\n");
-		if ((res == SBAR_PRINT))
+		if ((res == 2))
 		{
 			if (((((st != "0.26") && (st != "0.27")) && (st != "0.28")) && (st != "GryMQ 0.11")))
 			{
-				sprint (self, SBAR_PRINT, "Client Version Illegal!\nPlease update your client to the latest FuhQuake || GreyMQuake clients.\n\n");
-				sprint (self, SBAR_PRINT, "FuhQuake client available at http://www.fuhquake.net/\n");
-				sprint (self, SBAR_PRINT, "GreyMQuake client available at http://qwtf.ausfortress.com/greymquake/\n\n");
+				sprint (self, 2, "Client Version Illegal!\nPlease update your client to the latest FuhQuake || GreyMQuake clients.\n\n");
+				sprint (self, 2, "FuhQuake client available at http://www.fuhquake.net/\n");
+				sprint (self, 2, "GreyMQuake client available at http://qwtf.ausfortress.com/greymquake/\n\n");
 				stuffcmd (self, "disconnect\n");
 				stuffcmd (self, "cmd drop\n");
 				return;
@@ -2468,31 +2468,31 @@ void () ClientConnect =
 	}
 	else
 	{
-		if ((res == SBAR_GRENS))
+		if ((res == 1))
 		{
-			sprint (self, SBAR_PRINT, "Client Version Unknown. Please update your client.\n");
+			sprint (self, 2, "Client Version Unknown. Please update your client.\n");
 			stuffcmd (self, "disconnect\n");
 			return;
 		}
-		if ((res == SBAR_PRINT))
+		if ((res == 2))
 		{
-			sprint (self, SBAR_PRINT, "Client Version Illegal!\nPlease update your client to the latest FuhQuake || GreyMQuake clients.\n\n");
-			sprint (self, SBAR_PRINT, "FuhQuake client available at http://www.fuhquake.net/\n");
-			sprint (self, SBAR_PRINT, "GreyMQuake client available at http://qwtf.ausfortress.com/greymquake/\n\n");
+			sprint (self, 2, "Client Version Illegal!\nPlease update your client to the latest FuhQuake || GreyMQuake clients.\n\n");
+			sprint (self, 2, "FuhQuake client available at http://www.fuhquake.net/\n");
+			sprint (self, 2, "GreyMQuake client available at http://qwtf.ausfortress.com/greymquake/\n\n");
 			stuffcmd (self, "disconnect\n");
 			stuffcmd (self, "cmd drop\n");
 			return;
 		}
 	}
-	bprint (SBAR_PRINT, self.netname);
-	bprint (SBAR_PRINT, " entered the game\n");
+	bprint (2, self.netname);
+	bprint (2, " entered the game\n");
 	stuffcmd (self, "say -d\n");
 	if ((0 == 0))
 	{
 		self.tfstate = (self.tfstate | 4096);
 	}
 	self.motd = 0;
-	self.get_aliases = SBAR_GRENS;
+	self.get_aliases = 1;
 	if ((self.netname == string_null))
 	{
 		stuffcmd (self, "disconnect\n");
@@ -2575,7 +2575,7 @@ void () ClientConnect =
 		st = infokey (self, "sbar_size");
 	}
 	self.StatusBarSize = stof (st);
-	if (((self.StatusBarSize > enter) || (self.StatusBarSize < SBAR_GRENS)))
+	if (((self.StatusBarSize > enter) || (self.StatusBarSize < 1)))
 	{
 		if ((self.tfkey & 8))
 		{
@@ -2601,11 +2601,11 @@ void () ClientConnect =
 	Admin_Check (st);
 	if (self.is_admin)
 	{
-		self.get_admin_aliases = SBAR_GRENS;
+		self.get_admin_aliases = 1;
 	}
 	if (cb_prematch)
 	{
-		sprint (self, SBAR_PRINT, "CURRENTLY IN PREMATCH TIME\n");
+		sprint (self, 2, "CURRENTLY IN PREMATCH TIME\n");
 	}
 };
 
@@ -2617,9 +2617,9 @@ void () ClientDisconnect =
 
 	fr = rint (self.frags);
 	st = ftos (fr);
-	bprint4 (SBAR_PRINT, self.netname, " left the game with ", st, " frags\n");
-	sound (self, AS_MISSILE, "player/tornoff2.wav", SBAR_GRENS, 0);
-	self.has_disconnected = SBAR_GRENS;
+	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
+	sound (self, AS_MISSILE, "player/tornoff2.wav", 1, 0);
+	self.has_disconnected = 1;
 	TeamFortress_RemoveTimers ();
 	RemoveVotes ();
 	Engineer_RemoveBuildings (self);
@@ -2630,7 +2630,7 @@ void () ClientDisconnect =
 		{
 			if ((te.owner == self))
 			{
-				if ((te.weaponmode == SBAR_GRENS))
+				if ((te.weaponmode == 1))
 				{
 					TeamFortress_SetSpeed (te.enemy);
 					dremove (te.oldenemy);
@@ -2646,7 +2646,7 @@ void () ClientDisconnect =
 	{
 		if (self.is_detpacking)
 		{
-			self.ammo_detpack = SBAR_GRENS;
+			self.ammo_detpack = 1;
 		}
 		Drop_detpack ();
 	}
@@ -2789,37 +2789,37 @@ void (entity targ, entity attacker) ClientObituary =
 	{
 		if ((attacker.classname == "teledeath"))
 		{
-			bprint (SBAR_GRENS, targ.netname);
-			bprint (SBAR_GRENS, " was telefragged by ");
-			bprint (SBAR_GRENS, attacker.owner.netname);
-			bprint (SBAR_GRENS, "\n");
-			if (((attacker.owner.team_no != targ.team_no) || (attacker.owner.team_no < SBAR_GRENS)))
+			bprint (1, targ.netname);
+			bprint (1, " was telefragged by ");
+			bprint (1, attacker.owner.netname);
+			bprint (1, "\n");
+			if (((attacker.owner.team_no != targ.team_no) || (attacker.owner.team_no < 1)))
 			{
-				TF_AddFrags (attacker.owner, SBAR_GRENS, 0);
+				TF_AddFrags (attacker.owner, 1, 0);
 			}
 			return;
 		}
 		if ((attacker.classname == "teledeath2"))
 		{
-			bprint (SBAR_GRENS, "Satan's power deflects ");
-			bprint (SBAR_GRENS, targ.netname);
-			bprint (SBAR_GRENS, "'s telefrag\n");
+			bprint (1, "Satan's power deflects ");
+			bprint (1, targ.netname);
+			bprint (1, "'s telefrag\n");
 			TF_AddFrags (targ, -1, 0);
 			logfrag (targ, targ);
 			return;
 		}
 		if ((deathmsg == 37))
 		{
-			bprint (SBAR_GRENS, targ.netname);
-			bprint (SBAR_GRENS, " shoots his teammate one too many times.\n");
+			bprint (1, targ.netname);
+			bprint (1, " shoots his teammate one too many times.\n");
 			return;
 		}
 		if (((attacker.classname == "info_tfgoal") || (attacker.classname == "item_tfgoal")))
 		{
 			if ((attacker.deathtype != ""))
 			{
-				bprint (SBAR_GRENS, targ.netname);
-				bprint (SBAR_GRENS, attacker.deathtype);
+				bprint (1, targ.netname);
+				bprint (1, attacker.deathtype);
 			}
 			logfrag (targ, targ);
 			return;
@@ -2829,10 +2829,10 @@ void (entity targ, entity attacker) ClientObituary =
 			if ((targ == attacker))
 			{
 				TF_AddFrags (attacker, -1, 0);
-				bprint (SBAR_GRENS, targ.netname);
+				bprint (1, targ.netname);
 				if ((deathmsg == 8))
 				{
-					if ((targ.playerclass == SBAR_PRINT))
+					if ((targ.playerclass == 2))
 					{
 						deathstring = " got splattered by his own grenade\n";
 					}
@@ -2918,7 +2918,7 @@ void (entity targ, entity attacker) ClientObituary =
 						}
 						else
 						{
-							if ((deathmsg == SBAR_200))
+							if ((deathmsg == 11))
 							{
 								deathstring = " ambushes himself with his own pipebombs\n";
 							}
@@ -2948,7 +2948,7 @@ void (entity targ, entity attacker) ClientObituary =
 											}
 											else
 											{
-												if ((deathmsg == SBAR_400))
+												if ((deathmsg == 35))
 												{
 													deathstring = " is charred by his own flash grenade\n";
 												}
@@ -2985,7 +2985,7 @@ void (entity targ, entity attacker) ClientObituary =
 																}
 																else
 																{
-																	if ((deathmsg == SBAR_384))
+																	if ((deathmsg == 33))
 																	{
 																		deathstring = " chars himself with an incendiary rocket\n";
 																	}
@@ -3003,9 +3003,9 @@ void (entity targ, entity attacker) ClientObituary =
 																			}
 																			else
 																			{
-																				if (((deathmsg == 7) && (targ.waterlevel > SBAR_GRENS)))
+																				if (((deathmsg == 7) && (targ.waterlevel > 1)))
 																				{
-																					bprint (SBAR_GRENS, " discharges into the water.\n");
+																					bprint (1, " discharges into the water.\n");
 																					return;
 																				}
 																				else
@@ -3038,7 +3038,7 @@ void (entity targ, entity attacker) ClientObituary =
 						}
 					}
 				}
-				bprint (SBAR_GRENS, deathstring);
+				bprint (1, deathstring);
 				return;
 			}
 			else
@@ -3048,7 +3048,7 @@ void (entity targ, entity attacker) ClientObituary =
 					TF_AddFrags (attacker, -1, 0);
 					if ((targ.undercover_team == 0))
 					{
-						attacker.teamkills = (attacker.teamkills + SBAR_GRENS);
+						attacker.teamkills = (attacker.teamkills + 1);
 					}
 					deathstring2 = "\n";
 					if ((rnum < 0.25))
@@ -3079,26 +3079,26 @@ void (entity targ, entity attacker) ClientObituary =
 					}
 					if ((deathmsg == 23))
 					{
-						bprint (SBAR_GRENS, targ.netname);
-						bprint (SBAR_GRENS, " didn't survive the operation by ");
-						bprint (SBAR_GRENS, attacker.netname);
-						bprint (SBAR_GRENS, "\n");
+						bprint (1, targ.netname);
+						bprint (1, " didn't survive the operation by ");
+						bprint (1, attacker.netname);
+						bprint (1, "\n");
 						return;
 					}
-					bprint (SBAR_GRENS, attacker.netname);
-					bprint (SBAR_GRENS, deathstring);
-					bprint (SBAR_GRENS, targ.netname);
-					bprint (SBAR_GRENS, deathstring2);
+					bprint (1, attacker.netname);
+					bprint (1, deathstring);
+					bprint (1, targ.netname);
+					bprint (1, deathstring2);
 					CheckAutoKick (attacker);
 					return;
 				}
 				else
 				{
-					TF_AddFrags (attacker, SBAR_GRENS, SBAR_GRENS);
+					TF_AddFrags (attacker, 1, 1);
 					logfrag (attacker, targ);
 					if ((deathmsg == 8))
 					{
-						if ((attacker.playerclass == SBAR_PRINT))
+						if ((attacker.playerclass == 2))
 						{
 							deathstring = " got up-close && personal with ";
 							deathstring2 = "'s grenade\n";
@@ -3189,7 +3189,7 @@ void (entity targ, entity attacker) ClientObituary =
 							}
 							else
 							{
-								if ((deathmsg == SBAR_200))
+								if ((deathmsg == 11))
 								{
 									deathstring = " is caught by ";
 									deathstring2 = "'s pipebomb trap\n";
@@ -3224,7 +3224,7 @@ void (entity targ, entity attacker) ClientObituary =
 												}
 												else
 												{
-													if ((deathmsg == SBAR_400))
+													if ((deathmsg == 35))
 													{
 														deathstring = " is charred by ";
 														deathstring2 = "'s flash grenade\n";
@@ -3245,7 +3245,7 @@ void (entity targ, entity attacker) ClientObituary =
 															}
 															else
 															{
-																if ((deathmsg == SBAR_240))
+																if ((deathmsg == 16))
 																{
 																	deathstring = " cut the red wire of ";
 																	deathstring2 = "'s detpack\n";
@@ -3338,13 +3338,13 @@ void (entity targ, entity attacker) ClientObituary =
 																							}
 																							else
 																							{
-																								if ((attacker.playerclass == SBAR_GRENS))
+																								if ((attacker.playerclass == 1))
 																								{
 																									deathstring = "'s mellon was split by ";
 																								}
 																								else
 																								{
-																									if ((attacker.playerclass == SBAR_PRINT))
+																									if ((attacker.playerclass == 2))
 																									{
 																										deathstring = " was put on the chop block by ";
 																									}
@@ -3395,9 +3395,9 @@ void (entity targ, entity attacker) ClientObituary =
 																							}
 																							else
 																							{
-																								if ((deathmsg == SBAR_GRENS))
+																								if ((deathmsg == 1))
 																								{
-																									if ((attacker.playerclass == SBAR_GRENS))
+																									if ((attacker.playerclass == 1))
 																									{
 																										deathstring = " got too close to ";
 																										deathstring2 = "'s muzzleflash\n";
@@ -3450,7 +3450,7 @@ void (entity targ, entity attacker) ClientObituary =
 																								}
 																								else
 																								{
-																									if ((deathmsg == SBAR_PRINT))
+																									if ((deathmsg == 2))
 																									{
 																										if ((attacker.playerclass == AS_MELEE))
 																										{
@@ -3499,14 +3499,14 @@ void (entity targ, entity attacker) ClientObituary =
 																									{
 																										if ((deathmsg == AS_MELEE))
 																										{
-																											if ((attacker.playerclass == SBAR_GRENS))
+																											if ((attacker.playerclass == 1))
 																											{
 																												deathstring = " caught one too many nails from ";
 																												deathstring2 = "\n";
 																											}
 																											else
 																											{
-																												if ((attacker.playerclass == SBAR_PRINT))
+																												if ((attacker.playerclass == 2))
 																												{
 																													deathstring = " ran into ";
 																													deathstring2 = "'s nails\n";
@@ -3538,7 +3538,7 @@ void (entity targ, entity attacker) ClientObituary =
 																												if ((deathmsg == 7))
 																												{
 																													deathstring = " accepts ";
-																													if ((attacker.waterlevel > SBAR_GRENS))
+																													if ((attacker.waterlevel > 1))
 																													{
 																														deathstring2 = "'s discharge\n";
 																													}
@@ -3615,7 +3615,7 @@ void (entity targ, entity attacker) ClientObituary =
 																																		}
 																																		else
 																																		{
-																																			if ((deathmsg == SBAR_300))
+																																			if ((deathmsg == 22))
 																																			{
 																																				deathstring = " gets knifed from behind by ";
 																																				deathstring2 = "\n";
@@ -3636,7 +3636,7 @@ void (entity targ, entity attacker) ClientObituary =
 																																					}
 																																					else
 																																					{
-																																						if ((deathmsg == SBAR_384))
+																																						if ((deathmsg == 33))
 																																						{
 																																							deathstring = " gets well done by ";
 																																							deathstring2 = "'s incendiary rocket\n";
@@ -3690,15 +3690,15 @@ void (entity targ, entity attacker) ClientObituary =
 							}
 						}
 					}
-					if (((attacker.has_disconnected == SBAR_GRENS) || (attacker.netname == string_null)))
+					if (((attacker.has_disconnected == 1) || (attacker.netname == string_null)))
 					{
 						deathstring = " died.";
 						deathstring2 = "\n";
 					}
-					bprint (SBAR_GRENS, targ.netname);
-					bprint (SBAR_GRENS, deathstring);
-					bprint (SBAR_GRENS, attacker.netname);
-					bprint (SBAR_GRENS, deathstring2);
+					bprint (1, targ.netname);
+					bprint (1, deathstring);
+					bprint (1, attacker.netname);
+					bprint (1, deathstring2);
 				}
 			}
 			return;
@@ -3715,7 +3715,7 @@ void (entity targ, entity attacker) ClientObituary =
 					}
 					else
 					{
-						if ((deathmsg == SBAR_350))
+						if ((deathmsg == 27))
 						{
 							deathstring = " crossed his sentry gun's line of fire\n";
 						}
@@ -3727,19 +3727,19 @@ void (entity targ, entity attacker) ClientObituary =
 							}
 						}
 					}
-					bprint (SBAR_GRENS, targ.netname);
-					bprint (SBAR_GRENS, deathstring);
+					bprint (1, targ.netname);
+					bprint (1, deathstring);
 				}
 				else
 				{
 					if (((teamplay && (attacker.team_no == targ.team_no)) && (attacker.team_no > 0)))
 					{
-						bprint (SBAR_GRENS, targ.netname);
-						bprint (SBAR_GRENS, " obstructs his team's sentry gun\n");
+						bprint (1, targ.netname);
+						bprint (1, " obstructs his team's sentry gun\n");
 					}
 					else
 					{
-						TF_AddFrags (attacker.real_owner, SBAR_GRENS, SBAR_GRENS);
+						TF_AddFrags (attacker.real_owner, 1, 1);
 						logfrag (attacker.real_owner, targ);
 						if ((deathmsg == quote))
 						{
@@ -3748,7 +3748,7 @@ void (entity targ, entity attacker) ClientObituary =
 						}
 						else
 						{
-							if ((deathmsg == SBAR_350))
+							if ((deathmsg == 27))
 							{
 								deathstring = " is mown down by ";
 								deathstring2 = "'s sentry gun\n";
@@ -3762,10 +3762,10 @@ void (entity targ, entity attacker) ClientObituary =
 								}
 							}
 						}
-						bprint (SBAR_GRENS, targ.netname);
-						bprint (SBAR_GRENS, deathstring);
-						bprint (SBAR_GRENS, attacker.real_owner.netname);
-						bprint (SBAR_GRENS, deathstring2);
+						bprint (1, targ.netname);
+						bprint (1, deathstring);
+						bprint (1, attacker.real_owner.netname);
+						bprint (1, deathstring2);
 					}
 				}
 			}
@@ -3774,7 +3774,7 @@ void (entity targ, entity attacker) ClientObituary =
 				logfrag (targ, targ);
 				TF_AddFrags (targ, -1, 0);
 				rnum = targ.watertype;
-				bprint (SBAR_GRENS, targ.netname);
+				bprint (1, targ.netname);
 				if ((rnum == -3))
 				{
 					if ((random () < 0.5))
@@ -3868,7 +3868,7 @@ void (entity targ, entity attacker) ClientObituary =
 						}
 					}
 				}
-				bprint (SBAR_GRENS, deathstring);
+				bprint (1, deathstring);
 			}
 		}
 	}
@@ -3878,33 +3878,33 @@ void (entity targ, entity attacker) ClientObituary =
 		{
 			if ((attacker.classname == "teledeath"))
 			{
-				bprint (SBAR_GRENS, targ.real_owner.netname);
-				bprint (SBAR_GRENS, "'s sentrygun was telefragged by ");
-				bprint (SBAR_GRENS, attacker.owner.netname);
-				bprint (SBAR_GRENS, "\n");
+				bprint (1, targ.real_owner.netname);
+				bprint (1, "'s sentrygun was telefragged by ");
+				bprint (1, attacker.owner.netname);
+				bprint (1, "\n");
 				return;
 			}
 			if ((attacker.classname == "player"))
 			{
 				if ((attacker == targ.real_owner))
 				{
-					bprint (SBAR_GRENS, targ.real_owner.netname);
-					bprint (SBAR_GRENS, " destroys his sentrygun\n");
+					bprint (1, targ.real_owner.netname);
+					bprint (1, " destroys his sentrygun\n");
 					return;
 				}
-				bprint (SBAR_GRENS, targ.real_owner.netname);
-				bprint (SBAR_GRENS, "'s sentrygun was destroyed by ");
-				bprint (SBAR_GRENS, attacker.netname);
-				bprint (SBAR_GRENS, "\n");
+				bprint (1, targ.real_owner.netname);
+				bprint (1, "'s sentrygun was destroyed by ");
+				bprint (1, attacker.netname);
+				bprint (1, "\n");
 				if (((attacker.team_no > 0) && (attacker.team_no == targ.real_owner.team_no)))
 				{
 					TF_AddFrags (attacker, -1, 0);
-					attacker.teamkills = (attacker.teamkills + SBAR_GRENS);
+					attacker.teamkills = (attacker.teamkills + 1);
 					CheckAutoKick (attacker);
 				}
 				else
 				{
-					TF_AddFrags (attacker, SBAR_GRENS, SBAR_GRENS);
+					TF_AddFrags (attacker, 1, 1);
 				}
 				return;
 			}
@@ -3916,7 +3916,7 @@ void (entity targ, entity attacker) ClientObituary =
 				if (((attacker.team_no > 0) && (attacker.team_no == targ.real_owner.team_no)))
 				{
 					TF_AddFrags (attacker, -1, 0);
-					attacker.teamkills = (attacker.teamkills + SBAR_GRENS);
+					attacker.teamkills = (attacker.teamkills + 1);
 					CheckAutoKick (attacker);
 				}
 			}

@@ -26,7 +26,7 @@ void () TeamFortress_DetonatePipebombs =
 
 void () MirvGrenadeTouch =
 {
-	sound (self, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/bounce.wav", 1, 1);
 	if ((self.velocity == '0 0 0'))
 	{
 		self.avelocity = '0 0 0';
@@ -44,13 +44,13 @@ void () MirvGrenadeExplode =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 	self.solid = 0;
 	i = 0;
 	while ((i < AS_MISSILE))
 	{
 		MirvGrenadeLaunch ((self.origin + '0 0 -1'), self.owner);
-		i = (i + SBAR_GRENS);
+		i = (i + 1);
 	}
 	dremove (self);
 };
@@ -67,14 +67,14 @@ void (vector org, entity shooter) MirvGrenadeLaunch =
 	newmis = spawn ();
 	newmis.owner = shooter;
 	newmis.movetype = enter;
-	newmis.solid = SBAR_PRINT;
+	newmis.solid = 2;
 	newmis.classname = "grenade";
 	newmis.weapon = enter;
 	newmis.touch = NormalGrenadeTouch;
 	newmis.think = NormalGrenadeExplode;
-	newmis.nextthink = ((time + SBAR_PRINT) + random ());
-	newmis.velocity_x = (xdir * SBAR_PRINT);
-	newmis.velocity_y = (ydir * SBAR_PRINT);
+	newmis.nextthink = ((time + 2) + random ());
+	newmis.velocity_x = (xdir * 2);
+	newmis.velocity_y = (ydir * 2);
 	newmis.velocity_z = (zdir * 15);
 	newmis.avelocity = '250 300 400';
 	setmodel (newmis, "progs/grenade2.mdl");
@@ -91,13 +91,13 @@ void (entity bowner) TeamFortress_SetBomb =
 	local float bombarmtime;
 
 	bowner.is_detpacking = 0;
-	if ((bowner.team_no != SBAR_PRINT))
+	if ((bowner.team_no != 2))
 	{
 		return;
 	}
 	if (!(bowner.weapons_carried & 131072))
 	{
-		sprint (bowner, SBAR_PRINT, "You do not have the Bomb!\n");
+		sprint (bowner, 2, "You do not have the Bomb!\n");
 		return;
 	}
 	at_spot = findradius (bowner.origin, _A);
@@ -105,7 +105,7 @@ void (entity bowner) TeamFortress_SetBomb =
 	{
 		if (((at_spot.classname == "player") && (bowner != at_spot)))
 		{
-			sprint (bowner, SBAR_PRINT, "You can't set a bomb on someone!\n");
+			sprint (bowner, 2, "You can't set a bomb on someone!\n");
 			bowner.is_detpacking = 0;
 			return;
 		}
@@ -113,7 +113,7 @@ void (entity bowner) TeamFortress_SetBomb =
 		{
 			if (((at_spot.mdl == "progs/turrbase.mdl") || (at_spot.mdl == "progs/turrgun.mdl")))
 			{
-				sprint (bowner, SBAR_PRINT, "You can't set a bomb on a sentry gun!\n");
+				sprint (bowner, 2, "You can't set a bomb on a sentry gun!\n");
 				bowner.is_detpacking = 0;
 				return;
 			}
@@ -121,7 +121,7 @@ void (entity bowner) TeamFortress_SetBomb =
 			{
 				if ((at_spot.mdl == "progs/disp.mdl"))
 				{
-					sprint (bowner, SBAR_PRINT, "You can't set a bomb on a dispenser!\n");
+					sprint (bowner, 2, "You can't set a bomb on a dispenser!\n");
 					bowner.is_detpacking = 0;
 					return;
 				}
@@ -129,7 +129,7 @@ void (entity bowner) TeamFortress_SetBomb =
 				{
 					if ((at_spot.classname == "detpack"))
 					{
-						sprint (bowner, SBAR_PRINT, "Bombs can't be stacked!\n");
+						sprint (bowner, 2, "Bombs can't be stacked!\n");
 						bowner.is_detpacking = 0;
 						return;
 					}
@@ -140,13 +140,13 @@ void (entity bowner) TeamFortress_SetBomb =
 	}
 	if (!(bowner.flags & 512))
 	{
-		sprint (bowner, SBAR_PRINT, "You can't set the bomb in the air!\n");
+		sprint (bowner, 2, "You can't set the bomb in the air!\n");
 		bowner.is_detpacking = 0;
 		return;
 	}
 	if (!practice)
 	{
-		bowner.ammo_detpack = (bowner.ammo_detpack - SBAR_GRENS);
+		bowner.ammo_detpack = (bowner.ammo_detpack - 1);
 	}
 	bowner.immune_to_check = (time + 5);
 	bowner.tfstate = (bowner.tfstate | 65536);
@@ -166,12 +166,12 @@ void (entity bowner) TeamFortress_SetBomb =
 	}
 	stimer = ftos (timer);
 	bombarmtime = stof (infokey (world, "bombarmtime"));
-	if (((bombarmtime < SBAR_GRENS) || (bombarmtime > enter)))
+	if (((bombarmtime < 1) || (bombarmtime > enter)))
 	{
 		bombarmtime = AS_MELEE;
 	}
 	bowner.pausetime = (time + bombarmtime);
-	sprint (bowner, SBAR_PRINT, "Setting Bomb...\n");
+	sprint (bowner, 2, "Setting Bomb...\n");
 	newmis = spawn ();
 	newmis.owner = bowner;
 	newmis.classname = "timer";
@@ -189,7 +189,7 @@ void (float timer) TeamFortress_SetDetpack =
 
 	if (tfstrike)
 	{
-		self.is_detpacking = SBAR_GRENS;
+		self.is_detpacking = 1;
 		return;
 	}
 	self.impulse = 0;
@@ -200,7 +200,7 @@ void (float timer) TeamFortress_SetDetpack =
 	}
 	if ((self.ammo_detpack <= 0))
 	{
-		sprint (self, SBAR_PRINT, "You have no detpacks left!\n");
+		sprint (self, 2, "You have no detpacks left!\n");
 		return;
 	}
 	at_spot = findradius (self.origin, _A);
@@ -208,28 +208,28 @@ void (float timer) TeamFortress_SetDetpack =
 	{
 		if (((at_spot.classname == "player") && (self != at_spot)))
 		{
-			sprint (self, SBAR_PRINT, "You can't set a detpack on someone!\n");
+			sprint (self, 2, "You can't set a detpack on someone!\n");
 			return;
 		}
 		else
 		{
 			if (((at_spot.mdl == "progs/turrbase.mdl") || (at_spot.mdl == "progs/turrgun.mdl")))
 			{
-				sprint (self, SBAR_PRINT, "You can't set a detpack on a sentry gun!\n");
+				sprint (self, 2, "You can't set a detpack on a sentry gun!\n");
 				return;
 			}
 			else
 			{
 				if ((at_spot.mdl == "progs/disp.mdl"))
 				{
-					sprint (self, SBAR_PRINT, "You can't set a detpack on a dispenser!\n");
+					sprint (self, 2, "You can't set a detpack on a dispenser!\n");
 					return;
 				}
 				else
 				{
 					if ((at_spot.classname == "detpack"))
 					{
-						sprint (self, SBAR_PRINT, "Detpacks can't be stacked!\n");
+						sprint (self, 2, "Detpacks can't be stacked!\n");
 						return;
 					}
 				}
@@ -239,7 +239,7 @@ void (float timer) TeamFortress_SetDetpack =
 	}
 	if (!(self.flags & 512))
 	{
-		sprint (self, SBAR_PRINT, "You can't set detpacks in the air!\n");
+		sprint (self, 2, "You can't set detpacks in the air!\n");
 		return;
 	}
 	te = find (world, classname, "detpack");
@@ -247,20 +247,20 @@ void (float timer) TeamFortress_SetDetpack =
 	{
 		if ((te.owner == self))
 		{
-			sprint (self, SBAR_PRINT, "You can only have 1 detpack active at a time.\n");
+			sprint (self, 2, "You can only have 1 detpack active at a time.\n");
 			return;
 		}
 		te = find (te, classname, "detpack");
 	}
 	if ((timer < 5))
 	{
-		sprint (self, SBAR_PRINT, "You can't set detpacks for less than 5 seconds.\n");
+		sprint (self, 2, "You can't set detpacks for less than 5 seconds.\n");
 		return;
 	}
-	self.is_detpacking = SBAR_GRENS;
+	self.is_detpacking = 1;
 	if (!practice)
 	{
-		self.ammo_detpack = (self.ammo_detpack - SBAR_GRENS);
+		self.ammo_detpack = (self.ammo_detpack - 1);
 	}
 	self.immune_to_check = (time + 5);
 	self.tfstate = (self.tfstate | 65536);
@@ -275,9 +275,9 @@ void (float timer) TeamFortress_SetDetpack =
 	}
 	stimer = ftos (timer);
 	self.pausetime = (time + AS_MELEE);
-	sprint (self, SBAR_PRINT, "Setting detpack for ");
-	sprint (self, SBAR_PRINT, stimer);
-	sprint (self, SBAR_PRINT, " seconds...\n");
+	sprint (self, 2, "Setting detpack for ");
+	sprint (self, 2, stimer);
+	sprint (self, 2, " seconds...\n");
 	newmis = spawn ();
 	newmis.owner = self;
 	newmis.classname = "timer";
@@ -301,8 +301,8 @@ void () TeamFortress_DetpackStop =
 	{
 		return;
 	}
-	sprint (self, SBAR_PRINT, "Detpack retrieved.\n");
-	self.ammo_detpack = (self.ammo_detpack + SBAR_GRENS);
+	sprint (self, 2, "Detpack retrieved.\n");
+	self.ammo_detpack = (self.ammo_detpack + 1);
 	dremove (detpack_timer);
 	self.tfstate = (self.tfstate - (self.tfstate & 65536));
 	self.current_weapon = self.weapon;
@@ -334,11 +334,11 @@ void () TeamFortress_DetpackSet =
 	st = infokey (world, "soliddet");
 	if ((st == "off"))
 	{
-		newmis.solid = SBAR_GRENS;
+		newmis.solid = 1;
 	}
 	else
 	{
-		newmis.solid = SBAR_PRINT;
+		newmis.solid = 2;
 	}
 	newmis.classname = "detpack";
 	newmis.flags = 256;
@@ -354,14 +354,14 @@ void () TeamFortress_DetpackSet =
 	countd = spawn ();
 	newmis.linked_list = countd;
 	countd.think = TeamFortress_DetpackCountDown;
-	countd.health = (self.health - SBAR_GRENS);
+	countd.health = (self.health - 1);
 	countd.owner = self.owner;
 	countd.classname = "countdown_timer";
 	countd.enemy = newmis;
 	newmis.oldenemy = countd;
 	if ((self.health <= 255))
 	{
-		countd.nextthink = (time + SBAR_GRENS);
+		countd.nextthink = (time + 1);
 	}
 	else
 	{
@@ -374,13 +374,13 @@ void () TeamFortress_DetpackSet =
 	{
 		newmis.targetname = self.owner.target;
 		self.owner.target = string_null;
-		bprint (SBAR_PRINT, "The Bomb has been planted!\n");
-		sound (self.owner, SBAR_PRINT, "speech/bombpl.wav", SBAR_GRENS, 0);
+		bprint (2, "The Bomb has been planted!\n");
+		sound (self.owner, 2, "speech/bombpl.wav", 1, 0);
 	}
 	else
 	{
-		sound (self.owner, SBAR_PRINT, "doors/medtry.wav", SBAR_GRENS, SBAR_GRENS);
-		sprint (self.owner, SBAR_PRINT, "Detpack set!\n");
+		sound (self.owner, 2, "doors/medtry.wav", 1, 1);
+		sprint (self.owner, 2, "Detpack set!\n");
 	}
 	dremove (self);
 };
@@ -393,8 +393,8 @@ void () TeamFortress_DetpackExplode =
 	local entity te;
 	local vector org;
 
-	bprint (SBAR_GRENS, "FIRE IN THE HOLE!\n");
-	sound (self, SBAR_GRENS, "weapons/detpack.wav", SBAR_GRENS, 0);
+	bprint (1, "FIRE IN THE HOLE!\n");
+	sound (self, 1, "weapons/detpack.wav", 1, 0);
 	pos = pointcontents (self.origin);
 	if ((((pos != -2) && (pos != -6)) && !self.owner.has_disconnected))
 	{
@@ -404,14 +404,14 @@ void () TeamFortress_DetpackExplode =
 		{
 			if ((head.classname == "info_tfgoal"))
 			{
-				if (((head.goal_activation & SBAR_PRINT) && (head.search_time == 0)))
+				if (((head.goal_activation & 2) && (head.search_time == 0)))
 				{
-					traceline (self.origin, head.origin, SBAR_GRENS, self);
-					if ((trace_fraction == SBAR_GRENS))
+					traceline (self.origin, head.origin, 1, self);
+					if ((trace_fraction == 1))
 					{
 						if (Activated (head, self.owner))
 						{
-							DoResults (head, self.owner, SBAR_GRENS);
+							DoResults (head, self.owner, 1);
 						}
 						else
 						{
@@ -442,13 +442,13 @@ void () TeamFortress_DetpackExplode =
 					{
 						if (tfstrike)
 						{
-							TF_T_Damage (head, self, self.owner, (points * SBAR_PRINT), SBAR_PRINT, AS_MISSILE);
+							TF_T_Damage (head, self, self.owner, (points * 2), 2, AS_MISSILE);
 						}
 						else
 						{
 							if (CanDamage (head, self))
 							{
-								TF_T_Damage (head, self, self.owner, (points * SBAR_PRINT), SBAR_PRINT, AS_MISSILE);
+								TF_T_Damage (head, self, self.owner, (points * 2), 2, AS_MISSILE);
 							}
 						}
 					}
@@ -484,13 +484,13 @@ void () TeamFortress_DetpackExplode =
 		WriteCoord (AS_MISSILE, self.origin_x);
 		WriteCoord (AS_MISSILE, self.origin_y);
 		WriteCoord (AS_MISSILE, self.origin_z);
-		multicast (self.origin, SBAR_GRENS);
+		multicast (self.origin, 1);
 	}
 	else
 	{
-		sprint (self.owner, SBAR_PRINT, "Your detpack fizzled out.\n");
+		sprint (self.owner, 2, "Your detpack fizzled out.\n");
 	}
-	if ((self.weaponmode == SBAR_GRENS))
+	if ((self.weaponmode == 1))
 	{
 		TeamFortress_SetSpeed (self.enemy);
 		dremove (self.oldenemy);
@@ -514,14 +514,14 @@ void () TeamFortress_DetpackTouch =
 	}
 	if (!tfstrike)
 	{
-		if ((other.playerclass != SBAR_GRENS))
+		if ((other.playerclass != 1))
 		{
 			return;
 		}
 	}
 	else
 	{
-		if ((!other.playerclass || (other.team_no == SBAR_PRINT)))
+		if ((!other.playerclass || (other.team_no == 2)))
 		{
 			return;
 		}
@@ -530,7 +530,7 @@ void () TeamFortress_DetpackTouch =
 	{
 		return;
 	}
-	if ((self.weaponmode == SBAR_GRENS))
+	if ((self.weaponmode == 1))
 	{
 		return;
 	}
@@ -541,16 +541,16 @@ void () TeamFortress_DetpackTouch =
 	makevectors (other.v_angle);
 	source = (other.origin + '0 0 16');
 	traceline (source, (source + (v_forward * 64)), 0, other);
-	if ((self.solid == SBAR_PRINT))
+	if ((self.solid == 2))
 	{
-		if (((trace_fraction == SBAR_GRENS) || (trace_ent != self)))
+		if (((trace_fraction == 1) || (trace_ent != self)))
 		{
 			return;
 		}
 	}
 	else
 	{
-		if ((trace_fraction == SBAR_GRENS))
+		if ((trace_fraction == 1))
 		{
 			return;
 		}
@@ -569,17 +569,17 @@ void () TeamFortress_DetpackTouch =
 		{
 			defusetime = 8;
 		}
-		disarm.nextthink = (time + SBAR_GRENS);
+		disarm.nextthink = (time + 1);
 		disarm.weapon = defusetime;
-		sprint (other, SBAR_PRINT, "Defusing Bomb...\n");
+		sprint (other, 2, "Defusing Bomb...\n");
 	}
 	else
 	{
 		disarm.nextthink = (time + AS_MELEE);
-		sprint (other, SBAR_PRINT, "Disarming detpack...\n");
+		sprint (other, 2, "Disarming detpack...\n");
 	}
 	disarm.think = TeamFortress_DetpackDisarm;
-	self.weaponmode = SBAR_GRENS;
+	self.weaponmode = 1;
 	self.enemy = other;
 	self.observer_list = disarm;
 };
@@ -597,25 +597,25 @@ void () TeamFortress_DetpackDisarm =
 		{
 			ftos (self.weapon);
 			CenterPrint3 (self.owner, "Defusing Bomb in ", ftos (self.weapon), " second(s)\n");
-			self.weapon = (self.weapon - SBAR_GRENS);
-			self.nextthink = (time + SBAR_GRENS);
+			self.weapon = (self.weapon - 1);
+			self.nextthink = (time + 1);
 			return;
 		}
-		bprint (SBAR_GRENS, self.enemy.owner.netname);
-		bprint (SBAR_GRENS, "'s bomb was defused by ");
-		bprint (SBAR_GRENS, self.owner.netname);
-		bprint (SBAR_GRENS, "\n");
+		bprint (1, self.enemy.owner.netname);
+		bprint (1, "'s bomb was defused by ");
+		bprint (1, self.owner.netname);
+		bprint (1, "\n");
 		tfs_winner = self.owner.team_no;
 	}
 	else
 	{
-		bprint (SBAR_GRENS, self.enemy.owner.netname);
-		bprint (SBAR_GRENS, "'s detpack was defused by ");
-		bprint (SBAR_GRENS, self.owner.netname);
-		bprint (SBAR_GRENS, "\n");
+		bprint (1, self.enemy.owner.netname);
+		bprint (1, "'s detpack was defused by ");
+		bprint (1, self.owner.netname);
+		bprint (1, "\n");
 	}
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 65536));
-	TF_AddFrags (self.owner, SBAR_GRENS, 0);
+	TF_AddFrags (self.owner, 1, 0);
 	TeamFortress_SetSpeed (self.owner);
 	dremove (self.enemy.oldenemy);
 	dremove (self.enemy);
@@ -628,20 +628,20 @@ void () TeamFortress_DetpackCountDown =
 
 	cd = ftos (self.health);
 	CheckBelowBuilding (self.enemy);
-	self.nextthink = (time + SBAR_GRENS);
-	self.health = (self.health - SBAR_GRENS);
+	self.nextthink = (time + 1);
+	self.health = (self.health - 1);
 	if ((self.health < enter))
 	{
-		sprint (self.owner, SBAR_PRINT, cd);
-		sprint (self.owner, SBAR_PRINT, "...\n");
+		sprint (self.owner, 2, cd);
+		sprint (self.owner, 2, "...\n");
 		if (((self.health < 5) && (self.has_disconnected == 0)))
 		{
-			sound (self.enemy, SBAR_PRINT, "doors/baseuse.wav", SBAR_GRENS, SBAR_GRENS);
-			self.has_disconnected = SBAR_GRENS;
+			sound (self.enemy, 2, "doors/baseuse.wav", 1, 1);
+			self.has_disconnected = 1;
 		}
 		if (((self.health < 5) && (self.enemy.skin == 0)))
 		{
-			self.enemy.skin = SBAR_GRENS;
+			self.enemy.skin = 1;
 		}
 		else
 		{

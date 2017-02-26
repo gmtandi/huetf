@@ -10,15 +10,15 @@ void () info_notnull =
 
 void () light_use =
 {
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		lightstyle (self.style, "m");
-		self.spawnflags = (self.spawnflags - SBAR_GRENS);
+		self.spawnflags = (self.spawnflags - 1);
 	}
 	else
 	{
 		lightstyle (self.style, "a");
-		self.spawnflags = (self.spawnflags + SBAR_GRENS);
+		self.spawnflags = (self.spawnflags + 1);
 	}
 };
 
@@ -37,7 +37,7 @@ void () light =
 	if ((self.style >= space))
 	{
 		self.use = light_use;
-		if ((self.spawnflags & SBAR_GRENS))
+		if ((self.spawnflags & 1))
 		{
 			lightstyle (self.style, "a");
 		}
@@ -63,7 +63,7 @@ void () light_spot =
 	if ((self.style >= space))
 	{
 		self.use = light_use;
-		if ((self.spawnflags & SBAR_GRENS))
+		if ((self.spawnflags & 1))
 		{
 			lightstyle (self.style, "a");
 		}
@@ -89,7 +89,7 @@ void () light_environment =
 	if ((self.style >= space))
 	{
 		self.use = light_use;
-		if ((self.spawnflags & SBAR_GRENS))
+		if ((self.spawnflags & 1))
 		{
 			lightstyle (self.style, "a");
 		}
@@ -110,7 +110,7 @@ void () light_fluoro =
 	if ((self.style >= space))
 	{
 		self.use = light_use;
-		if ((self.spawnflags & SBAR_GRENS))
+		if ((self.spawnflags & 1))
 		{
 			lightstyle (self.style, "a");
 		}
@@ -186,7 +186,7 @@ void () light_flame_large_yellow =
 	}
 	precache_model ("progs/flame2.mdl");
 	setmodel (self, "progs/flame2.mdl");
-	self.frame = SBAR_GRENS;
+	self.frame = 1;
 	FireAmbient ();
 	makestatic (self);
 };
@@ -247,7 +247,7 @@ void () misc_fireball =
 void () fire_fly =
 {
 	newmis = spawn ();
-	newmis.solid = SBAR_GRENS;
+	newmis.solid = 1;
 	newmis.movetype = 6;
 	newmis.velocity = '0 0 1000';
 	newmis.velocity_x = ((random () * _d) - _2);
@@ -268,7 +268,7 @@ void () fire_touch =
 {
 	if (other.takedamage)
 	{
-		TF_T_Damage (other, self, self, 20, 0, SBAR_240);
+		TF_T_Damage (other, self, self, 20, 0, 16);
 	}
 	dremove (self);
 };
@@ -283,7 +283,7 @@ void () barrel_explode =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, (self.origin_z + space));
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 	remove (self);
 };
 
@@ -296,7 +296,7 @@ void () misc_explobox =
 		dremove (self);
 		return;
 	}
-	self.solid = SBAR_PRINT;
+	self.solid = 2;
 	self.movetype = 0;
 	precache_model ("maps/b_explob.bsp");
 	setmodel (self, "maps/b_explob.bsp");
@@ -304,8 +304,8 @@ void () misc_explobox =
 	precache_sound ("weapons/r_exp3.wav");
 	self.health = 20;
 	self.th_die = barrel_explode;
-	self.takedamage = SBAR_PRINT;
-	self.origin_z = (self.origin_z + SBAR_PRINT);
+	self.takedamage = 2;
+	self.origin_z = (self.origin_z + 2);
 	oldz = self.origin_z;
 	droptofloor ();
 	if (((oldz - self.origin_z) > 250))
@@ -326,7 +326,7 @@ void () misc_explobox2 =
 		dremove (self);
 		return;
 	}
-	self.solid = SBAR_PRINT;
+	self.solid = 2;
 	self.movetype = 0;
 	precache_model2 ("maps/b_exbox2.bsp");
 	setmodel (self, "maps/b_exbox2.bsp");
@@ -334,8 +334,8 @@ void () misc_explobox2 =
 	precache_sound ("weapons/r_exp3.wav");
 	self.health = 20;
 	self.th_die = barrel_explode;
-	self.takedamage = SBAR_PRINT;
-	self.origin_z = (self.origin_z + SBAR_PRINT);
+	self.takedamage = 2;
+	self.origin_z = (self.origin_z + 2);
 	oldz = self.origin_z;
 	droptofloor ();
 	if (((oldz - self.origin_z) > 250))
@@ -361,7 +361,7 @@ void () Laser_Touch =
 		dremove (self);
 		return;
 	}
-	sound (self, SBAR_GRENS, "enforcer/enfstop.wav", SBAR_GRENS, AS_MELEE);
+	sound (self, 1, "enforcer/enfstop.wav", 1, AS_MELEE);
 	org = (self.origin - (8 * normalize (self.velocity)));
 	if (other.health)
 	{
@@ -371,24 +371,24 @@ void () Laser_Touch =
 	else
 	{
 		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, SBAR_PRINT);
+		WriteByte (AS_MISSILE, 2);
 		WriteByte (AS_MISSILE, 5);
 		WriteCoord (AS_MISSILE, org_x);
 		WriteCoord (AS_MISSILE, org_y);
 		WriteCoord (AS_MISSILE, org_z);
-		multicast (org, SBAR_PRINT);
+		multicast (org, 2);
 	}
 	dremove (self);
 };
 
 void (vector org, vector vec) LaunchLaser =
 {
-	sound (self, SBAR_GRENS, "enforcer/enfire.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "enforcer/enfire.wav", 1, 1);
 	vec = normalize (vec);
 	newmis = spawn ();
 	newmis.owner = self;
 	newmis.movetype = 5;
-	newmis.solid = SBAR_PRINT;
+	newmis.solid = 2;
 	newmis.effects = 8;
 	setmodel (newmis, "progs/laser.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
@@ -402,17 +402,17 @@ void (vector org, vector vec) LaunchLaser =
 
 void () spikeshooter_use =
 {
-	if ((self.spawnflags & SBAR_PRINT))
+	if ((self.spawnflags & 2))
 	{
-		sound (self, SBAR_PRINT, "enforcer/enfire.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "enforcer/enfire.wav", 1, 1);
 		LaunchLaser (self.origin, self.movedir);
 	}
 	else
 	{
-		sound (self, SBAR_PRINT, "weapons/spike2.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "weapons/spike2.wav", 1, 1);
 		launch_spike (self.origin, self.movedir);
 		newmis.velocity = (self.movedir * 500);
-		if ((self.spawnflags & SBAR_GRENS))
+		if ((self.spawnflags & 1))
 		{
 			newmis.touch = superspike_touch;
 		}
@@ -435,7 +435,7 @@ void () trap_spikeshooter =
 	}
 	SetMovedir ();
 	self.use = spikeshooter_use;
-	if ((self.spawnflags & SBAR_PRINT))
+	if ((self.spawnflags & 2))
 	{
 		precache_model2 ("progs/laser.mdl");
 		precache_sound2 ("enforcer/enfire.wav");
@@ -457,7 +457,7 @@ void () trap_shooter =
 	trap_spikeshooter ();
 	if ((self.wait == 0))
 	{
-		self.wait = SBAR_GRENS;
+		self.wait = 1;
 	}
 	self.nextthink = ((self.nextthink + self.wait) + self.ltime);
 	self.think = shooter_think;
@@ -506,10 +506,10 @@ void () bubble_split =
 	newmis.think = bubble_bob;
 	newmis.touch = bubble_remove;
 	newmis.classname = "bubble";
-	newmis.frame = SBAR_GRENS;
+	newmis.frame = 1;
 	newmis.cnt = enter;
 	setsize (newmis, '-8 -8 -8', '8 8 8');
-	self.frame = SBAR_GRENS;
+	self.frame = 1;
 	self.cnt = enter;
 	if ((self.waterlevel != AS_MELEE))
 	{
@@ -534,7 +534,7 @@ void () bubble_bob =
 	local vector vtmp1;
 	local vector modi;
 
-	self.cnt = (self.cnt + SBAR_GRENS);
+	self.cnt = (self.cnt + 1);
 	if ((self.cnt == AS_MISSILE))
 	{
 		bubble_split ();
@@ -592,7 +592,7 @@ void () viewthing =
 
 void () func_wall_use =
 {
-	self.frame = (SBAR_GRENS - self.frame);
+	self.frame = (1 - self.frame);
 };
 
 void () func_wall =
@@ -667,7 +667,7 @@ void () ambient_suck_wind =
 		return;
 	}
 	precache_sound ("ambience/suck1.wav");
-	ambientsound (self.origin, "ambience/suck1.wav", SBAR_GRENS, AS_MELEE);
+	ambientsound (self.origin, "ambience/suck1.wav", 1, AS_MELEE);
 };
 
 void () ambient_drone =
@@ -689,7 +689,7 @@ void () ambient_flouro_buzz =
 		return;
 	}
 	precache_sound ("ambience/buzz1.wav");
-	ambientsound (self.origin, "ambience/buzz1.wav", SBAR_GRENS, AS_MELEE);
+	ambientsound (self.origin, "ambience/buzz1.wav", 1, AS_MELEE);
 };
 
 void () ambient_drip =
@@ -711,7 +711,7 @@ void () ambient_comp_hum =
 		return;
 	}
 	precache_sound ("ambience/comp1.wav");
-	ambientsound (self.origin, "ambience/comp1.wav", SBAR_GRENS, AS_MELEE);
+	ambientsound (self.origin, "ambience/comp1.wav", 1, AS_MELEE);
 };
 
 void () ambient_thunder =
@@ -761,13 +761,13 @@ void () ambient_swamp2 =
 void () noise_think =
 {
 	self.nextthink = (time + 0.5);
-	sound (self, SBAR_GRENS, "enforcer/enfire.wav", SBAR_GRENS, SBAR_GRENS);
-	sound (self, SBAR_PRINT, "enforcer/enfstop.wav", SBAR_GRENS, SBAR_GRENS);
-	sound (self, AS_MELEE, "enforcer/sight1.wav", SBAR_GRENS, SBAR_GRENS);
-	sound (self, AS_MISSILE, "enforcer/sight2.wav", SBAR_GRENS, SBAR_GRENS);
-	sound (self, 5, "enforcer/sight3.wav", SBAR_GRENS, SBAR_GRENS);
-	sound (self, 6, "enforcer/sight4.wav", SBAR_GRENS, SBAR_GRENS);
-	sound (self, 7, "enforcer/pain1.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "enforcer/enfire.wav", 1, 1);
+	sound (self, 2, "enforcer/enfstop.wav", 1, 1);
+	sound (self, AS_MELEE, "enforcer/sight1.wav", 1, 1);
+	sound (self, AS_MISSILE, "enforcer/sight2.wav", 1, 1);
+	sound (self, 5, "enforcer/sight3.wav", 1, 1);
+	sound (self, 6, "enforcer/sight4.wav", 1, 1);
+	sound (self, 7, "enforcer/pain1.wav", 1, 1);
 };
 
 void () misc_noisemaker =

@@ -600,6 +600,7 @@ float SBAR_768    = 80;
 float SBAR_GRENS    = 1;
 float SBAR_PRINT    = 2;
 
+
 float enter    = 10;
 float space    = 32;
 float quote    = 34;
@@ -690,11 +691,11 @@ void (entity te) dremove =
 		dprint ("***BUG BUG BUG BUG BUG BUG BUG BUG BUG BUG***\n");
 		return;
 	}
-	if ((te.is_removed == SBAR_GRENS))
+	if ((te.is_removed == 1))
 	{
 		return;
 	}
-	te.is_removed = SBAR_GRENS;
+	te.is_removed = 1;
 	remove (te);
 };
 
@@ -703,9 +704,9 @@ void () display_location =
 	local string st;
 
 	st = vtos (self.origin);
-	sprint3 (self, SBAR_PRINT, "Location : ", st, "\n");
+	sprint3 (self, 2, "Location : ", st, "\n");
 	st = vtos (self.angles);
-	sprint3 (self, SBAR_PRINT, "Angles   : ", st, "\n");
+	sprint3 (self, 2, "Angles   : ", st, "\n");
 };
 void () Status_StartWrite;
 void () Status_EndWrite;
@@ -753,11 +754,11 @@ void () RefreshStatusBar =
 	{
 		if (!self.ScannerOn)
 		{
-			if ((self.is_undercover != SBAR_PRINT))
+			if ((self.is_undercover != 2))
 			{
 				te = find (te, classname, "round");
 				WriteIntXX (te.cnt, COLOR_WHITE);
-				WriteByte (SBAR_GRENS, dperiod);
+				WriteByte (1, dperiod);
 				WriteIntXX (te.cnt2, COLOR_WHITE);
 				WriteSpace (AS_MISSILE);
 			}
@@ -780,26 +781,26 @@ void () RefreshStatusBar =
 		}
 		else
 		{
-			if ((self.playerclass == SBAR_GRENS))
+			if ((self.playerclass == 1))
 			{
 				te = find (world, netname, "scanner");
 				while (((te != world) && (te.owner != self)))
 				{
 					te = find (te, classname, "scanner");
 				}
-				if ((self.ScannerOn == SBAR_GRENS))
+				if ((self.ScannerOn == 1))
 				{
 					x = RANGE_MELEE;
 					if ((te.health > RANGE_MELEE))
 					{
-						if ((te.team_no == SBAR_GRENS))
+						if ((te.team_no == 1))
 						{
 							WriteStr ("Blue ");
 							x = 5;
 						}
 						else
 						{
-							if ((te.team_no == SBAR_PRINT))
+							if ((te.team_no == 2))
 							{
 								WriteStr ("Red ");
 								x = AS_MISSILE;
@@ -822,14 +823,14 @@ void () RefreshStatusBar =
 								}
 							}
 						}
-						if ((te.playerclass == SBAR_GRENS))
+						if ((te.playerclass == 1))
 						{
 							WriteStr ("Scout");
 							x = (x + 5);
 						}
 						else
 						{
-							if ((te.playerclass == SBAR_PRINT))
+							if ((te.playerclass == 2))
 							{
 								WriteStr ("Sniper");
 								x = (x + 6);
@@ -885,7 +886,7 @@ void () RefreshStatusBar =
 														}
 														else
 														{
-															if ((te.playerclass == SBAR_200))
+															if ((te.playerclass == 11))
 															{
 																WriteStr ("Civilian");
 																x = (x + 8);
@@ -945,7 +946,7 @@ void () RefreshStatusBar =
 					{
 						if (self.is_undercover)
 						{
-							if ((self.is_undercover == SBAR_PRINT))
+							if ((self.is_undercover == 2))
 							{
 								WriteStr ("going undercover");
 								WriteSpace (14);
@@ -953,14 +954,14 @@ void () RefreshStatusBar =
 							else
 							{
 								x = RANGE_MELEE;
-								if ((self.undercover_team == SBAR_GRENS))
+								if ((self.undercover_team == 1))
 								{
 									WriteStr ("Blue ");
 									x = 5;
 								}
 								else
 								{
-									if ((self.undercover_team == SBAR_PRINT))
+									if ((self.undercover_team == 2))
 									{
 										WriteStr ("Red ");
 										x = AS_MISSILE;
@@ -982,14 +983,14 @@ void () RefreshStatusBar =
 										}
 									}
 								}
-								if ((self.undercover_skin == SBAR_GRENS))
+								if ((self.undercover_skin == 1))
 								{
 									WriteStr ("Scout");
 									x = (x + 5);
 								}
 								else
 								{
-									if ((self.undercover_skin == SBAR_PRINT))
+									if ((self.undercover_skin == 2))
 									{
 										WriteStr ("Sniper");
 										x = (x + 6);
@@ -1064,8 +1065,8 @@ void () RefreshStatusBar =
 								}
 								WriteStr ("Sentry: ");
 								WriteIntXXX (te.health, COLOR_WHITE);
-								x = (x + SBAR_200);
-								if (!(self.sbar_type & SBAR_GRENS))
+								x = (x + 11);
+								if (!(self.sbar_type & 1))
 								{
 									if (((te.ammo_rockets == RANGE_MELEE) && (te.ammo_shells == RANGE_MELEE)))
 									{
@@ -1084,7 +1085,7 @@ void () RefreshStatusBar =
 											if ((!te.ammo_rockets && (te.weapon == AS_MELEE)))
 											{
 												WriteStr (" no rockets");
-												x = (x + SBAR_200);
+												x = (x + 11);
 											}
 											else
 											{
@@ -1099,18 +1100,18 @@ void () RefreshStatusBar =
 								}
 								else
 								{
-									WriteByte (SBAR_GRENS, slash);
+									WriteByte (1, slash);
 									WriteIntXXX (te.ammo_shells, COLOR_WHITE);
 									x = (x + AS_MISSILE);
 									if ((te.weapon == AS_MELEE))
 									{
-										WriteByte (SBAR_GRENS, slash);
+										WriteByte (1, slash);
 										WriteIntXX (te.ammo_rockets, COLOR_WHITE);
 										x = (x + AS_MELEE);
 									}
 								}
 							}
-							if ((self.has_dispenser && (self.sbar_type && SBAR_GRENS)))
+							if ((self.has_dispenser && (self.sbar_type && 1)))
 							{
 								newmis = find (world, classname, "building_dispenser");
 								while (((newmis != world) && (newmis.real_owner != self)))
@@ -1121,9 +1122,9 @@ void () RefreshStatusBar =
 								WriteIntXXX (newmis.health, COLOR_WHITE);
 								x = (x + 9);
 							}
-							if (((x >= RANGE_MELEE) && (x < SBAR_400)))
+							if (((x >= RANGE_MELEE) && (x < 35)))
 							{
-								WriteSpace ((SBAR_400 - x));
+								WriteSpace ((35 - x));
 							}
 						}
 						else
@@ -1140,8 +1141,8 @@ void () RefreshStatusBar =
 			}
 		}
 	}
-	WriteByte (SBAR_GRENS, enter);
-	if ((number_of_teams == SBAR_PRINT))
+	WriteByte (1, enter);
+	if ((number_of_teams == 2))
 	{
 		WriteStr("Blue:");
 		WriteIntXXXX (team1score, COLOR_WHITE);
@@ -1152,20 +1153,20 @@ void () RefreshStatusBar =
 	else
 	{
 		WriteSIntXXXX (team1frags);
-		WriteByte (SBAR_GRENS, slash);
+		WriteByte (1, slash);
 		WriteSIntXXXX (team2frags);
-		WriteByte (SBAR_GRENS, slash);
+		WriteByte (1, slash);
 		WriteSIntXXXX (team3frags);
-		WriteByte (SBAR_GRENS, slash);
+		WriteByte (1, slash);
 		WriteSIntXXXX (team4frags);
 	}
 		WriteStr(" \r\n Testando :)");
-	if ((self.playerclass == SBAR_200))
+	if ((self.playerclass == 11))
 	{
 		Status_EndWrite ();
 		return;
 	}
-	if (!(self.sbar_type & SBAR_GRENS))
+	if (!(self.sbar_type & 1))
 	{
 		if ((self.current_weapon == 128))
 		{
@@ -1179,11 +1180,11 @@ void () RefreshStatusBar =
 		{
 			if ((self.current_weapon == 256))
 			{
-				if (((SBAR_240 - self.reload_super_shotgun) > self.ammo_shells))
+				if (((16 - self.reload_super_shotgun) > self.ammo_shells))
 				{
-					self.reload_super_shotgun = (SBAR_240 - self.ammo_shells);
+					self.reload_super_shotgun = (16 - self.ammo_shells);
 				}
-				num = (SBAR_240 - self.reload_super_shotgun);
+				num = (16 - self.reload_super_shotgun);
 			}
 			else
 			{
@@ -1233,19 +1234,19 @@ void () Status_StartWrite =
 {
 	local float i;
 
-	if ((self.sbar_type & SBAR_PRINT))
+	if ((self.sbar_type & 2))
 	{
-		WriteByte (SBAR_GRENS, 8);
-		WriteByte (SBAR_GRENS, SBAR_PRINT);
+		WriteByte (1, 8);
+		WriteByte (1, 2);
 	}
 	else
 	{
-		WriteByte (SBAR_GRENS, 26);
+		WriteByte (1, 26);
 		i = (self.StatusBarRes + self.StatusBarSize);
 		while ((i > RANGE_MELEE))
 		{
-			WriteByte (SBAR_GRENS, enter);
-			i = (i - SBAR_GRENS);
+			WriteByte (1, enter);
+			i = (i - 1);
 		}
 	}
 };
@@ -1254,45 +1255,45 @@ void () Status_StartWrite =
 /*
 void (float f1, float f2, float f3) W3C =
 {
-	WriteByte (SBAR_GRENS, f1);
-	WriteByte (SBAR_GRENS, f2);
-	WriteByte (SBAR_GRENS, f3);
+	WriteByte (1, f1);
+	WriteByte (1, f2);
+	WriteByte (1, f3);
 };
 
 void (float f1, float f2, float f3, float f4) W4C =
 {
-	WriteShort (SBAR_GRENS, ((f2 * 256) + f1));
-	WriteShort (SBAR_GRENS, ((f4 * 256) + f3));
+	WriteShort (1, ((f2 * 256) + f1));
+	WriteShort (1, ((f4 * 256) + f3));
 };
 
 void (float f1, float f2, float f3, float f4, float f5) W5C =
 {
-	WriteShort (SBAR_GRENS, ((f2 * 256) + f1));
-	WriteShort (SBAR_GRENS, ((f4 * 256) + f3));
-	WriteByte (SBAR_GRENS, f5);
+	WriteShort (1, ((f2 * 256) + f1));
+	WriteShort (1, ((f4 * 256) + f3));
+	WriteByte (1, f5);
 };
 
 void (float f1, float f2, float f3, float f4, float f5, float f6) W6C =
 {
-	WriteShort (SBAR_GRENS, ((f2 * 256) + f1));
-	WriteShort (SBAR_GRENS, ((f4 * 256) + f3));
-	WriteShort (SBAR_GRENS, ((f6 * 256) + f5));
+	WriteShort (1, ((f2 * 256) + f1));
+	WriteShort (1, ((f4 * 256) + f3));
+	WriteShort (1, ((f6 * 256) + f5));
 };
 
 void (float f1, float f2, float f3, float f4, float f5, float f6, float f7) W7C =
 {
-	WriteShort (SBAR_GRENS, ((f2 * 256) + f1));
-	WriteShort (SBAR_GRENS, ((f4 * 256) + f3));
-	WriteShort (SBAR_GRENS, ((f6 * 256) + f5));
-	WriteByte (SBAR_GRENS, f7);
+	WriteShort (1, ((f2 * 256) + f1));
+	WriteShort (1, ((f4 * 256) + f3));
+	WriteShort (1, ((f6 * 256) + f5));
+	WriteByte (1, f7);
 };
 
 void (float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) W8C =
 {
-	WriteShort (SBAR_GRENS, ((f2 * 256) + f1));
-	WriteShort (SBAR_GRENS, ((f4 * 256) + f3));
-	WriteShort (SBAR_GRENS, ((f6 * 256) + f5));
-	WriteShort (SBAR_GRENS, ((f8 * 256) + f7));
+	WriteShort (1, ((f2 * 256) + f1));
+	WriteShort (1, ((f4 * 256) + f3));
+	WriteShort (1, ((f6 * 256) + f5));
+	WriteShort (1, ((f8 * 256) + f7));
 };
 */
 
@@ -1340,14 +1341,14 @@ void (float f, float c) WriteIntXX =
 	if ((f >= enter))
 	{
 		y = floor ((f / enter));
-		WriteByte (SBAR_GRENS, (y + c));
+		WriteByte (1, (y + c));
 		f = (f - (y * enter));
-		WriteByte (SBAR_GRENS, (f + c));
+		WriteByte (1, (f + c));
 	}
 	else
 	{
-		WriteByte (SBAR_GRENS, space);
-		WriteByte (SBAR_GRENS, (f + c));
+		WriteByte (1, space);
+		WriteByte (1, (f + c));
 	}
 };
 
@@ -1358,16 +1359,16 @@ void (float f, float c) WriteIntXXX =
 	if ((f >= _d))
 	{
 		y = floor ((f / _d));
-		WriteByte (SBAR_GRENS, (y + c));
+		WriteByte (1, (y + c));
 		f = (f - (y * _d));
 		y = floor ((f / enter));
-		WriteByte (SBAR_GRENS, (y + c));
+		WriteByte (1, (y + c));
 		f = (f - (y * enter));
-		WriteByte (SBAR_GRENS, (f + c));
+		WriteByte (1, (f + c));
 	}
 	else
 	{
-		WriteByte (SBAR_GRENS, space);
+		WriteByte (1, space);
 		WriteIntXX (f, c);
 	}
 };
@@ -1379,19 +1380,19 @@ void (float f, float c) WriteIntXXXX =
 	if ((f >= 1000))
 	{
 		y = floor ((f / 1000));
-		WriteByte (SBAR_GRENS, (y + c));
+		WriteByte (1, (y + c));
 		f = (f - (y * 1000));
 		y = floor ((f / _d));
-		WriteByte (SBAR_GRENS, (y + c));
+		WriteByte (1, (y + c));
 		f = (f - (y * _d));
 		y = floor ((f / enter));
-		WriteByte (SBAR_GRENS, (y + c));
+		WriteByte (1, (y + c));
 		f = (f - (y * enter));
-		WriteByte (SBAR_GRENS, (f + c));
+		WriteByte (1, (f + c));
 	}
 	else
 	{
-		WriteByte (SBAR_GRENS, space);
+		WriteByte (1, space);
 		WriteIntXXX (f, c);
 	}
 };
@@ -1413,42 +1414,42 @@ void (float f) WriteSIntXXXX =
 	f = (RANGE_MELEE - f);
 	if ((f > _c))
 	{
-		WriteByte (SBAR_GRENS, (minus + 128));
+		WriteByte (1, (minus + 128));
 		WriteIntXXX (i, COLOR_WHITE);
 		return;
 	}
 	if ((f > 9))
 	{
-		WriteByte (SBAR_GRENS, space);
-		WriteByte (SBAR_GRENS, (minus + 128));
+		WriteByte (1, space);
+		WriteByte (1, (minus + 128));
 		WriteIntXX (i, COLOR_WHITE);
 		return;
 	}
-	WriteByte (SBAR_GRENS, space);
-	WriteByte (SBAR_GRENS, minus);
-	WriteByte (SBAR_GRENS, (i + COLOR_WHITE));
-	WriteByte (SBAR_GRENS, space);
+	WriteByte (1, space);
+	WriteByte (1, minus);
+	WriteByte (1, (i + COLOR_WHITE));
+	WriteByte (1, space);
 };
 
 void (float i) WriteSpace =
 {
 	while (i)
 	{
-		WriteByte (SBAR_GRENS, space);
-		i = (i - SBAR_GRENS);
+		WriteByte (1, space);
+		i = (i - 1);
 	}
 };
 
 void () Status_EndWrite =
 {
-	WriteByte (SBAR_GRENS, RANGE_MELEE);
+	WriteByte (1, RANGE_MELEE);
 };
 
 void () StatusBar_On =
 {
 	if (!self.StatusBarSize)
 	{
-		self.StatusRefreshTime = (time + SBAR_600);
+		self.StatusRefreshTime = (time + 60);
 	}
 	else
 	{
@@ -1461,11 +1462,11 @@ void () StatusBar_On =
 
 float (float f) Impulse2Res =
 {
-	if ((f == SBAR_GRENS))
+	if ((f == 1))
 	{
 		return (SBAR_200);
 	}
-	if ((f == SBAR_PRINT))
+	if ((f == 2))
 	{
 		return (SBAR_240);
 	}
@@ -1479,7 +1480,7 @@ float (float f) Impulse2Res =
 	}
 	if ((f == 5))
 	{
-		return (SBAR_384);
+		return (33);
 	}
 	if ((f == 6))
 	{
@@ -1510,55 +1511,55 @@ void (float res) StatusRes =
 	self.StatusBarRes = Impulse2Res (res);
 	if ((res == 9))
 	{
-		sprint (self, SBAR_PRINT, "Status Bar Res set to 1024x768.\n");
+		sprint (self, 2, "Status Bar Res set to 1024x768.\n");
 	}
 	else
 	{
 		if ((res == 8))
 		{
-			sprint (self, SBAR_PRINT, "Status Bar Res set to 800x600.\n");
+			sprint (self, 2, "Status Bar Res set to 800x600.\n");
 		}
 		else
 		{
 			if ((res == 7))
 			{
-				sprint (self, SBAR_PRINT, "Status Bar Res set to 640x480.\n");
+				sprint (self, 2, "Status Bar Res set to 640x480.\n");
 			}
 			else
 			{
 				if ((res == 6))
 				{
-					sprint (self, SBAR_PRINT, "Status Bar Res set to 640x400.\n");
+					sprint (self, 2, "Status Bar Res set to 640x400.\n");
 				}
 				else
 				{
 					if ((res == 5))
 					{
-						sprint (self, SBAR_PRINT, "Status Bar Res set to 512x384.\n");
+						sprint (self, 2, "Status Bar Res set to 512x384.\n");
 					}
 					else
 					{
 						if ((res == AS_MISSILE))
 						{
-							sprint (self, SBAR_PRINT, "Status Bar Res set to 320x350.\n");
+							sprint (self, 2, "Status Bar Res set to 320x350.\n");
 						}
 						else
 						{
 							if ((res == AS_MELEE))
 							{
-								sprint (self, SBAR_PRINT, "Status Bar Res set to 400x300.\n");
+								sprint (self, 2, "Status Bar Res set to 400x300.\n");
 							}
 							else
 							{
-								if ((res == SBAR_PRINT))
+								if ((res == 2))
 								{
-									sprint (self, SBAR_PRINT, "Status Bar Res set to 320x240.\n");
+									sprint (self, 2, "Status Bar Res set to 320x240.\n");
 								}
 								else
 								{
-									if ((res == SBAR_GRENS))
+									if ((res == 1))
 									{
-										sprint (self, SBAR_PRINT, "Status Bar Res set to 320x200.\n");
+										sprint (self, 2, "Status Bar Res set to 320x200.\n");
 									}
 								}
 							}
@@ -1590,7 +1591,7 @@ void (entity pl, string s1, string s2, string s3) CenterPrint3 =
 
 string (float type) Status_GrenTypeToString =
 {
-	if ((type == SBAR_PRINT))
+	if ((type == 2))
 	{
 		return ("Concussion grenade");
 	}
@@ -1631,11 +1632,11 @@ string (float type) Status_GrenTypeToString =
 
 string (float tm) Status_TeamNumToTeamString =
 {
-	if ((tm == SBAR_GRENS))
+	if ((tm == 1))
 	{
 		return ("blue");
 	}
-	if ((tm == SBAR_PRINT))
+	if ((tm == 2))
 	{
 		return ("red");
 	}
@@ -1707,7 +1708,7 @@ void () ResetMenu =
 		self.StatusRefreshTime = (time + 0.1);
 	}
 	self.menu_count = 25;
-	self.current_menu = SBAR_GRENS;
+	self.current_menu = 1;
 };
 
 void () Player_Menu =
@@ -1718,7 +1719,7 @@ void () Player_Menu =
 	}
 	else
 	{
-		self.menu_count = (self.menu_count + SBAR_GRENS);
+		self.menu_count = (self.menu_count + 1);
 		return;
 	}
 	if ((self.current_menu == 5))
@@ -1726,11 +1727,11 @@ void () Player_Menu =
 		Menu_Intro ();
 		if ((self.menu_displaytime > 6))
 		{
-			self.current_menu = SBAR_GRENS;
+			self.current_menu = 1;
 		}
 		else
 		{
-			self.menu_displaytime = (self.menu_displaytime + SBAR_GRENS);
+			self.menu_displaytime = (self.menu_displaytime + 1);
 		}
 	}
 	else
@@ -1741,11 +1742,11 @@ void () Player_Menu =
 			if ((self.menu_displaytime > 8))
 			{
 				Menu_StuffClassHelp ();
-				self.current_menu = SBAR_GRENS;
+				self.current_menu = 1;
 			}
 			else
 			{
-				self.menu_displaytime = (self.menu_displaytime + SBAR_GRENS);
+				self.menu_displaytime = (self.menu_displaytime + 1);
 			}
 		}
 		else
@@ -1756,11 +1757,11 @@ void () Player_Menu =
 				if ((self.menu_displaytime > 5))
 				{
 					Menu_StuffClassHelp ();
-					self.current_menu = SBAR_GRENS;
+					self.current_menu = 1;
 				}
 				else
 				{
-					self.menu_displaytime = (self.menu_displaytime + SBAR_GRENS);
+					self.menu_displaytime = (self.menu_displaytime + 1);
 				}
 			}
 			else
@@ -1795,7 +1796,7 @@ void () Player_Menu =
 								}
 								else
 								{
-									if ((self.current_menu == SBAR_240))
+									if ((self.current_menu == 16))
 									{
 										Menu_EngineerFix_Dispenser ();
 									}
@@ -1816,7 +1817,7 @@ void () Player_Menu =
 												if ((self.current_menu == 8))
 												{
 													Menu_RepeatHelp ();
-													self.current_menu = SBAR_GRENS;
+													self.current_menu = 1;
 												}
 												else
 												{
@@ -1826,7 +1827,7 @@ void () Player_Menu =
 													}
 													else
 													{
-														if ((self.current_menu == SBAR_PRINT))
+														if ((self.current_menu == 2))
 														{
 															Menu_Team ();
 														}
@@ -1834,11 +1835,11 @@ void () Player_Menu =
 														{
 															if (((self.team_no == RANGE_MELEE) && teamplay))
 															{
-																if ((round_over >= SBAR_PRINT))
+																if ((round_over >= 2))
 																{
 																	return;
 																}
-																self.current_menu = SBAR_PRINT;
+																self.current_menu = 2;
 																Menu_Team ();
 															}
 															else
@@ -1881,7 +1882,7 @@ void () Player_Menu =
 void (float menu_no) DisplayMenu =
 {
 	self.current_menu = menu_no;
-	if ((menu_no == SBAR_PRINT))
+	if ((menu_no == 2))
 	{
 		Menu_Team ();
 	}
@@ -1909,13 +1910,13 @@ void () Menu_Team =
 		CenterPrint (self, team_menu_string);
 		return;
 	}
-	if ((CTF_Map == SBAR_GRENS))
+	if ((CTF_Map == 1))
 	{
 		CenterPrint (self, "žžž Choose Your Team žžž\n\n“‘ Blue Team  \n”‘ Red Team   \n\n\n");
 	}
 	else
 	{
-		if ((number_of_teams == SBAR_PRINT))
+		if ((number_of_teams == 2))
 		{
 			if (tfstrike)
 			{
@@ -1976,7 +1977,7 @@ void () Menu_Class =
 	AD = find (world, classname, "info_tfdetect");
 	if (AD)
 	{
-		if ((self.team_no == SBAR_GRENS))
+		if ((self.team_no == 1))
 		{
 			if ((AD.noise1 != string_null))
 			{
@@ -1986,7 +1987,7 @@ void () Menu_Class =
 		}
 		else
 		{
-			if ((self.team_no == SBAR_PRINT))
+			if ((self.team_no == 2))
 			{
 				if ((AD.noise2 != string_null))
 				{
@@ -2020,7 +2021,7 @@ void () Menu_Class =
 	}
 	if (TeamFortress_TeamIsCivilian (self.team_no))
 	{
-		if ((tfvsdm == SBAR_GRENS))
+		if ((tfvsdm == 1))
 		{
 			CenterPrint (self, "Your team can only be Quake Soldiers.\n");
 		}
@@ -2040,33 +2041,33 @@ void (float inp) Menu_Class_Input =
 	local float new_class;
 	local string st;
 
-	if (((inp > SBAR_200) || (inp < SBAR_GRENS)))
+	if (((inp > 11) || (inp < 1)))
 	{
 		return;
 	}
 	if (self.playerclass)
 	{
-		new_class = SBAR_GRENS;
+		new_class = 1;
 	}
 	TeamFortress_ChangeClass (inp);
 	ResetMenu ();
-	if (((self.playerclass && (new_class != SBAR_GRENS)) && (self.playerclass != SBAR_200)))
+	if (((self.playerclass && (new_class != 1)) && (self.playerclass != 11)))
 	{
-		if (SBAR_GRENS)
+		if (1)
 		{
 			st = infokey (self, "ch");
 			if ((st == string_null))
 			{
 				st = infokey (self, "classhelp");
 			}
-			if (((st != "off") && !(self.tfkey & SBAR_GRENS)))
+			if (((st != "off") && !(self.tfkey & 1)))
 			{
 				self.current_menu = 6;
 			}
 		}
 		else
 		{
-			self.current_menu = SBAR_GRENS;
+			self.current_menu = 1;
 		}
 	}
 	self.menu_displaytime = RANGE_MELEE;
@@ -2104,7 +2105,7 @@ void (float inp) Menu_Drop_Input =
 
 void (float inp) Menu_Input =
 {
-	if ((self.current_menu == SBAR_PRINT))
+	if ((self.current_menu == 2))
 	{
 		Menu_Team_Input (inp);
 	}
@@ -2146,7 +2147,7 @@ void (float inp) Menu_Input =
 							}
 							else
 							{
-								if ((self.current_menu == SBAR_240))
+								if ((self.current_menu == 16))
 								{
 									Menu_EngineerFix_Dispenser_Input (inp);
 								}
@@ -2201,13 +2202,13 @@ void () Menu_ClassHelp =
 {
 	if ((self.menu_displaytime < 5))
 	{
-		if ((self.playerclass == SBAR_GRENS))
+		if ((self.playerclass == 1))
 		{
 			CenterPrint (self, "ÓÃÏÕÔ Details:               \n\n×ÅÁÐÏÎÓ:                     \n”‘ Shotgun                  \n–‘ Nailgun                  \n\nPress š for alias help\n");
 		}
 		else
 		{
-			if ((self.playerclass == SBAR_PRINT))
+			if ((self.playerclass == 2))
 			{
 				CenterPrint (self, "ÓÎÉÐÅÒ Details:              \n\n×ÅÁÐÏÎÓ:                     \n”‘ Sniper Rifle/Auto Rifle  \n–‘ Nailgun                  \n\nPress š for alias help\n");
 			}
@@ -2271,13 +2272,13 @@ void () Menu_ClassHelp =
 	}
 	else
 	{
-		if ((self.playerclass == SBAR_GRENS))
+		if ((self.playerclass == 1))
 		{
 			CenterPrint (self, "ÇÒÅÎÁÄÅÓ:            \nFlash Grenade       \nConcussion Grenade  \n\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:   \nScanner: autoscan,scansound,scane,scanf\n\n\nPress š for alias help\n");
 		}
 		else
 		{
-			if ((self.playerclass == SBAR_PRINT))
+			if ((self.playerclass == 2))
 			{
 				CenterPrint (self, "ÇÒÅÎÁÄÅÓ:            \nHand Grenade        \nFlare               \n\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:   \nautozoom : Toggle Rifle Autozooming\n\n\nPress š for alias help\n");
 			}
@@ -2336,81 +2337,81 @@ void () Menu_ClassHelp =
 
 void () Menu_StuffClassHelp =
 {
-	if ((self.playerclass == SBAR_GRENS))
+	if ((self.playerclass == 1))
 	{
-		sprint (self, SBAR_PRINT, "ÓÃÏÕÔ Details:\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   –‘ Nailgun\n");
-		sprint (self, SBAR_PRINT, "ÇÒÅÎÁÄÅÓ:\n   Concussion Grenade\n   Flare\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n");
-		sprint (self, SBAR_PRINT, "Scanner: autoscan,scansound,scane,scanf\n\n\n");
+		sprint (self, 2, "ÓÃÏÕÔ Details:\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   –‘ Nailgun\n");
+		sprint (self, 2, "ÇÒÅÎÁÄÅÓ:\n   Concussion Grenade\n   Flare\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n");
+		sprint (self, 2, "Scanner: autoscan,scansound,scane,scanf\n\n\n");
 	}
 	else
 	{
-		if ((self.playerclass == SBAR_PRINT))
+		if ((self.playerclass == 2))
 		{
-			sprint (self, SBAR_PRINT, "ÓÎÉÐÅÒ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Sniper Rifle/Auto Rifle\n");
-			sprint (self, SBAR_PRINT, "–‘ Nailgun\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n\n\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n");
-			sprint (self, SBAR_PRINT, "  autozoom : Toggle Rifle Autozooming\n\n\n");
+			sprint (self, 2, "ÓÎÉÐÅÒ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Sniper Rifle/Auto Rifle\n");
+			sprint (self, 2, "–‘ Nailgun\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n\n\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n");
+			sprint (self, 2, "  autozoom : Toggle Rifle Autozooming\n\n\n");
 		}
 		else
 		{
 			if ((self.playerclass == AS_MELEE))
 			{
-				sprint (self, SBAR_PRINT, "ÓÏÌÄÉÅÒ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   •‘ Super Shotgun\n");
-				sprint (self, SBAR_PRINT, "   ™‘ Rocket Launcher\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Nail Grenade\n");
-				sprint (self, SBAR_PRINT, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
+				sprint (self, 2, "ÓÏÌÄÉÅÒ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   •‘ Super Shotgun\n");
+				sprint (self, 2, "   ™‘ Rocket Launcher\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Nail Grenade\n");
+				sprint (self, 2, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
 			}
 			else
 			{
 				if ((self.playerclass == AS_MISSILE))
 				{
-					sprint (self, SBAR_PRINT, "ÄÅÍÏÌÉÔÉÏÎÓ ÍÁÎ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   ˜‘ Grenade/Pipebomb Launcher\n");
-					sprint (self, SBAR_PRINT, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Mirv Grenade\n");
-					sprint (self, SBAR_PRINT, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   The Detpack : +det5,+det20,+det50,+det255\n   Detonate Pipebombs : detpipe\n\n\n");
+					sprint (self, 2, "ÄÅÍÏÌÉÔÉÏÎÓ ÍÁÎ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   ˜‘ Grenade/Pipebomb Launcher\n");
+					sprint (self, 2, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Mirv Grenade\n");
+					sprint (self, 2, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   The Detpack : +det5,+det20,+det50,+det255\n   Detonate Pipebombs : detpipe\n\n\n");
 				}
 				else
 				{
 					if ((self.playerclass == 5))
 					{
-						sprint (self, SBAR_PRINT, "ÍÅÄÉÃ Details:\n\n×ÅÁÐÏÎÓ:\n   “‘ Medikit/BioWeapon\n   ”‘ Shotgun\n   •‘ Super Shotgun\n");
-						sprint (self, SBAR_PRINT, "   —‘ Super Nailgun\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Concussion Grenade\n");
-						sprint (self, SBAR_PRINT, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
+						sprint (self, 2, "ÍÅÄÉÃ Details:\n\n×ÅÁÐÏÎÓ:\n   “‘ Medikit/BioWeapon\n   ”‘ Shotgun\n   •‘ Super Shotgun\n");
+						sprint (self, 2, "   —‘ Super Nailgun\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Concussion Grenade\n");
+						sprint (self, 2, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
 					}
 					else
 					{
 						if ((self.playerclass == 6))
 						{
-							sprint (self, SBAR_PRINT, "ÈÅÁÖÙ ×ÅÁÐÏÎÓ ÇÕÙ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   •‘ Super Shotgun\n");
-							sprint (self, SBAR_PRINT, "   ™‘ Assault Cannon\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n");
-							sprint (self, SBAR_PRINT, "   Mirv Grenade\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
+							sprint (self, 2, "ÈÅÁÖÙ ×ÅÁÐÏÎÓ ÇÕÙ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   •‘ Super Shotgun\n");
+							sprint (self, 2, "   ™‘ Assault Cannon\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n");
+							sprint (self, 2, "   Mirv Grenade\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
 						}
 						else
 						{
 							if ((self.playerclass == 7))
 							{
-								sprint (self, SBAR_PRINT, "ÐÙÒÏ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   ˜‘ Flamethrower\n   ™‘ Incendiary Cannon\n");
-								sprint (self, SBAR_PRINT, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Napalm Grenade\n");
-								sprint (self, SBAR_PRINT, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
+								sprint (self, 2, "ÐÙÒÏ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   ˜‘ Flamethrower\n   ™‘ Incendiary Cannon\n");
+								sprint (self, 2, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Napalm Grenade\n");
+								sprint (self, 2, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   None\n\n\n");
 							}
 							else
 							{
 								if ((self.playerclass == 8))
 								{
-									sprint (self, SBAR_PRINT, "ÓÐÙ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Tranquiliser Gun\n   •‘ Super Shotgun\n   –‘ Nailgun\n");
-									sprint (self, SBAR_PRINT, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Hallucinogenic Grenade\n");
-									sprint (self, SBAR_PRINT, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   Go Undercover : disguise\n   Feign Death : feign, sfeign\n\n\n");
+									sprint (self, 2, "ÓÐÙ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Tranquiliser Gun\n   •‘ Super Shotgun\n   –‘ Nailgun\n");
+									sprint (self, 2, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Hallucinogenic Grenade\n");
+									sprint (self, 2, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   Go Undercover : disguise\n   Feign Death : feign, sfeign\n\n\n");
 								}
 								else
 								{
 									if ((self.playerclass == 9))
 									{
-										sprint (self, SBAR_PRINT, "ÅÎÇÉÎÅÅÒ Details:\n\n×ÅÁÐÏÎÓ:\n   “‘ Spanner\n   ”‘ RailGun\n   •‘ Super Shotgun\n");
-										sprint (self, SBAR_PRINT, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   EMP Grenade\n");
-										sprint (self, SBAR_PRINT, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   Start Building : build\n\n\n");
+										sprint (self, 2, "ÅÎÇÉÎÅÅÒ Details:\n\n×ÅÁÐÏÎÓ:\n   “‘ Spanner\n   ”‘ RailGun\n   •‘ Super Shotgun\n");
+										sprint (self, 2, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   EMP Grenade\n");
+										sprint (self, 2, "ÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:\n   Start Building : build\n\n\n");
 									}
 									else
 									{
 										if (!self.playerclass)
 										{
-											sprint (self, SBAR_PRINT, "\n\nObserver Details:\n\n\nÃÏÍÍÁÎÄÓ: \n   tracking:     toggle tracking mode\n   track_player: observe a player\n   track_sentry: observe a sentrygun\n   track_tfgoal: observe a team's flag\n   special:      lock onto && observe an object\n");
+											sprint (self, 2, "\n\nObserver Details:\n\n\nÃÏÍÍÁÎÄÓ: \n   tracking:     toggle tracking mode\n   track_player: observe a player\n   track_sentry: observe a sentrygun\n   track_tfgoal: observe a team's flag\n   special:      lock onto && observe an object\n");
 										}
 									}
 								}
@@ -2430,9 +2431,9 @@ void () Menu_ClassHelp2 =
 
 void (float inp) Menu_ClassHelp_Input =
 {
-	if (((self.team_no == SBAR_PRINT) || (self.team_no == AS_MISSILE)))
+	if (((self.team_no == 2) || (self.team_no == AS_MISSILE)))
 	{
-		if ((tfvsdm == SBAR_GRENS))
+		if ((tfvsdm == 1))
 		{
 			return;
 		}
@@ -2449,7 +2450,7 @@ void (float inp) Menu_ClassHelp_Input =
 
 void () Menu_Spy =
 {
-	if (((self.effects & (8 | AS_MISSILE)) || (self.is_unabletospy == SBAR_GRENS)))
+	if (((self.effects & (8 | AS_MISSILE)) || (self.is_unabletospy == 1)))
 	{
 		ResetMenu ();
 		return;
@@ -2511,24 +2512,24 @@ void (float inp) Menu_Spy_Input =
 	local float tc;
 	local string st;
 
-	if (((inp == SBAR_GRENS) || (inp == SBAR_PRINT)))
+	if (((inp == 1) || (inp == 2)))
 	{
 		if ((self.effects & (8 | AS_MISSILE)))
 		{
-			sprint (self, SBAR_PRINT, "You can't go undercover while glowing.\n");
+			sprint (self, 2, "You can't go undercover while glowing.\n");
 			ResetMenu ();
 			self.impulse = RANGE_MELEE;
 			return;
 		}
-		if ((self.is_unabletospy == SBAR_GRENS))
+		if ((self.is_unabletospy == 1))
 		{
-			sprint (self, SBAR_PRINT, "You can't go undercover right now.\n");
+			sprint (self, 2, "You can't go undercover right now.\n");
 			ResetMenu ();
 			self.impulse = RANGE_MELEE;
 			return;
 		}
 	}
-	if ((inp == SBAR_GRENS))
+	if ((inp == 1))
 	{
 		Menu_Spy_Skin ();
 		self.menu_count = 25;
@@ -2538,7 +2539,7 @@ void (float inp) Menu_Spy_Input =
 	}
 	else
 	{
-		if ((inp == SBAR_PRINT))
+		if ((inp == 2))
 		{
 			Menu_Spy_Color ();
 			self.menu_count = 25;
@@ -2577,9 +2578,9 @@ void (float inp) Menu_Spy_Input =
 
 void () Menu_Spy_Skin =
 {
-	if (((self.undercover_team == SBAR_PRINT) || (self.undercover_team == AS_MISSILE)))
+	if (((self.undercover_team == 2) || (self.undercover_team == AS_MISSILE)))
 	{
-		if ((tfvsdm == SBAR_GRENS))
+		if ((tfvsdm == 1))
 		{
 			CenterPrint (self, "žžž Change Skin to: žžž\n“‘ Base");
 			return;
@@ -2590,11 +2591,11 @@ void () Menu_Spy_Skin =
 
 void (float inp) Menu_Spy_Skin_Input =
 {
-	if (((self.undercover_team == SBAR_PRINT) || (self.undercover_team == AS_MISSILE)))
+	if (((self.undercover_team == 2) || (self.undercover_team == AS_MISSILE)))
 	{
-		if ((tfvsdm == SBAR_GRENS))
+		if ((tfvsdm == 1))
 		{
-			if ((inp == SBAR_GRENS))
+			if ((inp == 1))
 			{
 				TeamFortress_SpyChangeSkin (inp);
 				ResetMenu ();
@@ -2615,12 +2616,12 @@ void () Menu_Spy_Color =
 {
 	if ((number_of_teams == RANGE_MELEE))
 	{
-		sprint (self, SBAR_PRINT, "No Color changing allowed in deathmatch.\n");
+		sprint (self, 2, "No Color changing allowed in deathmatch.\n");
 		ResetMenu ();
 		self.impulse = RANGE_MELEE;
 		return;
 	}
-	if ((number_of_teams == SBAR_PRINT))
+	if ((number_of_teams == 2))
 	{
 		CenterPrint (self, "žžž Change Color to the Same Color as: žžž\n\n“‘ Team One  \n”‘ Team Two  \n\n");
 	}
@@ -2632,13 +2633,13 @@ void () Menu_Spy_Color =
 
 void (float inp) Menu_Spy_Color_Input =
 {
-	if (((inp >= SBAR_GRENS) && (inp <= number_of_teams)))
+	if (((inp >= 1) && (inp <= number_of_teams)))
 	{
-		if ((tfvsdm == SBAR_GRENS))
+		if ((tfvsdm == 1))
 		{
 			if ((self.undercover_skin != RANGE_MELEE))
 			{
-				if (((inp == SBAR_PRINT) || (inp == AS_MISSILE)))
+				if (((inp == 2) || (inp == AS_MISSILE)))
 				{
 					CenterPrint (self, "žžž Cannot change Color, You must Reset your Skin. žžž\n");
 					return;
@@ -2699,23 +2700,23 @@ void (float inp) Menu_Engineer_Input =
 {
 	local entity te;
 
-	if ((((inp == SBAR_GRENS) && (self.ammo_cells >= _d)) && (self.has_dispenser != SBAR_GRENS)))
+	if ((((inp == 1) && (self.ammo_cells >= _d)) && (self.has_dispenser != 1)))
 	{
-		TeamFortress_Build (SBAR_GRENS);
+		TeamFortress_Build (1);
 		ResetMenu ();
 		self.impulse = RANGE_MELEE;
 	}
 	else
 	{
-		if ((((inp == SBAR_PRINT) && (self.ammo_cells >= 130)) && (self.has_sentry != SBAR_GRENS)))
+		if ((((inp == 2) && (self.ammo_cells >= 130)) && (self.has_sentry != 1)))
 		{
-			TeamFortress_Build (SBAR_PRINT);
+			TeamFortress_Build (2);
 			ResetMenu ();
 			self.impulse = RANGE_MELEE;
 		}
 		else
 		{
-			if (((inp == 7) && (self.has_dispenser == SBAR_GRENS)))
+			if (((inp == 7) && (self.has_dispenser == 1)))
 			{
 				DestroyBuilding (self, "building_dispenser");
 				ResetMenu ();
@@ -2723,7 +2724,7 @@ void (float inp) Menu_Engineer_Input =
 			}
 			else
 			{
-				if (((inp == 8) && (self.has_sentry == SBAR_GRENS)))
+				if (((inp == 8) && (self.has_sentry == 1)))
 				{
 					DestroyBuilding (self, "building_sentrygun");
 					ResetMenu ();
@@ -2756,9 +2757,9 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 	{
 		return;
 	}
-	if ((inp == SBAR_GRENS))
+	if ((inp == 1))
 	{
-		am = (20 * SBAR_PRINT);
+		am = (20 * 2);
 		if ((am > self.ammo_shells))
 		{
 			am = self.ammo_shells;
@@ -2772,7 +2773,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 			self.ammo_shells = (self.ammo_shells - am);
 		}
 		self.building.ammo_shells = (self.building.ammo_shells + am);
-		am = (20 * SBAR_PRINT);
+		am = (20 * 2);
 		if ((am > self.ammo_nails))
 		{
 			am = self.ammo_nails;
@@ -2786,7 +2787,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 			self.ammo_nails = (self.ammo_nails - am);
 		}
 		self.building.ammo_nails = (self.building.ammo_nails + am);
-		am = (enter * SBAR_PRINT);
+		am = (enter * 2);
 		if ((am > self.ammo_rockets))
 		{
 			am = self.ammo_rockets;
@@ -2800,7 +2801,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 			self.ammo_rockets = (self.ammo_rockets - am);
 		}
 		self.building.ammo_rockets = (self.building.ammo_rockets + am);
-		am = (enter * SBAR_PRINT);
+		am = (enter * 2);
 		if ((am > self.ammo_cells))
 		{
 			am = self.ammo_cells;
@@ -2817,9 +2818,9 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 	}
 	else
 	{
-		if ((inp == SBAR_PRINT))
+		if ((inp == 2))
 		{
-			am = (40 * SBAR_PRINT);
+			am = (40 * 2);
 			if ((am > self.armorvalue))
 			{
 				am = self.armorvalue;
@@ -2853,14 +2854,14 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 			{
 				if ((inp == AS_MISSILE))
 				{
-					sprint (self, SBAR_PRINT, "You dismantle the Dispenser.\n");
+					sprint (self, 2, "You dismantle the Dispenser.\n");
 					if (!practice)
 					{
-						self.ammo_cells = (self.ammo_cells + (_d / SBAR_PRINT));
+						self.ammo_cells = (self.ammo_cells + (_d / 2));
 					}
 					if ((self.building.real_owner != self))
 					{
-						sprint2 (self.building.real_owner, SBAR_PRINT, self.netname, " dismantled your Dispenser.\n");
+						sprint2 (self.building.real_owner, 2, self.netname, " dismantled your Dispenser.\n");
 						teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.netname);
 						teamsprint (self.building.real_owner.team_no, self.building.real_owner, " dismantled ");
 						teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.building.real_owner.netname);
@@ -2872,7 +2873,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 			}
 		}
 	}
-	if (((inp >= SBAR_GRENS) && (inp <= 5)))
+	if (((inp >= 1) && (inp <= 5)))
 	{
 		ResetMenu ();
 		self.impulse = RANGE_MELEE;
@@ -2914,9 +2915,9 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 	{
 		return;
 	}
-	if ((inp == SBAR_GRENS))
+	if ((inp == 1))
 	{
-		am = (20 * SBAR_PRINT);
+		am = (20 * 2);
 		if ((am > self.ammo_shells))
 		{
 			am = self.ammo_shells;
@@ -2932,7 +2933,7 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 		self.building.ammo_shells = (self.building.ammo_shells + am);
 		if ((self.building.weapon == AS_MELEE))
 		{
-			am = (enter * SBAR_PRINT);
+			am = (enter * 2);
 			if ((am > self.ammo_rockets))
 			{
 				am = self.ammo_rockets;
@@ -2950,13 +2951,13 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 	}
 	else
 	{
-		if ((((self.building.weapon < AS_MELEE) && (inp == SBAR_PRINT)) && (self.ammo_cells >= 130)))
+		if ((((self.building.weapon < AS_MELEE) && (inp == 2)) && (self.ammo_cells >= 130)))
 		{
 			if (!practice)
 			{
 				self.ammo_cells = (self.ammo_cells - 130);
 			}
-			self.building.weapon = (self.building.weapon + SBAR_GRENS);
+			self.building.weapon = (self.building.weapon + 1);
 			if (sgtype)
 			{
 				self.building.max_health = floor ((self.building.max_health * 1.25));
@@ -2967,9 +2968,9 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 			}
 			self.building.health = self.building.max_health;
 			self.building.maxammo_shells = (self.building.maxammo_shells * 1.2);
-			if ((self.building.weapon == SBAR_PRINT))
+			if ((self.building.weapon == 2))
 			{
-				sound (self.building, AS_MELEE, "weapons/turrset.wav", SBAR_GRENS, SBAR_GRENS);
+				sound (self.building, AS_MELEE, "weapons/turrset.wav", 1, 1);
 				if (sgtype)
 				{
 					self.building.think = lvl2_sentry_stand;
@@ -2978,11 +2979,11 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 				{
 					self.building.think = lvl2_oldsentry_stand;
 				}
-				self.building.skin = SBAR_GRENS;
+				self.building.skin = 1;
 			}
 			else
 			{
-				sound (self.building, AS_MELEE, "weapons/turrset.wav", SBAR_GRENS, SBAR_GRENS);
+				sound (self.building, AS_MELEE, "weapons/turrset.wav", 1, 1);
 				if (sgtype)
 				{
 					self.building.think = lvl3_sentry_stand;
@@ -2991,12 +2992,12 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 				{
 					self.building.think = lvl3_oldsentry_stand;
 				}
-				self.building.skin = SBAR_PRINT;
+				self.building.skin = 2;
 			}
-			sprint (self, SBAR_PRINT, "You upgrade the Sentry Gun to level ");
+			sprint (self, 2, "You upgrade the Sentry Gun to level ");
 			st = ftos (self.building.weapon);
-			sprint (self, SBAR_PRINT, st);
-			sprint (self, SBAR_PRINT, "\n");
+			sprint (self, 2, st);
+			sprint (self, 2, "\n");
 		}
 		else
 		{
@@ -3017,14 +3018,14 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 			{
 				if ((inp == AS_MISSILE))
 				{
-					sprint (self, SBAR_PRINT, "You dismantle the Sentry Gun.\n");
+					sprint (self, 2, "You dismantle the Sentry Gun.\n");
 					if (!practice)
 					{
-						self.ammo_cells = (self.ammo_cells + (130 / SBAR_PRINT));
+						self.ammo_cells = (self.ammo_cells + (130 / 2));
 					}
 					if ((self.building.real_owner != self))
 					{
-						sprint2 (self.building.real_owner, SBAR_PRINT, self.netname, " dismantled your Sentry Gun.\n");
+						sprint2 (self.building.real_owner, 2, self.netname, " dismantled your Sentry Gun.\n");
 						teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.netname);
 						teamsprint (self.building.real_owner.team_no, self.building.real_owner, " dismantled ");
 						teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.building.real_owner.netname);
@@ -3038,7 +3039,7 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 				{
 					if ((inp == 6))
 					{
-						sprint (self, SBAR_PRINT, "Rotating 45 degrees to the left...\n");
+						sprint (self, 2, "Rotating 45 degrees to the left...\n");
 						self.building.waitmin = anglemod ((self.building.waitmin + minus));
 						self.building.waitmax = anglemod ((self.building.waitmax + minus));
 					}
@@ -3046,7 +3047,7 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 			}
 		}
 	}
-	if (((inp >= SBAR_GRENS) && (inp <= 6)))
+	if (((inp >= 1) && (inp <= 6)))
 	{
 		ResetMenu ();
 		self.impulse = RANGE_MELEE;
@@ -3072,11 +3073,11 @@ void (float inp) Menu_Dispenser_Input =
 	local float empty;
 
 	empty = RANGE_MELEE;
-	if ((inp == SBAR_GRENS))
+	if ((inp == 1))
 	{
 		if (((((self.building.ammo_shells == RANGE_MELEE) && (self.building.ammo_nails == RANGE_MELEE)) && (self.building.ammo_rockets == RANGE_MELEE)) && (self.building.ammo_cells == RANGE_MELEE)))
 		{
-			empty = SBAR_GRENS;
+			empty = 1;
 		}
 		else
 		{
@@ -3112,11 +3113,11 @@ void (float inp) Menu_Dispenser_Input =
 	}
 	else
 	{
-		if ((inp == SBAR_PRINT))
+		if ((inp == 2))
 		{
 			if ((self.building.armorvalue == RANGE_MELEE))
 			{
-				empty = SBAR_GRENS;
+				empty = 1;
 			}
 			else
 			{
@@ -3135,11 +3136,11 @@ void (float inp) Menu_Dispenser_Input =
 			}
 		}
 	}
-	if (((inp >= SBAR_GRENS) && (inp <= AS_MELEE)))
+	if (((inp >= 1) && (inp <= AS_MELEE)))
 	{
 		if (empty)
 		{
-			sprint (self, SBAR_PRINT, "The dispenser is empty.\n");
+			sprint (self, 2, "The dispenser is empty.\n");
 		}
 		ResetMenu ();
 		self.impulse = RANGE_MELEE;

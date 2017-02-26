@@ -2,7 +2,7 @@
 
 void (entity rhook) Reset_Grapple =
 {
-	sound (rhook.owner, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, 0);
+	sound (rhook.owner, 1, "weapons/bounce.wav", 1, 0);
 	rhook.owner.on_hook = 0;
 	rhook.owner.hook_out = 0;
 	rhook.owner.fire_held_down = 0;
@@ -92,39 +92,39 @@ float () Check_Overhead =
 	src = (self.owner.origin - '0 0 24');
 	end = (self.owner.origin - '0 0 24');
 	traceline (src, end, 0, self.owner);
-	if ((trace_fraction != SBAR_GRENS))
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
-	src = ((self.owner.origin - '0 0 24') - (v_forward * SBAR_240));
-	end = (((self.owner.origin - '0 0 24') - (v_forward * SBAR_240)) + '0 0 58');
+	src = ((self.owner.origin - '0 0 24') - (v_forward * 16));
+	end = (((self.owner.origin - '0 0 24') - (v_forward * 16)) + '0 0 58');
 	traceline (src, end, 0, self.owner);
-	if ((trace_fraction != SBAR_GRENS))
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
-	src = ((self.owner.origin - '0 0 24') + (v_forward * SBAR_240));
-	end = (((self.owner.origin - '0 0 24') + (v_forward * SBAR_240)) + '0 0 58');
+	src = ((self.owner.origin - '0 0 24') + (v_forward * 16));
+	end = (((self.owner.origin - '0 0 24') + (v_forward * 16)) + '0 0 58');
 	traceline (src, end, 0, self.owner);
-	if ((trace_fraction != SBAR_GRENS))
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
-	src = ((self.owner.origin - '0 0 24') - (v_right * SBAR_240));
-	end = (((self.owner.origin - '0 0 24') - (v_right * SBAR_240)) + '0 0 58');
+	src = ((self.owner.origin - '0 0 24') - (v_right * 16));
+	end = (((self.owner.origin - '0 0 24') - (v_right * 16)) + '0 0 58');
 	traceline (src, end, 0, self.owner);
-	if ((trace_fraction != SBAR_GRENS))
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
-	src = ((self.owner.origin - '0 0 24') + (v_right * SBAR_240));
-	end = (((self.owner.origin - '0 0 24') + (v_right * SBAR_240)) + '0 0 58');
+	src = ((self.owner.origin - '0 0 24') + (v_right * 16));
+	end = (((self.owner.origin - '0 0 24') + (v_right * 16)) + '0 0 58');
 	traceline (src, end, 0, self.owner);
-	if ((trace_fraction != SBAR_GRENS))
+	if ((trace_fraction != 1))
 	{
 		return (0);
 	}
-	return (SBAR_GRENS);
+	return (1);
 };
 
 void () Anchor_Grapple =
@@ -151,15 +151,15 @@ void () Anchor_Grapple =
 	}
 	else
 	{
-		sound (self, SBAR_GRENS, "player/axhit2.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 1, "player/axhit2.wav", 1, 1);
 		if (other.takedamage)
 		{
-			T_Damage (other, self, self.owner, SBAR_GRENS);
+			T_Damage (other, self, self.owner, 1);
 		}
 		self.velocity = '0 0 0';
 		self.avelocity = '0 0 0';
 	}
-	sound (self.owner, SBAR_GRENS, "weapons/tink1.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self.owner, 1, "weapons/tink1.wav", 1, 1);
 	if (!self.owner.button0)
 	{
 		Reset_Grapple (self);
@@ -171,13 +171,13 @@ void () Anchor_Grapple =
 		Reset_Grapple (self);
 		return;
 	}
-	self.owner.on_hook = SBAR_GRENS;
+	self.owner.on_hook = 1;
 	if ((self.owner.flags & 512))
 	{
 		self.owner.flags = (self.owner.flags - 512);
 		setorigin (self.owner, (self.owner.origin + '0 0 1'));
 	}
-	self.owner.lefty = SBAR_GRENS;
+	self.owner.lefty = 1;
 	self.enemy = other;
 	self.think = Grapple_Track;
 	self.nextthink = time;
@@ -194,7 +194,7 @@ void () Throw_Grapple =
 	KickPlayer (-1, self);
 	newmis = spawn ();
 	newmis.movetype = 9;
-	newmis.solid = SBAR_PRINT;
+	newmis.solid = 2;
 	newmis.owner = self;
 	self.hook = newmis;
 	newmis.classname = "hook";
@@ -205,10 +205,10 @@ void () Throw_Grapple =
 	newmis.think = Build_Chain;
 	newmis.nextthink = (time + 0.1);
 	setmodel (newmis, "progs/hook.mdl");
-	setorigin (newmis, ((self.origin + (v_forward * SBAR_240)) + '0 0 16'));
+	setorigin (newmis, ((self.origin + (v_forward * 16)) + '0 0 16'));
 	setsize (newmis, '0 0 0', '0 0 0');
-	self.hook_out = SBAR_GRENS;
-	self.fire_held_down = SBAR_GRENS;
+	self.hook_out = 1;
+	self.fire_held_down = 1;
 };
 
 void () Service_Grapple =
@@ -218,7 +218,7 @@ void () Service_Grapple =
 	if (!self.button0)
 	{
 		self.fire_held_down = 0;
-		if ((self.current_weapon == SBAR_GRENS))
+		if ((self.current_weapon == 1))
 		{
 			Reset_Grapple (self.hook);
 		}

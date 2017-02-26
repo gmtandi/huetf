@@ -7,7 +7,7 @@ void () TeamFortress_DetpackExplode;
 
 void () trigger_reactivate =
 {
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 };
 
 void () multi_wait =
@@ -15,8 +15,8 @@ void () multi_wait =
 	if (self.max_health)
 	{
 		self.health = self.max_health;
-		self.takedamage = SBAR_GRENS;
-		self.solid = SBAR_PRINT;
+		self.takedamage = 1;
+		self.solid = 2;
 	}
 };
 
@@ -32,12 +32,12 @@ void () multi_trigger =
 		{
 			return;
 		}
-		found_secrets = (found_secrets + SBAR_GRENS);
-		WriteByte (SBAR_PRINT, 28);
+		found_secrets = (found_secrets + 1);
+		WriteByte (2, 28);
 	}
 	if (self.noise)
 	{
-		sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, self.noise, 1, 1);
 	}
 	self.takedamage = 0;
 	activator = self.enemy;
@@ -75,7 +75,7 @@ void () multi_touch =
 	{
 		return;
 	}
-	if ((freeze == SBAR_GRENS))
+	if ((freeze == 1))
 	{
 		return;
 	}
@@ -110,14 +110,14 @@ void () trigger_multiple =
 		dremove (self);
 		return;
 	}
-	if ((self.sounds == SBAR_GRENS))
+	if ((self.sounds == 1))
 	{
 		precache_sound ("misc/secret.wav");
 		self.noise = "misc/secret.wav";
 	}
 	else
 	{
-		if ((self.sounds == SBAR_PRINT))
+		if ((self.sounds == 2))
 		{
 			precache_sound ("misc/talk.wav");
 			self.noise = "misc/talk.wav";
@@ -139,19 +139,19 @@ void () trigger_multiple =
 	InitTrigger ();
 	if (self.health)
 	{
-		if ((self.spawnflags & SBAR_GRENS))
+		if ((self.spawnflags & 1))
 		{
 			objerror ("health && notouch don't make sense\n");
 		}
 		self.max_health = self.health;
 		self.th_die = multi_killed;
-		self.takedamage = SBAR_GRENS;
-		self.solid = SBAR_PRINT;
+		self.takedamage = 1;
+		self.solid = 2;
 		setorigin (self, self.origin);
 	}
 	else
 	{
-		if (!(self.spawnflags & SBAR_GRENS))
+		if (!(self.spawnflags & 1))
 		{
 			self.touch = multi_touch;
 		}
@@ -186,7 +186,7 @@ void () trigger_secret =
 		dremove (self);
 		return;
 	}
-	total_secrets = (total_secrets + SBAR_GRENS);
+	total_secrets = (total_secrets + 1);
 	self.wait = -1;
 	if (!self.message)
 	{
@@ -194,16 +194,16 @@ void () trigger_secret =
 	}
 	if (!self.sounds)
 	{
-		self.sounds = SBAR_GRENS;
+		self.sounds = 1;
 	}
-	if ((self.sounds == SBAR_GRENS))
+	if ((self.sounds == 1))
 	{
 		precache_sound ("misc/secret.wav");
 		self.noise = "misc/secret.wav";
 	}
 	else
 	{
-		if ((self.sounds == SBAR_PRINT))
+		if ((self.sounds == 2))
 		{
 			precache_sound ("misc/talk.wav");
 			self.noise = "misc/talk.wav";
@@ -216,14 +216,14 @@ void () counter_use =
 {
 	local string junk;
 
-	self.count = (self.count - SBAR_GRENS);
+	self.count = (self.count - 1);
 	if ((self.count < 0))
 	{
 		return;
 	}
 	if ((self.count != 0))
 	{
-		if (((activator.classname == "player") && ((self.spawnflags & SBAR_GRENS) == 0)))
+		if (((activator.classname == "player") && ((self.spawnflags & 1) == 0)))
 		{
 			if ((self.count >= AS_MISSILE))
 			{
@@ -237,7 +237,7 @@ void () counter_use =
 				}
 				else
 				{
-					if ((self.count == SBAR_PRINT))
+					if ((self.count == 2))
 					{
 						CenterPrint (activator, "Only 2 more to go...");
 					}
@@ -250,7 +250,7 @@ void () counter_use =
 		}
 		return;
 	}
-	if (((activator.classname == "player") && ((self.spawnflags & SBAR_GRENS) == 0)))
+	if (((activator.classname == "player") && ((self.spawnflags & 1) == 0)))
 	{
 		CenterPrint (activator, "Sequence completed!");
 	}
@@ -268,7 +268,7 @@ void () trigger_counter =
 	self.wait = -1;
 	if (!self.count)
 	{
-		self.count = SBAR_PRINT;
+		self.count = 2;
 	}
 	self.use = counter_use;
 };
@@ -279,13 +279,13 @@ void () play_teleport =
 	local string tmpstr;
 
 	v = (random () * 5);
-	if ((v < SBAR_GRENS))
+	if ((v < 1))
 	{
 		tmpstr = "misc/r_tele1.wav";
 	}
 	else
 	{
-		if ((v < SBAR_PRINT))
+		if ((v < 2))
 		{
 			tmpstr = "misc/r_tele2.wav";
 		}
@@ -308,7 +308,7 @@ void () play_teleport =
 			}
 		}
 	}
-	sound (self, SBAR_PRINT, tmpstr, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, tmpstr, 1, 1);
 	remove (self);
 };
 
@@ -319,11 +319,11 @@ void (vector org) spawn_tfog =
 	s.nextthink = (time + 0.2);
 	s.think = play_teleport;
 	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, SBAR_200);
+	WriteByte (AS_MISSILE, 11);
 	WriteCoord (AS_MISSILE, org_x);
 	WriteCoord (AS_MISSILE, org_y);
 	WriteCoord (AS_MISSILE, org_z);
-	multicast (org, SBAR_GRENS);
+	multicast (org, 1);
 };
 
 void () tdeath_touch =
@@ -359,7 +359,7 @@ void (vector org, entity death_owner) spawn_tdeath =
 	death = spawn ();
 	death.classname = "teledeath";
 	death.movetype = 0;
-	death.solid = SBAR_GRENS;
+	death.solid = 1;
 	death.angles = '0 0 0';
 	setsize (death, (death_owner.mins - '4 4 4'), (death_owner.maxs + '4 4 4'));
 	setorigin (death, org);
@@ -367,7 +367,7 @@ void (vector org, entity death_owner) spawn_tdeath =
 	death.nextthink = (time + 0.2);
 	death.think = SUB_Remove;
 	death.owner = death_owner;
-	force_retouch = SBAR_PRINT;
+	force_retouch = 2;
 };
 
 void () teleport_touch =
@@ -383,7 +383,7 @@ void () teleport_touch =
 			return;
 		}
 	}
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		if ((other.classname != "player"))
 		{
@@ -427,16 +427,16 @@ void () teleport_touch =
 	other.angles = t.mangle;
 	if ((other.classname == "player"))
 	{
-		if (((other.weapon == SBAR_GRENS) && other.hook_out))
+		if (((other.weapon == 1) && other.hook_out))
 		{
-			sound (other, SBAR_GRENS, "weapons/bounce2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (other, 1, "weapons/bounce2.wav", 1, 1);
 			other.on_hook = 0;
 			other.hook_out = 0;
 			other.fire_held_down = 0;
 			other.weaponframe = 0;
 			other.attack_finished = (time + 0.75);
 		}
-		other.fixangle = SBAR_GRENS;
+		other.fixangle = 1;
 		other.teleport_time = (time + 0.7);
 		if ((other.flags & 512))
 		{
@@ -467,7 +467,7 @@ void () info_teleport_destination =
 void () teleport_use =
 {
 	self.nextthink = (time + 0.2);
-	force_retouch = SBAR_PRINT;
+	force_retouch = 2;
 	self.think = SUB_Null;
 };
 
@@ -487,7 +487,7 @@ void () trigger_teleport =
 		objerror ("no target");
 	}
 	self.use = teleport_use;
-	if (!(self.spawnflags & SBAR_PRINT))
+	if (!(self.spawnflags & 2))
 	{
 		precache_sound ("ambience/hum1.wav");
 		o = ((self.mins + self.maxs) * 0.5);
@@ -548,7 +548,7 @@ void () trigger_onlyregistered_touch =
 	{
 		return;
 	}
-	self.attack_finished = (time + SBAR_PRINT);
+	self.attack_finished = (time + 2);
 	if (cvar ("registered"))
 	{
 		self.message = "";
@@ -560,7 +560,7 @@ void () trigger_onlyregistered_touch =
 		if ((self.message != ""))
 		{
 			CenterPrint (other, self.message);
-			sound (other, AS_MISSILE, "misc/talk.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (other, AS_MISSILE, "misc/talk.wav", 1, 1);
 		}
 	}
 };
@@ -586,14 +586,14 @@ void (entity ent, float amount) hurt_setdamage =
 	}
 	else
 	{
-		ent.solid = SBAR_GRENS;
+		ent.solid = 1;
 	}
 	ent.nextthink = -1;
 };
 
 void () hurt_on =
 {
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	self.nextthink = -1;
 };
 
@@ -617,7 +617,7 @@ void () hurt_touch =
 		}
 		if ((self.cnt > 0))
 		{
-			self.cnt = (self.cnt - SBAR_GRENS);
+			self.cnt = (self.cnt - 1);
 			if ((self.cnt == 0))
 			{
 				self.touch = SUB_Null;
@@ -627,9 +627,9 @@ void () hurt_touch =
 		}
 		self.solid = 0;
 		deathmsg = 36;
-		TF_T_Damage (other, self, self, self.dmg, SBAR_GRENS, 0);
+		TF_T_Damage (other, self, self, self.dmg, 1, 0);
 		self.think = hurt_on;
-		self.nextthink = (time + SBAR_GRENS);
+		self.nextthink = (time + 1);
 	}
 };
 
@@ -678,12 +678,12 @@ void () trigger_push_touch =
 				if ((other.fly_sound < time))
 				{
 					other.fly_sound = (time + 1.5);
-					sound (other, 0, "ambience/windfly.wav", SBAR_GRENS, SBAR_GRENS);
+					sound (other, 0, "ambience/windfly.wav", 1, 1);
 				}
 			}
 		}
 	}
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		dremove (self);
 	}
@@ -722,7 +722,7 @@ void () func_pushable =
 
 void () trigger_monsterjump_touch =
 {
-	if (((other.flags & ((space | SBAR_GRENS) | SBAR_PRINT)) != space))
+	if (((other.flags & ((space | 1) | 2)) != space))
 	{
 		return;
 	}

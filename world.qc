@@ -4,10 +4,10 @@ void () InitBodyQue;
 
 void () Eluminate =
 {
-	lights = SBAR_GRENS;
+	lights = 1;
 	lightstyle (RANGE_MELEE, "m");
-	lightstyle (SBAR_GRENS, "mmnmmommommnonmmonqnmmo");
-	lightstyle (SBAR_PRINT, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba");
+	lightstyle (1, "mmnmmommommnonmmonqnmmo");
+	lightstyle (2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba");
 	lightstyle (AS_MELEE, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg");
 	lightstyle (AS_MISSILE, "mamamamamama");
 	lightstyle (5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj");
@@ -16,7 +16,7 @@ void () Eluminate =
 	lightstyle (8, "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa");
 	lightstyle (9, "aaaaaaaazzzzzzzz");
 	lightstyle (enter, "mmamammmmammamamaaamammma");
-	lightstyle (SBAR_200, "abcdefghijklmnopqrrqponmlkjihgfedcba");
+	lightstyle (11, "abcdefghijklmnopqrrqponmlkjihgfedcba");
 	lightstyle (63, "a");
 };
 
@@ -24,8 +24,8 @@ void () Deluminate =
 {
 	lights = RANGE_MELEE;
 	lightstyle (RANGE_MELEE, "a");
-	lightstyle (SBAR_GRENS, "a");
-	lightstyle (SBAR_PRINT, "a");
+	lightstyle (1, "a");
+	lightstyle (2, "a");
 	lightstyle (AS_MELEE, "a");
 	lightstyle (AS_MISSILE, "a");
 	lightstyle (5, "a");
@@ -34,7 +34,7 @@ void () Deluminate =
 	lightstyle (8, "a");
 	lightstyle (9, "a");
 	lightstyle (enter, "a");
-	lightstyle (SBAR_200, "a");
+	lightstyle (11, "a");
 	lightstyle (63, "a");
 };
 
@@ -285,7 +285,7 @@ void () worldspawn =
 void () StartFrame =
 {
 	teamplay = cvar ("teamplay");
-	timelimit = (cvar ("timelimit") * SBAR_600);
+	timelimit = (cvar ("timelimit") * 60);
 	fraglimit = cvar ("fraglimit");
 	deathmatch = cvar ("deathmatch");
 };

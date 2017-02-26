@@ -7,7 +7,7 @@
 
 float () crandom =
 {
-	return ((SBAR_PRINT * (random () - 0.5)));
+	return ((2 * (random () - 0.5)));
 };
 
 void () autoteam_think =
@@ -19,7 +19,7 @@ void () autoteam_think =
 void () CheckFps =
 {
 	self.fAverageFrameTime = (self.fAverageFrameTime + frametime);
-	self.fFrameCount = (self.fFrameCount + SBAR_GRENS);
+	self.fFrameCount = (self.fFrameCount + 1);
 	if ((frametime < self.fLowestFrameTime))
 	{
 		self.fLowestFrameTime = frametime;
@@ -41,8 +41,8 @@ void () Calibrate_Level =
 	local entity ent;
 
 	st = infokey (world, "max_pipebombs");
-	num_max_pipebombs = (stof (st) + SBAR_GRENS);
-	if (((num_max_pipebombs < SBAR_200) || (num_max_pipebombs > 25)))
+	num_max_pipebombs = (stof (st) + 1);
+	if (((num_max_pipebombs < 11) || (num_max_pipebombs > 25)))
 	{
 		if ((number_of_teams == AS_MISSILE))
 		{
@@ -54,13 +54,13 @@ void () Calibrate_Level =
 		}
 	}
 	st = infokey (world, "max_flares");
-	num_max_flares = (stof (st) + SBAR_GRENS);
+	num_max_flares = (stof (st) + 1);
 	if (((num_max_flares < 5) || (num_max_flares > 17)))
 	{
 		num_max_flares = 9;
 	}
 	st = infokey (world, "max_ammoboxes");
-	num_max_ammoboxes = (stof (st) + SBAR_GRENS);
+	num_max_ammoboxes = (stof (st) + 1);
 	if (((num_max_ammoboxes < 13) || (num_max_ammoboxes > 29)))
 	{
 		num_max_ammoboxes = 21;
@@ -68,7 +68,7 @@ void () Calibrate_Level =
 	st = infokey (world, "grapple");
 	if (((st == "on") || (toggleflags & 1024)))
 	{
-		allow_hook = SBAR_GRENS;
+		allow_hook = 1;
 	}
 	else
 	{
@@ -77,7 +77,7 @@ void () Calibrate_Level =
 	st = infokey (world, "flashlight");
 	if ((st == "on"))
 	{
-		allow_flash = SBAR_GRENS;
+		allow_flash = 1;
 	}
 	else
 	{
@@ -86,7 +86,7 @@ void () Calibrate_Level =
 	st = infokey (world, "grenpacks");
 	if ((st == "on"))
 	{
-		allow_grenpack = SBAR_GRENS;
+		allow_grenpack = 1;
 	}
 	else
 	{
@@ -156,7 +156,7 @@ void () Calibrate_Level =
 	}
 	st = infokey (world, "grentype");
 	grentype = stof (st);
-	if (((grentype > SBAR_GRENS) || (grentype < RANGE_MELEE)))
+	if (((grentype > 1) || (grentype < RANGE_MELEE)))
 	{
 		grentype = RANGE_MELEE;
 	}
@@ -179,13 +179,13 @@ void () Calibrate_Level =
 	}
 	st = infokey (world, "sentrydelay");
 	sentry_delay = stof (st);
-	if (((sentry_delay > SBAR_GRENS) || (sentry_delay < 0.1)))
+	if (((sentry_delay > 1) || (sentry_delay < 0.1)))
 	{
 		sentry_delay = 0.25;
 	}
 	st = infokey (world, "sentryfire");
 	sentry_fire = stof (st);
-	if (((sentry_fire > SBAR_PRINT) || (sentry_fire < RANGE_MELEE)))
+	if (((sentry_fire > 2) || (sentry_fire < RANGE_MELEE)))
 	{
 		sentry_fire = RANGE_MELEE;
 	}
@@ -196,7 +196,7 @@ void () Calibrate_Level =
 	}
 	else
 	{
-		pipedelay = SBAR_GRENS;
+		pipedelay = 1;
 	}
 };
 
@@ -244,7 +244,7 @@ void () flash_toggle =
 	}
 	if ((self.flash_flag == RANGE_MELEE))
 	{
-		self.flash_flag = SBAR_GRENS;
+		self.flash_flag = 1;
 		flash_on ();
 	}
 	else

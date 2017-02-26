@@ -41,7 +41,7 @@ void () InitTrigger =
 	{
 		SetMovedir ();
 	}
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	setmodel (self, self.model);
 	self.movetype = RANGE_MELEE;
 	self.modelindex = RANGE_MELEE;
@@ -75,7 +75,7 @@ void (vector tdest, float tspeed, void() func) SUB_CalcMove =
 		traveltime = 0.03;
 	}
 	self.nextthink = (self.ltime + traveltime);
-	self.velocity = (vdestdelta * (SBAR_GRENS / traveltime));
+	self.velocity = (vdestdelta * (1 / traveltime));
 };
 
 void () SUB_CalcMoveDone =
@@ -103,7 +103,7 @@ void (vector destangle, float tspeed, void() func) SUB_CalcAngleMove =
 	len = vlen (destdelta);
 	traveltime = (len / tspeed);
 	self.nextthink = (self.ltime + traveltime);
-	self.avelocity = (destdelta * (SBAR_GRENS / traveltime));
+	self.avelocity = (destdelta * (1 / traveltime));
 	self.think1 = func;
 	self.finalangle = destangle;
 	self.think = SUB_CalcAngleMoveDone;
@@ -156,7 +156,7 @@ void () SUB_UseTargets =
 		CenterPrint (activator, self.message);
 		if (!self.noise)
 		{
-			sound (activator, SBAR_PRINT, "misc/talk.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (activator, 2, "misc/talk.wav", 1, 1);
 		}
 	}
 	if ((activator.classname == "player"))
@@ -176,7 +176,7 @@ void () SUB_UseTargets =
 			}
 			remove (t);
 
-		} while (SBAR_GRENS);
+		} while (1);
 	}
 	if (self.target)
 	{
@@ -204,7 +204,7 @@ void () SUB_UseTargets =
 			other = otemp;
 			activator = act;
 
-		} while (SBAR_GRENS);
+		} while (1);
 	}
 };
 

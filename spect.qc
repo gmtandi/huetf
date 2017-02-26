@@ -41,7 +41,7 @@ void () SpectatorImpulseCommand =
 {
 	local vector cam;
 
-	if ((self.impulse == SBAR_GRENS))
+	if ((self.impulse == 1))
 	{
 		self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
 		if ((self.goalentity == world))
@@ -52,7 +52,7 @@ void () SpectatorImpulseCommand =
 		{
 			setorigin (self, self.goalentity.origin);
 			self.angles = self.goalentity.angles;
-			self.fixangle = SBAR_GRENS;
+			self.fixangle = 1;
 			self.last_impulse = self.impulse;
 		}
 		self.impulse = 0;

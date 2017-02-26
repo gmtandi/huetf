@@ -22,35 +22,35 @@ void () player_touch =
 		{
 			if (((self.undercover_team != 0) || (self.undercover_skin != 0)))
 			{
-				if ((((other.playerclass == 8) || (other.playerclass == SBAR_GRENS)) && (other.team_no != self.team_no)))
+				if ((((other.playerclass == 8) || (other.playerclass == 1)) && (other.team_no != self.team_no)))
 				{
-					TF_AddFrags (other, SBAR_GRENS, 0);
-					bprint (SBAR_GRENS, other.netname);
-					bprint (SBAR_GRENS, " uncovered an enemy spy!\n");
+					TF_AddFrags (other, 1, 0);
+					bprint (1, other.netname);
+					bprint (1, " uncovered an enemy spy!\n");
 					Spy_RemoveDisguise (self);
 				}
 			}
 			if (((other.undercover_team != 0) || (other.undercover_skin != 0)))
 			{
-				if ((((self.playerclass == 8) || (self.playerclass == SBAR_GRENS)) && (self.team_no != other.team_no)))
+				if ((((self.playerclass == 8) || (self.playerclass == 1)) && (self.team_no != other.team_no)))
 				{
-					TF_AddFrags (self, SBAR_GRENS, 0);
-					bprint (SBAR_GRENS, self.netname);
-					bprint (SBAR_GRENS, " uncovered an enemy spy!\n");
+					TF_AddFrags (self, 1, 0);
+					bprint (1, self.netname);
+					bprint (1, " uncovered an enemy spy!\n");
 					Spy_RemoveDisguise (other);
 				}
 			}
 		}
 	}
-	if ((((self.tfstate & SBAR_240) && !cb_prematch) && !practice))
+	if ((((self.tfstate & 16) && !cb_prematch) && !practice))
 	{
 		if (((other.classname == "player") && te.playerclass))
 		{
-			if (!(other.tfstate & SBAR_240))
+			if (!(other.tfstate & 16))
 			{
 				if ((other.playerclass != 5))
 				{
-					if (!(((teamplay & SBAR_240) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0)))
+					if (!(((teamplay & 16) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0)))
 					{
 						found = 0;
 						te = find (world, classname, "timer");
@@ -58,7 +58,7 @@ void () player_touch =
 						{
 							if (((te.owner == self) && (te.think == BioInfection_Decay)))
 							{
-								found = SBAR_GRENS;
+								found = 1;
 							}
 							else
 							{
@@ -66,19 +66,19 @@ void () player_touch =
 							}
 						}
 						Bio = spawn ();
-						Bio.nextthink = SBAR_PRINT;
+						Bio.nextthink = 2;
 						Bio.think = BioInfection_Decay;
 						Bio.owner = other;
 						Bio.classname = "timer";
 						Bio.enemy = te.enemy;
-						other.tfstate = (other.tfstate | SBAR_240);
+						other.tfstate = (other.tfstate | 16);
 						other.infection_team_no = self.infection_team_no;
-						sprint (other, SBAR_GRENS, "You have been infected by ");
-						sprint (other, SBAR_GRENS, self.netname);
-						sprint (other, SBAR_GRENS, "!\n");
-						sprint (self, SBAR_GRENS, "You have infected ");
-						sprint (self, SBAR_GRENS, other.netname);
-						sprint (self, SBAR_GRENS, "!\n");
+						sprint (other, 1, "You have been infected by ");
+						sprint (other, 1, self.netname);
+						sprint (other, 1, "!\n");
+						sprint (self, 1, "You have infected ");
+						sprint (self, 1, other.netname);
+						sprint (self, 1, "!\n");
 					}
 				}
 			}
@@ -95,7 +95,7 @@ void () player_stand1 = [ 17, player_stand1 ]
 		player_run ();
 		return;
 	}
-	if ((self.current_weapon <= SBAR_240))
+	if ((self.current_weapon <= 16))
 	{
 		if ((self.walkframe >= 12))
 		{
@@ -111,7 +111,7 @@ void () player_stand1 = [ 17, player_stand1 ]
 		}
 		self.frame = (12 + self.walkframe);
 	}
-	self.walkframe = (self.walkframe + SBAR_GRENS);
+	self.walkframe = (self.walkframe + 1);
 };
 
 void () player_run = [ 6, player_run ]
@@ -123,7 +123,7 @@ void () player_run = [ 6, player_run ]
 		player_stand1 ();
 		return;
 	}
-	if ((self.current_weapon <= SBAR_240))
+	if ((self.current_weapon <= 16))
 	{
 		if ((self.walkframe >= 6))
 		{
@@ -139,18 +139,18 @@ void () player_run = [ 6, player_run ]
 		}
 		self.frame = (self.frame + self.walkframe);
 	}
-	self.walkframe = (self.walkframe + SBAR_GRENS);
+	self.walkframe = (self.walkframe + 1);
 };
 
 void () player_shot1 = [ 113, player_shot2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 	muzzleflash ();
 };
 
 void () player_shot2 = [ 114, player_shot3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_shot3 = [ 115, player_shot4 ]
@@ -175,13 +175,13 @@ void () player_shot6 = [ 118, player_run ]
 
 void () player_autorifle1 = [ 113, player_autorifle2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 	muzzleflash ();
 };
 
 void () player_autorifle2 = [ 114, player_autorifle3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_autorifle3 = [ 118, player_run ]
@@ -191,18 +191,18 @@ void () player_autorifle3 = [ 118, player_run ]
 
 void () player_axe1 = [ 119, player_axe2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 };
 
 void () player_axe2 = [ 120, player_axe3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_axe3 = [ 121, player_axe4 ]
 {
 	self.weaponframe = AS_MELEE;
-	if ((self.current_weapon == SBAR_240))
+	if ((self.current_weapon == 16))
 	{
 		W_FireAxe ();
 	}
@@ -230,7 +230,7 @@ void () player_axeb2 = [ 126, player_axeb3 ]
 void () player_axeb3 = [ 127, player_axeb4 ]
 {
 	self.weaponframe = 7;
-	if ((self.current_weapon == SBAR_240))
+	if ((self.current_weapon == 16))
 	{
 		W_FireAxe ();
 	}
@@ -247,18 +247,18 @@ void () player_axeb4 = [ 128, player_run ]
 
 void () player_axec1 = [ 131, player_axec2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 };
 
 void () player_axec2 = [ 132, player_axec3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_axec3 = [ 133, player_axec4 ]
 {
 	self.weaponframe = AS_MELEE;
-	if ((self.current_weapon == SBAR_240))
+	if ((self.current_weapon == 16))
 	{
 		W_FireAxe ();
 	}
@@ -286,7 +286,7 @@ void () player_axed2 = [ 138, player_axed3 ]
 void () player_axed3 = [ 139, player_axed4 ]
 {
 	self.weaponframe = 7;
-	if ((self.current_weapon == SBAR_240))
+	if ((self.current_weapon == 16))
 	{
 		W_FireAxe ();
 	}
@@ -303,13 +303,13 @@ void () player_axed4 = [ 140, player_run ]
 
 void () player_chain1 = [ 137, player_chain1a ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 	Throw_Grapple ();
 };
 
 void () player_chain1a = [ 137, player_chain2 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_chain2 = [ 138, player_chain2a ]
@@ -359,12 +359,12 @@ void () player_chain5 = [ 140, player_run ]
 
 void () player_medikit1 = [ 119, player_medikit2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 };
 
 void () player_medikit2 = [ 120, player_medikit3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_medikit3 = [ 121, player_medikit4 ]
@@ -401,12 +401,12 @@ void () player_medikitb4 = [ 128, player_run ]
 
 void () player_medikitc1 = [ 131, player_medikitc2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 };
 
 void () player_medikitc2 = [ 132, player_medikitc3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_medikitc3 = [ 133, player_medikitc4 ]
@@ -443,12 +443,12 @@ void () player_medikitd4 = [ 140, player_run ]
 
 void () player_bioweapon1 = [ 119, player_bioweapon2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 };
 
 void () player_bioweapon2 = [ 120, player_bioweapon3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_bioweapon3 = [ 121, player_bioweapon4 ]
@@ -485,12 +485,12 @@ void () player_bioweaponb4 = [ 128, player_run ]
 
 void () player_bioweaponc1 = [ 131, player_bioweaponc2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 };
 
 void () player_bioweaponc2 = [ 132, player_bioweaponc3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_bioweaponc3 = [ 133, player_bioweaponc4 ]
@@ -533,16 +533,16 @@ void () player_nail1 = [ 103, player_nail2 ]
 		player_run ();
 		return;
 	}
-	self.weaponframe = (self.weaponframe + SBAR_GRENS);
+	self.weaponframe = (self.weaponframe + 1);
 	if ((self.weaponframe == 9))
 	{
-		self.weaponframe = SBAR_GRENS;
+		self.weaponframe = 1;
 	}
 	SuperDamageSound ();
 	if ((self.nailpos == 0))
 	{
 		W_FireSpikes (AS_MISSILE);
-		self.nailpos = SBAR_GRENS;
+		self.nailpos = 1;
 	}
 	else
 	{
@@ -559,33 +559,33 @@ void () player_nail2 = [ 104, player_nail1 ]
 		player_run ();
 		return;
 	}
-	self.weaponframe = (self.weaponframe + SBAR_GRENS);
+	self.weaponframe = (self.weaponframe + 1);
 	if ((self.weaponframe == 9))
 	{
-		self.weaponframe = SBAR_GRENS;
+		self.weaponframe = 1;
 	}
 	Attack_Finished (0.2);
 };
 
 void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 {
-	if (((!self.button0 || (self.ammo_shells < SBAR_GRENS)) || intermission_running))
+	if (((!self.button0 || (self.ammo_shells < 1)) || intermission_running))
 	{
 		self.tfstate = (self.tfstate - (self.tfstate & 2048));
 		TeamFortress_SetSpeed (self);
-		self.count = SBAR_GRENS;
+		self.count = 1;
 		self.heat = 0;
 		player_assaultcannondown1 ();
 		return;
 	}
-	self.fire_held_down = SBAR_GRENS;
-	if ((self.heat == SBAR_GRENS))
+	self.fire_held_down = 1;
+	if ((self.heat == 1))
 	{
-		sound (self, SBAR_GRENS, "weapons/asscan1.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 1, "weapons/asscan1.wav", 1, 1);
 	}
 	SuperDamageSound ();
 	Attack_Finished (0.1);
-	if (((self.heat != SBAR_PRINT) && (self.heat != AS_MISSILE)))
+	if (((self.heat != 2) && (self.heat != AS_MISSILE)))
 	{
 		if ((self.weaponframe >= AS_MELEE))
 		{
@@ -593,10 +593,10 @@ void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 		}
 		else
 		{
-			self.weaponframe = (self.weaponframe + SBAR_GRENS);
+			self.weaponframe = (self.weaponframe + 1);
 		}
 	}
-	self.heat = (self.heat + SBAR_GRENS);
+	self.heat = (self.heat + 1);
 	if ((self.heat >= 7))
 	{
 		self.heat = 0;
@@ -606,20 +606,20 @@ void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 
 void () player_assaultcannonup2 = [ 103, player_assaultcannonup1 ]
 {
-	if ((((!self.button0 || (self.ammo_shells < SBAR_GRENS)) || intermission_running) || !(self.flags & 512)))
+	if ((((!self.button0 || (self.ammo_shells < 1)) || intermission_running) || !(self.flags & 512)))
 	{
 		self.tfstate = (self.tfstate - (self.tfstate & 2048));
 		TeamFortress_SetSpeed (self);
-		self.count = SBAR_GRENS;
+		self.count = 1;
 		self.heat = 0;
 		player_assaultcannondown1 ();
 		return;
 	}
 	SuperDamageSound ();
 	Attack_Finished (0.1);
-	if ((((self.heat != SBAR_PRINT) && (self.heat != AS_MISSILE)) && (self.heat != 7)))
+	if ((((self.heat != 2) && (self.heat != AS_MISSILE)) && (self.heat != 7)))
 	{
-		if (((self.weaponframe == SBAR_PRINT) && (self.heat >= 9)))
+		if (((self.weaponframe == 2) && (self.heat >= 9)))
 		{
 			self.weaponframe = 0;
 		}
@@ -631,11 +631,11 @@ void () player_assaultcannonup2 = [ 103, player_assaultcannonup1 ]
 			}
 			else
 			{
-				self.weaponframe = (self.weaponframe + SBAR_GRENS);
+				self.weaponframe = (self.weaponframe + 1);
 			}
 		}
 	}
-	self.heat = (self.heat + SBAR_GRENS);
+	self.heat = (self.heat + 1);
 	if ((self.heat >= 13))
 	{
 		self.heat = 0;
@@ -648,36 +648,36 @@ void () player_assaultcannon1 = [ 103, player_assaultcannon2 ]
 	if ((vlen (self.velocity) < 150))
 	{
 		muzzleflash ();
-		sound (self, SBAR_GRENS, "weapons/asscan2.wav", SBAR_GRENS, SBAR_GRENS);
-		if ((self.weaponframe == SBAR_PRINT))
+		sound (self, 1, "weapons/asscan2.wav", 1, 1);
+		if ((self.weaponframe == 2))
 		{
 			self.weaponframe = AS_MISSILE;
 		}
 		else
 		{
-			self.weaponframe = SBAR_PRINT;
+			self.weaponframe = 2;
 		}
 		SuperDamageSound ();
 		W_FireAssaultCannon ();
 	}
 	else
 	{
-		sound (self, SBAR_GRENS, "weapons/asscan4.wav", SBAR_GRENS, SBAR_GRENS);
-		if ((self.weaponframe == SBAR_PRINT))
+		sound (self, 1, "weapons/asscan4.wav", 1, 1);
+		if ((self.weaponframe == 2))
 		{
 			self.weaponframe = 0;
 		}
 		else
 		{
-			self.weaponframe = SBAR_PRINT;
+			self.weaponframe = 2;
 		}
 	}
-	if (((!self.button0 || (self.ammo_shells < SBAR_GRENS)) || intermission_running))
+	if (((!self.button0 || (self.ammo_shells < 1)) || intermission_running))
 	{
 		self.tfstate = (self.tfstate - (self.tfstate & 2048));
 		TeamFortress_SetSpeed (self);
 		self.weaponframe = 0;
-		self.count = SBAR_GRENS;
+		self.count = 1;
 		player_assaultcannondown1 ();
 		return;
 	}
@@ -688,13 +688,13 @@ void () player_assaultcannon2 = [ 104, player_assaultcannon1 ]
 {
 	if ((vlen (self.velocity) < redlamp))
 	{
-		if ((self.weaponframe == SBAR_PRINT))
+		if ((self.weaponframe == 2))
 		{
 			self.weaponframe = AS_MISSILE;
 		}
 		else
 		{
-			self.weaponframe = SBAR_PRINT;
+			self.weaponframe = 2;
 		}
 		SuperDamageSound ();
 		W_FireAssaultCannon ();
@@ -703,21 +703,21 @@ void () player_assaultcannon2 = [ 104, player_assaultcannon1 ]
 	}
 	else
 	{
-		if ((self.weaponframe == SBAR_PRINT))
+		if ((self.weaponframe == 2))
 		{
 			self.weaponframe = 0;
 		}
 		else
 		{
-			self.weaponframe = SBAR_PRINT;
+			self.weaponframe = 2;
 		}
 	}
-	if (((!self.button0 || (self.ammo_shells < SBAR_GRENS)) || intermission_running))
+	if (((!self.button0 || (self.ammo_shells < 1)) || intermission_running))
 	{
 		self.tfstate = (self.tfstate - (self.tfstate & 2048));
 		TeamFortress_SetSpeed (self);
 		self.weaponframe = 0;
-		self.count = SBAR_GRENS;
+		self.count = 1;
 		player_assaultcannondown1 ();
 		return;
 	}
@@ -730,9 +730,9 @@ void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 
 	if ((self.flags & 512))
 	{
-		if ((self.count == SBAR_GRENS))
+		if ((self.count == 1))
 		{
-			sound (self, SBAR_GRENS, "weapons/asscan3.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 1, "weapons/asscan3.wav", 1, 1);
 		}
 		if ((self.count >= 15))
 		{
@@ -740,7 +740,7 @@ void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 			self.fire_held_down = 0;
 			self.tfstate = (self.tfstate - (self.tfstate & 2048));
 			TeamFortress_SetSpeed (self);
-			if (((self.ammo_shells < SBAR_GRENS) || (self.ammo_cells < 7)))
+			if (((self.ammo_shells < 1) || (self.ammo_cells < 7)))
 			{
 				self.last_weapon = self.current_weapon;
 				self.last_weaponmode = self.weaponmode;
@@ -760,10 +760,10 @@ void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 			}
 			else
 			{
-				self.weaponframe = (self.weaponframe + SBAR_GRENS);
+				self.weaponframe = (self.weaponframe + 1);
 			}
 		}
-		self.count = (self.count + SBAR_GRENS);
+		self.count = (self.count + 1);
 		Attack_Finished (0.1);
 	}
 	else
@@ -772,7 +772,7 @@ void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 		self.fire_held_down = 0;
 		self.tfstate = (self.tfstate - (self.tfstate & 2048));
 		TeamFortress_SetSpeed (self);
-		if (((self.ammo_shells < SBAR_GRENS) || (self.ammo_cells < 7)))
+		if (((self.ammo_shells < 1) || (self.ammo_cells < 7)))
 		{
 			self.last_weapon = self.current_weapon;
 			self.last_weaponmode = self.weaponmode;
@@ -794,10 +794,10 @@ void () player_light1 = [ 105, player_light2 ]
 		player_run ();
 		return;
 	}
-	self.weaponframe = (self.weaponframe + SBAR_GRENS);
+	self.weaponframe = (self.weaponframe + 1);
 	if ((self.weaponframe == 5))
 	{
-		self.weaponframe = SBAR_GRENS;
+		self.weaponframe = 1;
 	}
 	SuperDamageSound ();
 	W_FireLightning ();
@@ -811,10 +811,10 @@ void () player_light2 = [ 106, player_light1 ]
 		player_run ();
 		return;
 	}
-	self.weaponframe = (self.weaponframe + SBAR_GRENS);
+	self.weaponframe = (self.weaponframe + 1);
 	if ((self.weaponframe == 5))
 	{
-		self.weaponframe = SBAR_GRENS;
+		self.weaponframe = 1;
 	}
 	SuperDamageSound ();
 	W_FireLightning ();
@@ -823,13 +823,13 @@ void () player_light2 = [ 106, player_light1 ]
 
 void () player_rocket1 = [ 107, player_rocket2 ]
 {
-	self.weaponframe = SBAR_GRENS;
+	self.weaponframe = 1;
 	muzzleflash ();
 };
 
 void () player_rocket2 = [ 108, player_rocket3 ]
 {
-	self.weaponframe = SBAR_PRINT;
+	self.weaponframe = 2;
 };
 
 void () player_rocket3 = [ 109, player_rocket4 ]
@@ -863,19 +863,19 @@ void () PainSound =
 	}
 	if ((damage_attacker.classname == "teledeath"))
 	{
-		sound (self, SBAR_PRINT, "player/teledth1.wav", SBAR_GRENS, 0);
+		sound (self, 2, "player/teledth1.wav", 1, 0);
 		return;
 	}
 	if (((self.watertype == -3) && (self.waterlevel == AS_MELEE)))
 	{
-		DeathBubbles (SBAR_GRENS);
+		DeathBubbles (1);
 		if ((random () > 0.5))
 		{
-			sound (self, SBAR_PRINT, "player/drown1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 2, "player/drown1.wav", 1, 1);
 		}
 		else
 		{
-			sound (self, SBAR_PRINT, "player/drown2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 2, "player/drown2.wav", 1, 1);
 		}
 		return;
 	}
@@ -883,11 +883,11 @@ void () PainSound =
 	{
 		if ((random () > 0.5))
 		{
-			sound (self, SBAR_PRINT, "player/lburn1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 2, "player/lburn1.wav", 1, 1);
 		}
 		else
 		{
-			sound (self, SBAR_PRINT, "player/lburn2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 2, "player/lburn2.wav", 1, 1);
 		}
 		return;
 	}
@@ -895,11 +895,11 @@ void () PainSound =
 	{
 		if ((random () > 0.5))
 		{
-			sound (self, SBAR_PRINT, "player/lburn1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 2, "player/lburn1.wav", 1, 1);
 		}
 		else
 		{
-			sound (self, SBAR_PRINT, "player/lburn2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 2, "player/lburn2.wav", 1, 1);
 		}
 		return;
 	}
@@ -909,21 +909,21 @@ void () PainSound =
 		return;
 	}
 	self.pain_finished = (time + 0.5);
-	if ((self.axhitme == SBAR_GRENS))
+	if ((self.axhitme == 1))
 	{
 		self.axhitme = 0;
-		sound (self, SBAR_PRINT, "player/axhit1.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "player/axhit1.wav", 1, 1);
 		return;
 	}
-	rs = rint (((random () * 5) + SBAR_GRENS));
+	rs = rint (((random () * 5) + 1));
 	self.noise = "";
-	if ((rs == SBAR_GRENS))
+	if ((rs == 1))
 	{
 		self.noise = "player/pain1.wav";
 	}
 	else
 	{
-		if ((rs == SBAR_PRINT))
+		if ((rs == 2))
 		{
 			self.noise = "player/pain2.wav";
 		}
@@ -953,7 +953,7 @@ void () PainSound =
 			}
 		}
 	}
-	sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise, 1, 1);
 	return;
 };
 
@@ -1032,7 +1032,7 @@ void () player_pain =
 	{
 		return;
 	}
-	if ((self.current_weapon <= SBAR_240))
+	if ((self.current_weapon <= 16))
 	{
 		player_axpain1 ();
 	}
@@ -1069,7 +1069,7 @@ void () DeathBubblesSpawn =
 	setsize (newmis, '-8 -8 -8', '8 8 8');
 	self.nextthink = (time + 0.1);
 	self.think = DeathBubblesSpawn;
-	self.air_finished = (self.air_finished + SBAR_GRENS);
+	self.air_finished = (self.air_finished + 1);
 	if ((self.air_finished >= self.bubble_count))
 	{
 		dremove (self);
@@ -1100,21 +1100,21 @@ void () DeathSound =
 	{
 		if (self.is_feigning)
 		{
-			DeathBubbles (SBAR_PRINT);
+			DeathBubbles (2);
 		}
 		else
 		{
 			DeathBubbles (enter);
 		}
-		sound (self, SBAR_PRINT, "player/h2odeath.wav", SBAR_GRENS, 0);
+		sound (self, 2, "player/h2odeath.wav", 1, 0);
 		return;
 	}
-	rs = rint (((random () * AS_MISSILE) + SBAR_GRENS));
-	if ((rs == SBAR_GRENS))
+	rs = rint (((random () * AS_MISSILE) + 1));
+	if ((rs == 1))
 	{
 		self.noise = "player/death1.wav";
 	}
-	if ((rs == SBAR_PRINT))
+	if ((rs == 2))
 	{
 		self.noise = "player/death2.wav";
 	}
@@ -1130,14 +1130,14 @@ void () DeathSound =
 	{
 		self.noise = "player/death5.wav";
 	}
-	sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, 0);
+	sound (self, 2, self.noise, 1, 0);
 	return;
 };
 
 void () PlayerDead =
 {
 	self.nextthink = -1;
-	self.deadflag = SBAR_PRINT;
+	self.deadflag = 2;
 };
 
 vector (float dm) VelocityForDamage =
@@ -1155,7 +1155,7 @@ vector (float dm) VelocityForDamage =
 	{
 		if ((dm > -200))
 		{
-			v = (v * SBAR_PRINT);
+			v = (v * 2);
 		}
 		else
 		{
@@ -1219,7 +1219,7 @@ void (string gibname) HeadShotThrowHead =
 
 void () KillPlayer =
 {
-	self.owner.deadflag = SBAR_PRINT;
+	self.owner.deadflag = 2;
 	dremove (self);
 };
 
@@ -1234,32 +1234,32 @@ void () GibPlayer =
 		newmis = spawn ();
 		newmis.owner = self;
 		newmis.think = KillPlayer;
-		newmis.nextthink = (time + SBAR_GRENS);
+		newmis.nextthink = (time + 1);
 	}
 	else
 	{
-		self.deadflag = SBAR_PRINT;
+		self.deadflag = 2;
 	}
 	TeamFortress_SetupRespawn ();
 	if ((damage_attacker.classname == "teledeath"))
 	{
-		sound (self, SBAR_PRINT, "player/teledth1.wav", SBAR_GRENS, 0);
-		self.respawn_time = ((time + SBAR_PRINT) + (random () * SBAR_PRINT));
+		sound (self, 2, "player/teledth1.wav", 1, 0);
+		self.respawn_time = ((time + 2) + (random () * 2));
 		return;
 	}
 	if ((damage_attacker.classname == "teledeath2"))
 	{
-		sound (self, SBAR_PRINT, "player/teledth1.wav", SBAR_GRENS, 0);
-		self.respawn_time = ((time + SBAR_PRINT) + (random () * SBAR_PRINT));
+		sound (self, 2, "player/teledth1.wav", 1, 0);
+		self.respawn_time = ((time + 2) + (random () * 2));
 		return;
 	}
 	if ((random () < 0.5))
 	{
-		sound (self, SBAR_PRINT, "player/gib.wav", SBAR_GRENS, 0);
+		sound (self, 2, "player/gib.wav", 1, 0);
 	}
 	else
 	{
-		sound (self, SBAR_PRINT, "player/udeath.wav", SBAR_GRENS, 0);
+		sound (self, 2, "player/udeath.wav", 1, 0);
 	}
 };
 
@@ -1273,9 +1273,9 @@ void () PlayerDie =
 	{
 		Reset_Grapple (self.hook);
 		Attack_Finished (0.75);
-		self.hook_out = SBAR_GRENS;
+		self.hook_out = 1;
 	}
-	if ((self.flash_flag == SBAR_GRENS))
+	if ((self.flash_flag == 1))
 	{
 		self.flash_flag = 0;
 		W_SetCurrentAmmo ();
@@ -1288,7 +1288,7 @@ void () PlayerDie =
 	self.super_damage_finished = 0;
 	self.radsuit_finished = 0;
 	self.modelindex = modelindex_player;
-	if (((self.tfstate & SBAR_240) && (self == self.enemy)))
+	if (((self.tfstate & 16) && (self == self.enemy)))
 	{
 		te = find (world, classname, "timer");
 		while (te)
@@ -1296,7 +1296,7 @@ void () PlayerDie =
 			if (((te.owner == self) && (te.think == BioInfection_Decay)))
 			{
 				logfrag (te.enemy, self);
-				TF_AddFrags (te.enemy, SBAR_GRENS, SBAR_GRENS);
+				TF_AddFrags (te.enemy, 1, 1);
 			}
 			te = find (te, classname, "timer");
 		}
@@ -1309,7 +1309,7 @@ void () PlayerDie =
 		{
 			if (self.is_detpacking)
 			{
-				self.ammo_detpack = SBAR_GRENS;
+				self.ammo_detpack = 1;
 			}
 			Drop_detpack ();
 		}
@@ -1317,7 +1317,7 @@ void () PlayerDie =
 	self.weaponmodel = "";
 	if (rounds)
 	{
-		self.respawn_time = (time + SBAR_GRENS);
+		self.respawn_time = (time + 1);
 	}
 	else
 	{
@@ -1327,13 +1327,13 @@ void () PlayerDie =
 		}
 	}
 	self.view_ofs = '0 0 -8';
-	self.deadflag = SBAR_GRENS;
+	self.deadflag = 1;
 	self.solid = 0;
 	self.flags = (self.flags - (self.flags & 512));
 	self.movetype = 6;
 	if ((!intermission_running && !cb_prematch))
 	{
-		self.deaths = (self.deaths + SBAR_GRENS);
+		self.deaths = (self.deaths + 1);
 	}
 	if ((self.velocity_z < enter))
 	{
@@ -1350,20 +1350,20 @@ void () PlayerDie =
 	DeathSound ();
 	self.angles_x = 0;
 	self.angles_z = 0;
-	if ((self.current_weapon <= SBAR_240))
+	if ((self.current_weapon <= 16))
 	{
 		player_die_ax1 ();
 		TeamFortress_SetupRespawn ();
 		return;
 	}
-	i = (SBAR_GRENS + floor ((random () * 6)));
-	if ((i == SBAR_GRENS))
+	i = (1 + floor ((random () * 6)));
+	if ((i == 1))
 	{
 		player_diea1 ();
 	}
 	else
 	{
-		if ((i == SBAR_PRINT))
+		if ((i == 2))
 		{
 			player_dieb1 ();
 		}
@@ -1655,7 +1655,7 @@ void () player_die_ax9 = [ 49, player_die_ax9 ]
 
 void () Headless_Think =
 {
-	self.frame = (self.frame + SBAR_GRENS);
+	self.frame = (self.frame + 1);
 	if (((self.frame == 7) || (self.frame == COLOR_GREEN)))
 	{
 		self.nextthink = ((time + enter) + (random () * enter));

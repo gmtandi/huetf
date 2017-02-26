@@ -4,7 +4,7 @@ void () Flymode =
 	local entity spot;
 
 	self.tracking = RANGE_MELEE;
-	self.gravity = SBAR_GRENS;
+	self.gravity = 1;
 	spot = find (world, classname, "info_player_start");
 	self.origin = spot.origin;
 };
@@ -21,21 +21,21 @@ void () Toggle_Tracking =
 	}
 	if (!self.tracking)
 	{
-		self.tracking = SBAR_GRENS;
+		self.tracking = 1;
 		self.gravity = RANGE_MELEE;
-		sprint (self, SBAR_PRINT, "Tracking mode: 3rd Person.\n");
+		sprint (self, 2, "Tracking mode: 3rd Person.\n");
 	}
 	else
 	{
-		if ((((self.goalentity.classname == "player") || (self.goalentity.classname == "building_sentrygun")) && (self.tracking == SBAR_GRENS)))
+		if ((((self.goalentity.classname == "player") || (self.goalentity.classname == "building_sentrygun")) && (self.tracking == 1)))
 		{
-			self.tracking = SBAR_PRINT;
-			sprint (self, SBAR_PRINT, "Tracking mode: 1st Person.\n");
+			self.tracking = 2;
+			sprint (self, 2, "Tracking mode: 1st Person.\n");
 		}
 		else
 		{
 			Flymode ();
-			sprint (self, SBAR_PRINT, "Tracking mode: Flymode.\n");
+			sprint (self, 2, "Tracking mode: Flymode.\n");
 		}
 	}
 };
@@ -82,7 +82,7 @@ void () Track_Object =
 				goal = self.goalentity;
 			}
 		}
-		if ((((goal.classname == "player") || (goal.classname == "building_sentrygun")) && (self.tracking == SBAR_PRINT)))
+		if ((((goal.classname == "player") || (goal.classname == "building_sentrygun")) && (self.tracking == 2)))
 		{
 			self.origin = (self.goalentity.origin + self.goalentity.view_ofs);
 			if ((self.goalentity.classname == "player"))
@@ -97,7 +97,7 @@ void () Track_Object =
 					self.angles = self.goalentity.angles;
 				}
 			}
-			self.fixangle = SBAR_GRENS;
+			self.fixangle = 1;
 			return;
 		}
 		else
@@ -108,12 +108,12 @@ void () Track_Object =
 				v2 = self.v_angle;
 				makevectors (v2);
 				v2 = (v_forward * self.camdist);
-				traceline (v1, (v1 - v2), SBAR_GRENS, goal);
+				traceline (v1, (v1 - v2), 1, goal);
 				v2 = (v2 * trace_fraction);
 				v3 = (v1 - (v2 * 0.6));
 				v2 = (v1 - v2);
-				traceline (self.origin, v2, SBAR_GRENS, goal);
-				if ((trace_fraction == SBAR_GRENS))
+				traceline (self.origin, v2, 1, goal);
+				if ((trace_fraction == 1))
 				{
 					v1 = (v3 - self.origin);
 					v1 = (v1 * enter);
@@ -128,7 +128,7 @@ void () Track_Object =
 			self.armorvalue = goal.armorvalue;
 			if ((goal.health <= RANGE_MELEE))
 			{
-				self.health = SBAR_GRENS;
+				self.health = 1;
 			}
 			else
 			{
@@ -143,7 +143,7 @@ void () Track_Object =
 			{
 				if ((goal.health <= RANGE_MELEE))
 				{
-					self.health = SBAR_GRENS;
+					self.health = 1;
 				}
 				else
 				{
@@ -157,7 +157,7 @@ void () Track_Object =
 				if ((goal.classname == "item_tfgoal"))
 				{
 					self.armorvalue = (goal.nextthink - time);
-					self.health = SBAR_GRENS;
+					self.health = 1;
 					self.currentammo = RANGE_MELEE;
 				}
 			}
@@ -204,7 +204,7 @@ void () Track_Player =
 		}
 		else
 		{
-			endloop = SBAR_GRENS;
+			endloop = 1;
 		}
 	}
 	if ((self.goalentity != world))

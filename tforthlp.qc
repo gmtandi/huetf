@@ -5,7 +5,7 @@ void () TeamFortress_MOTD =
 
 	if ((self.motd <= 20))
 	{
-		self.motd = (self.motd + SBAR_GRENS);
+		self.motd = (self.motd + 1);
 		return;
 	}
 	if ((self.motd == 21))
@@ -24,25 +24,25 @@ void () TeamFortress_MOTD =
 		}
 		if (self.get_aliases)
 		{
-			sprint (self, SBAR_PRINT, "\n\n\n");
+			sprint (self, 2, "\n\n\n");
 		}
-		sprint (self, SBAR_PRINT, "Hue Team Fortress v1.45\nhttp://andi.com.br/\n");
+		sprint (self, 2, "Hue Team Fortress v1.45\nhttp://andi.com.br/\n");
 		self.menu_displaytime = 0;
 		self.current_menu = 5;
 		self.menu_count = 25;
-		self.motd = SBAR_300;
+		self.motd = 22;
 		if (!self.get_aliases)
 		{
 			return;
 		}
-		sprint (self, SBAR_PRINT, "binding aliases...\n");
+		sprint (self, 2, "binding aliases...\n");
 		TeamFortress_Alias ("inv", redlamp, 0);
 		TeamFortress_Alias ("showtf", yellowlamp, 0);
 		TeamFortress_Alias ("autozoom", 174, 0);
 		TeamFortress_Alias ("changeclass", _c, 0);
 		TeamFortress_Alias ("changeteam", __, 0);
-		TeamFortress_Alias ("scout", (_d + SBAR_GRENS), 0);
-		TeamFortress_Alias ("sniper", (_d + SBAR_PRINT), 0);
+		TeamFortress_Alias ("scout", (_d + 1), 0);
+		TeamFortress_Alias ("sniper", (_d + 2), 0);
 		TeamFortress_Alias ("soldier", (_d + AS_MELEE), 0);
 		TeamFortress_Alias ("demoman", (_d + AS_MISSILE), 0);
 		TeamFortress_Alias ("medic", (_d + 5), 0);
@@ -61,7 +61,7 @@ void () TeamFortress_MOTD =
 	}
 	if ((self.motd <= _A))
 	{
-		self.motd = (self.motd + SBAR_GRENS);
+		self.motd = (self.motd + 1);
 	}
 	if ((self.motd == 30))
 	{
@@ -75,7 +75,7 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("scane", 160, 0);
 		return;
 	}
-	if ((self.motd == SBAR_400))
+	if ((self.motd == 35))
 	{
 		TeamFortress_Alias ("primeone", 150, 0);
 		TeamFortress_Alias ("primetwo", 151, 0);
@@ -120,8 +120,8 @@ void () TeamFortress_MOTD =
 	{
 		TeamFortress_Alias ("sbar_on", 182, 0);
 		TeamFortress_Alias ("sbar_off", 183, 0);
-		TeamFortress_Alias ("sbar_200", _G, SBAR_GRENS);
-		TeamFortress_Alias ("sbar_240", _G, SBAR_PRINT);
+		TeamFortress_Alias ("sbar_200", _G, 1);
+		TeamFortress_Alias ("sbar_240", _G, 2);
 		TeamFortress_Alias ("sbar_300", _G, AS_MELEE);
 		TeamFortress_Alias ("sbar_350", _G, AS_MISSILE);
 		TeamFortress_Alias ("sbar_384", _G, 5);
@@ -131,7 +131,7 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("sbar_768", _G, 9);
 		return;
 	}
-	if ((self.motd == SBAR_600))
+	if ((self.motd == 60))
 	{
 		if (tfstrike)
 		{
@@ -182,9 +182,9 @@ void () TeamFortress_HelpMap =
 	{
 		if ((te.non_team_broadcast != string_null))
 		{
-			sprint (self, SBAR_PRINT, te.non_team_broadcast);
+			sprint (self, 2, te.non_team_broadcast);
 			return;
 		}
 	}
-	sprint (self, SBAR_PRINT, "There is no help for this map.\n");
+	sprint (self, 2, "There is no help for this map.\n");
 };

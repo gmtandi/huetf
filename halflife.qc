@@ -19,7 +19,7 @@ void () Explode =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 };
 
 void () env_explosion =
@@ -74,21 +74,21 @@ void () hostage_rescue_touch =
 	{
 		return;
 	}
-	num_hostages = (num_hostages - SBAR_GRENS);
+	num_hostages = (num_hostages - 1);
 	if (!num_hostages)
 	{
-		tfs_winner = SBAR_GRENS;
+		tfs_winner = 1;
 	}
 	TF_AddFrags (other.enemy, 5, 0);
 	other.solid = 0;
-	other.tfstate = SBAR_GRENS;
+	other.tfstate = 1;
 	setmodel (other, string_null);
-	sound (self, SBAR_PRINT, "speech/rescued.wav", SBAR_GRENS, 0);
+	sound (self, 2, "speech/rescued.wav", 1, 0);
 };
 
 void () func_water =
 {
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	self.movetype = 7;
 	setorigin (self, self.origin);
 	setmodel (self, self.model);
@@ -104,7 +104,7 @@ void () func_breakable =
 	setsize (self, self.mins, self.maxs);
 	if (!self.targetname)
 	{
-		self.takedamage = SBAR_GRENS;
+		self.takedamage = 1;
 		self.th_die = Breakaway;
 	}
 };

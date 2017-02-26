@@ -15,7 +15,7 @@ void () plat_spawn_inside_trigger =
 	trigger = spawn ();
 	trigger.touch = plat_center_touch;
 	trigger.movetype = 0;
-	trigger.solid = SBAR_GRENS;
+	trigger.solid = 1;
 	trigger.enemy = self;
 	trigger.team_no = self.team_no;
 	trigger.playerclass = self.playerclass;
@@ -35,26 +35,26 @@ void () plat_spawn_inside_trigger =
 	tmin = (self.mins + '25 25 0');
 	tmax = (self.maxs - '25 25 -8');
 	tmin_z = (tmax_z - ((self.pos1_z - self.pos2_z) + 8));
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		tmax_z = (tmin_z + 8);
 	}
 	if ((self.size_x <= _2))
 	{
-		tmin_x = ((self.mins_x + self.maxs_x) / SBAR_PRINT);
-		tmax_x = (tmin_x + SBAR_GRENS);
+		tmin_x = ((self.mins_x + self.maxs_x) / 2);
+		tmax_x = (tmin_x + 1);
 	}
 	if ((self.size_y <= _2))
 	{
-		tmin_y = ((self.mins_y + self.maxs_y) / SBAR_PRINT);
-		tmax_y = (tmin_y + SBAR_GRENS);
+		tmin_y = ((self.mins_y + self.maxs_y) / 2);
+		tmax_y = (tmin_y + 1);
 	}
 	setsize (trigger, tmin, tmax);
 };
 
 void () plat_hit_top =
 {
-	sound (self, SBAR_PRINT, self.noise1, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise1, 1, 1);
 	self.state = 0;
 	self.think = plat_go_down;
 	self.nextthink = (self.ltime + AS_MELEE);
@@ -62,21 +62,21 @@ void () plat_hit_top =
 
 void () plat_hit_bottom =
 {
-	sound (self, SBAR_PRINT, self.noise1, SBAR_GRENS, SBAR_GRENS);
-	self.state = SBAR_GRENS;
+	sound (self, 2, self.noise1, 1, 1);
+	self.state = 1;
 };
 
 void () plat_go_down =
 {
-	sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise, 1, 1);
 	self.state = AS_MELEE;
 	SUB_CalcMove (self.pos2, self.speed, plat_hit_bottom);
 };
 
 void () plat_go_up =
 {
-	sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
-	self.state = SBAR_PRINT;
+	sound (self, 2, self.noise, 1, 1);
+	self.state = 2;
 	SUB_CalcMove (self.pos1, self.speed, plat_hit_top);
 };
 
@@ -84,7 +84,7 @@ void () plat_center_touch =
 {
 	local entity te;
 
-	if ((freeze == SBAR_GRENS))
+	if ((freeze == 1))
 	{
 		return;
 	}
@@ -113,7 +113,7 @@ void () plat_center_touch =
 		return;
 	}
 	self = self.enemy;
-	if ((self.state == SBAR_GRENS))
+	if ((self.state == 1))
 	{
 		plat_go_up ();
 	}
@@ -121,7 +121,7 @@ void () plat_center_touch =
 	{
 		if ((self.state == 0))
 		{
-			self.nextthink = (self.ltime + SBAR_GRENS);
+			self.nextthink = (self.ltime + 1);
 		}
 	}
 };
@@ -130,7 +130,7 @@ void () plat_outside_touch =
 {
 	local entity te;
 
-	if ((freeze == SBAR_GRENS))
+	if ((freeze == 1))
 	{
 		return;
 	}
@@ -174,8 +174,8 @@ void () plat_crush =
 {
 	if ((other.classname == "detpack"))
 	{
-		sprint (other.owner, SBAR_PRINT, "Your detpack was squashed.\n");
-		if ((other.weaponmode == SBAR_GRENS))
+		sprint (other.owner, 2, "Your detpack was squashed.\n");
+		if ((other.weaponmode == 1))
 		{
 			TeamFortress_SetSpeed (other.enemy);
 			dremove (other.observer_list);
@@ -184,8 +184,8 @@ void () plat_crush =
 		dremove (other);
 		return;
 	}
-	T_Damage (other, self, self, SBAR_GRENS);
-	if ((self.state == SBAR_PRINT))
+	T_Damage (other, self, self, 1);
+	if ((self.state == 2))
 	{
 		plat_go_down ();
 	}
@@ -205,7 +205,7 @@ void () plat_crush =
 void () plat_use =
 {
 	self.use = SUB_Null;
-	if ((self.state != SBAR_PRINT))
+	if ((self.state != 2))
 	{
 		objerror ("plat_use: not in up state");
 	}
@@ -231,16 +231,16 @@ void () func_plat =
 	}
 	if ((self.sounds == 0))
 	{
-		self.sounds = SBAR_PRINT;
+		self.sounds = 2;
 	}
-	if ((self.sounds == SBAR_GRENS))
+	if ((self.sounds == 1))
 	{
 		precache_sound ("plats/plat1.wav");
 		precache_sound ("plats/plat2.wav");
 		self.noise = "plats/plat1.wav";
 		self.noise1 = "plats/plat2.wav";
 	}
-	if ((self.sounds == SBAR_PRINT))
+	if ((self.sounds == 2))
 	{
 		precache_sound ("plats/medplat1.wav");
 		precache_sound ("plats/medplat2.wav");
@@ -274,13 +274,13 @@ void () func_plat =
 	plat_spawn_inside_trigger ();
 	if (self.targetname)
 	{
-		self.state = SBAR_PRINT;
+		self.state = 2;
 		self.use = plat_use;
 	}
 	else
 	{
 		setorigin (self, self.pos2);
-		self.state = SBAR_GRENS;
+		self.state = 1;
 	}
 };
 void () train_next;
@@ -310,7 +310,7 @@ void () train_wait =
 	if (self.wait)
 	{
 		self.nextthink = (self.ltime + self.wait);
-		sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, self.noise, 1, 1);
 	}
 	else
 	{
@@ -337,7 +337,7 @@ void () train_next =
 	{
 		self.wait = 0;
 	}
-	sound (self, SBAR_PRINT, self.noise1, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise1, 1, 1);
 	SUB_CalcMove ((targ.origin - self.mins), self.speed, train_wait);
 };
 
@@ -372,7 +372,7 @@ void () func_train =
 	}
 	if (!self.dmg)
 	{
-		self.dmg = SBAR_PRINT;
+		self.dmg = 2;
 	}
 	if ((self.sounds == 0))
 	{
@@ -381,14 +381,14 @@ void () func_train =
 		self.noise1 = "misc/null.wav";
 		precache_sound ("misc/null.wav");
 	}
-	if ((self.sounds == SBAR_GRENS))
+	if ((self.sounds == 1))
 	{
 		self.noise = "plats/train2.wav";
 		precache_sound ("plats/train2.wav");
 		self.noise1 = "plats/train1.wav";
 		precache_sound ("plats/train1.wav");
 	}
-	self.cnt = SBAR_GRENS;
+	self.cnt = 1;
 	self.solid = AS_MISSILE;
 	self.movetype = 7;
 	self.blocked = train_blocked;
@@ -416,7 +416,7 @@ void () misc_teleporttrain =
 	{
 		objerror ("func_train without a target");
 	}
-	self.cnt = SBAR_GRENS;
+	self.cnt = 1;
 	self.solid = 0;
 	self.movetype = 7;
 	self.blocked = train_blocked;

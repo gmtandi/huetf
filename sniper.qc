@@ -6,7 +6,7 @@ void () TeamFortress_SniperWeapon =
 	local float it;
 
 	self.impulse = 0;
-	if ((self.tfstate & SBAR_PRINT))
+	if ((self.tfstate & 2))
 	{
 		return;
 	}
@@ -14,9 +14,9 @@ void () TeamFortress_SniperWeapon =
 	{
 		return;
 	}
-	if ((self.ammo_shells < SBAR_GRENS))
+	if ((self.ammo_shells < 1))
 	{
-		sprint (self, SBAR_PRINT, "not enough ammo.\n");
+		sprint (self, 2, "not enough ammo.\n");
 		return;
 	}
 	if ((self.current_weapon == space))
@@ -60,7 +60,7 @@ void () SniperSight_Update =
 	org = (self.owner.origin + (v_forward * enter));
 	org_z = (self.owner.absmin_z + (self.owner.size_z * 0.7));
 	traceline (org, (org + (v_forward * 9192)), 0, self);
-	if ((trace_fraction == SBAR_GRENS))
+	if ((trace_fraction == 1))
 	{
 		setorigin (self, self.owner.origin);
 		return;
@@ -74,7 +74,7 @@ void () SniperSight_Create =
 {
 	local entity sight;
 
-	if ((self.has_disconnected == SBAR_GRENS))
+	if ((self.has_disconnected == 1))
 	{
 		return;
 	}
@@ -87,13 +87,13 @@ void () SniperSight_Create =
 	setorigin (sight, self.origin);
 	sight.think = SniperSight_Update;
 	sight.nextthink = (time + 0.05);
-	if ((self.team_no == SBAR_GRENS))
+	if ((self.team_no == 1))
 	{
 		setmodel (sight, "progs/dot1.spr");
 	}
 	else
 	{
-		if ((self.team_no == SBAR_PRINT))
+		if ((self.team_no == 2))
 		{
 			setmodel (sight, "progs/dot2.spr");
 		}
@@ -123,11 +123,11 @@ void () TeamFortress_AutoZoomToggle =
 	if ((self.tfstate & 4096))
 	{
 		self.tfstate = (self.tfstate - 4096);
-		sprint (self, SBAR_PRINT, "autozoom ON\n");
+		sprint (self, 2, "autozoom ON\n");
 	}
 	else
 	{
 		self.tfstate = (self.tfstate | 4096);
-		sprint (self, SBAR_PRINT, "autozoom OFF\n");
+		sprint (self, 2, "autozoom OFF\n");
 	}
 };

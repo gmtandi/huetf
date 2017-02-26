@@ -52,7 +52,7 @@ void () AutoRecord =
 	}
 	while ((i < number_of_teams))
 	{
-		i = (i + SBAR_GRENS);
+		i = (i + 1);
 		tmp = GetTeamName (i);
 		localcmd (tmp);
 		localcmd ("_");
@@ -91,19 +91,19 @@ void () MatchOvertime =
 
 	if (cease_fire)
 	{
-		self.nextthink = (time + SBAR_GRENS);
+		self.nextthink = (time + 1);
 		return;
 	}
 	if (TeamFortress_CheckDraw ())
 	{
-		self.cnt2 = (self.cnt2 + SBAR_GRENS);
+		self.cnt2 = (self.cnt2 + 1);
 		f2 = stof (infokey (world, "overtime"));
 		if ((f2 > 0))
 		{
-			if ((self.cnt2 <= (f2 * SBAR_600)))
+			if ((self.cnt2 <= (f2 * 60)))
 			{
 				self.think = MatchOvertime;
-				self.nextthink = (time + SBAR_GRENS);
+				self.nextthink = (time + 1);
 				return;
 			}
 		}
@@ -123,10 +123,10 @@ void () MatchThink =
 	}
 	if (cease_fire)
 	{
-		self.nextthink = (time + SBAR_GRENS);
+		self.nextthink = (time + 1);
 		return;
 	}
-	self.cnt2 = (self.cnt2 - SBAR_GRENS);
+	self.cnt2 = (self.cnt2 - 1);
 	if (!TeamFortress_GetNoPlayers ())
 	{
 		NextLevel ();
@@ -135,7 +135,7 @@ void () MatchThink =
 	if ((self.cnt2 == -1))
 	{
 		self.cnt2 = 59;
-		self.cnt = (self.cnt - SBAR_GRENS);
+		self.cnt = (self.cnt - 1);
 		localcmd ("serverinfo status \"");
 		tmp = ftos (self.cnt);
 		localcmd (tmp);
@@ -143,15 +143,15 @@ void () MatchThink =
 	}
 	if (!self.cnt2)
 	{
-		if (((self.cnt == SBAR_GRENS) || (self.cnt == 5)))
+		if (((self.cnt == 1) || (self.cnt == 5)))
 		{
 			tmp = ftos (self.cnt);
-			bprint3 (SBAR_PRINT, "", tmp, "‘ minute");
-			if ((self.cnt != SBAR_GRENS))
+			bprint3 (2, "", tmp, "‘ minute");
+			if ((self.cnt != 1))
 			{
-				bprint (SBAR_PRINT, "s");
+				bprint (2, "s");
 			}
-			bprint (SBAR_PRINT, " remaining\n");
+			bprint (2, " remaining\n");
 		}
 		if (!self.cnt)
 		{
@@ -160,7 +160,7 @@ void () MatchThink =
 			{
 				if (TeamFortress_CheckDraw ())
 				{
-					bprint (SBAR_PRINT, "Draw, overtime set.\n Golden Cap WINS!!!\n");
+					bprint (2, "Draw, overtime set.\n Golden Cap WINS!!!\n");
 					self.cnt2 = 0;
 					MatchOvertime ();
 					self.cnt = -1;
@@ -176,14 +176,14 @@ void () MatchThink =
 	if ((!self.cnt && (((self.cnt2 == 30) || (self.cnt2 == 15)) || (self.cnt2 <= enter))))
 	{
 		tmp = ftos (self.cnt2);
-		bprint3 (SBAR_PRINT, "", tmp, "‘ second");
-		if ((self.cnt2 != SBAR_GRENS))
+		bprint3 (2, "", tmp, "‘ second");
+		if ((self.cnt2 != 1))
 		{
-			bprint (SBAR_PRINT, "s");
+			bprint (2, "s");
 		}
-		bprint (SBAR_PRINT, " remaining\n");
+		bprint (2, " remaining\n");
 	}
-	self.nextthink = (time + SBAR_GRENS);
+	self.nextthink = (time + 1);
 };
 
 void () StartMatch =
@@ -196,7 +196,7 @@ void () StartMatch =
 	local entity gren;
 
 	lightstyle (0, "m");
-	bprint (SBAR_PRINT, "MATCH BEGINS NOW\n");
+	bprint (2, "MATCH BEGINS NOW\n");
 	team4score = 0;
 	team3score = 0;
 	team2score = 0;
@@ -214,7 +214,7 @@ void () StartMatch =
 		{
 			Reset_Grapple (self.hook);
 			Attack_Finished (0.75);
-			self.hook_out = SBAR_GRENS;
+			self.hook_out = 1;
 		}
 		TeamFortress_RemoveTimers ();
 		self.frags = 0;
@@ -236,24 +236,24 @@ void () StartMatch =
 	cease_fire = 0;
 	te = find (world, classname, "prematch");
 	te.classname = "match";
-	te.cnt = (timelimit / SBAR_600);
-	te.cnt2 = SBAR_600;
+	te.cnt = (timelimit / 60);
+	te.cnt2 = 60;
 	if ((te.cnt == 0))
 	{
-		bprint (SBAR_PRINT, "Warning no timelimit set!\n");
+		bprint (2, "Warning no timelimit set!\n");
 		localcmd ("\nserverinfo status \"0 min left\"\n");
 		te.cnt = -1;
 		te.cnt2 = -1;
 	}
 	else
 	{
-		te.cnt = (te.cnt - SBAR_GRENS);
+		te.cnt = (te.cnt - 1);
 		localcmd ("\nserverinfo status \"");
 		st = ftos (te.cnt);
 		localcmd (st);
 		localcmd (" min left\"\n");
 		te.think = MatchThink;
-		te.nextthink = (time + SBAR_GRENS);
+		te.nextthink = (time + 1);
 	}
 	st = infokey (world, "spectalk");
 	f2 = stof (st);
@@ -282,15 +282,15 @@ void () PreMatch_Think =
 	local string num;
 	local float fl;
 
-	self.cnt2 = (self.cnt2 - SBAR_GRENS);
-	if ((self.cnt2 == SBAR_GRENS))
+	self.cnt2 = (self.cnt2 - 1);
+	if ((self.cnt2 == 1))
 	{
 		p = find (world, classname, "player");
 		while ((p != world))
 		{
 			if ((p.netname != ""))
 			{
-				p.respawn_time = (time + SBAR_PRINT);
+				p.respawn_time = (time + 2);
 				p.takedamage = 0;
 				p.solid = 0;
 				p.movetype = 0;
@@ -311,7 +311,7 @@ void () PreMatch_Think =
 			{
 				if ((p.netname != ""))
 				{
-					p.takedamage = SBAR_PRINT;
+					p.takedamage = 2;
 					p.solid = AS_MELEE;
 					p.movetype = AS_MELEE;
 				}
@@ -321,16 +321,16 @@ void () PreMatch_Think =
 			return;
 		}
 	}
-	fl = (self.cnt2 / SBAR_600);
-	if (((((((((((fl == SBAR_GRENS) || (fl == SBAR_PRINT)) || (fl == AS_MELEE)) || (fl == AS_MISSILE)) || (fl == 5)) || (fl == 6)) || (fl == 7)) || (fl == 8)) || (fl == 9)) || (fl == enter)))
+	fl = (self.cnt2 / 60);
+	if (((((((((((fl == 1) || (fl == 2)) || (fl == AS_MELEE)) || (fl == AS_MISSILE)) || (fl == 5)) || (fl == 6)) || (fl == 7)) || (fl == 8)) || (fl == 9)) || (fl == enter)))
 	{
 		num = ftos (fl);
-		bprint3 (SBAR_PRINT, "Match will begin in ", num, " minute(s).\n");
+		bprint3 (2, "Match will begin in ", num, " minute(s).\n");
 	}
 	if ((self.cnt2 == 30))
 	{
-		num = ftos ((self.cnt2 / SBAR_600));
-		bprint (SBAR_PRINT, "Match will begin in 30 seconds.\n");
+		num = ftos ((self.cnt2 / 60));
+		bprint (2, "Match will begin in 30 seconds.\n");
 	}
 	if ((self.cnt2 <= enter))
 	{
@@ -361,16 +361,16 @@ void () PreMatch_Think =
 			}
 			p = find (p, classname, "player");
 		}
-		if ((self.cnt2 > SBAR_GRENS))
+		if ((self.cnt2 > 1))
 		{
-			bprint2 (SBAR_PRINT, num, " seconds.\n");
+			bprint2 (2, num, " seconds.\n");
 		}
 		else
 		{
-			bprint (SBAR_PRINT, "1 second.\n");
+			bprint (2, "1 second.\n");
 		}
 	}
-	self.nextthink = (time + SBAR_GRENS);
+	self.nextthink = (time + 1);
 };
 
 void () StartTimer =
@@ -384,8 +384,8 @@ void () StartTimer =
 	{
 		if ((self != world))
 		{
-			sprint (self, SBAR_PRINT, "Clan mode off....\n");
-			sprint (self, SBAR_PRINT, "Match cannot be started.\n");
+			sprint (self, 2, "Clan mode off....\n");
+			sprint (self, 2, "Match cannot be started.\n");
 		}
 		else
 		{
@@ -394,12 +394,12 @@ void () StartTimer =
 		}
 		return;
 	}
-	if (((clanbattle == SBAR_GRENS) && (cb_prematch == 0)))
+	if (((clanbattle == 1) && (cb_prematch == 0)))
 	{
 		if ((self != world))
 		{
-			sprint (self, SBAR_PRINT, "Clan Battle in progress....\n");
-			sprint (self, SBAR_PRINT, "Type break to stop the current battle.\n");
+			sprint (self, 2, "Clan Battle in progress....\n");
+			sprint (self, 2, "Type break to stop the current battle.\n");
 		}
 		else
 		{
@@ -412,7 +412,7 @@ void () StartTimer =
 	{
 		if ((self != world))
 		{
-			sprint (self, SBAR_PRINT, "Countdown in progress....\n");
+			sprint (self, 2, "Countdown in progress....\n");
 		}
 		else
 		{
@@ -429,24 +429,24 @@ void () StartTimer =
 	f1 = stof (infokey (world, "fpd"));
 	if ((f1 & 170))
 	{
-		bprint (SBAR_PRINT, "QiZmo:");
-		if ((f1 & SBAR_PRINT))
+		bprint (2, "QiZmo:");
+		if ((f1 & 2))
 		{
-			bprint (SBAR_PRINT, " פיםוע");
+			bprint (2, " פיםוע");
 		}
 		if ((f1 & 8))
 		{
-			bprint (SBAR_PRINT, " לבח");
+			bprint (2, " לבח");
 		}
 		if ((f1 & space))
 		{
-			bprint (SBAR_PRINT, " ומוםש");
+			bprint (2, " ומוםש");
 		}
 		if ((f1 & 128))
 		{
-			bprint (SBAR_PRINT, " נןימפ");
+			bprint (2, " נןימפ");
 		}
-		bprint (SBAR_PRINT, " disabled\n");
+		bprint (2, " disabled\n");
 	}
 	f1 = stof (infokey (world, "prematch"));
 	timer = spawn ();
@@ -455,10 +455,10 @@ void () StartTimer =
 	timer.cnt = 0;
 	if (pmtime)
 	{
-		timer.cnt2 = rint ((pmtime * SBAR_600));
-		if ((timer.cnt2 < SBAR_GRENS))
+		timer.cnt2 = rint ((pmtime * 60));
+		if ((timer.cnt2 < 1))
 		{
-			timer.cnt2 = SBAR_GRENS;
+			timer.cnt2 = 1;
 		}
 	}
 	else
@@ -479,12 +479,12 @@ void () StartTimer =
 			p = find (timer, classname, "player");
 		}
 		timer.cnt2 = rint (stof (infokey (world, "count")));
-		if ((timer.cnt2 < SBAR_GRENS))
+		if ((timer.cnt2 < 1))
 		{
 			timer.cnt2 = 0;
 		}
 	}
-	timer.cnt2 = (timer.cnt2 + SBAR_GRENS);
+	timer.cnt2 = (timer.cnt2 + 1);
 	timer.nextthink = (time + 0.1);
 	tmp = ftos (timer.cnt2);
 	timer.think = PreMatch_Think;
@@ -537,16 +537,16 @@ void () PlayerBreak =
 	{
 		if (!pmtime)
 		{
-			bprint2 (SBAR_PRINT, self.netname, " stops the countdown\n");
+			bprint2 (2, self.netname, " stops the countdown\n");
 			StopTimer ();
 		}
 		return;
 	}
 	tmp = infokey (world, "votetime");
-	f1 = (stof (tmp) * SBAR_600);
+	f1 = (stof (tmp) * 60);
 	if ((f1 > time))
 	{
-		sprint (self, SBAR_PRINT, "You cannot break at this time.\n");
+		sprint (self, 2, "You cannot break at this time.\n");
 		return;
 	}
 	if ((self.allowvote > time))
@@ -556,18 +556,18 @@ void () PlayerBreak =
 	self.allowvote = (time + AS_MELEE);
 	if (self.bvote)
 	{
-		bprint2 (SBAR_PRINT, self.netname, " קיפטהעבקף ");
+		bprint2 (2, self.netname, " קיפטהעבקף ");
 		if ((infokey (self, "gender") == "f"))
 		{
-			bprint (SBAR_PRINT, "טוע ");
+			bprint (2, "טוע ");
 		}
 		else
 		{
-			bprint (SBAR_PRINT, "טיף ");
+			bprint (2, "טיף ");
 		}
 		bprint (AS_MELEE, "vote\n");
 		self.bvote = 0;
-		v_break = (v_break - SBAR_GRENS);
+		v_break = (v_break - 1);
 		return;
 	}
 	if (clanbattle)
@@ -578,19 +578,19 @@ void () PlayerBreak =
 	{
 		bprint2 (AS_MELEE, self.netname, " votes to end the current map\n");
 	}
-	self.bvote = SBAR_GRENS;
-	v_break = (v_break + SBAR_GRENS);
+	self.bvote = 1;
+	v_break = (v_break + 1);
 	f1 = TeamFortress_GetNoPlayers ();
-	f2 = (floor ((f1 / SBAR_PRINT)) + SBAR_GRENS);
+	f2 = (floor ((f1 / 2)) + 1);
 	if ((v_break >= f2))
 	{
 		if (clanbattle)
 		{
-			bprint (SBAR_PRINT, "Match stopped by majority vote\n");
+			bprint (2, "Match stopped by majority vote\n");
 		}
 		else
 		{
-			bprint (SBAR_PRINT, "Map ended by majority vote\n");
+			bprint (2, "Map ended by majority vote\n");
 		}
 		StopTimer ();
 		NextLevel ();
@@ -600,12 +600,12 @@ void () PlayerBreak =
 	{
 		f1 = (f2 - v_break);
 		tmp = ftos (f1);
-		bprint3 (SBAR_PRINT, "", tmp, "‘ more vote");
-		if ((f1 > SBAR_GRENS))
+		bprint3 (2, "", tmp, "‘ more vote");
+		if ((f1 > 1))
 		{
-			bprint (SBAR_PRINT, "s");
+			bprint (2, "s");
 		}
-		bprint (SBAR_PRINT, " needed\n");
+		bprint (2, " needed\n");
 	}
 };
 
@@ -613,24 +613,24 @@ void () RemoveVotes =
 {
 	if (self.bvote)
 	{
-		bprint2 (SBAR_PRINT, self.netname, " קיפטהעבקף ");
+		bprint2 (2, self.netname, " קיפטהעבקף ");
 		if ((infokey (self, "gender") == "f"))
 		{
-			bprint (SBAR_PRINT, "טוע ");
+			bprint (2, "טוע ");
 		}
 		else
 		{
-			bprint (SBAR_PRINT, "טיף ");
+			bprint (2, "טיף ");
 		}
 		bprint (AS_MELEE, "vote\n");
 		self.bvote = 0;
-		v_break = (v_break - SBAR_GRENS);
+		v_break = (v_break - 1);
 	}
 	if (elect)
 	{
-		if ((self.is_admin == SBAR_PRINT))
+		if ((self.is_admin == 2))
 		{
-			bprint2 (SBAR_PRINT, self.netname, " aborts election!");
+			bprint2 (2, self.netname, " aborts election!");
 			bprint (AS_MELEE, "\n");
 			AbortElect ();
 		}

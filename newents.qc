@@ -1,7 +1,7 @@
 //=-=-=-=-=
 void () ball_reset =
 {
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	self.velocity = '0 0 0';
 	self.origin = self.oldorigin;
 	setorigin (self, self.origin);
@@ -38,7 +38,7 @@ void () ball_spin =
 		{
 			vel_y = self.velocity_y;
 		}
-		self.avelocity_x = ((vel_x + vel_y) * SBAR_PRINT);
+		self.avelocity_x = ((vel_x + vel_y) * 2);
 	}
 };
 
@@ -107,7 +107,7 @@ void () ball_touch =
 
 void () item_ball =
 {
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	self.movetype = enter;
 	if (self.mdl)
 	{
@@ -154,8 +154,8 @@ void () soccer_goal_touch =
 		if (other.solid)
 		{
 			TeamFortress_TeamIncreaseScore (self.owned_by, self.count);
-			TeamFortress_TeamShowScores (SBAR_PRINT);
-			sound (self, SBAR_PRINT, self.noise, SBAR_GRENS, 0);
+			TeamFortress_TeamShowScores (2);
+			sound (self, 2, self.noise, 1, 0);
 			tfs_winner = self.owned_by;
 			other.solid = 0;
 		}
@@ -182,18 +182,18 @@ entity lightstyles;
 
 void () lightstyle_use =
 {
-	if (((self.spawnflags & SBAR_GRENS) || (self.spawnflags & SBAR_PRINT)))
+	if (((self.spawnflags & 1) || (self.spawnflags & 2)))
 	{
 		lightstyle (self.style, self.message);
-		if ((self.spawnflags & SBAR_GRENS))
+		if ((self.spawnflags & 1))
 		{
-			self.spawnflags = (self.spawnflags - SBAR_GRENS);
+			self.spawnflags = (self.spawnflags - 1);
 		}
 	}
 	else
 	{
 		lightstyle (self.style, "a");
-		self.spawnflags = (self.spawnflags + SBAR_GRENS);
+		self.spawnflags = (self.spawnflags + 1);
 	}
 };
 
@@ -203,11 +203,11 @@ void () func_lightstyle =
 	{
 		dprint ("Warning: style > 63!  Invalid range?");
 	}
-	if ((self.style <= SBAR_200))
+	if ((self.style <= 11))
 	{
 		dprint ("Warning: style <= 11: Old styles overwritten!");
 	}
-	if (!(self.spawnflags & SBAR_GRENS))
+	if (!(self.spawnflags & 1))
 	{
 		lightstyle (self.style, self.message);
 	}
@@ -217,7 +217,7 @@ void () func_lightstyle =
 		return;
 	}
 	self.use = lightstyle_use;
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		lightstyle (self.style, "a");
 	}

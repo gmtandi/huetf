@@ -8,8 +8,8 @@ void () tfgoal_touch;
 void () SUB_regen =
 {
 	self.model = self.mdl;
-	self.solid = SBAR_GRENS;
-	sound (self, SBAR_PRINT, "items/itembk2.wav", SBAR_GRENS, SBAR_GRENS);
+	self.solid = 1;
+	sound (self, 2, "items/itembk2.wav", 1, 1);
 	setorigin (self, self.origin);
 };
 
@@ -36,12 +36,12 @@ void () q_touch =
 		return;
 	}
 	self.mdl = self.model;
-	sound (other, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (other, 2, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	self.solid = RANGE_MELEE;
 	other.items = (other.items | 4194304);
 	self.model = string_null;
-	other.super_time = SBAR_GRENS;
+	other.super_time = 1;
 	other.super_damage_finished = self.cnt;
 	s = ftos (rint ((other.super_damage_finished - time)));
 	bprint (RANGE_MELEE, other.netname);
@@ -62,7 +62,7 @@ void (float timeleft) DropQuad =
 	item.velocity_x = (-100 + (random () * 200));
 	item.velocity_y = (-100 + (random () * 200));
 	item.flags = 256;
-	item.solid = SBAR_GRENS;
+	item.solid = 1;
 	item.movetype = 6;
 	item.noise = "items/damage.wav";
 	setmodel (item, "progs/quaddama.mdl");
@@ -88,12 +88,12 @@ void () r_touch =
 		return;
 	}
 	self.mdl = self.model;
-	sound (other, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (other, 2, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	self.solid = RANGE_MELEE;
 	other.items = (other.items | WEAP_RAILGUN);
 	self.model = string_null;
-	other.invisible_time = SBAR_GRENS;
+	other.invisible_time = 1;
 	other.invisible_finished = self.cnt;
 	s = ftos (rint ((other.invisible_finished - time)));
 	bprint (RANGE_MELEE, other.netname);
@@ -114,7 +114,7 @@ void (float timeleft) DropRing =
 	item.velocity_x = (-100 + (random () * 200));
 	item.velocity_y = (-100 + (random () * 200));
 	item.flags = 256;
-	item.solid = SBAR_GRENS;
+	item.solid = 1;
 	item.movetype = 6;
 	item.noise = "items/inv1.wav";
 	setmodel (item, "progs/invisibl.mdl");
@@ -132,7 +132,7 @@ void () PlaceItem =
 	self.mdl = self.model;
 	self.flags = 256;
 	self.movetype = 6;
-	self.solid = SBAR_GRENS;
+	self.solid = 1;
 	self.velocity = '0 0 0';
 	self.origin_z = (self.origin_z + 6);
 	oldz = self.origin_z;
@@ -170,12 +170,12 @@ float (entity e, float healamount, float ignore) T_Heal =
 		if (e.leg_damage)
 		{
 			e.leg_damage = (e.leg_damage - ceil ((e.health / 20)));
-			if ((e.leg_damage < SBAR_GRENS))
+			if ((e.leg_damage < 1))
 			{
 				e.leg_damage = RANGE_MELEE;
 			}
 			TeamFortress_SetSpeed (e);
-			return (SBAR_GRENS);
+			return (1);
 		}
 		else
 		{
@@ -202,13 +202,13 @@ float (entity e, float healamount, float ignore) T_Heal =
 		{
 			e.leg_damage = (e.leg_damage - ceil ((e.health / 20)));
 		}
-		if ((e.leg_damage < SBAR_GRENS))
+		if ((e.leg_damage < 1))
 		{
 			e.leg_damage = RANGE_MELEE;
 		}
 		TeamFortress_SetSpeed (e);
 	}
-	return (SBAR_GRENS);
+	return (1);
 };
 .float healamount;
 .float healtype;
@@ -223,7 +223,7 @@ void () item_health =
 		return;
 	}
 	self.touch = health_touch;
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		precache_model ("maps/b_bh10.bsp");
 		precache_sound ("items/r_item1.wav");
@@ -234,14 +234,14 @@ void () item_health =
 	}
 	else
 	{
-		if ((self.spawnflags & SBAR_PRINT))
+		if ((self.spawnflags & 2))
 		{
 			precache_model ("maps/b_bh100.bsp");
 			precache_sound ("items/r_item2.wav");
 			setmodel (self, "maps/b_bh100.bsp");
 			self.noise = "items/r_item2.wav";
 			self.healamount = _d;
-			self.healtype = SBAR_PRINT;
+			self.healtype = 2;
 		}
 		else
 		{
@@ -250,7 +250,7 @@ void () item_health =
 			setmodel (self, "maps/b_bh25.bsp");
 			self.noise = "items/health1.wav";
 			self.healamount = 25;
-			self.healtype = SBAR_GRENS;
+			self.healtype = 1;
 		}
 	}
 	setsize (self, '0 0 0', '32 32 56');
@@ -280,7 +280,7 @@ void () health_touch =
 	{
 		return;
 	}
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return;
 	}
@@ -289,15 +289,15 @@ void () health_touch =
 		return;
 	}
 	medi = RANGE_MELEE;
-	if ((self.healtype == SBAR_PRINT))
+	if ((self.healtype == 2))
 	{
-		if (!(other.tfstate & SBAR_240))
+		if (!(other.tfstate & 16))
 		{
 			if ((other.health >= 250))
 			{
 				return;
 			}
-			if (!T_Heal (other, self.healamount, SBAR_GRENS))
+			if (!T_Heal (other, self.healamount, 1))
 			{
 				return;
 			}
@@ -320,11 +320,11 @@ void () health_touch =
 					sprint (other, RANGE_MELEE, "You gather ");
 					sprint (other, RANGE_MELEE, s);
 					sprint (other, RANGE_MELEE, " medikit ammo\n");
-					sound (other, AS_MELEE, self.noise, SBAR_GRENS, SBAR_GRENS);
+					sound (other, AS_MELEE, self.noise, 1, 1);
 					stuffcmd (other, "bf\n");
 					self.model = string_null;
 					self.solid = RANGE_MELEE;
-					if ((deathmatch != SBAR_PRINT))
+					if ((deathmatch != 2))
 					{
 						if (deathmatch)
 						{
@@ -340,10 +340,10 @@ void () health_touch =
 			return;
 		}
 	}
-	if (((other.tfstate & SBAR_240) && (self.healamount > _P)))
+	if (((other.tfstate & 16) && (self.healamount > _P)))
 	{
-		sprint (other, SBAR_GRENS, "You have been healed of your infection!");
-		other.tfstate = (other.tfstate - (other.tfstate & SBAR_240));
+		sprint (other, 1, "You have been healed of your infection!");
+		other.tfstate = (other.tfstate - (other.tfstate & 16));
 	}
 	else
 	{
@@ -352,11 +352,11 @@ void () health_touch =
 		sprint (other, RANGE_MELEE, s);
 		sprint (other, RANGE_MELEE, " health\n");
 	}
-	sound (other, AS_MELEE, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (other, AS_MELEE, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	self.model = string_null;
 	self.solid = RANGE_MELEE;
-	if ((self.healtype == SBAR_PRINT))
+	if ((self.healtype == 2))
 	{
 		other.items = (other.items | 65536);
 		self.nextthink = (time + 5);
@@ -365,7 +365,7 @@ void () health_touch =
 	}
 	else
 	{
-		if ((deathmatch != SBAR_PRINT))
+		if ((deathmatch != 2))
 		{
 			if (deathmatch)
 			{
@@ -383,8 +383,8 @@ void () item_megahealth_rot =
 	other = self.owner;
 	if ((other.health > other.max_health))
 	{
-		other.health = (other.health - SBAR_GRENS);
-		self.nextthink = (time + SBAR_GRENS);
+		other.health = (other.health - 1);
+		self.nextthink = (time + 1);
 		return;
 	}
 	other.items = (other.items - (other.items & 65536));
@@ -393,7 +393,7 @@ void () item_megahealth_rot =
 		dremove (self);
 		return;
 	}
-	if ((deathmatch != SBAR_PRINT))
+	if ((deathmatch != 2))
 	{
 		self.nextthink = (time + 20);
 		self.think = SUB_regen;
@@ -424,7 +424,7 @@ void () armor_touch =
 	{
 		return;
 	}
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return;
 	}
@@ -541,7 +541,7 @@ void () armor_touch =
 	}
 	self.solid = RANGE_MELEE;
 	self.model = string_null;
-	if ((deathmatch != SBAR_PRINT))
+	if ((deathmatch != 2))
 	{
 		self.nextthink = (time + 20);
 	}
@@ -550,7 +550,7 @@ void () armor_touch =
 		self.nextthink = (time + 40);
 	}
 	self.think = SUB_regen;
-	sound (other, AS_MELEE, "items/armor1.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (other, AS_MELEE, "items/armor1.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	activator = other;
 	SUB_UseTargets ();
@@ -581,7 +581,7 @@ void () item_armor2 =
 	self.touch = armor_touch;
 	precache_model ("progs/armor.mdl");
 	setmodel (self, "progs/armor.mdl");
-	self.skin = SBAR_GRENS;
+	self.skin = 1;
 	setsize (self, '-16 -16 0', '16 16 56');
 	StartItem ();
 };
@@ -596,7 +596,7 @@ void () item_armorInv =
 	self.touch = armor_touch;
 	precache_model ("progs/armor.mdl");
 	setmodel (self, "progs/armor.mdl");
-	self.skin = SBAR_PRINT;
+	self.skin = 2;
 	setsize (self, '-16 -16 0', '16 16 56');
 	StartItem ();
 };
@@ -640,19 +640,19 @@ void (entity p) bound_other_ammo =
 	{
 		p.no_grenades_2 = AS_MISSILE;
 	}
-	if (((p.tp_grenades_1 == AS_MELEE) && (p.no_grenades_1 > SBAR_PRINT)))
+	if (((p.tp_grenades_1 == AS_MELEE) && (p.no_grenades_1 > 2)))
 	{
-		p.no_grenades_1 = SBAR_PRINT;
+		p.no_grenades_1 = 2;
 	}
-	if (((p.tp_grenades_2 == AS_MELEE) && (p.no_grenades_2 > SBAR_PRINT)))
+	if (((p.tp_grenades_2 == AS_MELEE) && (p.no_grenades_2 > 2)))
 	{
-		p.no_grenades_2 = SBAR_PRINT;
+		p.no_grenades_2 = 2;
 	}
-	if (((p.tp_grenades_1 == SBAR_PRINT) && (p.no_grenades_1 > AS_MELEE)))
+	if (((p.tp_grenades_1 == 2) && (p.no_grenades_1 > AS_MELEE)))
 	{
 		p.no_grenades_1 = AS_MELEE;
 	}
-	if (((p.tp_grenades_2 == SBAR_PRINT) && (p.no_grenades_2 > AS_MELEE)))
+	if (((p.tp_grenades_2 == 2) && (p.no_grenades_2 > AS_MELEE)))
 	{
 		p.no_grenades_2 = AS_MELEE;
 	}
@@ -670,11 +670,11 @@ float (float w) RankForWeapon =
 {
 	if ((w == 65536))
 	{
-		return (SBAR_GRENS);
+		return (1);
 	}
 	if ((w == 8192))
 	{
-		return (SBAR_PRINT);
+		return (2);
 	}
 	if ((w == 1024))
 	{
@@ -708,7 +708,7 @@ void (entity ritem, entity act) Respawn_Item =
 	self = ritem;
 	self.model = string_null;
 	self.solid = RANGE_MELEE;
-	if ((deathmatch != SBAR_PRINT))
+	if ((deathmatch != 2))
 	{
 		self.nextthink = (time + 30);
 	}
@@ -747,7 +747,7 @@ void () weapon_touch =
 	{
 		return;
 	}
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return;
 	}
@@ -759,9 +759,9 @@ void () weapon_touch =
 	self = other;
 	best = W_BestWeapon ();
 	self = stemp;
-	if (((deathmatch == SBAR_PRINT) || coop))
+	if (((deathmatch == 2) || coop))
 	{
-		leave = SBAR_GRENS;
+		leave = 1;
 	}
 	else
 	{
@@ -873,7 +873,7 @@ void () weapon_touch =
 	sprint (other, RANGE_MELEE, "You got the ");
 	sprint (other, RANGE_MELEE, self.netname);
 	sprint (other, RANGE_MELEE, "\n");
-	sound (other, AS_MELEE, "weapons/pkup.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (other, AS_MELEE, "weapons/pkup.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	bound_other_ammo (other);
 	old = other.weapons_carried;
@@ -990,13 +990,13 @@ void (entity pl, float typ) PrintGrenadeType =
 {
 	local string st;
 
-	if ((typ == SBAR_GRENS))
+	if ((typ == 1))
 	{
 		st = "Normal";
 	}
 	else
 	{
-		if ((typ == SBAR_PRINT))
+		if ((typ == 2))
 		{
 			st = "Concussion";
 		}
@@ -1050,7 +1050,7 @@ void (entity pl, float typ) PrintGrenadeType =
 			}
 		}
 	}
-	sprint (pl, SBAR_PRINT, st);
+	sprint (pl, 2, st);
 };
 
 float () GetGrenadePossibility =
@@ -1066,7 +1066,7 @@ float () GetGrenadePossibility =
 	{
 		if ((other.tp_grenades_1 == AS_MELEE))
 		{
-			maxg = SBAR_PRINT;
+			maxg = 2;
 		}
 		if ((other.tp_grenades_1 == enter))
 		{
@@ -1074,37 +1074,37 @@ float () GetGrenadePossibility =
 		}
 		if (((other.tp_grenades_1 != RANGE_MELEE) && (other.no_grenades_1 < maxg)))
 		{
-			other.no_grenades_1 = (other.no_grenades_1 + SBAR_GRENS);
-			sprint (other, SBAR_PRINT, "You found a ");
+			other.no_grenades_1 = (other.no_grenades_1 + 1);
+			sprint (other, 2, "You found a ");
 			PrintGrenadeType (other, other.tp_grenades_1);
 			if ((other.tp_grenades_1 == enter))
 			{
-				sprint (other, SBAR_PRINT, " canister\n");
+				sprint (other, 2, " canister\n");
 			}
 			else
 			{
-				sprint (other, SBAR_PRINT, " grenade\n");
+				sprint (other, 2, " grenade\n");
 			}
-			return (SBAR_GRENS);
+			return (1);
 		}
 	}
 	else
 	{
 		if ((other.tp_grenades_2 == AS_MELEE))
 		{
-			maxg = SBAR_PRINT;
+			maxg = 2;
 		}
-		if ((other.tp_grenades_2 == SBAR_PRINT))
+		if ((other.tp_grenades_2 == 2))
 		{
 			maxg = AS_MELEE;
 		}
 		if (((other.tp_grenades_2 != RANGE_MELEE) && (other.no_grenades_2 < maxg)))
 		{
-			other.no_grenades_2 = (other.no_grenades_2 + SBAR_GRENS);
-			sprint (other, SBAR_PRINT, "You found a ");
+			other.no_grenades_2 = (other.no_grenades_2 + 1);
+			sprint (other, 2, "You found a ");
 			PrintGrenadeType (other, other.tp_grenades_2);
-			sprint (other, SBAR_PRINT, " grenade\n");
-			return (SBAR_GRENS);
+			sprint (other, 2, " grenade\n");
+			return (1);
 		}
 	}
 	return (RANGE_MELEE);
@@ -1129,7 +1129,7 @@ void () ammo_touch =
 	{
 		return;
 	}
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return;
 	}
@@ -1143,23 +1143,23 @@ void () ammo_touch =
 	self = other;
 	best = W_BestWeapon ();
 	self = stemp;
-	if ((self.weapon == SBAR_GRENS))
+	if ((self.weapon == 1))
 	{
 		if ((other.ammo_shells >= TeamFortress_GetMaxAmmo (other, 256)))
 		{
 			return;
 		}
 		other.ammo_shells = (other.ammo_shells + self.aflag);
-		gotbox = SBAR_GRENS;
+		gotbox = 1;
 	}
-	if ((self.weapon == SBAR_PRINT))
+	if ((self.weapon == 2))
 	{
 		if ((other.ammo_nails >= TeamFortress_GetMaxAmmo (other, 512)))
 		{
 			return;
 		}
 		other.ammo_nails = (other.ammo_nails + self.aflag);
-		gotbox = SBAR_GRENS;
+		gotbox = 1;
 	}
 	else
 	{
@@ -1172,7 +1172,7 @@ void () ammo_touch =
 			}
 			else
 			{
-				gotbox = SBAR_GRENS;
+				gotbox = 1;
 				other.ammo_rockets = (other.ammo_rockets + self.aflag);
 			}
 		}
@@ -1185,7 +1185,7 @@ void () ammo_touch =
 					return;
 				}
 				other.ammo_cells = (other.ammo_cells + self.aflag);
-				gotbox = SBAR_GRENS;
+				gotbox = 1;
 			}
 		}
 	}
@@ -1193,7 +1193,7 @@ void () ammo_touch =
 	{
 		return;
 	}
-	sound (other, AS_MELEE, "weapons/lock4.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (other, AS_MELEE, "weapons/lock4.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	if (gotbox)
 	{
@@ -1217,7 +1217,7 @@ void () item_shells =
 		return;
 	}
 	self.touch = ammo_touch;
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		precache_model ("maps/b_shell1.bsp");
 		setmodel (self, "maps/b_shell1.bsp");
@@ -1229,7 +1229,7 @@ void () item_shells =
 		setmodel (self, "maps/b_shell0.bsp");
 		self.aflag = 20;
 	}
-	self.weapon = SBAR_GRENS;
+	self.weapon = 1;
 	self.netname = "shells";
 	setsize (self, '0 0 0', '32 32 56');
 	StartItem ();
@@ -1243,7 +1243,7 @@ void () item_spikes =
 		return;
 	}
 	self.touch = ammo_touch;
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		precache_model ("maps/b_nail1.bsp");
 		setmodel (self, "maps/b_nail1.bsp");
@@ -1255,7 +1255,7 @@ void () item_spikes =
 		setmodel (self, "maps/b_nail0.bsp");
 		self.aflag = 25;
 	}
-	self.weapon = SBAR_PRINT;
+	self.weapon = 2;
 	self.netname = "nails";
 	setsize (self, '0 0 0', '32 32 56');
 	StartItem ();
@@ -1269,7 +1269,7 @@ void () item_rockets =
 		return;
 	}
 	self.touch = ammo_touch;
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		precache_model ("maps/b_rock1.bsp");
 		setmodel (self, "maps/b_rock1.bsp");
@@ -1295,7 +1295,7 @@ void () item_cells =
 		return;
 	}
 	self.touch = ammo_touch;
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		precache_model ("maps/b_batt1.bsp");
 		setmodel (self, "maps/b_batt1.bsp");
@@ -1321,7 +1321,7 @@ void () item_weapon =
 		return;
 	}
 	self.touch = ammo_touch;
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		if ((self.spawnflags & 8))
 		{
@@ -1335,7 +1335,7 @@ void () item_weapon =
 			setmodel (self, "maps/b_shell0.bsp");
 			self.aflag = 20;
 		}
-		self.weapon = SBAR_GRENS;
+		self.weapon = 1;
 		self.netname = "shells";
 	}
 	if ((self.spawnflags & AS_MISSILE))
@@ -1352,10 +1352,10 @@ void () item_weapon =
 			setmodel (self, "maps/b_nail0.bsp");
 			self.aflag = 20;
 		}
-		self.weapon = SBAR_PRINT;
+		self.weapon = 2;
 		self.netname = "spikes";
 	}
-	if ((self.spawnflags & SBAR_PRINT))
+	if ((self.spawnflags & 2))
 	{
 		if ((self.spawnflags & 8))
 		{
@@ -1401,7 +1401,7 @@ void () key_touch =
 	{
 		return;
 	}
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return;
 	}
@@ -1412,7 +1412,7 @@ void () key_touch =
 	sprint (other, RANGE_MELEE, "You got the ");
 	sprint (other, RANGE_MELEE, self.netname);
 	sprint (other, RANGE_MELEE, "\n");
-	sound (other, AS_MELEE, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (other, AS_MELEE, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	other.items = (other.items | self.items);
 	if (!coop)
@@ -1439,12 +1439,12 @@ void () key_setsounds =
 		precache_sound ("misc/medkey.wav");
 		self.noise = "misc/medkey.wav";
 	}
-	if ((world.worldtype == SBAR_GRENS))
+	if ((world.worldtype == 1))
 	{
 		precache_sound ("misc/runekey.wav");
 		self.noise = "misc/runekey.wav";
 	}
-	if ((world.worldtype == SBAR_PRINT))
+	if ((world.worldtype == 2))
 	{
 		precache_sound2 ("misc/basekey.wav");
 		self.noise = "misc/basekey.wav";
@@ -1466,7 +1466,7 @@ void () item_key1 =
 	}
 	else
 	{
-		if ((world.worldtype == SBAR_GRENS))
+		if ((world.worldtype == 1))
 		{
 			precache_model ("progs/m_s_key.mdl");
 			setmodel (self, "progs/m_s_key.mdl");
@@ -1474,7 +1474,7 @@ void () item_key1 =
 		}
 		else
 		{
-			if ((world.worldtype == SBAR_PRINT))
+			if ((world.worldtype == 2))
 			{
 				precache_model2 ("progs/b_s_key.mdl");
 				setmodel (self, "progs/b_s_key.mdl");
@@ -1502,13 +1502,13 @@ void () item_key2 =
 		setmodel (self, "progs/w_g_key.mdl");
 		self.netname = "gold key";
 	}
-	if ((world.worldtype == SBAR_GRENS))
+	if ((world.worldtype == 1))
 	{
 		precache_model ("progs/m_g_key.mdl");
 		setmodel (self, "progs/m_g_key.mdl");
 		self.netname = "gold runekey";
 	}
-	if ((world.worldtype == SBAR_PRINT))
+	if ((world.worldtype == 2))
 	{
 		precache_model2 ("progs/b_g_key.mdl");
 		setmodel (self, "progs/b_g_key.mdl");
@@ -1542,7 +1542,7 @@ void () sigil_touch =
 	{
 		return;
 	}
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return;
 	}
@@ -1550,7 +1550,7 @@ void () sigil_touch =
 	{
 		return;
 	}
-	sound (other, AS_MELEE, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (other, AS_MELEE, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	self.solid = RANGE_MELEE;
 	self.model = string_null;
@@ -1573,12 +1573,12 @@ void () item_sigil =
 	}
 	precache_sound ("misc/runekey.wav");
 	self.noise = "misc/runekey.wav";
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		precache_model ("progs/end1.mdl");
 		setmodel (self, "progs/end1.mdl");
 	}
-	if ((self.spawnflags & SBAR_PRINT))
+	if ((self.spawnflags & 2))
 	{
 		precache_model2 ("progs/end2.mdl");
 		setmodel (self, "progs/end2.mdl");
@@ -1619,7 +1619,7 @@ void () powerup_touch =
 	{
 		return;
 	}
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return;
 	}
@@ -1635,11 +1635,11 @@ void () powerup_touch =
 		self.mdl = self.model;
 		if (((self.classname == "item_artifact_invulnerability") || (self.classname == "item_artifact_invisibility")))
 		{
-			self.nextthink = (time + (SBAR_600 * 5));
+			self.nextthink = (time + (60 * 5));
 		}
 		else
 		{
-			self.nextthink = (time + SBAR_600);
+			self.nextthink = (time + 60);
 		}
 		self.think = SUB_regen;
 	}
@@ -1659,29 +1659,29 @@ void () powerup_touch =
 			self.think = SUB_regen;
 		}
 	}
-	sound (other, SBAR_PRINT, self.noise, SBAR_GRENS, SBAR_GRENS);
+	sound (other, 2, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	self.solid = RANGE_MELEE;
 	other.items = (other.items | self.items);
 	self.model = string_null;
 	if ((self.classname == "item_artifact_envirosuit"))
 	{
-		other.rad_time = SBAR_GRENS;
+		other.rad_time = 1;
 		other.radsuit_finished = (time + 30);
 	}
 	if ((self.classname == "item_artifact_invulnerability"))
 	{
-		other.invincible_time = SBAR_GRENS;
+		other.invincible_time = 1;
 		other.invincible_finished = (time + 30);
 	}
 	if ((self.classname == "item_artifact_invisibility"))
 	{
-		other.invisible_time = SBAR_GRENS;
+		other.invisible_time = 1;
 		other.invisible_finished = (time + 30);
 	}
 	if ((self.classname == "item_artifact_super_damage"))
 	{
-		other.super_time = SBAR_GRENS;
+		other.super_time = 1;
 		other.super_damage_finished = (time + 30);
 	}
 	activator = other;
@@ -1840,7 +1840,7 @@ void () BackpackTouch =
 		}
 	}
 	sprint (other, RANGE_MELEE, "\n");
-	sound (other, AS_MELEE, "weapons/lock4.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (other, AS_MELEE, "weapons/lock4.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	dremove (self);
 	self = other;
@@ -1878,7 +1878,7 @@ void () DropBackpack =
 	newmis.velocity_x = (-100 + (random () * 200));
 	newmis.velocity_y = (-100 + (random () * 200));
 	newmis.flags = 256;
-	newmis.solid = SBAR_GRENS;
+	newmis.solid = 1;
 	newmis.movetype = 6;
 	setmodel (newmis, "progs/backpack.mdl");
 	setsize (newmis, '-16 -16 0', '16 16 56');

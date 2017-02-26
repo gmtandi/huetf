@@ -5,7 +5,7 @@ float (string id_flame) RemoveFlameFromQueue;
 
 entity (string type, entity p_owner) FlameSpawn =
 {
-	if ((cb_prematch == SBAR_GRENS))
+	if ((cb_prematch == 1))
 	{
 		return (world);
 	}
@@ -13,8 +13,8 @@ entity (string type, entity p_owner) FlameSpawn =
 	{
 		return (world);
 	}
-	num_world_flames = (num_world_flames + SBAR_GRENS);
-	while ((num_world_flames > SBAR_240))
+	num_world_flames = (num_world_flames + 1);
+	while ((num_world_flames > 16))
 	{
 		if (!RemoveFlameFromQueue (type))
 		{
@@ -25,7 +25,7 @@ entity (string type, entity p_owner) FlameSpawn =
 	if ((type == "1"))
 	{
 		newmis.movetype = 9;
-		newmis.solid = SBAR_PRINT;
+		newmis.solid = 2;
 		newmis.effects = 8;
 		newmis.flame_id = "1";
 		setmodel (newmis, "progs/flame2.mdl");
@@ -36,10 +36,10 @@ entity (string type, entity p_owner) FlameSpawn =
 		if ((type == "2"))
 		{
 			newmis.movetype = enter;
-			newmis.solid = SBAR_PRINT;
+			newmis.solid = 2;
 			newmis.flame_id = "2";
 			setmodel (newmis, "progs/flame2.mdl");
-			newmis.frame = SBAR_GRENS;
+			newmis.frame = 1;
 			setsize (newmis, '0 0 0', '0 0 0');
 		}
 		else
@@ -47,7 +47,7 @@ entity (string type, entity p_owner) FlameSpawn =
 			if ((type == "3"))
 			{
 				newmis.movetype = 9;
-				newmis.solid = SBAR_PRINT;
+				newmis.solid = 2;
 				newmis.flame_id = "3";
 				setmodel (newmis, "progs/flame2.mdl");
 				setsize (newmis, '0 0 0', '0 0 0');
@@ -58,8 +58,8 @@ entity (string type, entity p_owner) FlameSpawn =
 				{
 					newmis.movetype = 9;
 					newmis.flame_id = "4";
-					newmis.frame = SBAR_GRENS;
-					newmis.solid = SBAR_PRINT;
+					newmis.frame = 1;
+					newmis.solid = 2;
 					setmodel (newmis, "progs/flame2.mdl");
 					setsize (newmis, '0 0 0', '0 0 0');
 				}
@@ -72,7 +72,7 @@ entity (string type, entity p_owner) FlameSpawn =
 
 void (entity this) FlameDestroy =
 {
-	num_world_flames = (num_world_flames - SBAR_GRENS);
+	num_world_flames = (num_world_flames - 1);
 	dremove (this);
 };
 
@@ -85,7 +85,7 @@ float (string id_flame) RemoveFlameFromQueue =
 		dprint ("ERROR in RemoveFlameFromQueue\n");
 		return (0);
 	}
-	num_world_flames = (num_world_flames - SBAR_GRENS);
+	num_world_flames = (num_world_flames - 1);
 	tmp = find (world, flame_id, "4");
 	if (!tmp)
 	{
@@ -117,7 +117,7 @@ float (string id_flame) RemoveFlameFromQueue =
 		}
 	}
 	remove (tmp);
-	return (SBAR_GRENS);
+	return (1);
 };
 
 void () Remove =
@@ -127,10 +127,10 @@ void () Remove =
 
 void () NapalmGrenadeFollow =
 {
-	traceline (self.origin, self.origin, SBAR_GRENS, self);
-	if ((trace_inwater == SBAR_GRENS))
+	traceline (self.origin, self.origin, 1, self);
+	if ((trace_inwater == 1))
 	{
-		sound (self, SBAR_PRINT, "misc/vapeur2.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "misc/vapeur2.wav", 1, 1);
 		FlameDestroy (self);
 	}
 	if ((self.velocity == '0 0 0'))
@@ -142,7 +142,7 @@ void () NapalmGrenadeFollow =
 
 void () NapalmGrenadeTouch =
 {
-	sound (self, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/bounce.wav", 1, 1);
 	if ((self.velocity == '0 0 0'))
 	{
 		self.avelocity = '0 0 0';
@@ -156,13 +156,13 @@ void () NapalmGrenadeNetThink =
 
 	if ((self.heat == 0))
 	{
-		self.owner.no_active_napalm_grens = (self.owner.no_active_napalm_grens + SBAR_GRENS);
-		if ((self.owner.no_active_napalm_grens > SBAR_PRINT))
+		self.owner.no_active_napalm_grens = (self.owner.no_active_napalm_grens + 1);
+		if ((self.owner.no_active_napalm_grens > 2))
 		{
 			te = find (world, classname, "grentimer");
 			while (te)
 			{
-				if (((te.owner == self.owner) && (te.no_active_napalm_grens == SBAR_GRENS)))
+				if (((te.owner == self.owner) && (te.no_active_napalm_grens == 1)))
 				{
 					te.weapon = 15;
 					te.think = RemoveGrenade;
@@ -173,13 +173,13 @@ void () NapalmGrenadeNetThink =
 		}
 		self.no_active_napalm_grens = self.owner.no_active_napalm_grens;
 	}
-	self.nextthink = (time + SBAR_GRENS);
+	self.nextthink = (time + 1);
 	self.origin = self.enemy.origin;
 	makevectors (self.v_angle);
-	traceline (self.origin, self.origin, SBAR_GRENS, self);
-	if ((trace_inwater == SBAR_GRENS))
+	traceline (self.origin, self.origin, 1, self);
+	if ((trace_inwater == 1))
 	{
-		sound (self, SBAR_PRINT, "misc/vapeur2.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "misc/vapeur2.wav", 1, 1);
 		RemoveGrenade ();
 		return;
 	}
@@ -189,7 +189,7 @@ void () NapalmGrenadeNetThink =
 		if (head.takedamage)
 		{
 			deathmsg = 15;
-			TF_T_Damage (head, self, self.owner, 20, SBAR_PRINT, SBAR_240);
+			TF_T_Damage (head, self, self.owner, 20, 2, 16);
 			other = head;
 			Napalm_touch ();
 			if ((other.classname == "player"))
@@ -204,8 +204,8 @@ void () NapalmGrenadeNetThink =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
-	self.heat = (self.heat + SBAR_GRENS);
+	multicast (self.origin, 1);
+	self.heat = (self.heat + 1);
 	if ((self.heat > 7))
 	{
 		RemoveGrenade ();
@@ -218,9 +218,9 @@ void () NapalmGrenadeExplode =
 	local entity te;
 	local entity head;
 
-	sound (self, 0, "weapons/flmgrexp.wav", SBAR_GRENS, SBAR_GRENS);
-	traceline (self.origin, self.origin, SBAR_GRENS, self);
-	if ((trace_inwater == SBAR_GRENS))
+	sound (self, 0, "weapons/flmgrexp.wav", 1, 1);
+	traceline (self.origin, self.origin, 1, self);
+	if ((trace_inwater == 1))
 	{
 		dremove (self);
 		return;
@@ -258,19 +258,19 @@ void (vector org, entity shooter) NapalmGrenadeLaunch =
 	newmis.think = NapalmGrenadeFollow;
 	newmis.nextthink = (time + 0.1);
 	newmis.enemy = shooter.owner;
-	newmis.velocity_x = (xdir * SBAR_PRINT);
-	newmis.velocity_y = (ydir * SBAR_PRINT);
+	newmis.velocity_x = (xdir * 2);
+	newmis.velocity_y = (ydir * 2);
 	newmis.velocity_z = (zdir * 15);
-	spin = ((random () * enter) / SBAR_PRINT);
+	spin = ((random () * enter) / 2);
 	if ((spin <= 0))
 	{
 		newmis.avelocity = '250 300 400';
 	}
-	if ((spin == SBAR_GRENS))
+	if ((spin == 1))
 	{
 		newmis.avelocity = '400 250 300';
 	}
-	if ((spin == SBAR_PRINT))
+	if ((spin == 2))
 	{
 		newmis.avelocity = '300 400 250';
 	}
@@ -303,7 +303,7 @@ void () FlameFollow =
 		FlameDestroy (self);
 		return;
 	}
-	if ((self.enemy.health < SBAR_GRENS))
+	if ((self.enemy.health < 1))
 	{
 		deathmsg = 15;
 		T_RadiusDamage (self, self, enter, self);
@@ -311,7 +311,7 @@ void () FlameFollow =
 		FlameDestroy (self);
 		return;
 	}
-	if (((self.enemy.armorclass & SBAR_240) && (self.enemy.armorvalue > 0)))
+	if (((self.enemy.armorclass & 16) && (self.enemy.armorvalue > 0)))
 	{
 		self.health = 0;
 	}
@@ -320,22 +320,22 @@ void () FlameFollow =
 		self.health = minus;
 		self.enemy.tfstate = (self.enemy.tfstate - (self.enemy.tfstate & 131072));
 	}
-	if ((self.health < SBAR_GRENS))
+	if ((self.health < 1))
 	{
-		if (((self.effects != 8) || (self.enemy.numflames <= SBAR_GRENS)))
+		if (((self.effects != 8) || (self.enemy.numflames <= 1)))
 		{
-			self.enemy.numflames = (self.enemy.numflames - SBAR_GRENS);
+			self.enemy.numflames = (self.enemy.numflames - 1);
 			self.enemy.numflames = 0;
 			FlameDestroy (self);
 			return;
 		}
 	}
-	self.health = (self.health - SBAR_GRENS);
+	self.health = (self.health - 1);
 	if ((vlen (self.enemy.velocity) < _2))
 	{
-		dir_x = (((random () * boundsize_x) / SBAR_PRINT) + (boundsize_x / AS_MISSILE));
-		dir_y = (((random () * boundsize_y) / SBAR_PRINT) + (boundsize_y / AS_MISSILE));
-		dir_z = (((random () * boundsize_z) / AS_MELEE) + (boundsize_z / SBAR_PRINT));
+		dir_x = (((random () * boundsize_x) / 2) + (boundsize_x / AS_MISSILE));
+		dir_y = (((random () * boundsize_y) / 2) + (boundsize_y / AS_MISSILE));
+		dir_z = (((random () * boundsize_z) / AS_MELEE) + (boundsize_z / 2));
 		vtemp = (vtemp + dir);
 		setorigin (self, vtemp);
 		if ((self.model != "progs/flame2.mdl"))
@@ -352,10 +352,10 @@ void () FlameFollow =
 			setmodel (self, self.model);
 		}
 	}
-	if ((self.enemy.waterlevel > SBAR_GRENS))
+	if ((self.enemy.waterlevel > 1))
 	{
-		sound (self, SBAR_PRINT, "misc/vapeur2.wav", SBAR_GRENS, SBAR_GRENS);
-		self.enemy.numflames = (self.enemy.numflames - SBAR_GRENS);
+		sound (self, 2, "misc/vapeur2.wav", 1, 1);
+		self.enemy.numflames = (self.enemy.numflames - 1);
 		FlameDestroy (self);
 		return;
 	}
@@ -363,19 +363,19 @@ void () FlameFollow =
 	if (((self.effects == 8) && (self.heat >= AS_MELEE)))
 	{
 		damage = ((self.enemy.numflames * 0.3) * AS_MELEE);
-		if ((damage < SBAR_GRENS))
+		if ((damage < 1))
 		{
-			damage = SBAR_GRENS;
+			damage = 1;
 		}
-		self.heat = SBAR_GRENS;
+		self.heat = 1;
 		deathmsg = 15;
-		TF_T_Damage (self.enemy, self, self.owner, damage, SBAR_PRINT, SBAR_240);
+		TF_T_Damage (self.enemy, self, self.owner, damage, 2, 16);
 	}
 	else
 	{
 		if ((self.effects == 8))
 		{
-			self.heat = (self.heat + SBAR_GRENS);
+			self.heat = (self.heat + 1);
 		}
 	}
 };
@@ -387,7 +387,7 @@ void () OnPlayerFlame_touch =
 
 	if ((((other != world) && (other.health > 0)) && (other != self.enemy)))
 	{
-		if ((cb_prematch == SBAR_GRENS))
+		if ((cb_prematch == 1))
 		{
 			return;
 		}
@@ -398,17 +398,17 @@ void () OnPlayerFlame_touch =
 		}
 		if ((other.classname == "player"))
 		{
-			if ((((teamplay & SBAR_240) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
+			if ((((teamplay & 16) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
 			{
 				return;
 			}
 			CenterPrint (other, "You are on fire!\n");
 			stuffcmd (other, "bf\n");
 		}
-		if ((other.numflames < SBAR_GRENS))
+		if ((other.numflames < 1))
 		{
 			flame = FlameSpawn ("1", other);
-			sound (flame, SBAR_PRINT, "ambience/fire1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (flame, 2, "ambience/fire1.wav", 1, 1);
 		}
 		else
 		{
@@ -420,7 +420,7 @@ void () OnPlayerFlame_touch =
 		}
 		flame.classname = "fire";
 		flame.health = minus;
-		other.numflames = (other.numflames + SBAR_GRENS);
+		other.numflames = (other.numflames + 1);
 		flame.velocity = other.velocity;
 		flame.enemy = other;
 		flame.touch = OnPlayerFlame_touch;
@@ -440,16 +440,16 @@ void () WorldFlame_touch =
 	local vector vtemp;
 
 	deathmsg = 15;
-	TF_T_Damage (other, self, self.enemy, enter, SBAR_PRINT, SBAR_240);
+	TF_T_Damage (other, self, self.enemy, enter, 2, 16);
 	self.touch = SUB_Null;
-	if ((self.heat > (time + SBAR_GRENS)))
+	if ((self.heat > (time + 1)))
 	{
 		self.think = QW_Flame_ResetTouch;
-		self.nextthink = (time + SBAR_GRENS);
+		self.nextthink = (time + 1);
 	}
-	if ((((other != world) && (other.solid != SBAR_GRENS)) && (other.health > 0)))
+	if ((((other != world) && (other.solid != 1)) && (other.health > 0)))
 	{
-		if ((cb_prematch == SBAR_GRENS))
+		if ((cb_prematch == 1))
 		{
 			return;
 		}
@@ -460,17 +460,17 @@ void () WorldFlame_touch =
 		}
 		if ((other.classname == "player"))
 		{
-			if ((((teamplay & SBAR_240) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
+			if ((((teamplay & 16) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
 			{
 				return;
 			}
 			CenterPrint (other, "You are on fire!\n");
 			stuffcmd (other, "bf\n");
 		}
-		if ((other.numflames < SBAR_GRENS))
+		if ((other.numflames < 1))
 		{
 			flame = FlameSpawn ("1", other);
-			sound (flame, SBAR_PRINT, "ambience/fire1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (flame, 2, "ambience/fire1.wav", 1, 1);
 		}
 		else
 		{
@@ -482,7 +482,7 @@ void () WorldFlame_touch =
 		}
 		flame.classname = "fire";
 		flame.health = 0;
-		other.numflames = (other.numflames + SBAR_GRENS);
+		other.numflames = (other.numflames + 1);
 		flame.velocity = other.velocity;
 		flame.enemy = other;
 		flame.touch = OnPlayerFlame_touch;
@@ -513,10 +513,10 @@ void () Flamer_stream_touch =
 	}
 	if ((other != world))
 	{
-		if (((other.takedamage == SBAR_PRINT) && (other.health > 0)))
+		if (((other.takedamage == 2) && (other.health > 0)))
 		{
 			deathmsg = 15;
-			TF_T_Damage (other, self, self.owner, enter, SBAR_PRINT, SBAR_240);
+			TF_T_Damage (other, self, self.owner, enter, 2, 16);
 			if (cb_prematch)
 			{
 				return;
@@ -526,23 +526,23 @@ void () Flamer_stream_touch =
 				other.tfstate = (other.tfstate | 131072);
 				return;
 			}
-			if (((other.armorclass & SBAR_240) && (other.armorvalue > 0)))
+			if (((other.armorclass & 16) && (other.armorvalue > 0)))
 			{
 				return;
 			}
 			if ((other.classname == "player"))
 			{
-				if ((((teamplay & SBAR_240) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
+				if ((((teamplay & 16) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
 				{
 					return;
 				}
 				CenterPrint (other, "You are on fire!\n");
 				stuffcmd (other, "bf\n");
 			}
-			if ((other.numflames < SBAR_GRENS))
+			if ((other.numflames < 1))
 			{
 				flame = FlameSpawn ("1", other);
-				sound (flame, SBAR_PRINT, "ambience/fire1.wav", SBAR_GRENS, SBAR_GRENS);
+				sound (flame, 2, "ambience/fire1.wav", 1, 1);
 			}
 			else
 			{
@@ -554,7 +554,7 @@ void () Flamer_stream_touch =
 			}
 			flame.classname = "fire";
 			flame.health = minus;
-			other.numflames = (other.numflames + SBAR_GRENS);
+			other.numflames = (other.numflames + 1);
 			flame.velocity = other.velocity;
 			flame.enemy = other;
 			flame.touch = OnPlayerFlame_touch;
@@ -600,11 +600,11 @@ void () Napalm_touch =
 	}
 	if ((other != world))
 	{
-		if (((other.takedamage == SBAR_PRINT) && (other.health > 0)))
+		if (((other.takedamage == 2) && (other.health > 0)))
 		{
 			deathmsg = 15;
-			TF_T_Damage (other, self, self.owner, 6, SBAR_PRINT, SBAR_240);
-			if ((cb_prematch == SBAR_GRENS))
+			TF_T_Damage (other, self, self.owner, 6, 2, 16);
+			if ((cb_prematch == 1))
 			{
 				return;
 			}
@@ -613,23 +613,23 @@ void () Napalm_touch =
 				other.tfstate = (other.tfstate | 131072);
 				return;
 			}
-			if (((other.armorclass & SBAR_240) && (other.armorvalue > 0)))
+			if (((other.armorclass & 16) && (other.armorvalue > 0)))
 			{
 				return;
 			}
 			if ((other.classname == "player"))
 			{
-				if ((((teamplay & SBAR_240) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
+				if ((((teamplay & 16) && (other.team_no > 0)) && (other.team_no == self.owner.team_no)))
 				{
 					return;
 				}
 				CenterPrint (other, "You are on fire!\n");
 				stuffcmd (other, "bf\n");
 			}
-			if ((other.numflames < SBAR_GRENS))
+			if ((other.numflames < 1))
 			{
 				flame = FlameSpawn ("1", other);
-				sound (flame, SBAR_PRINT, "ambience/fire1.wav", SBAR_GRENS, SBAR_GRENS);
+				sound (flame, 2, "ambience/fire1.wav", 1, 1);
 			}
 			else
 			{
@@ -641,7 +641,7 @@ void () Napalm_touch =
 			}
 			flame.classname = "fire";
 			flame.health = minus;
-			other.numflames = (other.numflames + SBAR_GRENS);
+			other.numflames = (other.numflames + 1);
 			flame.velocity = other.velocity;
 			flame.enemy = other;
 			flame.touch = OnPlayerFlame_touch;
@@ -702,31 +702,31 @@ void () W_FireFlame =
 	local entity flame;
 	local float rn;
 
-	if ((self.waterlevel > SBAR_PRINT))
+	if ((self.waterlevel > 2))
 	{
 		makevectors (self.v_angle);
-		NewBubbles (SBAR_PRINT, (self.origin + (v_forward * 64)));
+		NewBubbles (2, (self.origin + (v_forward * 64)));
 		rn = random ();
 		if ((rn < 0.5))
 		{
-			sound (self, SBAR_GRENS, "misc/water1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 1, "misc/water1.wav", 1, 1);
 		}
 		else
 		{
-			sound (self, SBAR_GRENS, "misc/water2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 1, "misc/water2.wav", 1, 1);
 		}
 		return;
 	}
 	if (!practice)
 	{
-		self.ammo_cells = (self.ammo_cells - SBAR_GRENS);
+		self.ammo_cells = (self.ammo_cells - 1);
 		self.currentammo = self.ammo_cells;
 	}
-	sound (self, 0, "weapons/flmfire2.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 0, "weapons/flmfire2.wav", 1, 1);
 	flame = spawn ();
 	flame.owner = self;
 	flame.movetype = 9;
-	flame.solid = SBAR_PRINT;
+	flame.solid = 2;
 	flame.classname = "flamerflame";
 	makevectors (self.v_angle);
 	flame.velocity = aim (self, 10000);
@@ -736,14 +736,14 @@ void () W_FireFlame =
 	flame.nextthink = (time + 0.15);
 	setmodel (flame, "progs/s_explod.spr");
 	setsize (flame, '0 0 0', '0 0 0');
-	setorigin (flame, ((self.origin + (v_forward * SBAR_240)) + '0 0 16'));
+	setorigin (flame, ((self.origin + (v_forward * 16)) + '0 0 16'));
 };
 
 void () IncendiaryRadius =
 {
 	local float damg;
 
-	if ((self.weaponmode == SBAR_GRENS))
+	if ((self.weaponmode == 1))
 	{
 		damg = _4;
 	}
@@ -759,7 +759,7 @@ void () IncendiaryRadius =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 	dremove (self);
 };
 
@@ -779,7 +779,7 @@ void () T_IncendiaryTouch =
 		return;
 	}
 	self.effects = (self.effects | AS_MISSILE);
-	if ((self.weaponmode == SBAR_GRENS))
+	if ((self.weaponmode == 1))
 	{
 		damg = (space + (random () * enter));
 	}
@@ -790,7 +790,7 @@ void () T_IncendiaryTouch =
 	deathmsg = 15;
 	if (other.health)
 	{
-		TF_T_Damage (other, self, self.owner, damg, SBAR_PRINT, 0);
+		TF_T_Damage (other, self, self.owner, damg, 2, 0);
 	}
 	IncendiaryRadius ();
 };
@@ -799,13 +799,13 @@ void () W_FireIncendiaryCannon =
 {
 	if (!practice)
 	{
-		if ((self.weaponmode == SBAR_GRENS))
+		if ((self.weaponmode == 1))
 		{
-			if ((self.ammo_rockets < SBAR_PRINT))
+			if ((self.ammo_rockets < 2))
 			{
 				return;
 			}
-			self.ammo_rockets = (self.ammo_rockets - SBAR_PRINT);
+			self.ammo_rockets = (self.ammo_rockets - 2);
 			self.currentammo = self.ammo_rockets;
 		}
 		else
@@ -820,14 +820,14 @@ void () W_FireIncendiaryCannon =
 	}
 	newmis = spawn ();
 	newmis.owner = self;
-	sound (self, SBAR_GRENS, "weapons/sgun1.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/sgun1.wav", 1, 1);
 	KickPlayer (-3, self);
 	newmis.movetype = 9;
-	newmis.solid = SBAR_PRINT;
+	newmis.solid = 2;
 	newmis.classname = "rocket";
 	makevectors (self.v_angle);
 	newmis.velocity = aim (self, 1000);
-	if ((self.weaponmode == SBAR_GRENS))
+	if ((self.weaponmode == 1))
 	{
 		newmis.velocity = (newmis.velocity * 800);
 	}
@@ -840,7 +840,7 @@ void () W_FireIncendiaryCannon =
 	newmis.touch = T_IncendiaryTouch;
 	newmis.nextthink = (time + 5);
 	newmis.think = IncendiaryRadius;
-	newmis.weapon = SBAR_384;
+	newmis.weapon = 33;
 	setmodel (newmis, "progs/missile.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, ((self.origin + (v_forward * 8)) + '0 0 16'));
@@ -852,11 +852,11 @@ void () TeamFortress_IncendiaryCannon =
 	{
 		return;
 	}
-	if ((self.weaponmode == SBAR_GRENS))
+	if ((self.weaponmode == 1))
 	{
-		if ((self.ammo_rockets < SBAR_PRINT))
+		if ((self.ammo_rockets < 2))
 		{
-			sprint (self, SBAR_PRINT, "not enough ammo.\n");
+			sprint (self, 2, "not enough ammo.\n");
 			return;
 		}
 	}
@@ -864,7 +864,7 @@ void () TeamFortress_IncendiaryCannon =
 	{
 		if ((self.ammo_rockets < AS_MELEE))
 		{
-			sprint (self, SBAR_PRINT, "not enough ammo.\n");
+			sprint (self, 2, "not enough ammo.\n");
 			return;
 		}
 	}
@@ -878,9 +878,9 @@ void () TeamFortress_FlameThrower =
 	{
 		return;
 	}
-	if ((self.ammo_cells < SBAR_GRENS))
+	if ((self.ammo_cells < 1))
 	{
-		sprint (self, SBAR_PRINT, "not enough ammo.\n");
+		sprint (self, 2, "not enough ammo.\n");
 		return;
 	}
 	self.current_weapon = 4096;

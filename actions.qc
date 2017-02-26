@@ -9,11 +9,11 @@ void () TeamFortress_SaveMe =
 	{
 		if ((random () < 0.8))
 		{
-			sound (self, SBAR_GRENS, "speech/saveme1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 1, "speech/saveme1.wav", 1, 1);
 		}
 		else
 		{
-			sound (self, SBAR_GRENS, "speech/saveme2.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 1, "speech/saveme2.wav", 1, 1);
 		}
 		self.last_sound = (time + AS_MISSILE);
 	}
@@ -30,15 +30,15 @@ void () TeamFortress_SaveMe =
 					tl = spawn ();
 					tl.origin = self.origin;
 					tl.origin_z = (tl.origin_z + space);
-					WriteByte (SBAR_GRENS, 23);
-					WriteByte (SBAR_GRENS, 9);
-					WriteEntity (SBAR_GRENS, tl);
-					WriteCoord (SBAR_GRENS, tl.origin_x);
-					WriteCoord (SBAR_GRENS, tl.origin_y);
-					WriteCoord (SBAR_GRENS, (tl.origin_z + 24));
-					WriteCoord (SBAR_GRENS, self.origin_x);
-					WriteCoord (SBAR_GRENS, self.origin_y);
-					WriteCoord (SBAR_GRENS, self.origin_z);
+					WriteByte (1, 23);
+					WriteByte (1, 9);
+					WriteEntity (1, tl);
+					WriteCoord (1, tl.origin_x);
+					WriteCoord (1, tl.origin_y);
+					WriteCoord (1, (tl.origin_z + 24));
+					WriteCoord (1, self.origin_x);
+					WriteCoord (1, self.origin_y);
+					WriteCoord (1, self.origin_z);
 					dremove (tl);
 				}
 			}

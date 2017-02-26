@@ -31,13 +31,13 @@ void () monster_death_use =
 {
 	local entity ent;
 
-	if ((self.flags & SBAR_GRENS))
+	if ((self.flags & 1))
 	{
-		self.flags = (self.flags - SBAR_GRENS);
+		self.flags = (self.flags - 1);
 	}
-	if ((self.flags & SBAR_PRINT))
+	if ((self.flags & 2))
 	{
-		self.flags = (self.flags - SBAR_PRINT);
+		self.flags = (self.flags - 2);
 	}
 	if (!self.target)
 	{
@@ -51,7 +51,7 @@ void () walkmonster_start_go =
 {
 	local entity etemp;
 
-	self.origin_z = (self.origin_z + SBAR_GRENS);
+	self.origin_z = (self.origin_z + 1);
 	droptofloor ();
 	if (!walkmove (0, 0))
 	{
@@ -60,7 +60,7 @@ void () walkmonster_start_go =
 		dprint ("\n");
 		self.origin_z = (self.origin_z + 200);
 	}
-	self.takedamage = SBAR_PRINT;
+	self.takedamage = 2;
 	self.ideal_yaw = (self.angles * '0 1 0');
 	if (!self.yaw_speed)
 	{
@@ -102,7 +102,7 @@ void () walkmonster_start =
 {
 	self.nextthink = (self.nextthink + (random () * 0.5));
 	self.think = walkmonster_start_go;
-	total_monsters = (total_monsters + SBAR_GRENS);
+	total_monsters = (total_monsters + 1);
 };
 
 void () enforcer_fire =
@@ -154,9 +154,9 @@ void () enf_walk1 = [ 7, enf_walk2 ]
 {
 	if ((random () < 0.2))
 	{
-		sound (self, SBAR_PRINT, "enforcer/idle1.wav", SBAR_GRENS, SBAR_PRINT);
+		sound (self, 2, "enforcer/idle1.wav", 1, 2);
 	}
-	ai_walk (SBAR_PRINT);
+	ai_walk (2);
 };
 
 void () enf_walk2 = [ 8, enf_walk3 ]
@@ -176,27 +176,27 @@ void () enf_walk4 = [ 10, enf_walk5 ]
 
 void () enf_walk5 = [ 11, enf_walk6 ]
 {
-	ai_walk (SBAR_GRENS);
+	ai_walk (1);
 };
 
 void () enf_walk6 = [ 12, enf_walk7 ]
 {
-	ai_walk (SBAR_PRINT);
+	ai_walk (2);
 };
 
 void () enf_walk7 = [ 13, enf_walk8 ]
 {
-	ai_walk (SBAR_PRINT);
+	ai_walk (2);
 };
 
 void () enf_walk8 = [ 14, enf_walk9 ]
 {
-	ai_walk (SBAR_GRENS);
+	ai_walk (1);
 };
 
 void () enf_walk9 = [ 15, enf_walk10 ]
 {
-	ai_walk (SBAR_PRINT);
+	ai_walk (2);
 };
 
 void () enf_walk10 = [ 16, enf_walk11 ]
@@ -211,12 +211,12 @@ void () enf_walk11 = [ 17, enf_walk12 ]
 
 void () enf_walk12 = [ 18, enf_walk13 ]
 {
-	ai_walk (SBAR_GRENS);
+	ai_walk (1);
 };
 
 void () enf_walk13 = [ 19, enf_walk14 ]
 {
-	ai_walk (SBAR_PRINT);
+	ai_walk (2);
 };
 
 void () enf_walk14 = [ 20, enf_walk15 ]
@@ -231,14 +231,14 @@ void () enf_walk15 = [ 21, enf_walk16 ]
 
 void () enf_walk16 = [ 22, enf_walk1 ]
 {
-	ai_walk (SBAR_PRINT);
+	ai_walk (2);
 };
 
 void () enf_run1 = [ 23, enf_run2 ]
 {
 	if ((random () < 0.2))
 	{
-		sound (self, SBAR_PRINT, "enforcer/idle1.wav", SBAR_GRENS, SBAR_PRINT);
+		sound (self, 2, "enforcer/idle1.wav", 1, 2);
 	}
 	ai_run (COLOR_GREEN);
 };
@@ -275,7 +275,7 @@ void () enf_run7 = [ 29, enf_run8 ]
 
 void () enf_run8 = [ 30, enf_run1 ]
 {
-	ai_run (SBAR_200);
+	ai_run (11);
 };
 
 void () enf_atk1 = [ 31, enf_atk2 ]
@@ -431,12 +431,12 @@ void () enf_paind3 = [ 85, enf_paind4 ]
 
 void () enf_paind4 = [ 86, enf_paind5 ]
 {
-	ai_painforward (SBAR_PRINT);
+	ai_painforward (2);
 };
 
 void () enf_paind5 = [ 87, enf_paind6 ]
 {
-	ai_painforward (SBAR_GRENS);
+	ai_painforward (1);
 };
 
 void () enf_paind6 = [ 88, enf_paind7 ]
@@ -461,17 +461,17 @@ void () enf_paind10 = [ 92, enf_paind11 ]
 
 void () enf_paind11 = [ 93, enf_paind12 ]
 {
-	ai_painforward (SBAR_GRENS);
+	ai_painforward (1);
 };
 
 void () enf_paind12 = [ 94, enf_paind13 ]
 {
-	ai_painforward (SBAR_GRENS);
+	ai_painforward (1);
 };
 
 void () enf_paind13 = [ 95, enf_paind14 ]
 {
-	ai_painforward (SBAR_GRENS);
+	ai_painforward (1);
 };
 
 void () enf_paind14 = [ 96, enf_paind15 ]
@@ -484,12 +484,12 @@ void () enf_paind15 = [ 97, enf_paind16 ]
 
 void () enf_paind16 = [ 98, enf_paind17 ]
 {
-	ai_pain (SBAR_GRENS);
+	ai_pain (1);
 };
 
 void () enf_paind17 = [ 99, enf_paind18 ]
 {
-	ai_pain (SBAR_GRENS);
+	ai_pain (1);
 };
 
 void () enf_paind18 = [ 100, enf_paind19 ]
@@ -511,34 +511,34 @@ void (entity attacker, float damage) enf_pain =
 	}
 	if ((r < 0.5))
 	{
-		sound (self, SBAR_PRINT, "enforcer/pain1.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "enforcer/pain1.wav", 1, 1);
 	}
 	else
 	{
-		sound (self, SBAR_PRINT, "enforcer/pain2.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "enforcer/pain2.wav", 1, 1);
 	}
 	if ((r < 0.2))
 	{
-		self.pain_finished = (time + SBAR_GRENS);
+		self.pain_finished = (time + 1);
 		enf_paina1 ();
 	}
 	else
 	{
 		if ((r < 0.4))
 		{
-			self.pain_finished = (time + SBAR_GRENS);
+			self.pain_finished = (time + 1);
 			enf_painb1 ();
 		}
 		else
 		{
 			if ((r < 0.7))
 			{
-				self.pain_finished = (time + SBAR_GRENS);
+				self.pain_finished = (time + 1);
 				enf_painc1 ();
 			}
 			else
 			{
-				self.pain_finished = (time + SBAR_PRINT);
+				self.pain_finished = (time + 2);
 				enf_paind1 ();
 			}
 		}
@@ -567,7 +567,7 @@ void () enf_die4 = [ 44, enf_die5 ]
 
 void () enf_die5 = [ 45, enf_die6 ]
 {
-	ai_forward (SBAR_PRINT);
+	ai_forward (2);
 };
 
 void () enf_die6 = [ 46, enf_die7 ]
@@ -661,14 +661,14 @@ void () enf_die =
 {
 	if ((self.health < -35))
 	{
-		sound (self, SBAR_PRINT, "player/udeath.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, "player/udeath.wav", 1, 1);
 		ThrowHead ("progs/h_mega.mdl", self.health);
 		ThrowGib ("progs/gib1.mdl", self.health);
 		ThrowGib ("progs/gib2.mdl", self.health);
 		ThrowGib ("progs/gib3.mdl", self.health);
 		return;
 	}
-	sound (self, SBAR_PRINT, "enforcer/death1.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, "enforcer/death1.wav", 1, 1);
 	if ((random () > 0.5))
 	{
 		enf_die1 ();
@@ -684,7 +684,7 @@ void () spawn_hostage =
 	self.solid = AS_MELEE;
 	self.movetype = AS_MISSILE;
 	self.oldorigin = self.origin;
-	num_hostages = (num_hostages + SBAR_GRENS);
+	num_hostages = (num_hostages + 1);
 	setmodel (self, "progs/enforcer.mdl");
 	setsize (self, '-16 -16 -24', '16 16 40');
 	self.health = _x;

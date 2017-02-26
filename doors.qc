@@ -6,8 +6,8 @@ void () door_blocked =
 {
 	if ((other.classname == "detpack"))
 	{
-		sprint (other.owner, SBAR_PRINT, "Your detpack was squashed.\n");
-		if ((other.weaponmode == SBAR_GRENS))
+		sprint (other.owner, 2, "Your detpack was squashed.\n");
+		if ((other.weaponmode == 1))
 		{
 			TeamFortress_SetSpeed (other.enemy);
 			dremove (other.observer_list);
@@ -32,7 +32,7 @@ void () door_blocked =
 
 void () door_hit_top =
 {
-	sound (self, SBAR_PRINT, self.noise1, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise1, 1, 1);
 	self.state = 0;
 	if ((self.spawnflags & space))
 	{
@@ -44,17 +44,17 @@ void () door_hit_top =
 
 void () door_hit_bottom =
 {
-	self.goal_state = SBAR_PRINT;
-	sound (self, SBAR_PRINT, self.noise1, SBAR_GRENS, SBAR_GRENS);
-	self.state = SBAR_GRENS;
+	self.goal_state = 2;
+	sound (self, 2, self.noise1, 1, 1);
+	self.state = 1;
 };
 
 void () door_go_down =
 {
-	sound (self, SBAR_PRINT, self.noise2, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise2, 1, 1);
 	if (self.max_health)
 	{
-		self.takedamage = SBAR_GRENS;
+		self.takedamage = 1;
 		self.health = self.max_health;
 	}
 	self.state = AS_MELEE;
@@ -63,7 +63,7 @@ void () door_go_down =
 
 void () door_go_up =
 {
-	if ((self.state == SBAR_PRINT))
+	if ((self.state == 2))
 	{
 		return;
 	}
@@ -72,8 +72,8 @@ void () door_go_up =
 		self.nextthink = (self.ltime + self.wait);
 		return;
 	}
-	sound (self, SBAR_PRINT, self.noise2, SBAR_GRENS, SBAR_GRENS);
-	self.state = SBAR_PRINT;
+	sound (self, 2, self.noise2, 1, 1);
+	self.state = 2;
 	SUB_CalcMove (self.pos2, self.speed, door_hit_top);
 	SUB_UseTargets ();
 };
@@ -89,13 +89,13 @@ void () door_fire =
 	}
 	if (self.items)
 	{
-		sound (self, SBAR_PRINT, self.noise4, SBAR_GRENS, SBAR_GRENS);
+		sound (self, 2, self.noise4, 1, 1);
 	}
 	self.message = string_null;
 	oself = self;
 	if ((self.spawnflags & space))
 	{
-		if (((self.state == SBAR_PRINT) || (self.state == 0)))
+		if (((self.state == 2) || (self.state == 0)))
 		{
 			starte = self;
 			do
@@ -135,7 +135,7 @@ void () door_trigger_touch =
 {
 	local entity te;
 
-	if ((freeze == SBAR_GRENS))
+	if ((freeze == 1))
 	{
 		return;
 	}
@@ -163,7 +163,7 @@ void () door_trigger_touch =
 	{
 		return;
 	}
-	self.attack_finished = (time + SBAR_GRENS);
+	self.attack_finished = (time + 1);
 	activator = other;
 	self = self.owner;
 	door_use ();
@@ -205,11 +205,11 @@ void () door_touch =
 		}
 		return;
 	}
-	self.owner.attack_finished = (time + SBAR_PRINT);
+	self.owner.attack_finished = (time + 2);
 	if ((self.owner.message != ""))
 	{
 		CenterPrint (other, self.owner.message);
-		sound (other, SBAR_PRINT, "misc/talk.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (other, 2, "misc/talk.wav", 1, 1);
 	}
 	if (!self.items)
 	{
@@ -219,48 +219,48 @@ void () door_touch =
 	{
 		if ((self.owner.items == 131072))
 		{
-			if ((world.worldtype == SBAR_PRINT))
+			if ((world.worldtype == 2))
 			{
 				CenterPrint (other, "You need the silver keycard");
-				sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+				sound (self, 2, self.noise3, 1, 1);
 			}
 			else
 			{
-				if ((world.worldtype == SBAR_GRENS))
+				if ((world.worldtype == 1))
 				{
 					CenterPrint (other, "You need the silver runekey");
-					sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+					sound (self, 2, self.noise3, 1, 1);
 				}
 				else
 				{
 					if ((world.worldtype == 0))
 					{
 						CenterPrint (other, "You need the silver key");
-						sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+						sound (self, 2, self.noise3, 1, 1);
 					}
 				}
 			}
 		}
 		else
 		{
-			if ((world.worldtype == SBAR_PRINT))
+			if ((world.worldtype == 2))
 			{
 				CenterPrint (other, "You need the gold keycard\n");
-				sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+				sound (self, 2, self.noise3, 1, 1);
 			}
 			else
 			{
-				if ((world.worldtype == SBAR_GRENS))
+				if ((world.worldtype == 1))
 				{
 					CenterPrint (other, "You need the gold runekey");
-					sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+					sound (self, 2, self.noise3, 1, 1);
 				}
 				else
 				{
 					if ((world.worldtype == 0))
 					{
 						CenterPrint (other, "You need the gold key");
-						sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+						sound (self, 2, self.noise3, 1, 1);
 					}
 				}
 			}
@@ -285,7 +285,7 @@ entity (vector fmins, vector fmaxs) spawn_field =
 
 	trigger = spawn ();
 	trigger.movetype = 0;
-	trigger.solid = SBAR_GRENS;
+	trigger.solid = 1;
 	trigger.owner = self;
 	trigger.touch = door_trigger_touch;
 	trigger.team_no = self.team_no;
@@ -338,7 +338,7 @@ float (entity e1, entity e2) EntitiesTouching =
 	{
 		return (0);
 	}
-	return (SBAR_GRENS);
+	return (1);
 };
 
 void () LinkDoors =
@@ -431,7 +431,7 @@ void () LinkDoors =
 			}
 		}
 
-	} while (SBAR_GRENS);
+	} while (1);
 };
 
 void () func_door =
@@ -450,7 +450,7 @@ void () func_door =
 	}
 	else
 	{
-		if ((world.worldtype == SBAR_GRENS))
+		if ((world.worldtype == 1))
 		{
 			precache_sound ("doors/runetry.wav");
 			precache_sound ("doors/runeuse.wav");
@@ -459,7 +459,7 @@ void () func_door =
 		}
 		else
 		{
-			if ((world.worldtype == SBAR_PRINT))
+			if ((world.worldtype == 2))
 			{
 				precache_sound ("doors/basetry.wav");
 				precache_sound ("doors/baseuse.wav");
@@ -479,14 +479,14 @@ void () func_door =
 		self.noise1 = "misc/null.wav";
 		self.noise2 = "misc/null.wav";
 	}
-	if ((self.sounds == SBAR_GRENS))
+	if ((self.sounds == 1))
 	{
 		precache_sound ("doors/drclos4.wav");
 		precache_sound ("doors/doormv1.wav");
 		self.noise1 = "doors/drclos4.wav";
 		self.noise2 = "doors/doormv1.wav";
 	}
-	if ((self.sounds == SBAR_PRINT))
+	if ((self.sounds == 2))
 	{
 		precache_sound ("doors/hydro1.wav");
 		precache_sound ("doors/hydro2.wav");
@@ -516,7 +516,7 @@ void () func_door =
 	self.classname = "door";
 	self.blocked = door_blocked;
 	self.use = door_use;
-	if ((self.spawnflags & SBAR_240))
+	if ((self.spawnflags & 16))
 	{
 		self.items = 131072;
 	}
@@ -538,20 +538,20 @@ void () func_door =
 	}
 	if (!self.dmg)
 	{
-		self.dmg = SBAR_PRINT;
+		self.dmg = 2;
 	}
 	self.pos1 = self.origin;
 	self.pos2 = (self.pos1 + (self.movedir * (fabs ((self.movedir * self.size)) - self.lip)));
-	if ((self.spawnflags & SBAR_GRENS))
+	if ((self.spawnflags & 1))
 	{
 		setorigin (self, self.pos2);
 		self.pos2 = self.pos1;
 		self.pos1 = self.origin;
 	}
-	self.state = SBAR_GRENS;
+	self.state = 1;
 	if (self.health)
 	{
-		self.takedamage = SBAR_GRENS;
+		self.takedamage = 1;
 		self.th_die = door_killed;
 	}
 	if (self.items)
@@ -591,9 +591,9 @@ void () fd_secret_use =
 		self.takedamage = 0;
 	}
 	self.velocity = '0 0 0';
-	sound (self, SBAR_PRINT, self.noise1, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise1, 1, 1);
 	self.nextthink = (self.ltime + 0.1);
-	temp = (SBAR_GRENS - (self.spawnflags & SBAR_PRINT));
+	temp = (1 - (self.spawnflags & 2));
 	makevectors (self.mangle);
 	if (!self.t_width)
 	{
@@ -620,26 +620,26 @@ void () fd_secret_use =
 	}
 	self.dest2 = (self.dest1 + (v_forward * self.t_length));
 	SUB_CalcMove (self.dest1, self.speed, fd_secret_move1);
-	sound (self, SBAR_PRINT, self.noise2, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise2, 1, 1);
 };
 
 void () fd_secret_move1 =
 {
-	self.nextthink = (self.ltime + SBAR_GRENS);
+	self.nextthink = (self.ltime + 1);
 	self.think = fd_secret_move2;
-	sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise3, 1, 1);
 };
 
 void () fd_secret_move2 =
 {
-	sound (self, SBAR_PRINT, self.noise2, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise2, 1, 1);
 	SUB_CalcMove (self.dest2, self.speed, fd_secret_move3);
 };
 
 void () fd_secret_move3 =
 {
-	sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
-	if (!(self.spawnflags & SBAR_GRENS))
+	sound (self, 2, self.noise3, 1, 1);
+	if (!(self.spawnflags & 1))
 	{
 		self.nextthink = (self.ltime + self.wait);
 		self.think = fd_secret_move4;
@@ -648,33 +648,33 @@ void () fd_secret_move3 =
 
 void () fd_secret_move4 =
 {
-	sound (self, SBAR_PRINT, self.noise2, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise2, 1, 1);
 	SUB_CalcMove (self.dest1, self.speed, fd_secret_move5);
 };
 
 void () fd_secret_move5 =
 {
-	self.nextthink = (self.ltime + SBAR_GRENS);
+	self.nextthink = (self.ltime + 1);
 	self.think = fd_secret_move6;
-	sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise3, 1, 1);
 };
 
 void () fd_secret_move6 =
 {
-	sound (self, SBAR_PRINT, self.noise2, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise2, 1, 1);
 	SUB_CalcMove (self.oldorigin, self.speed, fd_secret_done);
 };
 
 void () fd_secret_done =
 {
-	if ((!self.targetname || (self.spawnflags & SBAR_240)))
+	if ((!self.targetname || (self.spawnflags & 16)))
 	{
 		self.health = 10000;
-		self.takedamage = SBAR_GRENS;
+		self.takedamage = 1;
 		self.th_pain = fd_secret_use;
 		self.th_die = fd_secret_use;
 	}
-	sound (self, SBAR_PRINT, self.noise3, SBAR_GRENS, SBAR_GRENS);
+	sound (self, 2, self.noise3, 1, 1);
 };
 
 void () secret_blocked =
@@ -689,7 +689,7 @@ void () secret_blocked =
 
 void () secret_touch =
 {
-	if ((freeze == SBAR_GRENS))
+	if ((freeze == 1))
 	{
 		return;
 	}
@@ -705,11 +705,11 @@ void () secret_touch =
 	{
 		return;
 	}
-	self.attack_finished = (time + SBAR_PRINT);
+	self.attack_finished = (time + 2);
 	if (self.message)
 	{
 		CenterPrint (other, self.message);
-		sound (other, AS_MISSILE, "misc/talk.wav", SBAR_GRENS, SBAR_GRENS);
+		sound (other, AS_MISSILE, "misc/talk.wav", 1, 1);
 	}
 };
 
@@ -724,7 +724,7 @@ void () func_door_secret =
 	{
 		self.sounds = AS_MELEE;
 	}
-	if ((self.sounds == SBAR_GRENS))
+	if ((self.sounds == 1))
 	{
 		precache_sound ("doors/latch2.wav");
 		precache_sound ("doors/winch2.wav");
@@ -733,7 +733,7 @@ void () func_door_secret =
 		self.noise2 = "doors/winch2.wav";
 		self.noise3 = "doors/drclos4.wav";
 	}
-	if ((self.sounds == SBAR_PRINT))
+	if ((self.sounds == 2))
 	{
 		precache_sound ("doors/airdoor1.wav");
 		precache_sound ("doors/airdoor2.wav");
@@ -751,7 +751,7 @@ void () func_door_secret =
 	}
 	if (!self.dmg)
 	{
-		self.dmg = SBAR_PRINT;
+		self.dmg = 2;
 	}
 	self.mangle = self.angles;
 	self.angles = '0 0 0';
@@ -764,10 +764,10 @@ void () func_door_secret =
 	self.blocked = secret_blocked;
 	self.speed = _2;
 	self.use = fd_secret_use;
-	if ((!self.targetname || (self.spawnflags & SBAR_240)))
+	if ((!self.targetname || (self.spawnflags & 16)))
 	{
 		self.health = 10000;
-		self.takedamage = SBAR_GRENS;
+		self.takedamage = 1;
 		self.th_pain = fd_secret_use;
 	}
 	self.oldorigin = self.origin;

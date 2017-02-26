@@ -476,37 +476,37 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 	if (self.is_feigning)
 	{
 		at_spot = findradius (self.origin, 40);
-		i = SBAR_GRENS;
+		i = 1;
 		j = 0;
 		while ((at_spot != world))
 		{
 			if ((at_spot.mdl == "progs/detpack.mdl"))
 			{
-				j = SBAR_GRENS;
+				j = 1;
 			}
 			else
 			{
 				if ((at_spot.mdl == "progs/turrbase.mdl"))
 				{
-					j = SBAR_GRENS;
+					j = 1;
 				}
 				else
 				{
 					if ((at_spot.mdl == "progs/turrgun.mdl"))
 					{
-						j = SBAR_GRENS;
+						j = 1;
 					}
 					else
 					{
 						if ((at_spot.mdl == "progs/disp.mdl"))
 						{
-							j = SBAR_GRENS;
+							j = 1;
 						}
 						else
 						{
 							if ((((at_spot.classname == "player") && (at_spot.deadflag == 0)) && (self != at_spot)))
 							{
-								j = SBAR_PRINT;
+								j = 2;
 							}
 						}
 					}
@@ -518,9 +518,9 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 			}
 			at_spot = at_spot.chain;
 		}
-		if ((i == SBAR_GRENS))
+		if ((i == 1))
 		{
-			i = (SBAR_GRENS + floor ((random () * 5)));
+			i = (1 + floor ((random () * 5)));
 			self.velocity = '0 0 0';
 			setsize (self, '-16 -16 -24', '16 16 32');
 			self.view_ofs = '0 0 22';
@@ -530,18 +530,18 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 			W_SetCurrentAmmo ();
 			self.tfstate = (self.tfstate - (self.tfstate & 65536));
 			TeamFortress_SetSpeed (self);
-			if ((self.weapon <= SBAR_240))
+			if ((self.weapon <= 16))
 			{
 				spy_upaxe1 ();
 				return;
 			}
-			if ((i == SBAR_GRENS))
+			if ((i == 1))
 			{
 				spy_upb1 ();
 			}
 			else
 			{
-				if ((i == SBAR_PRINT))
+				if ((i == 2))
 				{
 					spy_upc1 ();
 				}
@@ -560,39 +560,39 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 		}
 		else
 		{
-			if ((j == SBAR_GRENS))
+			if ((j == 1))
 			{
-				sprint (self, SBAR_PRINT, "You can't get up with something\non top of you.\n");
+				sprint (self, 2, "You can't get up with something\non top of you.\n");
 			}
 			else
 			{
-				sprint (self, SBAR_PRINT, "You can't get up while someone\nis standing on you.\n");
+				sprint (self, 2, "You can't get up while someone\nis standing on you.\n");
 			}
 		}
 	}
 	else
 	{
-		if ((self.is_unabletospy == SBAR_GRENS))
+		if ((self.is_unabletospy == 1))
 		{
-			sprint (self, SBAR_PRINT, "You can't feign right now.\n");
+			sprint (self, 2, "You can't feign right now.\n");
 			return;
 		}
 		if (self.hook_out)
 		{
-			sprint (self, SBAR_PRINT, "You can't feign with the hook out.\n");
+			sprint (self, 2, "You can't feign with the hook out.\n");
 			return;
 		}
 		if ((!(self.flags & 512) && (self.waterlevel == 0)))
 		{
-			sprint (self, SBAR_PRINT, "You can't feign in the air.\n");
+			sprint (self, 2, "You can't feign in the air.\n");
 			return;
 		}
 		at_spot = findradius (self.origin, 64);
 		while ((at_spot != world))
 		{
-			if ((((at_spot.classname == "player") && (self != at_spot)) && (at_spot.is_feigning == SBAR_GRENS)))
+			if ((((at_spot.classname == "player") && (self != at_spot)) && (at_spot.is_feigning == 1)))
 			{
-				sprint (self, SBAR_PRINT, "You can't feign on top of another spy!\n");
+				sprint (self, 2, "You can't feign on top of another spy!\n");
 				return;
 			}
 			at_spot = at_spot.chain;
@@ -600,7 +600,7 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 		self.immune_to_check = (time + 5);
 		self.tfstate = (self.tfstate | 65536);
 		TeamFortress_SetSpeed (self);
-		self.is_feigning = SBAR_GRENS;
+		self.is_feigning = 1;
 		Attack_Finished (0.8);
 		self.invisible_finished = 0;
 		self.modelindex = modelindex_player;
@@ -615,7 +615,7 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 		{
 			DeathSound ();
 		}
-		if ((self.weapon <= SBAR_240))
+		if ((self.weapon <= 16))
 		{
 			spy_die_ax1 ();
 			return;
@@ -625,21 +625,21 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 		{
 			if ((te.owner == self))
 			{
-				if ((!(te.goal_activation & 256) || (self.has_disconnected == SBAR_GRENS)))
+				if ((!(te.goal_activation & 256) || (self.has_disconnected == 1)))
 				{
 					tfgoalitem_RemoveFromPlayer (te, self, 0);
 				}
-				if (((CTF_Map == SBAR_GRENS) && (te.goal_no == SBAR_GRENS)))
+				if (((CTF_Map == 1) && (te.goal_no == 1)))
 				{
-					bprint (SBAR_PRINT, self.netname);
-					bprint (SBAR_PRINT, " лост the блуе flag!\n");
+					bprint (2, self.netname);
+					bprint (2, " лост the блуе flag!\n");
 				}
 				else
 				{
-					if (((CTF_Map == SBAR_GRENS) && (te.goal_no == SBAR_PRINT)))
+					if (((CTF_Map == 1) && (te.goal_no == 2)))
 					{
-						bprint (SBAR_PRINT, self.netname);
-						bprint (SBAR_PRINT, " лост the ред flag!\n");
+						bprint (2, self.netname);
+						bprint (2, " лост the ред flag!\n");
 					}
 				}
 			}
@@ -649,14 +649,14 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 		{
 			dremove (te);
 		}
-		i = (SBAR_GRENS + floor ((random () * 6)));
-		if ((i == SBAR_GRENS))
+		i = (1 + floor ((random () * 6)));
+		if ((i == 1))
 		{
 			spy_diea1 ();
 		}
 		else
 		{
-			if ((i == SBAR_PRINT))
+			if ((i == 2))
 			{
 				spy_dieb1 ();
 			}
@@ -688,22 +688,22 @@ void () TeamFortress_SpyGoUndercover =
 
 	if ((self.effects & (8 | AS_MISSILE)))
 	{
-		sprint (self, SBAR_GRENS, "You cannot disguise while glowing.\n");
+		sprint (self, 1, "You cannot disguise while glowing.\n");
 		return;
 	}
-	if ((self.is_unabletospy == SBAR_GRENS))
+	if ((self.is_unabletospy == 1))
 	{
-		sprint (self, SBAR_PRINT, "You can't go undercover right now.\n");
+		sprint (self, 2, "You can't go undercover right now.\n");
 		return;
 	}
-	if ((self.is_undercover != SBAR_PRINT))
+	if ((self.is_undercover != 2))
 	{
 		self.current_menu = 12;
 		self.menu_count = 25;
 	}
 	else
 	{
-		sprint (self, SBAR_PRINT, "You stop going undercover.\n");
+		sprint (self, 2, "You stop going undercover.\n");
 		self.is_undercover = 0;
 	}
 };
@@ -756,25 +756,25 @@ void () TeamFortress_SpyUndercoverThink =
 	{
 		return;
 	}
-	if ((self.owner.is_undercover == SBAR_PRINT))
+	if ((self.owner.is_undercover == 2))
 	{
 		self.owner.immune_to_check = (time + 5);
 		if ((self.skin != 0))
 		{
-			sprint (self.owner, SBAR_PRINT, "Skin set to ");
+			sprint (self.owner, 2, "Skin set to ");
 			TeamFortress_PrintClassName (self.owner, self.skin, 0);
 			self.owner.undercover_skin = self.skin;
 			TeamFortress_SetSkin (self.owner);
 		}
 		if ((self.team != 0))
 		{
-			sprint (self.owner, SBAR_PRINT, "Colors set to Team ");
+			sprint (self.owner, 2, "Colors set to Team ");
 			st = ftos (self.team);
-			sprint (self.owner, SBAR_PRINT, st);
-			sprint (self.owner, SBAR_PRINT, "\n");
+			sprint (self.owner, 2, st);
+			sprint (self.owner, 2, "\n");
 			self.owner.undercover_team = self.team;
 			stuffcmd (self.owner, "color ");
-			tc = (TeamFortress_GetColor (self.team) - SBAR_GRENS);
+			tc = (TeamFortress_GetColor (self.team) - 1);
 			st = ftos (tc);
 			stuffcmd (self.owner, st);
 			stuffcmd (self.owner, "\n");
@@ -785,7 +785,7 @@ void () TeamFortress_SpyUndercoverThink =
 		{
 			CenterPrint (self.owner, "You are now disguised.\n");
 		}
-		self.owner.is_undercover = SBAR_GRENS;
+		self.owner.is_undercover = 1;
 	}
 	self.owner.StatusRefreshTime = (time + 0.1);
 	dremove (self);
@@ -797,7 +797,7 @@ void (float class) TeamFortress_SpyChangeSkin =
 
 	if (class == 8)
 	{
-		sprint (self, SBAR_PRINT, "Skin reset.\n");
+		sprint (self, 2, "Skin reset.\n");
 		self.undercover_skin = 0;
 		TeamFortress_SetSkin (self);
 		if ((self.undercover_team == 0))
@@ -806,8 +806,8 @@ void (float class) TeamFortress_SpyChangeSkin =
 		}
 		return;
 	}
-	sprint (self, SBAR_PRINT, "Going undercover...\n");
-	self.is_undercover = SBAR_PRINT;
+	sprint (self, 2, "Going undercover...\n");
+	self.is_undercover = 2;
 	te = spawn ();
 	te.classname = "timer";
 	te.owner = self;
@@ -825,11 +825,11 @@ void (float teamno) TeamFortress_SpyChangeColor =
 
 	if ((teamno == self.team_no))
 	{
-		sprint (self, SBAR_PRINT, "Colors reset.\n");
+		sprint (self, 2, "Colors reset.\n");
 		self.immune_to_check = (time + 5);
 		self.undercover_team = 0;
 		stuffcmd (self, "color ");
-		tc = (TeamFortress_GetColor (self.team_no) - SBAR_GRENS);
+		tc = (TeamFortress_GetColor (self.team_no) - 1);
 		st = ftos (tc);
 		stuffcmd (self, st);
 		stuffcmd (self, "\n");
@@ -840,8 +840,8 @@ void (float teamno) TeamFortress_SpyChangeColor =
 		TeamFortress_SetSkin (self);
 		return;
 	}
-	sprint (self, SBAR_PRINT, "Going undercover...\n");
-	self.is_undercover = SBAR_PRINT;
+	sprint (self, 2, "Going undercover...\n");
+	self.is_undercover = 2;
 	te = spawn ();
 	te.classname = "timer";
 	te.owner = self;
@@ -852,7 +852,7 @@ void (float teamno) TeamFortress_SpyChangeColor =
 
 void () GasGrenadeTouch =
 {
-	sound (self, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/bounce.wav", 1, 1);
 	if ((self.velocity == '0 0 0'))
 	{
 		self.avelocity = '0 0 0';
@@ -897,7 +897,7 @@ void () GasGrenadeExplode =
 			newmis.frame = 0;
 			newmis.cnt = 0;
 			setsize (newmis, '-8 -8 -8', '8 8 8');
-			pos = (pos + SBAR_GRENS);
+			pos = (pos + 1);
 		}
 	}
 	dremove (self);
@@ -910,13 +910,13 @@ void () GasGrenadeMakeGas =
 
 	if ((self.heat == 0))
 	{
-		self.owner.no_active_gas_grens = (self.owner.no_active_gas_grens + SBAR_GRENS);
-		if ((self.owner.no_active_gas_grens > SBAR_PRINT))
+		self.owner.no_active_gas_grens = (self.owner.no_active_gas_grens + 1);
+		if ((self.owner.no_active_gas_grens > 2))
 		{
 			te = find (world, classname, "grentimer");
 			while ((te != world))
 			{
-				if (((te.owner == self.owner) && (te.no_active_gas_grens == SBAR_GRENS)))
+				if (((te.owner == self.owner) && (te.no_active_gas_grens == 1)))
 				{
 					te.weapon = 24;
 					te.think = RemoveGrenade;
@@ -931,10 +931,10 @@ void () GasGrenadeMakeGas =
 	te = findradius (self.origin, 200);
 	while ((te != world))
 	{
-		if ((((te.classname == "player") && (te.deadflag == 0)) && (te.has_disconnected != SBAR_GRENS)))
+		if ((((te.classname == "player") && (te.deadflag == 0)) && (te.has_disconnected != 1)))
 		{
 			deathmsg = 24;
-			TF_T_Damage (te, world, self.owner, enter, (SBAR_GRENS | SBAR_PRINT), 0);
+			TF_T_Damage (te, world, self.owner, enter, (1 | 2), 0);
 			if ((te.tfstate & 16384))
 			{
 				timer = find (world, classname, "timer");
@@ -953,7 +953,7 @@ void () GasGrenadeMakeGas =
 			}
 			else
 			{
-				sprint (te, SBAR_PRINT, "Run for cover! They're everywhere!\n");
+				sprint (te, 2, "Run for cover! They're everywhere!\n");
 				te.tfstate = (te.tfstate | 16384);
 				timer = spawn ();
 				timer.nextthink = (time + 0.3);
@@ -966,32 +966,32 @@ void () GasGrenadeMakeGas =
 		}
 		te = te.chain;
 	}
-	self.heat = (self.heat + SBAR_GRENS);
-	if ((self.heat == SBAR_GRENS))
+	self.heat = (self.heat + 1);
+	if ((self.heat == 1))
 	{
 		WriteByte (AS_MISSILE, 23);
 		WriteByte (AS_MISSILE, AS_MISSILE);
 		WriteCoord (AS_MISSILE, self.origin_x);
 		WriteCoord (AS_MISSILE, self.origin_y);
 		WriteCoord (AS_MISSILE, self.origin_z);
-		multicast (self.origin, SBAR_PRINT);
+		multicast (self.origin, 2);
 		return;
 	}
 	if ((self.heat <= 20))
 	{
-		self.weapon = (self.weapon + SBAR_GRENS);
-		if ((self.weapon == SBAR_GRENS))
+		self.weapon = (self.weapon + 1);
+		if ((self.weapon == 1))
 		{
 			WriteByte (AS_MISSILE, 23);
 			WriteByte (AS_MISSILE, enter);
 			WriteCoord (AS_MISSILE, self.origin_x);
 			WriteCoord (AS_MISSILE, self.origin_y);
 			WriteCoord (AS_MISSILE, (self.origin_z - 24));
-			multicast (self.origin, SBAR_PRINT);
+			multicast (self.origin, 2);
 		}
 		else
 		{
-			if ((self.weapon == SBAR_PRINT))
+			if ((self.weapon == 2))
 			{
 				self.weapon = 0;
 			}
@@ -1013,20 +1013,20 @@ void () HallucinationTimer =
 	self.health = (self.health - AS_MELEE);
 	if ((self.owner.playerclass == 5))
 	{
-		self.health = (self.health - SBAR_PRINT);
+		self.health = (self.health - 2);
 	}
-	if ((((self.health <= 0) || (self.owner.deadflag != 0)) || (self.owner.has_disconnected == SBAR_GRENS)))
+	if ((((self.health <= 0) || (self.owner.deadflag != 0)) || (self.owner.has_disconnected == 1)))
 	{
 		self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 16384));
 	}
-	if (((self.owner.deadflag != 0) || (self.owner.has_disconnected == SBAR_GRENS)))
+	if (((self.owner.deadflag != 0) || (self.owner.has_disconnected == 1)))
 	{
 		dremove (self);
 		return;
 	}
 	if (!(self.owner.tfstate & 16384))
 	{
-		sprint (self.owner, SBAR_PRINT, "You feel a little better now.\n");
+		sprint (self.owner, 2, "You feel a little better now.\n");
 		dremove (self);
 		return;
 	}
@@ -1042,36 +1042,36 @@ void () HallucinationTimer =
 	msg_entity = self.owner;
 	if ((halltype < 0.4))
 	{
-		WriteByte (SBAR_GRENS, 23);
+		WriteByte (1, 23);
 		if ((halltype < 0.25))
 		{
-			WriteByte (SBAR_GRENS, AS_MELEE);
+			WriteByte (1, AS_MELEE);
 		}
 		else
 		{
 			if ((halltype < 0.35))
 			{
-				WriteByte (SBAR_GRENS, AS_MISSILE);
+				WriteByte (1, AS_MISSILE);
 			}
 			else
 			{
-				WriteByte (SBAR_GRENS, enter);
+				WriteByte (1, enter);
 			}
 		}
-		WriteCoord (SBAR_GRENS, (msg_entity.origin_x + tmpx));
-		WriteCoord (SBAR_GRENS, (msg_entity.origin_y + tmpy));
-		WriteCoord (SBAR_GRENS, msg_entity.origin_z);
+		WriteCoord (1, (msg_entity.origin_x + tmpx));
+		WriteCoord (1, (msg_entity.origin_y + tmpy));
+		WriteCoord (1, msg_entity.origin_z);
 		T_Damage (self.owner, self.owner, self.owner, 0);
 	}
 	else
 	{
 		if ((halltype < 0.7))
 		{
-			WriteByte (SBAR_GRENS, 23);
-			WriteByte (SBAR_GRENS, SBAR_200);
-			WriteCoord (SBAR_GRENS, (msg_entity.origin_x + tmpx));
-			WriteCoord (SBAR_GRENS, (msg_entity.origin_y + tmpy));
-			WriteCoord (SBAR_GRENS, msg_entity.origin_z);
+			WriteByte (1, 23);
+			WriteByte (1, 11);
+			WriteCoord (1, (msg_entity.origin_x + tmpx));
+			WriteCoord (1, (msg_entity.origin_y + tmpy));
+			WriteCoord (1, msg_entity.origin_z);
 			if ((halltype2 < 0.1))
 			{
 				stuffcmd (self.owner, "play weapons/r_exp3.wav\n");
@@ -1201,17 +1201,17 @@ void () HallucinationTimer =
 			te.origin_x = (msg_entity.origin_x + tmpx);
 			te.origin_y = (msg_entity.origin_y + tmpy);
 			te.origin_z = msg_entity.origin_z;
-			WriteByte (SBAR_GRENS, 23);
-			WriteByte (SBAR_GRENS, 6);
-			WriteEntity (SBAR_GRENS, te);
-			WriteCoord (SBAR_GRENS, te.origin_x);
-			WriteCoord (SBAR_GRENS, te.origin_y);
-			WriteCoord (SBAR_GRENS, te.origin_z);
+			WriteByte (1, 23);
+			WriteByte (1, 6);
+			WriteEntity (1, te);
+			WriteCoord (1, te.origin_x);
+			WriteCoord (1, te.origin_y);
+			WriteCoord (1, te.origin_z);
 			tmpx = ((random () * 800) - 400);
 			tmpy = ((random () * 800) - 400);
-			WriteCoord (SBAR_GRENS, (msg_entity.origin_x + tmpx));
-			WriteCoord (SBAR_GRENS, (msg_entity.origin_y + tmpy));
-			WriteCoord (SBAR_GRENS, msg_entity.origin_z);
+			WriteCoord (1, (msg_entity.origin_x + tmpx));
+			WriteCoord (1, (msg_entity.origin_y + tmpy));
+			WriteCoord (1, msg_entity.origin_z);
 			if ((halltype2 < 0.1))
 			{
 				stuffcmd (self.owner, "play weapons/detpack.wav\n");
@@ -1289,14 +1289,14 @@ void () W_FireTranq =
 {
 	if (!practice)
 	{
-		self.ammo_shells = (self.ammo_shells - SBAR_GRENS);
+		self.ammo_shells = (self.ammo_shells - 1);
 		self.currentammo = self.ammo_shells;
 	}
 	KickPlayer (-2, self);
 	newmis = spawn ();
 	newmis.owner = self;
 	newmis.movetype = 9;
-	newmis.solid = SBAR_PRINT;
+	newmis.solid = 2;
 	makevectors (self.v_angle);
 	newmis.velocity = v_forward;
 	newmis.velocity = (newmis.velocity * 1500);
@@ -1313,7 +1313,7 @@ void () T_TranqDartTouch =
 {
 	local entity timer;
 
-	if ((other.solid == SBAR_GRENS))
+	if ((other.solid == 1))
 	{
 		return;
 	}
@@ -1324,7 +1324,7 @@ void () T_TranqDartTouch =
 	}
 	if (other.takedamage)
 	{
-		if (((other.classname == "player") && !((other.team_no == self.owner.team_no) && (teamplay & (SBAR_PRINT | AS_MISSILE)))))
+		if (((other.classname == "player") && !((other.team_no == self.owner.team_no) && (teamplay & (2 | AS_MISSILE)))))
 		{
 			if ((other.tfstate & 32768))
 			{
@@ -1340,7 +1340,7 @@ void () T_TranqDartTouch =
 			}
 			else
 			{
-				sprint (other, SBAR_PRINT, "You feel tired...\n");
+				sprint (other, 2, "You feel tired...\n");
 				other.tfstate = (other.tfstate | 32768);
 				timer = spawn ();
 				timer.nextthink = (time + 15);
@@ -1353,7 +1353,7 @@ void () T_TranqDartTouch =
 		}
 		spawn_touchblood (9);
 		deathmsg = 25;
-		TF_T_Damage (other, self, self.owner, 20, SBAR_PRINT, SBAR_PRINT);
+		TF_T_Damage (other, self, self.owner, 20, 2, 2);
 	}
 	else
 	{
@@ -1376,7 +1376,7 @@ void () T_TranqDartTouch =
 		WriteCoord (AS_MISSILE, self.origin_x);
 		WriteCoord (AS_MISSILE, self.origin_y);
 		WriteCoord (AS_MISSILE, self.origin_z);
-		multicast (self.origin, SBAR_PRINT);
+		multicast (self.origin, 2);
 	}
 	dremove (self);
 };
@@ -1385,7 +1385,7 @@ void () TranquiliserTimer =
 {
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 32768));
 	TeamFortress_SetSpeed (self.owner);
-	sprint (self.owner, SBAR_PRINT, "You feel more alert now\n");
+	sprint (self.owner, 2, "You feel more alert now\n");
 	dremove (self);
 };
 
@@ -1402,7 +1402,7 @@ void (entity spy) Spy_RemoveDisguise =
 			spy.immune_to_check = (time + 5);
 			spy.undercover_team = 0;
 			stuffcmd (spy, "color ");
-			tc = (TeamFortress_GetColor (spy.team_no) - SBAR_GRENS);
+			tc = (TeamFortress_GetColor (spy.team_no) - 1);
 			st = ftos (tc);
 			stuffcmd (spy, st);
 			stuffcmd (spy, "\n");

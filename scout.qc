@@ -9,7 +9,7 @@ entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusS
 
 void () CanisterTouch =
 {
-	sound (self, SBAR_GRENS, "weapons/tink1.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/tink1.wav", 1, 1);
 	if ((self.velocity == '0 0 0'))
 	{
 		self.avelocity = '0 0 0';
@@ -22,14 +22,14 @@ void () CaltropTouch =
 	{
 		return;
 	}
-	if (((((teamplay & SBAR_240) && (other != self.owner)) && (other.team_no == self.owner.team_no)) && (self.owner.team_no != 0)))
+	if (((((teamplay & 16) && (other != self.owner)) && (other.team_no == self.owner.team_no)) && (self.owner.team_no != 0)))
 	{
 		return;
 	}
-	sprint (other, SBAR_PRINT, "Ow, Ow, Ow! Caltrops!\n");
+	sprint (other, 2, "Ow, Ow, Ow! Caltrops!\n");
 	if (!practice)
 	{
-		other.leg_damage = (other.leg_damage + SBAR_PRINT);
+		other.leg_damage = (other.leg_damage + 2);
 		TeamFortress_SetSpeed (other);
 		deathmsg = 41;
 		T_Damage (other, self, self.owner, enter);
@@ -46,11 +46,11 @@ void () CaltropScatterThink =
 		{
 			self.nextthink = ((time + enter) + (random () * 5));
 			self.think = SUB_Remove;
-			self.solid = SBAR_GRENS;
+			self.solid = 1;
 			self.movetype = 6;
 			self.touch = CaltropTouch;
 			self.angles = '90 90 90';
-			sound (self, 0, "weapons/tink1.wav", SBAR_GRENS, SBAR_GRENS);
+			sound (self, 0, "weapons/tink1.wav", 1, 1);
 			setorigin (self, self.origin);
 			return;
 		}
@@ -58,21 +58,21 @@ void () CaltropScatterThink =
 		{
 			self.nextthink = ((time + enter) + (random () * 5));
 			self.think = SUB_Remove;
-			self.solid = SBAR_GRENS;
+			self.solid = 1;
 			self.movetype = 6;
 			self.touch = CanisterTouch;
 			setorigin (self, self.origin);
 			return;
 		}
 	}
-	traceline (self.movedir, self.origin, SBAR_GRENS, self);
-	if ((trace_fraction == SBAR_GRENS))
+	traceline (self.movedir, self.origin, 1, self);
+	if ((trace_fraction == 1))
 	{
 		self.movedir = self.origin;
 		return;
 	}
 	self.velocity = (self.velocity * -1);
-	self.heat = (self.heat + SBAR_GRENS);
+	self.heat = (self.heat + 1);
 	if ((self.heat > enter))
 	{
 		remove (self);
@@ -111,14 +111,14 @@ void () ScatterCaltrops =
 		e.solid = 0;
 		e.nextthink = (time + 0.2);
 		e.think = CaltropScatterThink;
-		num = (num - SBAR_GRENS);
+		num = (num - 1);
 	}
 	dremove (self);
 };
 
 void () ConcussionGrenadeTouch =
 {
-	sound (self, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/bounce.wav", 1, 1);
 	if ((self.velocity == '0 0 0'))
 	{
 		self.avelocity = '0 0 0';
@@ -133,7 +133,7 @@ void () ConcussionGrenadeExplode =
 	WriteCoord (AS_MISSILE, self.origin_x);
 	WriteCoord (AS_MISSILE, self.origin_y);
 	WriteCoord (AS_MISSILE, self.origin_z);
-	multicast (self.origin, SBAR_GRENS);
+	multicast (self.origin, 1);
 	dremove (self);
 };
 
@@ -147,7 +147,7 @@ void () ConcussionGrenadeTimer =
 
 	if ((self.owner.invincible_finished > time))
 	{
-		sprint (self.owner, SBAR_PRINT, "Your head feels better now.\n");
+		sprint (self.owner, 2, "Your head feels better now.\n");
 		dremove (self);
 		return;
 	}
@@ -187,19 +187,19 @@ void () ConcussionGrenadeTimer =
 	}
 	else
 	{
-		concadjust = SBAR_GRENS;
+		concadjust = 1;
 		self.nextthink = (time + (0.25 * concadjust));
-		if ((concadjust > SBAR_GRENS))
+		if ((concadjust > 1))
 		{
 			self.health = (self.health - concadjust);
 		}
 	}
 	pos = pointcontents (self.owner.origin);
-	src_x = ((self.owner.origin_x + self.owner.maxs_x) + SBAR_PRINT);
-	src_y = ((self.owner.origin_y + self.owner.maxs_y) + SBAR_PRINT);
+	src_x = ((self.owner.origin_x + self.owner.maxs_x) + 2);
+	src_y = ((self.owner.origin_y + self.owner.maxs_y) + 2);
 	src_z = self.owner.origin_z;
 	pos = pointcontents (src);
-	if (((self.owner.flags & 512) || (self.owner.flags & SBAR_240)))
+	if (((self.owner.flags & 512) || (self.owner.flags & 16)))
 	{
 		if (!self.owner.is_feigning)
 		{
@@ -226,7 +226,7 @@ void () ConcussionGrenadeTimer =
 	}
 	if ((self.health <= 0))
 	{
-		sprint (self.owner, SBAR_PRINT, "Your head feels better now.\n");
+		sprint (self.owner, 2, "Your head feels better now.\n");
 		dremove (self);
 	}
 };
@@ -235,16 +235,16 @@ void () ScannerSwitch =
 {
 	local entity te;
 
-	if ((self.ScannerOn != SBAR_GRENS))
+	if ((self.ScannerOn != 1))
 	{
 		te = spawn ();
-		te.nextthink = (time + SBAR_PRINT);
+		te.nextthink = (time + 2);
 		te.think = TeamFortress_Scan;
 		te.owner = self;
 		te.classname = "timer";
 		te.netname = "scanner";
-		sprint (self, SBAR_PRINT, "Scanner On.\n");
-		self.ScannerOn = SBAR_GRENS;
+		sprint (self, 2, "Scanner On.\n");
+		self.ScannerOn = 1;
 	}
 	else
 	{
@@ -257,7 +257,7 @@ void () ScannerSwitch =
 			}
 			te = find (te, netname, "scanner");
 		}
-		sprint (self, SBAR_PRINT, "Scanner Off.\n");
+		sprint (self, 2, "Scanner Off.\n");
 		self.ScannerOn = 0;
 	}
 };
@@ -288,14 +288,14 @@ void () TeamFortress_Scan =
 	self.owner.last_impulse = 0;
 	if ((self.owner.classname == "player"))
 	{
-		if (!(self.owner.tf_items & SBAR_GRENS))
+		if (!(self.owner.tf_items & 1))
 		{
 			return;
 		}
-		scancost = SBAR_PRINT;
+		scancost = 2;
 		if ((self.owner.ammo_cells <= 0))
 		{
-			sprint (self.owner, SBAR_PRINT, "Not enough cells to run scanner.\n");
+			sprint (self.owner, 2, "Not enough cells to run scanner.\n");
 			self.owner.ammo_cells = 0;
 			W_SetCurrentAmmo ();
 			self.owner.ScannerOn = 0;
@@ -310,22 +310,22 @@ void () TeamFortress_Scan =
 		}
 		scen = 0;
 		scfr = 0;
-		if ((self.owner.tf_items_flags & SBAR_GRENS))
+		if ((self.owner.tf_items_flags & 1))
 		{
-			scen = SBAR_GRENS;
+			scen = 1;
 		}
-		if ((self.owner.tf_items_flags & SBAR_PRINT))
+		if ((self.owner.tf_items_flags & 2))
 		{
-			scfr = SBAR_GRENS;
+			scfr = 1;
 		}
 		if (((scen == 0) && (scfr == 0)))
 		{
-			sprint (self.owner, SBAR_PRINT, "No target specified.\n");
+			sprint (self.owner, 2, "No target specified.\n");
 			self.owner.ScannerOn = 0;
 			dremove (self);
 			return;
 		}
-		self.owner.ammo_cells = (self.owner.ammo_cells - SBAR_PRINT);
+		self.owner.ammo_cells = (self.owner.ammo_cells - 2);
 		if ((self.owner.ammo_cells < 0))
 		{
 			self.owner.ammo_cells = 0;
@@ -339,23 +339,23 @@ void () TeamFortress_Scan =
 	makevectors (self.owner.v_angle);
 	if ((list != world))
 	{
-		any_detected = SBAR_GRENS;
+		any_detected = 1;
 		if (((((list.team_no > 0) && (self.owner.team_no > 0)) && (list.team_no == self.owner.team_no)) && ((list.classname == "player") || (list.classname == "building_sentrygun"))))
 		{
-			scfr = (scfr + SBAR_GRENS);
+			scfr = (scfr + 1);
 			enemy_detected = 0;
 		}
 		else
 		{
 			if (((((list.goal_no > 0) && (self.owner.team_no > 0)) && (list.goal_no == self.owner.team_no)) && (list.classname == "item_tfgoal")))
 			{
-				scfr = (scfr + SBAR_GRENS);
+				scfr = (scfr + 1);
 				enemy_detected = 0;
 			}
 			else
 			{
-				scen = (scen + SBAR_GRENS);
-				enemy_detected = SBAR_GRENS;
+				scen = (scen + 1);
+				enemy_detected = 1;
 			}
 		}
 		if (any_detected)
@@ -364,15 +364,15 @@ void () TeamFortress_Scan =
 			lightningvec = (lightningvec * (vlen ((list.origin - self.owner.origin)) / 5));
 			lightningvec = (lightningvec + self.owner.origin);
 			msg_entity = self.owner;
-			WriteByte (SBAR_GRENS, 23);
-			WriteByte (SBAR_GRENS, 5);
-			WriteEntity (SBAR_GRENS, self.owner);
-			WriteCoord (SBAR_GRENS, self.owner.origin_x);
-			WriteCoord (SBAR_GRENS, self.owner.origin_y);
-			WriteCoord (SBAR_GRENS, (self.owner.origin_z + 8));
-			WriteCoord (SBAR_GRENS, lightningvec_x);
-			WriteCoord (SBAR_GRENS, lightningvec_y);
-			WriteCoord (SBAR_GRENS, (lightningvec_z + 8));
+			WriteByte (1, 23);
+			WriteByte (1, 5);
+			WriteEntity (1, self.owner);
+			WriteCoord (1, self.owner.origin_x);
+			WriteCoord (1, self.owner.origin_y);
+			WriteCoord (1, (self.owner.origin_z + 8));
+			WriteCoord (1, lightningvec_x);
+			WriteCoord (1, lightningvec_y);
+			WriteCoord (1, (lightningvec_z + 8));
 			if ((self.owner.tf_items_flags & AS_MISSILE))
 			{
 				stuffcmd (self.owner, "play misc/basekey.wav\n");
@@ -432,11 +432,11 @@ void () TeamFortress_Scan =
 	{
 		self.health = 0;
 		self.owner.StatusRefreshTime = (time + 0.2);
-		self.nextthink = (time + SBAR_PRINT);
+		self.nextthink = (time + 2);
 		return;
 	}
 	W_SetCurrentAmmo ();
-	self.nextthink = (time + SBAR_PRINT);
+	self.nextthink = (time + 2);
 	return;
 };
 
@@ -511,7 +511,7 @@ entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusS
 	{
 		if ((rangedist <= 0))
 		{
-			rangedist = SBAR_GRENS;
+			rangedist = 1;
 		}
 		head = findradius (scanner.origin, rangedist);
 		while (head)
@@ -528,7 +528,7 @@ entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusS
 							{
 								if (((head.playerclass == 8) && (head.team_no != scanner.team_no)))
 								{
-									if ((head.is_feigning != SBAR_GRENS))
+									if ((head.is_feigning != 1))
 									{
 										if ((head.undercover_team == scanner.team_no))
 										{
@@ -548,7 +548,7 @@ entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusS
 							{
 								if (((head.playerclass == 8) && (head.team_no != scanner.team_no)))
 								{
-									if ((head.is_feigning != SBAR_GRENS))
+									if ((head.is_feigning != 1))
 									{
 										if ((head.undercover_team != scanner.team_no))
 										{

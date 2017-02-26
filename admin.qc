@@ -8,38 +8,38 @@ void () Admin_CountPlayers =
 
 	nump = TeamFortress_GetNoPlayers ();
 	st = ftos (nump);
-	sprint3 (self, SBAR_PRINT, "Players In Game : ", st, "\n");
+	sprint3 (self, 2, "Players In Game : ", st, "\n");
 	if ((number_of_teams > 0))
 	{
-		nump = TeamFortress_TeamGetNoPlayers (SBAR_GRENS);
+		nump = TeamFortress_TeamGetNoPlayers (1);
 		st = ftos (nump);
-		sprint3 (self, SBAR_PRINT, "Players In Team1: ", st, "\n");
+		sprint3 (self, 2, "Players In Team1: ", st, "\n");
 	}
-	if ((number_of_teams > SBAR_GRENS))
+	if ((number_of_teams > 1))
 	{
-		nump = TeamFortress_TeamGetNoPlayers (SBAR_PRINT);
+		nump = TeamFortress_TeamGetNoPlayers (2);
 		st = ftos (nump);
-		sprint3 (self, SBAR_PRINT, "Players In Team2: ", st, "\n");
+		sprint3 (self, 2, "Players In Team2: ", st, "\n");
 	}
-	if ((number_of_teams > SBAR_PRINT))
+	if ((number_of_teams > 2))
 	{
 		nump = TeamFortress_TeamGetNoPlayers (AS_MELEE);
 		st = ftos (nump);
-		sprint3 (self, SBAR_PRINT, "Players In Team3: ", st, "\n");
+		sprint3 (self, 2, "Players In Team3: ", st, "\n");
 	}
 	if ((number_of_teams > AS_MELEE))
 	{
 		nump = TeamFortress_TeamGetNoPlayers (AS_MISSILE);
 		st = ftos (nump);
-		sprint3 (self, SBAR_PRINT, "Players In Team4: ", st, "\n");
+		sprint3 (self, 2, "Players In Team4: ", st, "\n");
 	}
 };
 
 void () Admin_ListIPs =
 {
-	if ((TeamFortress_GetNoPlayers () <= SBAR_GRENS))
+	if ((TeamFortress_GetNoPlayers () <= 1))
 	{
-		sprint (self, SBAR_PRINT, "No other players in the game.\n");
+		sprint (self, 2, "No other players in the game.\n");
 		self.admin_use = world;
 		return;
 	}
@@ -49,11 +49,11 @@ void () Admin_ListIPs =
 		if (((self.admin_use.netname != string_null) && (self.admin_use != self)))
 		{
 			self.admin_use.ip = infokey (self.admin_use, "ip");
-			sprint (self, SBAR_PRINT, self.admin_use.netname);
-			sprint (self, SBAR_PRINT, " (");
-			sprint (self, SBAR_PRINT, self.admin_use.ip);
-			sprint (self, SBAR_PRINT, ")");
-			sprint (self, SBAR_PRINT, "\n");
+			sprint (self, 2, self.admin_use.netname);
+			sprint (self, 2, " (");
+			sprint (self, 2, self.admin_use.ip);
+			sprint (self, 2, ")");
+			sprint (self, 2, "\n");
 		}
 		self.admin_use = find (self.admin_use, classname, "player");
 	}
@@ -63,23 +63,23 @@ void () Admin_ListIPs =
 		if (((self.admin_use.netname != string_null) && (self.admin_use != self)))
 		{
 			self.admin_use.ip = infokey (self.admin_use, "ip");
-			sprint (self, SBAR_PRINT, self.admin_use.netname);
-			sprint (self, SBAR_PRINT, " (");
-			sprint (self, SBAR_PRINT, self.admin_use.ip);
-			sprint (self, SBAR_PRINT, ")");
-			sprint (self, SBAR_PRINT, " (SPECTATOR)\n");
+			sprint (self, 2, self.admin_use.netname);
+			sprint (self, 2, " (");
+			sprint (self, 2, self.admin_use.ip);
+			sprint (self, 2, ")");
+			sprint (self, 2, " (SPECTATOR)\n");
 		}
 		self.admin_use = find (self.admin_use, classname, "observer");
 	}
-	sprint (self, SBAR_PRINT, "End of player list\n");
+	sprint (self, 2, "End of player list\n");
 	self.admin_use = world;
 };
 
 void () Admin_CycleDeal =
 {
-	if ((TeamFortress_GetNoPlayers () <= SBAR_GRENS))
+	if ((TeamFortress_GetNoPlayers () <= 1))
 	{
-		sprint (self, SBAR_PRINT, "No other players in the game.\n");
+		sprint (self, 2, "No other players in the game.\n");
 		self.admin_use = world;
 		self.admin_mode = 0;
 		return;
@@ -111,26 +111,26 @@ void () Admin_CycleDeal =
 	if (self.admin_use)
 	{
 		self.admin_use.ip = infokey (self.admin_use, "ip");
-		self.admin_mode = SBAR_GRENS;
-		sprint (self, SBAR_PRINT, self.admin_use.netname);
-		sprint3 (self, SBAR_PRINT, " (", self.admin_use.ip, ")");
+		self.admin_mode = 1;
+		sprint (self, 2, self.admin_use.netname);
+		sprint3 (self, 2, " (", self.admin_use.ip, ")");
 		if ((self.admin_use.classname == "observer"))
 		{
-			sprint (self, SBAR_PRINT, " (SPECTATOR)");
+			sprint (self, 2, " (SPECTATOR)");
 		}
-		sprint (self, SBAR_PRINT, "\n");
-		sprint (self, SBAR_PRINT, "   KICK/NEXT?\n");
+		sprint (self, 2, "\n");
+		sprint (self, 2, "   KICK/NEXT?\n");
 	}
 	else
 	{
 		self.admin_mode = 0;
-		sprint (self, SBAR_PRINT, "End of player list\n");
+		sprint (self, 2, "End of player list\n");
 	}
 };
 
 void () Admin_DoKick =
 {
-	bprint4 (SBAR_PRINT, self.admin_use.netname, " was kicked by ", self.netname, "\n");
+	bprint4 (2, self.admin_use.netname, " was kicked by ", self.netname, "\n");
 	stuffcmd (self.admin_use, "disconnect\n");
 	self.admin_mode = 0;
 	self.admin_use = world;
@@ -164,8 +164,8 @@ void () Admin_CeaseFire =
 		{
 			StopTimer ();
 		}
-		cease_fire = SBAR_GRENS;
-		bprint (SBAR_PRINT, "CEASE FIRE\n");
+		cease_fire = 1;
+		bprint (2, "CEASE FIRE\n");
 		te = find (world, classname, "player");
 		while (te)
 		{
@@ -194,7 +194,7 @@ void () Admin_CeaseFire =
 			pmtime = 0;
 			StartTimer ();
 		}
-		bprint (SBAR_PRINT, "RESUME FIRE\n");
+		bprint (2, "RESUME FIRE\n");
 		te = find (world, classname, "player");
 		while (te)
 		{
@@ -214,17 +214,17 @@ void (entity p) CheckAutoKick =
 
 	if (((p.teamkills >= autokick_kills) && (autokick_kills != 0)))
 	{
-		bprint2 (SBAR_PRINT, p.netname, " was kicked for killing teammates.\n");
-		sprint (p, SBAR_PRINT, "You were kicked for killing teammates.\n");
+		bprint2 (2, p.netname, " was kicked for killing teammates.\n");
+		sprint (p, 2, "You were kicked for killing teammates.\n");
 		stuffcmd (p, "disconnect\n");
 	}
 	else
 	{
 		if ((autokick_kills != 0))
 		{
-			if ((p.teamkills == (autokick_kills - SBAR_GRENS)))
+			if ((p.teamkills == (autokick_kills - 1)))
 			{
-				sprint (p, SBAR_PRINT, "Kill one more teammate, && you're outta here.\n");
+				sprint (p, 2, "Kill one more teammate, && you're outta here.\n");
 			}
 			rnum = 0;
 			te = find (world, classname, "ak_timer");
@@ -232,7 +232,7 @@ void (entity p) CheckAutoKick =
 			{
 				if ((te.owner == p))
 				{
-					rnum = SBAR_GRENS;
+					rnum = 1;
 					te = world;
 				}
 				else
@@ -263,7 +263,7 @@ void () AbortElect =
 		if ((p.netname != ""))
 		{
 			p.vote = 0;
-			if ((p.is_admin == SBAR_PRINT))
+			if ((p.is_admin == 2))
 			{
 				p.is_admin = 0;
 			}
@@ -273,7 +273,7 @@ void () AbortElect =
 	p = find (world, classname, "spectator");
 	while ((p != world))
 	{
-		if (((p.netname != "") && (p.is_admin == SBAR_PRINT)))
+		if (((p.netname != "") && (p.is_admin == 2)))
 		{
 			p.is_admin = 0;
 		}
@@ -288,7 +288,7 @@ void () AbortElect =
 
 void () ElectThink =
 {
-	bprint (SBAR_PRINT, "The voting has timed out.\nElection aborted\n");
+	bprint (2, "The voting has timed out.\nElection aborted\n");
 	self.nextthink = -1;
 	AbortElect ();
 };
@@ -303,34 +303,34 @@ void () VoteAdmin =
 
 	if ((self.electtime > time))
 	{
-		sprint (self, SBAR_PRINT, "You cannot elect at this time.\n");
+		sprint (self, 2, "You cannot elect at this time.\n");
 		return;
 	}
 	self.electtime = (time + AS_MELEE);
-	if (((self.is_admin == SBAR_GRENS) || (self.is_admin == AS_MELEE)))
+	if (((self.is_admin == 1) || (self.is_admin == AS_MELEE)))
 	{
-		sprint (self, SBAR_PRINT, "You are already an admin\n");
+		sprint (self, 2, "You are already an admin\n");
 		return;
 	}
-	if ((self.is_admin == SBAR_PRINT))
+	if ((self.is_admin == 2))
 	{
-		bprint2 (SBAR_PRINT, self.netname, " aborts election!");
+		bprint2 (2, self.netname, " aborts election!");
 		bprint (AS_MELEE, "\n");
 		AbortElect ();
 		return;
 	}
 	if ((elect != 0))
 	{
-		sprint (self, SBAR_PRINT, "An election is already in progress\n");
+		sprint (self, 2, "An election is already in progress\n");
 		return;
 	}
 	if ((self.classname == "spectator"))
 	{
 		return;
 	}
-	bprint2 (SBAR_PRINT, self.netname, " has requested admin rights!\n");
-	self.is_admin = SBAR_PRINT;
-	elect = SBAR_GRENS;
+	bprint2 (2, self.netname, " has requested admin rights!\n");
+	self.is_admin = 2;
+	elect = 1;
 	tmp = infokey (world, "votespercentage");
 	f3 = stof (tmp);
 	if (((f3 < 5) || (f3 > __)))
@@ -342,27 +342,27 @@ void () VoteAdmin =
 	f2 = (elect / f1);
 	if ((f2 > f3))
 	{
-		if ((self.is_admin == SBAR_PRINT))
+		if ((self.is_admin == 2))
 		{
-			bprint2 (SBAR_PRINT, self.netname, " ηαιξσ αδνιξ στατυσ!");
+			bprint2 (2, self.netname, " ηαιξσ αδνιξ στατυσ!");
 			bprint (AS_MELEE, "\n");
-			sprint (self, SBAR_PRINT, "Type γονναξδσ for admin commands.\n");
-			self.is_admin = SBAR_GRENS;
-			self.get_admin_aliases = SBAR_GRENS;
+			sprint (self, 2, "Type γονναξδσ for admin commands.\n");
+			self.is_admin = 1;
+			self.get_admin_aliases = 1;
 			elect = 0;
 		}
 	}
 	else
 	{
-		bprint (SBAR_PRINT, "Type");
+		bprint (2, "Type");
 		bprint (AS_MELEE, " yes");
-		bprint (SBAR_PRINT, " in console to approve\n");
-		sprint (self, SBAR_PRINT, "Type εμεγτ to abort election\n");
+		bprint (2, " in console to approve\n");
+		sprint (self, 2, "Type εμεγτ to abort election\n");
 		electguard = spawn ();
 		electguard.owner = world;
 		electguard.classname = "electguard";
 		electguard.think = ElectThink;
-		electguard.nextthink = (time + SBAR_600);
+		electguard.nextthink = (time + 60);
 	}
 };
 
@@ -378,28 +378,28 @@ void () VoteYes =
 	{
 		return;
 	}
-	if ((self.is_admin == SBAR_PRINT))
+	if ((self.is_admin == 2))
 	{
-		sprint (self, SBAR_PRINT, "You cannot vote for yourself\n");
+		sprint (self, 2, "You cannot vote for yourself\n");
 		return;
 	}
 	if (self.vote)
 	{
-		sprint (self, SBAR_PRINT, "--- your vote is still good ---\n");
+		sprint (self, 2, "--- your vote is still good ---\n");
 		return;
 	}
-	elect = (elect + SBAR_GRENS);
-	bprint2 (SBAR_PRINT, self.netname, " gives ");
+	elect = (elect + 1);
+	bprint2 (2, self.netname, " gives ");
 	if ((infokey (self, "gender") == "f"))
 	{
-		bprint (SBAR_PRINT, "her");
+		bprint (2, "her");
 	}
 	else
 	{
-		bprint (SBAR_PRINT, "his");
+		bprint (2, "his");
 	}
-	bprint (SBAR_PRINT, " vote\n");
-	self.vote = SBAR_GRENS;
+	bprint (2, " vote\n");
+	self.vote = 1;
 	tmp = infokey (world, "votespercentage");
 	f3 = stof (tmp);
 	if (((f3 < 5) || (f3 > __)))
@@ -412,17 +412,17 @@ void () VoteYes =
 	if ((f2 >= f3))
 	{
 		p = find (world, classname, "player");
-		while ((p.is_admin != SBAR_PRINT))
+		while ((p.is_admin != 2))
 		{
 			p = find (p, classname, "player");
 		}
-		if ((p.is_admin == SBAR_PRINT))
+		if ((p.is_admin == 2))
 		{
-			bprint2 (SBAR_PRINT, p.netname, " ηαιξσ αδνιξ στατυσ!");
+			bprint2 (2, p.netname, " ηαιξσ αδνιξ στατυσ!");
 			bprint (AS_MELEE, "\n");
-			sprint (p, SBAR_PRINT, "Type γονναξδσ for admin commands.\n");
-			p.is_admin = SBAR_GRENS;
-			p.get_admin_aliases = SBAR_GRENS;
+			sprint (p, 2, "Type γονναξδσ for admin commands.\n");
+			p.is_admin = 1;
+			p.get_admin_aliases = 1;
 			elect = 0;
 			p.vote = 0;
 			p = find (world, classname, "electguard");
@@ -438,12 +438,12 @@ void () VoteYes =
 	{
 		f1 = (f2 - elect);
 		tmp = ftos (rint (f1));
-		bprint3 (SBAR_PRINT, "", tmp, "‘ more vote");
-		if ((f1 > SBAR_GRENS))
+		bprint3 (2, "", tmp, "‘ more vote");
+		if ((f1 > 1))
 		{
-			bprint (SBAR_PRINT, "s");
+			bprint (2, "s");
 		}
-		bprint (SBAR_PRINT, " needed\n");
+		bprint (2, " needed\n");
 	}
 };
 
@@ -453,34 +453,34 @@ void () VoteNo =
 	local float f2;
 	local string tmp;
 
-	if ((self.is_admin == SBAR_GRENS))
+	if ((self.is_admin == 1))
 	{
 		return;
 	}
-	if ((((elect == 0) || (self.is_admin == SBAR_PRINT)) || (self.vote == 0)))
+	if ((((elect == 0) || (self.is_admin == 2)) || (self.vote == 0)))
 	{
 		return;
 	}
-	bprint2 (SBAR_PRINT, self.netname, " withdraws ");
+	bprint2 (2, self.netname, " withdraws ");
 	if ((infokey (self, "gender") == "f"))
 	{
-		bprint (SBAR_PRINT, "her");
+		bprint (2, "her");
 	}
 	else
 	{
-		bprint (SBAR_PRINT, "his");
+		bprint (2, "his");
 	}
-	bprint (SBAR_PRINT, " vote\n");
+	bprint (2, " vote\n");
 	self.vote = 0;
-	elect = (elect - SBAR_GRENS);
+	elect = (elect - 1);
 	f1 = TeamFortress_GetNoPlayers ();
-	f2 = (floor ((f1 / SBAR_PRINT)) + SBAR_GRENS);
+	f2 = (floor ((f1 / 2)) + 1);
 	f1 = (f2 - elect);
 	tmp = ftos (f1);
-	bprint3 (SBAR_PRINT, "", tmp, "‘ more vote");
-	if ((f1 > SBAR_GRENS))
+	bprint3 (2, "", tmp, "‘ more vote");
+	if ((f1 > 1))
 	{
-		bprint (SBAR_PRINT, "s");
+		bprint (2, "s");
 	}
-	bprint (SBAR_PRINT, " needed\n");
+	bprint (2, " needed\n");
 };

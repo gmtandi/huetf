@@ -17,30 +17,30 @@ float () CheckWinner =
 	Player = find (world, classname, "player");
 	while ((Player != world))
 	{
-		totalp = (totalp + SBAR_GRENS);
+		totalp = (totalp + 1);
 		if ((Player.playerclass && !Player.deadflag))
 		{
-			nump = (nump + SBAR_GRENS);
-			if ((Player.team_no == SBAR_GRENS))
+			nump = (nump + 1);
+			if ((Player.team_no == 1))
 			{
-				team1alive = (team1alive + SBAR_GRENS);
+				team1alive = (team1alive + 1);
 			}
-			if ((Player.team_no == SBAR_PRINT))
+			if ((Player.team_no == 2))
 			{
-				team2alive = (team2alive + SBAR_GRENS);
+				team2alive = (team2alive + 1);
 			}
 			if ((Player.team_no == AS_MELEE))
 			{
-				team3alive = (team3alive + SBAR_GRENS);
+				team3alive = (team3alive + 1);
 			}
 			if ((Player.team_no == AS_MISSILE))
 			{
-				team4alive = (team4alive + SBAR_GRENS);
+				team4alive = (team4alive + 1);
 			}
 		}
 		Player = find (Player, classname, "player");
 	}
-	if (((nump > 0) && (totalp > SBAR_GRENS)))
+	if (((nump > 0) && (totalp > 1)))
 	{
 		if ((((team1alive && !team2alive) && !team3alive) && !team4alive))
 		{
@@ -52,11 +52,11 @@ float () CheckWinner =
 					return (0);
 				}
 			}
-			return (SBAR_GRENS);
+			return (1);
 		}
 		if ((((!team1alive && team2alive) && !team3alive) && !team4alive))
 		{
-			return (SBAR_PRINT);
+			return (2);
 		}
 		if ((((!team1alive && !team2alive) && team3alive) && !team4alive))
 		{
@@ -74,7 +74,7 @@ float () CheckWinner =
 			Player = find (world, classname, "detpack");
 			if ((Player != world))
 			{
-				return (SBAR_PRINT);
+				return (2);
 			}
 		}
 		return (-1);
@@ -86,52 +86,52 @@ void () RoundOver =
 {
 	local string st;
 
-	round_over = SBAR_PRINT;
+	round_over = 2;
 	if ((tfs_winner == -1))
 	{
-		bprint (SBAR_PRINT, "Round Drawn!\n");
+		bprint (2, "Round Drawn!\n");
 	}
 	else
 	{
-		if ((tfs_winner == SBAR_GRENS))
+		if ((tfs_winner == 1))
 		{
 			if (tfstrike)
 			{
-				sound (self, SBAR_PRINT, "speech/ctwin.wav", SBAR_GRENS, 0);
-				bprint (SBAR_PRINT, "Counter Terrorists WIN!\n");
+				sound (self, 2, "speech/ctwin.wav", 1, 0);
+				bprint (2, "Counter Terrorists WIN!\n");
 				TeamFortress_TeamIncreaseScore (tfs_winner, enter);
 			}
 			else
 			{
-				bprint (SBAR_PRINT, "Blue Team Wins the Round!\n");
+				bprint (2, "Blue Team Wins the Round!\n");
 			}
 		}
 		else
 		{
-			if ((tfs_winner == SBAR_PRINT))
+			if ((tfs_winner == 2))
 			{
 				if (tfstrike)
 				{
-					sound (self, SBAR_PRINT, "speech/terwin.wav", SBAR_GRENS, 0);
-					bprint (SBAR_PRINT, "Terrorists WIN!\n");
+					sound (self, 2, "speech/terwin.wav", 1, 0);
+					bprint (2, "Terrorists WIN!\n");
 					TeamFortress_TeamIncreaseScore (tfs_winner, enter);
 				}
 				else
 				{
-					bprint (SBAR_PRINT, "Red Team Wins the Round!\n");
+					bprint (2, "Red Team Wins the Round!\n");
 				}
 			}
 			else
 			{
 				if ((tfs_winner == AS_MELEE))
 				{
-					bprint (SBAR_PRINT, "Yellow Team Wins the Round!\n");
+					bprint (2, "Yellow Team Wins the Round!\n");
 				}
 				else
 				{
 					if ((tfs_winner == AS_MISSILE))
 					{
-						bprint (SBAR_PRINT, "Green Team Wins the Round!\n");
+						bprint (2, "Green Team Wins the Round!\n");
 					}
 				}
 			}
@@ -139,9 +139,9 @@ void () RoundOver =
 	}
 	if (TeamFortress_CheckDraw ())
 	{
-		if ((rounds == SBAR_GRENS))
+		if ((rounds == 1))
 		{
-			rounds = (rounds + SBAR_GRENS);
+			rounds = (rounds + 1);
 		}
 	}
 	self.think = StartRound;
@@ -174,7 +174,7 @@ void () RoundThink =
 	if ((self.cnt2 == -1))
 	{
 		self.cnt2 = 59;
-		self.cnt = (self.cnt - SBAR_GRENS);
+		self.cnt = (self.cnt - 1);
 		localcmd ("serverinfo status \"");
 		tmp = ftos (self.cnt);
 		localcmd (tmp);
@@ -182,22 +182,22 @@ void () RoundThink =
 	}
 	if (!self.cnt2)
 	{
-		if (((self.cnt == SBAR_GRENS) || (self.cnt == 5)))
+		if (((self.cnt == 1) || (self.cnt == 5)))
 		{
 			tmp = ftos (self.cnt);
-			bprint3 (SBAR_PRINT, "", tmp, "‘ minute");
-			if ((self.cnt != SBAR_GRENS))
+			bprint3 (2, "", tmp, "‘ minute");
+			if ((self.cnt != 1))
 			{
-				bprint (SBAR_PRINT, "s");
+				bprint (2, "s");
 			}
-			bprint (SBAR_PRINT, " remaining\n");
+			bprint (2, " remaining\n");
 		}
 		if (!self.cnt)
 		{
-			bprint (SBAR_PRINT, "ROUND TIME OVER\n");
+			bprint (2, "ROUND TIME OVER\n");
 			if (tfstrike)
 			{
-				tfs_winner = SBAR_GRENS;
+				tfs_winner = 1;
 			}
 			else
 			{
@@ -214,12 +214,12 @@ void () RoundThink =
 		if (!(fl - self.cnt2))
 		{
 			tmp = ftos (self.cnt2);
-			bprint3 (SBAR_PRINT, "", tmp, "‘ second");
-			if ((self.cnt2 != SBAR_GRENS))
+			bprint3 (2, "", tmp, "‘ second");
+			if ((self.cnt2 != 1))
 			{
-				bprint (SBAR_PRINT, "s");
+				bprint (2, "s");
 			}
-			bprint (SBAR_PRINT, " remaining\n");
+			bprint (2, " remaining\n");
 		}
 	}
 	self.nextthink = (time + 0.5);
@@ -234,19 +234,19 @@ float () tfs_givebomb =
 	te = find (world, classname, "player");
 	while ((te != world))
 	{
-		if (((te.team_no == SBAR_PRINT) && te.playerclass))
+		if (((te.team_no == 2) && te.playerclass))
 		{
-			counter = (counter + SBAR_GRENS);
+			counter = (counter + 1);
 		}
 		te = find (te, classname, "player");
 	}
-	if ((counter == SBAR_GRENS))
+	if ((counter == 1))
 	{
 		the_one = counter;
 	}
 	else
 	{
-		if ((counter > SBAR_GRENS))
+		if ((counter > 1))
 		{
 			the_one = ceil ((random () * counter));
 		}
@@ -283,7 +283,7 @@ void () RoundBegin =
 		{
 			Reset_Grapple (self.hook);
 			Attack_Finished (0.75);
-			self.hook_out = SBAR_GRENS;
+			self.hook_out = 1;
 		}
 		TeamFortress_RemoveTimers ();
 		if (duel)
@@ -302,10 +302,10 @@ void () RoundBegin =
 				{
 					self.tfstate = 0;
 				}
-				self.takedamage = SBAR_PRINT;
+				self.takedamage = 2;
 				self.flags = 8;
 				self.air_finished = (time + 12);
-				self.dmg = SBAR_PRINT;
+				self.dmg = 2;
 				self.super_damage_finished = 0;
 				self.radsuit_finished = 0;
 				self.invisible_finished = 0;
@@ -332,17 +332,17 @@ void () RoundBegin =
 			PutClientInServer ();
 			if (tfstrike)
 			{
-				if (((self.team_no == SBAR_PRINT) && self.playerclass))
+				if (((self.team_no == 2) && self.playerclass))
 				{
-					counter = (counter + SBAR_GRENS);
+					counter = (counter + 1);
 					if ((counter == bomber))
 					{
-						self.ammo_detpack = SBAR_GRENS;
+						self.ammo_detpack = 1;
 						stuffcmd (self, "topcolor 0\n");
 						CenterPrint (self, "You have the bomb!\n");
 						if ((self.playerclass == 8))
 						{
-							self.is_unabletospy = SBAR_GRENS;
+							self.is_unabletospy = 1;
 						}
 					}
 				}
@@ -351,8 +351,8 @@ void () RoundBegin =
 		self = oldself;
 		te = find (te, classname, "player");
 	}
-	bprint (SBAR_PRINT, "ROUND BEGINS NOW\n");
-	round_active = SBAR_GRENS;
+	bprint (2, "ROUND BEGINS NOW\n");
+	round_active = 1;
 	round_over = 0;
 	if (speedcap)
 	{
@@ -361,22 +361,22 @@ void () RoundBegin =
 	if (!self.cnt)
 	{
 		self.cnt = AS_MELEE;
-		self.cnt2 = SBAR_600;
+		self.cnt2 = 60;
 	}
 	else
 	{
 		counter = floor (self.cnt);
 		if ((counter < self.cnt))
 		{
-			self.cnt2 = ((self.cnt - counter) * SBAR_600);
+			self.cnt2 = ((self.cnt - counter) * 60);
 		}
 		else
 		{
-			self.cnt2 = SBAR_600;
+			self.cnt2 = 60;
 		}
-		if ((self.cnt2 == SBAR_600))
+		if ((self.cnt2 == 60))
 		{
-			self.cnt = (self.cnt - SBAR_GRENS);
+			self.cnt = (self.cnt - 1);
 		}
 		else
 		{
@@ -394,17 +394,17 @@ void () RoundInit =
 	local entity p;
 
 	fl = TeamFortress_NoTeams ();
-	if ((fl < SBAR_GRENS))
+	if ((fl < 1))
 	{
-		self.nextthink = (time + SBAR_PRINT);
+		self.nextthink = (time + 2);
 		return;
 	}
-	self.cnt2 = (self.cnt2 - SBAR_GRENS);
-	if ((self.cnt2 == SBAR_PRINT))
+	self.cnt2 = (self.cnt2 - 1);
+	if ((self.cnt2 == 2))
 	{
-		round_over = SBAR_PRINT;
+		round_over = 2;
 	}
-	if ((self.cnt2 == SBAR_GRENS))
+	if ((self.cnt2 == 1))
 	{
 		p = find (world, classname, "player");
 		while ((p != world))
@@ -431,7 +431,7 @@ void () RoundInit =
 			{
 				if ((p.netname != ""))
 				{
-					p.takedamage = SBAR_PRINT;
+					p.takedamage = 2;
 					p.solid = AS_MELEE;
 					p.movetype = AS_MELEE;
 				}
@@ -458,13 +458,13 @@ void () RoundInit =
 					}
 					else
 					{
-						if ((self.cnt2 == SBAR_PRINT))
+						if ((self.cnt2 == 2))
 						{
 							stuffcmd (p, "play 2.wav\n");
 						}
 						else
 						{
-							if ((self.cnt2 == SBAR_GRENS))
+							if ((self.cnt2 == 1))
 							{
 								stuffcmd (p, "play 1.wav\n");
 							}
@@ -479,7 +479,7 @@ void () RoundInit =
 			p = find (p, classname, "player");
 		}
 	}
-	self.nextthink = (time + SBAR_GRENS);
+	self.nextthink = (time + 1);
 };
 
 void () StartRound =
@@ -490,21 +490,21 @@ void () StartRound =
 	local entity oldself;
 	local entity gren;
 
-	if ((rounds == SBAR_GRENS))
+	if ((rounds == 1))
 	{
 		NextLevel ();
-		bprint (SBAR_PRINT, "Rounds Over!\n");
+		bprint (2, "Rounds Over!\n");
 	}
-	if ((rounds > SBAR_GRENS))
+	if ((rounds > 1))
 	{
-		rounds = (rounds - SBAR_GRENS);
+		rounds = (rounds - 1);
 	}
 	if (intermission_running)
 	{
 		return;
 	}
 	tfs_winner = 0;
-	round_over = SBAR_GRENS;
+	round_over = 1;
 	if (round_active)
 	{
 		te = find (world, classname, "player");
@@ -516,10 +516,10 @@ void () StartRound =
 			{
 				Reset_Grapple (self.hook);
 				Attack_Finished (0.75);
-				self.hook_out = SBAR_GRENS;
+				self.hook_out = 1;
 			}
 			self.menu_count = 25;
-			self.current_menu = SBAR_GRENS;
+			self.current_menu = 1;
 			TeamFortress_ThrowGrenade ();
 			TeamFortress_RemoveTimers ();
 			if ((self.playerclass == 9))
@@ -528,11 +528,11 @@ void () StartRound =
 			}
 			if (tfstrike)
 			{
-				if (((self.team_no == SBAR_PRINT) && self.playerclass))
+				if (((self.team_no == 2) && self.playerclass))
 				{
 					self.ammo_detpack = 0;
 					stuffcmd (self, "topcolor ");
-					fl = (TeamFortress_GetColor (self.team_no) - SBAR_GRENS);
+					fl = (TeamFortress_GetColor (self.team_no) - 1);
 					st = ftos (fl);
 					stuffcmd (self, st);
 					stuffcmd (self, "\n");
@@ -560,7 +560,7 @@ void () StartRound =
 	te = find (world, classname, "detpack");
 	while (te)
 	{
-		if ((te.weaponmode == SBAR_GRENS))
+		if ((te.weaponmode == 1))
 		{
 			TeamFortress_SetSpeed (te.enemy);
 			dremove (te.oldenemy);
@@ -611,5 +611,5 @@ void () StartRound =
 	st = infokey (world, "round_time");
 	te.cnt = stof (st);
 	te.think = RoundInit;
-	te.nextthink = (time + SBAR_PRINT);
+	te.nextthink = (time + 2);
 };

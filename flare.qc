@@ -1,7 +1,7 @@
 //=-=-=-=-=
 void () FlareGrenadeTouch =
 {
-	sound (self, SBAR_GRENS, "weapons/bounce.wav", SBAR_GRENS, SBAR_GRENS);
+	sound (self, 1, "weapons/bounce.wav", 1, 1);
 	if ((pointcontents (self.origin) == -6))
 	{
 		dremove (self);
@@ -25,7 +25,7 @@ void () FlareGrenadeThink =
 	local float time_left;
 
 	time_left = (self.health - time);
-	if ((time_left > SBAR_384))
+	if ((time_left > 33))
 	{
 		rnum = random ();
 		if ((rnum < 0.5))
@@ -62,7 +62,7 @@ void () FlareGrenadeThink =
 			}
 			else
 			{
-				if ((time_left < SBAR_GRENS))
+				if ((time_left < 1))
 				{
 					RemoveFlare ();
 				}
@@ -88,13 +88,13 @@ void () FlareGrenadeExplode =
 	}
 	else
 	{
-		num_world_flares = (num_world_flares + SBAR_GRENS);
+		num_world_flares = (num_world_flares + 1);
 		if ((num_world_flares > num_max_flares))
 		{
 			RemoveOldFlare (0);
 		}
 	}
-	self.skin = SBAR_GRENS;
+	self.skin = 1;
 	self.health = (time + 40);
 	self.nextthink = ((time + 0.05) + (random () * 0.1));
 	self.think = FlareGrenadeThink;
@@ -104,6 +104,6 @@ void () RemoveFlare =
 {
 	self.effects = (self.effects - (self.effects & AS_MISSILE));
 	dremove (self);
-	num_world_flares = (num_world_flares - SBAR_GRENS);
+	num_world_flares = (num_world_flares - 1);
 	decrement_team_flares (self.weapon);
 };
