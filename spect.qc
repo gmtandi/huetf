@@ -1,0 +1,136 @@
+//=-=-=-=-=
+void () SpectatorDisconnect;
+void () SpectatorImpulseCommand;
+void () SpectatorThink;
+
+void () SpectatorConnect =
+{
+	local string st;
+	local float res;
+
+	self.playerclass = 0;
+	self.classname = "observer";
+	self.flags = 8;
+	st = infokey (self, "adminpwd");
+	Admin_Check (st);
+	st = infokey (self, "em");
+	if ((st == string_null))
+	{
+		st = infokey (self, "exec_map");
+	}
+	if ((st == "on"))
+	{
+		stuffcmd (self, "exec spectator.cfg\n");
+		stuffcmd (self, "exec ");
+		stuffcmd (self, mapname);
+		stuffcmd (self, ".cfg\n");
+	}
+	self.motd = 0;
+	if (self.is_admin)
+	{
+		Admin_Aliases ();
+	}
+	CheckConnectRate ();
+};
+
+void () SpectatorDisconnect =
+{
+};
+
+void () SpectatorImpulseCommand =
+{
+	local vector cam;
+
+	if ((self.impulse == SBAR_GRENS))
+	{
+		self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
+		if ((self.goalentity == world))
+		{
+			self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
+		}
+		if ((self.goalentity != world))
+		{
+			setorigin (self, self.goalentity.origin);
+			self.angles = self.goalentity.angles;
+			self.fixangle = SBAR_GRENS;
+			self.last_impulse = self.impulse;
+		}
+		self.impulse = 0;
+		return;
+	}
+	else
+	{
+		if ((self.impulse == 9))
+		{
+			fadetoblack ();
+			self.impulse = 0;
+			return;
+		}
+		else
+		{
+			if ((self.impulse == enter))
+			{
+				fadefromblack ();
+				self.impulse = 0;
+				return;
+			}
+			else
+			{
+				if ((self.impulse == 185))
+				{
+					TeamFortress_ID ();
+					self.impulse = 0;
+					return;
+				}
+				else
+				{
+					if ((self.impulse == 131))
+					{
+						TeamFortress_HelpMap ();
+						self.impulse = 0;
+						return;
+					}
+					else
+					{
+						if ((self.impulse == _w))
+						{
+							TeamFortress_StatusQuery ();
+							self.impulse = 0;
+							return;
+						}
+						else
+						{
+							if ((self.impulse == 145))
+							{
+								TeamFortress_TeamShowScores (0);
+								self.impulse = 0;
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	CommandImpulses ();
+	self.impulse = 0;
+};
+
+void () SpectatorThink =
+{
+	local vector cam;
+
+	Check_Track ();
+	if (self.impulse)
+	{
+		SpectatorImpulseCommand ();
+	}
+	if ((self.motd <= _A))
+	{
+		TeamFortress_MOTD ();
+	}
+	if (((time > self.StatusRefreshTime) && (self.StatusBarSize != 0)))
+	{
+		RefreshStatusBar ();
+	}
+};
