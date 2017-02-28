@@ -187,6 +187,34 @@ void () autokick_think =
 };
 void () Check_illclasses;
 
+
+//huetf - classic team fortress
+float (string ps_short, string ps_setting, string ps_default) CF_GetSetting = {
+    local string st;
+
+    st = infokey(world, ps_short);
+    if (st == string_null) {
+        st = infokey(world, ps_setting);
+    }
+
+    if (st == "on") {
+        return TRUE;
+    } else if (st == "off") {
+        return FALSE;
+    } else if (stof(st) != 0) {
+        return stof(st);
+    } else if (ps_default == "on") {
+        return TRUE;
+    } else if (ps_default == "off") {
+        return FALSE;
+    } else if (stof(ps_default) != 0) {
+        return stof(ps_default);
+    }
+
+    return 0;
+};
+
+
 void () DecodeLevelParms =
 {
 	local string st;
@@ -341,6 +369,15 @@ void () DecodeLevelParms =
 			speedcap = 1;
 			rounds = -1;
 		}
+
+
+      // display grenade timer in status bar [on]
+        grentimers = CF_GetSetting("gt", "grentimers", "on");
+
+      // Toggle 24 bits skins
+        skins24b = CF_GetSetting("s24b", "skins24b", "off");
+
+
 		st = infokey (world, "rounds");
 		if ((st == "on"))
 		{

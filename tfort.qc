@@ -754,12 +754,37 @@ void () TeamFortress_ShowTF =
 };
 void () TeamFortress_GrenadePrimed;
 
+
+void () GrenadeTimer = {
+    self.heat = self.heat - 1;
+    self.nextthink = time + 1;
+    self.owner.StatusGrenTime = self.heat;
+
+    if (!self.heat) {
+        dremove(self);
+    }
+};
+
+
+void () RemoveGrenadeTimers = {
+    local entity te = find(world, classname, "gtimer");
+    while (te != world) {
+        if (te.owner == self)
+            dremove(te);
+        te = find(te, classname, "gtimer");
+    }
+};
+
+
+
 void () TeamFortress_PrimeGrenade =
 {
 	local float gtype;
 	local string gs;
 	local string ptime;
 	local entity tGrenade;
+	local entity timer;
+
 
 	if ((self.playerclass == 11))
 	{
@@ -1001,14 +1026,35 @@ void () TeamFortress_PrimeGrenade =
 	tGrenade.classname = "timer";
 	tGrenade.impulse = self.impulse;
 	tGrenade.nextthink = (time + 0.8);
-	if ((gtype == 10))
+	if (gtype == GR_TYPE_CALTROP)
 	{
 		tGrenade.heat = ((time + 0.5) + 0.5);
 	}
 	else
 	{
-		tGrenade.heat = ((time + AS_MELEE) + 0.8);
+		tGrenade.heat = ((time + 3) + 0.8);
+
+	        RemoveGrenadeTimers();
+
+	        local float notimers = stof(infokey(self, "nt"));
+	        if (grentimers && notimers != 1) {
+			timer = spawn();
+			timer.nextthink = time + 0.8;
+			timer.think = GrenadeTimer;
+			timer.heat = 4;
+			timer.owner = self;
+			timer.classname = "gtimer";
+			if (!notimers) {
+				stuffcmd(self, "play grentimer\n");
+		}
 	}
+
+
+	}
+
+
+
+
 	tGrenade.think = TeamFortress_GrenadePrimed;
 };
 
@@ -1512,29 +1558,270 @@ void () TeamFortress_SetHealth =
 	self.health = self.max_health;
 };
 
-string (entity p) TeamFortress_GetSkin =
-{
-	local float tn;
-	local float pc;
-	local string st;
 
-	if (((p.playerclass == 11) || (p.team_no == 0)))
-	{
-		return ("base");
-	}
-	tn = p.team_no;
-	pc = p.playerclass;
-	if ((p.playerclass == 8))
-	{
-		if ((p.undercover_team != 0))
-		{
-			tn = p.undercover_team;
-		}
-		if ((p.undercover_skin != 0))
-		{
-			pc = p.undercover_skin;
-		}
-	}
+string(entity p) TeamFortress_GetSkin =
+{
+    local float tn;
+    local float pc;
+    local string st;
+    local string skin = "base";
+
+    tn = p.team_no;
+    pc = p.playerclass;
+    if (p.playerclass == 8) {
+        if (p.undercover_team != 0) {
+            tn = p.undercover_team;
+        }
+        if (p.undercover_skin != 0) {
+            pc = p.undercover_skin;
+        }
+    }
+
+if (skins24b) {
+    if (tn == 4) {
+        if (pc == 1) {
+            st = infokey(world, "sk_t4_scout");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_sco";
+        } else if (pc == 2) {
+            st = infokey(world, "sk_t4_sniper");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_sni";
+        } else if (pc == 3) {
+            st = infokey(world, "sk_t4_soldier");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_sol";
+        } else if (pc == 4) {
+            st = infokey(world, "sk_t4_demoman");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_dem";
+        } else if (pc == 5) {
+            st = infokey(world, "sk_t4_medic");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_med";
+        } else if (pc == 6) {
+            st = infokey(world, "sk_t4_hwguy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_hwg";
+        } else if (pc == 7) {
+            st = infokey(world, "sk_t4_pyro");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_pyr";
+        } else if (pc == 8) {
+            st = infokey(world, "sk_t4_spy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_spy";
+        } else if (pc == 9) {
+            st = infokey(world,
+                         "sk_t4_engineer");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "gren_eng";
+        } else if (pc == 11) {
+            skin = "gren_civ";
+        }
+    } else if (tn == 3) {
+        if (pc == 1) {
+            st = infokey(world, "sk_t3_scout");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_sco";
+        } else if (pc == 2) {
+            st = infokey(world, "sk_t3_sniper");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_sni";
+        } else if (pc == 3) {
+            st = infokey(world, "sk_t3_soldier");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_sol";
+        } else if (pc == 4) {
+            st = infokey(world, "sk_t3_demoman");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_dem";
+        } else if (pc == 5) {
+            st = infokey(world, "sk_t3_medic");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_med";
+        } else if (pc == 6) {
+            st = infokey(world, "sk_t3_hwguy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_hwg";
+        } else if (pc == 7) {
+            st = infokey(world, "sk_t3_pyro");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_pyr";
+        } else if (pc == 8) {
+            st = infokey(world,
+                         "sk_t3_spy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_spy";
+        } else if (pc == 9) {
+            st = infokey(world,
+                         "sk_t3_engineer");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "yell_eng";
+        } else if (pc == 11) {
+            skin = "yell_civ";
+        }
+    } else if (tn == 2) {
+        if (pc == 1) {
+            st = infokey(world, "sk_t2_scout");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_sco";
+        } else if (pc == 2) {
+            st = infokey(world, "sk_t2_sniper");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_sni";
+        } else if (pc == 3) {
+            st = infokey(world, "sk_t2_soldier");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_sol";
+        } else if (pc == 4) {
+            st = infokey(world, "sk_t2_demoman");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_dem";
+        } else if (pc == 5) {
+            st = infokey(world, "sk_t2_medic");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_med";
+        } else if (pc == 6) {
+            st = infokey(world, "sk_t2_hwguy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_hwg";
+        } else if (pc == 7) {
+            st = infokey(world,
+                         "sk_t2_pyro");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_pyr";
+        } else if (pc == 8) {
+            st = infokey(world,
+                         "sk_t2_spy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_spy";
+        } else if (pc == 9) {
+            st = infokey(world,
+                         "sk_t2_engineer");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "red_eng";
+        } else if (pc == 11) {
+            skin = "red_civ";
+        }
+    } else if (tn == 1) {
+        if (pc == 1) {
+            st = infokey(world, "sk_t1_scout");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_sco";
+        } else if (pc == 2) {
+            st = infokey(world, "sk_t1_sniper");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_sni";
+        } else if (pc == 3) {
+            st = infokey(world, "sk_t1_soldier");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_sol";
+        } else if (pc == 4) {
+            st = infokey(world, "sk_t1_demoman");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_dem";
+        } else if (pc == 5) {
+            st = infokey(world, "sk_t1_medic");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_med";
+        } else if (pc == 6) {
+            st = infokey(world, "sk_t1_hwguy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_hwg";
+        } else if (pc == 7) {
+            st = infokey(world,
+                         "sk_t1_pyro");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_pyr";
+        } else if (pc == 8) {
+            st = infokey(world,
+                         "sk_t1_spy");
+            if (st != string_null) {
+                skin = st;
+            }
+            skin = "blue_spy";
+        } else if (pc == 9) {
+            st = infokey(world,
+                         "sk_t1_engineer");
+            if (st != string_null) {
+                skin = st;
+            }
+           skin = "blue_eng";
+        } else if (pc == 11) {
+            skin = "blue_civ";
+        }
+    }
+
+} else {
 	if ((tn == AS_MISSILE))
 	{
 		if ((tfvsdm == 1))
@@ -2003,6 +2290,10 @@ string (entity p) TeamFortress_GetSkin =
 			}
 		}
 	}
+
+}
+
+    return skin;
 };
 
 void (entity p) TeamFortress_SetSkin =

@@ -747,7 +747,9 @@ void () RefreshStatusBar =
 	{
 		return;
 	}
-	self.StatusRefreshTime = (time + 1.5);
+//hue
+//	self.StatusRefreshTime = (time + 1.5);
+	self.StatusRefreshTime = (time + 0.2);
 	msg_entity = self;
 	Status_StartWrite ();
 	if (round_active)
@@ -1160,7 +1162,6 @@ void () RefreshStatusBar =
 		WriteByte (1, slash);
 		WriteSIntXXXX (team4frags);
 	}
-		WriteStr(" \r\n Testando :)");
 	if ((self.playerclass == 11))
 	{
 		Status_EndWrite ();
@@ -1227,6 +1228,12 @@ void () RefreshStatusBar =
 	WriteIntXX (self.no_grenades_1, COLOR_WHITE);
 	WriteStr(" G2:");//W4C (space, (_G | 128), (_2 | 128), dperiod);
 	WriteIntXX (self.no_grenades_2, COLOR_WHITE);
+
+    if (self.StatusGrenTime > 0) {
+        WriteStr( strcat("\nGrenade: ", ftos(self.StatusGrenTime)) );
+    }
+
+
 	Status_EndWrite ();
 };
 

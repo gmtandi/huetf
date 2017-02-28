@@ -294,6 +294,11 @@ float autokick_kills;
 float deathmsg;
 float speedcap;
 
+//huetf
+float grentimers;
+.float StatusGrenTime;
+
+float skins24b;
 
 
 void (float psize, entity p) KickPlayer =

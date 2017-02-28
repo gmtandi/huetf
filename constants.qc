@@ -1,4 +1,11 @@
-//=-=-=-=-=
+//
+// constants
+//
+
+#define FALSE           0
+#define TRUE            1
+
+// Weapons
 
 #define WEAP_HOOK                               1
 #define WEAP_MEDIKIT                    2
