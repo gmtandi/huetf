@@ -1036,15 +1036,15 @@ void () TeamFortress_PrimeGrenade =
 
 	        RemoveGrenadeTimers();
 
-	        local float notimers = stof(infokey(self, "nt"));
-	        if (grentimers && notimers != 1) {
+	        local float grensound = stof(infokey(self, "grensound"));
+	        if (grentimers == 1) {
 			timer = spawn();
 			timer.nextthink = time + 0.8;
 			timer.think = GrenadeTimer;
 			timer.heat = 4;
 			timer.owner = self;
 			timer.classname = "gtimer";
-			if (!notimers) {
+			if (grensound == 1) {
 				stuffcmd(self, "play grentimer\n");
 		}
 	}
