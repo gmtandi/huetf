@@ -297,9 +297,9 @@ float speedcap;
 //huetf
 float grentimers;
 .float StatusGrenTime;
-
 float skins24b;
-
+float sglvl2to3;
+float sgbuildlvl2;
 
 void (float psize, entity p) KickPlayer =
 {

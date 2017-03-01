@@ -371,8 +371,13 @@ void () DecodeLevelParms =
 		}
 
 
+      sgbuildlvl2 = CF_GetSetting("gt", "sgbuildlvl2", "off");
+      sglvl2to3 = CF_GetSetting("gt", "sglvl2to3", "off");
+
+
       // display grenade timer in status bar [on]
         grentimers = CF_GetSetting("gt", "grentimers", "on");
+
 
       // Toggle 24 bits skins
         skins24b = CF_GetSetting("s24b", "skins24b", "off");

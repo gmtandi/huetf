@@ -2898,7 +2898,8 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 
 void () Menu_EngineerFix_SentryGun =
 {
-	if (((self.building.weapon < AS_MELEE) && (self.ammo_cells >= 130)))
+//	if (  ( (self.building.weapon < 3) && (self.ammo_cells >= 130) && !sglvl2to3 )  || ( (self.building.weapon < 2) && (self.ammo_cells >= 130) && sglvl2to3 ) )
+	if ( (self.building.weapon < 3) && (self.ammo_cells >= 130) )
 	{
 		CenterPrint (self, "Action:                            \nêìë Put Ammo into Sentry Gun    \nêîë Upgrade Sentry Gun          \nêïë Repair Sentry Gun           \nêñë Dismantle Sentry Gun        \nêóë Nothing                     \n\nêòë Rotate SentryGun            \n");
 	}
@@ -2964,18 +2965,37 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 			{
 				self.ammo_cells = (self.ammo_cells - 130);
 			}
-			self.building.weapon = (self.building.weapon + 1);
-			if (sgtype)
-			{
-				self.building.max_health = floor ((self.building.max_health * 1.25));
+//			self.building.weapon = (self.building.weapon + 1);
+			if (!sglvl2to3){
+				self.building.weapon = (self.building.weapon + 1);
+			} else {
+				self.building.weapon = (self.building.weapon + 2);
 			}
-			else
-			{
+if (!sglvl2to3) {
+			if (sgtype) {
+				self.building.max_health = floor ((self.building.max_health * 1.25));
+			} else {
 				self.building.max_health = floor ((self.building.max_health * 1.2));
 			}
-			self.building.health = self.building.max_health;
+
+
 			self.building.maxammo_shells = (self.building.maxammo_shells * 1.2);
-			if ((self.building.weapon == 2))
+} else {
+			if (sgtype) {
+				self.building.max_health = floor ((self.building.max_health * 1.25));
+				self.building.max_health = floor ((self.building.max_health * 1.25));
+			} else {
+				self.building.max_health = floor ((self.building.max_health * 1.2));
+				self.building.max_health = floor ((self.building.max_health * 1.2));
+			}
+
+			self.building.maxammo_shells = (self.building.maxammo_shells * 1.2);
+			self.building.maxammo_shells = (self.building.maxammo_shells * 1.2);
+}
+
+			self.building.health = self.building.max_health;
+
+			if ((self.building.weapon == 2) && !sglvl2to3)
 			{
 				sound (self.building, AS_MELEE, "weapons/turrset.wav", 1, 1);
 				if (sgtype)

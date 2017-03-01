@@ -689,6 +689,12 @@ void () TeamFortress_FinishedBuilding =
 			newmis.flags = (newmis.flags - (newmis.flags & 512));
 			oldself.flags = (oldself.flags - (oldself.flags & 512));
 			newmis.team_no = self.team_no;
+
+			newmis.ammo_shells = 25;
+			newmis.maxammo_shells = _d;
+			newmis.maxammo_rockets = 20;
+
+if (!sgbuildlvl2) {
 			if (sgtype)
 			{
 				newmis.think = lvl1_sentry_stand;
@@ -699,6 +705,27 @@ void () TeamFortress_FinishedBuilding =
 				newmis.think = lvl1_oldsentry_stand;
 				newmis.yaw_speed = enter;
 			}
+} else {
+			if (sgtype)
+			{
+				newmis.think = lvl2_sentry_stand;
+				newmis.yaw_speed = (15 - (sentry_speed * 35));
+			}
+			else
+			{
+				newmis.think = lvl2_oldsentry_stand;
+				newmis.yaw_speed = enter;
+			}
+newmis.weapon = 2;
+                        if (sgtype) {
+                               newmis.max_health = floor ((newmis.max_health * 1.25));
+                        } else {
+                                newmis.max_health = floor ((newmis.max_health * 1.2));
+                        }
+
+
+                        newmis.maxammo_shells = (newmis.maxammo_shells * 1.2);
+}
 			newmis.nextthink = (time + 0.5);
 			newmis.heat = 0;
 			newmis.angles_x = 0;
@@ -713,9 +740,6 @@ void () TeamFortress_FinishedBuilding =
 				newmis.waitmin = newmis.waitmax;
 				newmis.waitmax = anglemod ((newmis.angles_y - _2));
 			}
-			newmis.ammo_shells = 25;
-			newmis.maxammo_shells = _d;
-			newmis.maxammo_rockets = 20;
 		}
 	}
 	W_SetCurrentAmmo ();
