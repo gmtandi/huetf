@@ -1613,6 +1613,8 @@ float (entity Goal, entity AP) APMeetsCriteria =
 
 void (entity Goal) SetupRespawn =
 {
+
+
 	if ((Goal.search_time != 0))
 	{
 		InactivateGoal (Goal);
@@ -1638,6 +1640,8 @@ void (entity Goal) SetupRespawn =
 			return;
 		}
 	}
+
+
 	InactivateGoal (Goal);
 };
 
@@ -2828,6 +2832,14 @@ void (entity Item, entity AP, entity Goal) tfgoalitem_GiveToPlayer =
 
 void () ReturnItem =
 {
+
+	local string st;
+	st = infokey (world, "fnoreturn");
+	if ((st == "on"))
+        {
+		return;
+	}
+
 	local entity te;
 
 	self.enemy.goal_state = 2;
@@ -2872,6 +2884,7 @@ void () ReturnItem =
 			}
 		}
 	}
+
 	dremove (self);
 };
 
@@ -3082,6 +3095,7 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 		{
 			if ((Item.goal_activation & 16))
 			{
+
 				DelayReturn = spawn ();
 				DelayReturn.enemy = Item;
 				DelayReturn.weapon = 2;
@@ -3251,6 +3265,7 @@ void (entity Item) tfgoalitem_checkgoalreturn =
 	local string st;
 	local entity te;
 
+
 	if ((Item.impulse != 0))
 	{
 		te = Findgoal (Item.impulse);
@@ -3263,6 +3278,7 @@ void (entity Item) tfgoalitem_checkgoalreturn =
 			}
 		}
 	}
+
 };
 
 void (entity Goal, entity Player, entity Item) DisplayItemStatus =
