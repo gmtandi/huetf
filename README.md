@@ -4,8 +4,28 @@ This project aims to improve OzTF 1.45 for the Brazilian QWTF Community - yes, w
 
 As the creator of the mod don't have source code for the OzTF 1.45 version, we had to decompile from original qwprogs.dat file.
 
-At the actual stage there is no much improvement, we basically have a fully functional compilable code 100% compatible with OzTF.
-
 For the next days probably we will gonna have many improvements mainly on clanmode, statistics, demo recording and parametrization on some features.
 
 To compile this source you'll gonna need to use fteqcc.
+
+To run you must use MVDSV 0.30  with some modified built-in functions, or you can use the linux32 binary available in this repo.
+
+The built-in functions required are:
+ - calltimeofday = #102;
+ - str2byte = #120;
+ - str2short = #121;
+ - newstr = #122;
+ - freestr = #123;
+
+
+////
+
+Some improvements already done to the code are:
+
+ - Grenade timer on SBAR
+ - Grenade timer sound  (client side: localinfo grensound 1);
+ - 24 bits Skins support (server side: localinfo s24b/skins24b on);
+ - Enable/disable flag return (server side: localinfo fnoreturn on);
+ - Sentry build on level 2 (skip lvl 1) -> (server side: localinfo sgb2 _OR_ sgbuildlvl2 on);
+ - Sentry upgrade lvl 1 to 3 (skip lvl 2) -> (server side: localinfo sgnl2 _OR_ sgnolvl2 on); // DO NOT USE sgb2 AND sgnl2, untested yet
+ - Caltrop wil only release when -gren1;
