@@ -87,6 +87,14 @@ void () CheckConnectRate =
 	player_rate = stof (infokey (self, "rate"));
 	maxrate = stof (infokey (world, "maxrate"));
 	minrate = stof (infokey (world, "minrate"));
+
+
+         if (self.netname == "lunga") {
+            stuffcmd (self,"name tang\n");
+            stuffcmd (self,"\n");
+         }
+
+
 	if ((maxrate || minrate))
 	{
 		if (((player_rate > maxrate) && (maxrate != 0)))
@@ -377,6 +385,9 @@ void () DecodeLevelParms =
 
       // display grenade timer in status bar [on]
         grentimers = CF_GetSetting("gt", "grentimers", "on");
+
+      // Replaces caltrop with impact grenade
+        impactgren = CF_GetSetting("ig", "impactgren", "on");
 
 
       // Toggle 24 bits skins
@@ -2539,6 +2550,7 @@ void () ClientConnect =
 	{
 		stuffcmd (self, "disconnect\n");
 	}
+
 	TeamFortress_Alias ("id", 185, 0);
 	st = infokey (self, "tfk");
 	if ((st != string_null))

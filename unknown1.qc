@@ -672,6 +672,72 @@ float _x    = 120;
 float _y    = 121;
 float _z    = 122;
 
+
+float _a0    = 48;
+float _a1    = 49;
+float _a2    = 50;
+float _a3    = 51;
+float _a4    = 52;
+float _a5    = 53;
+float _a6    = 54;
+float _a7    = 55;
+float _a8    = 56;
+float _a9    = 57;
+float adperiod    = 58;
+float _aA    = 65;
+float _aB    = 66;
+float _aC    = 67;
+float _aD    = 68;
+float _aE    = 69;
+float _aF    = 70;
+float _aG    = 71;
+float _aH    = 72;
+float _aI    = 73;
+float _aJ    = 74;
+float _aK    = 75;
+float _aL    = 76;
+float _aM    = 77;
+float _aN    = 78;
+float _aO    = 79;
+float _aP    = 80;
+float _aQ    = 81;
+float _aR    = 82;
+float _aS    = 83;
+float _aT    = 84;
+float _aU    = 85;
+float _aV    = 86;
+float _aW    = 87;
+float _aX    = 88;
+float _aY    = 89;
+float _aZ    = 90;
+float _a_    = 95;
+float _aa    = 97;
+float _ab    = 98;
+float _ac    = 99;
+float _ad    = 100;
+float _ae    = 101;
+float _af    = 102;
+float _ag    = 103;
+float _ah    = 104;
+float _ai    = 105;
+float _aj    = 106;
+float _ak    = 107;
+float _al    = 108;
+float _am    = 109;
+float _an    = 110;
+float _ao    = 111;
+float _ap    = 112;
+float _aq    = 113;
+float _ar    = 114;
+float _as    = 115;
+float _at    = 116;
+float _au    = 117;
+float _av    = 118;
+float _aw    = 119;
+float _ax    = 120;
+float _ay    = 121;
+float _az    = 122;
+
 float greenlamp    = 134;
 float redlamp    = 135;
 float yellowlamp    = 136;
@@ -1216,7 +1282,7 @@ void () RefreshStatusBar =
 		}
 		if ((num >= RANGE_MELEE))
 		{
-			WriteStr("CLIP:"); //W7C (space, space, (_C | 128), (_L | 128), (_I | 128), (_P | 128), (dperiod | 128));
+			WriteStr("\sCLIP\s:"); //W7C (space, space, (_C | 128), (_L | 128), (_I | 128), (_P | 128), (dperiod | 128));
 			WriteIntXX (num, COLOR_WHITE);
 		}
 		else
@@ -1224,13 +1290,13 @@ void () RefreshStatusBar =
 			WriteSpace (9);
 		}
 	}
-        WriteStr(" G1:");//W4C (space, (_G | 128), (_1 | 128), dperiod);
+        WriteStr(" \sG\s1:");//W4C (space, (_G | 128), (_1 | 128), dperiod);
 	WriteIntXX (self.no_grenades_1, COLOR_WHITE);
-	WriteStr(" G2:");//W4C (space, (_G | 128), (_2 | 128), dperiod);
+	WriteStr(" \sG\s2:");//W4C (space, (_G | 128), (_2 | 128), dperiod);
 	WriteIntXX (self.no_grenades_2, COLOR_WHITE);
 
     if (self.StatusGrenTime > 0) {
-        WriteStr( strcat("\nGrenade: ", ftos(self.StatusGrenTime)) );
+        WriteStr( strcat("\n\sGrenade\s: ", ftos(self.StatusGrenTime)) );
     }
 
 
@@ -2201,7 +2267,7 @@ void () Menu_Intro =
 	}
 	else
 	{
-		CenterPrint (self, "Welcome to Hue Team Fortress 1.45\nŸ\nhttp://andi.com.br/\n\nBased on OzTF 1.45\nDecompiled by Andi\nThe Brazilian QWTF Community 2017\n");
+		CenterPrint (self, "Welcome to Hue Team Fortress 1.45\nŸ\nhttp://github.com/gmtandi/huetf\n\nBased on OzTF 1.45\nDecompiled by Andi\nThe Brazilian QWTF Community 2017\n");
 	}
 };
 

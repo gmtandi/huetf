@@ -538,6 +538,13 @@ void () TeamFortress_Inventory =
 										{
 											sprint (self, 2, " Caltrop(");
 										}
+
+
+else
+  if ((self.tp_grenades_1 == 11))
+    sprint (self, 2, " Impact(");
+
+
 										else
 										{
 											sprint (self, 2, "N/A(");
@@ -843,6 +850,12 @@ void () TeamFortress_PrimeGrenade =
 									{
 										gs = "Caltrop canister";
 									}
+
+else
+if ((self.tp_grenades_1 == 11))
+ gs = "Impact Grenade";
+
+
 									else
 									{
 										gs = "Grenade";
@@ -1129,6 +1142,17 @@ void () TeamFortress_GrenadePrimed =
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
 		}
+
+else  if ((self.weapon == 11)) // impact grenade
+		{
+			newmis.weapon = 11;
+			newmis.touch = ConcussionGrenadeTouch;
+			newmis.think = ConcussionGrenadeExplode;
+			newmis.skin = 1;
+			newmis.avelocity = '300 300 300';
+			setmodel (newmis, "progs/hgren2.mdl");
+		}
+
 		else
 		{
 			if ((self.weapon == AS_MELEE))
@@ -2386,7 +2410,11 @@ void () TeamFortress_SetEquipment =
 		self.maxammo_cells = _d;
 		self.no_grenades_1 = 2;
 		self.no_grenades_2 = AS_MELEE;
+if (!impactgren)
 		self.tp_grenades_1 = enter;
+else
+		self.tp_grenades_1 = 11;
+
 		self.tp_grenades_2 = 2;
 		self.tf_items = 1;
 		self.ScannerOn = 0;
@@ -3314,6 +3342,18 @@ void (entity Gren) TeamFortress_ExplodePerson =
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
 		}
+
+else  if ((Gren.weapon == 11)) // impact grenade
+                {
+                        newmis.weapon = 11;
+                        newmis.touch = ConcussionGrenadeTouch;
+                        newmis.think = ConcussionGrenadeExplode;
+                        newmis.skin = 1;
+                        newmis.avelocity = '300 300 300';
+                        setmodel (newmis, "progs/hgren2.mdl");
+                }
+
+
 		else
 		{
 			if ((Gren.weapon == AS_MELEE))

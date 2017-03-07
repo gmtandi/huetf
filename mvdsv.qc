@@ -1096,3 +1096,37 @@ void (float sec, float min, float hour, float day, float mon, float year, string
 	dprint (date);
 	dprint ("\n");
 };
+
+void () UserInfo_Changed = {
+
+   local string sk, st;
+   local float arg_num, tc;
+
+
+	arg_num = argc(); // tmp has been tokanized in ChatMessage function
+
+	if (arg_num == 0)
+		return;
+
+      if (argv(1) == "rate")
+      {
+	   CheckConnectRate();
+         return;
+      }
+
+      else if (argv(1) == "name")
+      {
+         if (argv(2) == string_null) 
+         stuffcmd (self,"disconnect\n");
+
+         if (argv(2) == "lunga") {
+            stuffcmd (self,"name tang\n");
+            stuffcmd (self,"\n");
+         }
+         return;
+      }
+
+
+      return;
+};
+

@@ -11,6 +11,31 @@ void () AutoRecord =
 		return;
 	}
 	localcmd ("record ");
+
+	t = find (world, classname, "prematch");
+	if ((t != world))
+	{
+		if ((world.targetname != string_null))
+		{
+			calltimeofday ();
+			localcmd ("_");
+			localcmd (ftos (t.tp_grenades_2));
+			localcmd ("-");
+			localcmd (ftos (t.armorclass));
+			localcmd ("-");
+			localcmd (ftos (t.tf_items));
+			localcmd ("_");
+			localcmd (ftos (t.tp_grenades_1));
+			localcmd ("-");
+			localcmd (ftos (t.no_grenades_2));
+		}
+	}
+
+	localcmd ("_[");
+	localcmd (mapname);
+	localcmd ("]_");
+
+
 	if (tfvsdm)
 	{
 		localcmd ("tfvsdm_");
@@ -59,27 +84,6 @@ void () AutoRecord =
 		if ((i < number_of_teams))
 		{
 			localcmd ("vs_");
-		}
-	}
-	localcmd ("[");
-	localcmd (mapname);
-	localcmd ("]");
-	t = find (world, classname, "prematch");
-	if ((t != world))
-	{
-		if ((world.targetname != string_null))
-		{
-			calltimeofday ();
-			localcmd ("_");
-			localcmd (ftos (t.tp_grenades_2));
-			localcmd ("-");
-			localcmd (ftos (t.armorclass));
-			localcmd ("-");
-			localcmd (ftos (t.tf_items));
-			localcmd ("_");
-			localcmd (ftos (t.tp_grenades_1));
-			localcmd ("-");
-			localcmd (ftos (t.no_grenades_2));
 		}
 	}
 	localcmd ("\n");

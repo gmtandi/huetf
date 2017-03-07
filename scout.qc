@@ -476,7 +476,7 @@ void (entity inflictor, entity attacker, float bounce, entity ignore) T_RadiusBo
 						{
 							te = find (te, classname, "timer");
 						}
-						if (practice)
+						if (practice || inflictor.weapon == 11) // in practice mode or impact grenade do not conc.
 						{
 							return;
 						}

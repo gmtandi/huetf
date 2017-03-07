@@ -505,6 +505,8 @@ void () StartRound =
 	}
 	tfs_winner = 0;
 	round_over = 1;
+
+
 	if (round_active)
 	{
 		te = find (world, classname, "player");
