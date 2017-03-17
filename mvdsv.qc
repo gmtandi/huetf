@@ -277,11 +277,19 @@ float () UserCmd =
 												if ((arg_num == 2))
 												{
 													localcmd ("password ");
-													localcmd (argv (1));
+													if (argv(1) == "none") {
+														localcmd ("\"\"");
+													} else {
+														localcmd (argv (1));
+													}
 													localcmd ("\n");
 													bprint ("\n");
 													argv (1);
-													bprint3 (2, "çServer Password changed to \"", argv (1), "\"\n");
+													if (argv(1) == "none") {
+														bprint (2, "çServer Password removed!\n");
+													} else {
+														bprint3 (2, "çServer Password changed to \"", argv (1), "\"\n");
+													}
 													bprint ("\n");
 													return (1);
 												}
@@ -1119,14 +1127,38 @@ void () UserInfo_Changed = {
          if (argv(2) == string_null) 
          stuffcmd (self,"disconnect\n");
 
-         if (argv(2) == "lunga") {
+/*         if (argv(2) == "lunga") {
             stuffcmd (self,"name tang\n");
             stuffcmd (self,"\n");
-         }
+         }*/
          return;
+
+      }
+
+      return;
+};
+
+
+float(string text, float say_team) ChatMessage =
+{
+
+   local float arg_num;
+
+        tokanize(text);
+
+        arg_num = argc(); // tmp has been tokanized in ChatMessage function
+
+        if (arg_num == 0)
+                return 0;
+
+
+      if (argv(0) == "test")
+      {
+                bprint(2.00,"whazzup\n");
+            return 1;
       }
 
 
-      return;
+      return 0;
 };
 

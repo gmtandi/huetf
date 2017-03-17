@@ -18,16 +18,18 @@ void () AutoRecord =
 		if ((world.targetname != string_null))
 		{
 			calltimeofday ();
+
+			localcmd (ftos (t.armorclass + 1)); // month
+			localcmd ("-");
+			localcmd (ftos (t.tp_grenades_2)); // day
+			localcmd ("-");
+			localcmd (ftos (t.tf_items)); // year
 			localcmd ("_");
-			localcmd (ftos (t.tp_grenades_2));
+			localcmd (ftos (t.tp_grenades_1)); // hour
 			localcmd ("-");
-			localcmd (ftos (t.armorclass));
+			localcmd (ftos (t.no_grenades_2)); // minute
 			localcmd ("-");
-			localcmd (ftos (t.tf_items));
-			localcmd ("_");
-			localcmd (ftos (t.tp_grenades_1));
-			localcmd ("-");
-			localcmd (ftos (t.no_grenades_2));
+			localcmd (ftos (t.no_grenades_1)); // second
 		}
 	}
 
@@ -38,37 +40,37 @@ void () AutoRecord =
 
 	if (tfvsdm)
 	{
-		localcmd ("tfvsdm_");
+		localcmd ("tfvsdm");
 	}
 	else
 	{
 		if (tfstrike)
 		{
-			localcmd ("tfstrike_");
+			localcmd ("tfstrike");
 		}
 		else
 		{
 			if (duel)
 			{
-				localcmd ("duel_");
+				localcmd ("duel");
 			}
 			else
 			{
 				if (speedcap)
 				{
-					localcmd ("speedcap_");
+					localcmd ("speedcap");
 				}
 				else
 				{
 					if (practice)
 					{
-						localcmd ("practice_");
+						localcmd ("practice");
 					}
 					else
 					{
 						if (clanbattle)
 						{
-							localcmd ("clan_");
+							localcmd ("clan");
 						}
 					}
 				}
@@ -79,11 +81,11 @@ void () AutoRecord =
 	{
 		i = (i + 1);
 		tmp = GetTeamName (i);
-		localcmd (tmp);
 		localcmd ("_");
+		localcmd (tmp);
 		if ((i < number_of_teams))
 		{
-			localcmd ("vs_");
+			localcmd ("_vs");
 		}
 	}
 	localcmd ("\n");

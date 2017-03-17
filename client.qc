@@ -89,10 +89,10 @@ void () CheckConnectRate =
 	minrate = stof (infokey (world, "minrate"));
 
 
-         if (self.netname == "lunga") {
+/*         if (self.netname == "lunga") {
             stuffcmd (self,"name tang\n");
             stuffcmd (self,"\n");
-         }
+         }*/
 
 
 	if ((maxrate || minrate))
