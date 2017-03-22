@@ -300,6 +300,7 @@ float grentimers;
 float skins24b;
 float sglvl2to3;
 float sgbuildlvl2;
+float autospanner;
 
 float impactgren;
 
