@@ -982,7 +982,6 @@ void (entity gun) Engineer_SentryGun_InsertAmmo = {
         }
         ammo = strcat(ammo, " into sentry gun");
         sprint (self, 2, "\n\n\n\n\n\n\n", ammo);
-        sound(self, 3, "edge/backpack.wav", 1, 1);
     }
 };
 
