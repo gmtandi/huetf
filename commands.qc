@@ -30,7 +30,7 @@ void () Commands =
 			}
 		}
 	}
-	if ((self.is_admin == AS_MELEE))
+	if ((self.is_admin == 3))
 	{
 		sprint (self, 2, "\nAdmin Commands:\n\n");
 		sprint (self, 2, "τινεδοχξ... decrease timelimit\nτινευπ..... increase timelimit\nπνδοχξ..... decrease prematch time\nπνυπ....... increase prematch time\nγζδοχξ..... decrease ceasefire time\nγζυπ....... increase ceasefire time\nοτδοχξ..... decrease overtime\nοτυπ....... increase overtime\nζςαησδοχξ.. reduce fraglimit\nζςαησυπ.... increase fraglimit\nσιμεξγε.... toggle spectator talk\nςεσταςτναπ. restart the current map\nσταςτνατγθ. starts clan match (requires clan mode on)\nςεσετ...... reset all settings to standard\nγμαξσετυπ.. set clan settings && restart\n");
@@ -1226,7 +1226,7 @@ void () Toggle_flag_emu =
 		{
 			if ((fl == 2))
 			{
-				fl = AS_MELEE;
+				fl = 3;
 				st = "CTF Flag.";
 			}
 			else

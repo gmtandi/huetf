@@ -39,15 +39,15 @@ void () MirvGrenadeExplode =
 
 	deathmsg = enter;
 	T_RadiusDamage (self, self.owner, _d, world);
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	self.solid = 0;
 	i = 0;
-	while ((i < AS_MISSILE))
+	while ((i < 4))
 	{
 		MirvGrenadeLaunch ((self.origin + '0 0 -1'), self.owner);
 		i = (i + 1);
@@ -168,7 +168,7 @@ void (entity bowner) TeamFortress_SetBomb =
 	bombarmtime = stof (infokey (world, "bombarmtime"));
 	if (((bombarmtime < 1) || (bombarmtime > enter)))
 	{
-		bombarmtime = AS_MELEE;
+		bombarmtime = 3;
 	}
 	bowner.pausetime = (time + bombarmtime);
 	sprint (bowner, 2, "Setting Bomb...\n");
@@ -274,7 +274,7 @@ void (float timer) TeamFortress_SetDetpack =
 		self.is_unabletospy = 0;
 	}
 	stimer = ftos (timer);
-	self.pausetime = (time + AS_MELEE);
+	self.pausetime = (time + 3);
 	sprint (self, 2, "Setting detpack for ");
 	sprint (self, 2, stimer);
 	sprint (self, 2, " seconds...\n");
@@ -282,7 +282,7 @@ void (float timer) TeamFortress_SetDetpack =
 	newmis.owner = self;
 	newmis.classname = "timer";
 	newmis.netname = "detpack_timer";
-	newmis.nextthink = (time + AS_MELEE);
+	newmis.nextthink = (time + 3);
 	newmis.think = TeamFortress_DetpackSet;
 	newmis.health = timer;
 };
@@ -442,13 +442,13 @@ void () TeamFortress_DetpackExplode =
 					{
 						if (tfstrike)
 						{
-							TF_T_Damage (head, self, self.owner, (points * 2), 2, AS_MISSILE);
+							TF_T_Damage (head, self, self.owner, (points * 2), 2, 4);
 						}
 						else
 						{
 							if (CanDamage (head, self))
 							{
-								TF_T_Damage (head, self, self.owner, (points * 2), 2, AS_MISSILE);
+								TF_T_Damage (head, self, self.owner, (points * 2), 2, 4);
 							}
 						}
 					}
@@ -479,11 +479,11 @@ void () TeamFortress_DetpackExplode =
 			}
 			tfs_winner = self.owner.team_no;
 		}
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, AS_MELEE);
-		WriteCoord (AS_MISSILE, self.origin_x);
-		WriteCoord (AS_MISSILE, self.origin_y);
-		WriteCoord (AS_MISSILE, self.origin_z);
+		WriteByte (4, 23);
+		WriteByte (4, 3);
+		WriteCoord (4, self.origin_x);
+		WriteCoord (4, self.origin_y);
+		WriteCoord (4, self.origin_z);
 		multicast (self.origin, 1);
 	}
 	else
@@ -565,7 +565,7 @@ void () TeamFortress_DetpackTouch =
 	if (tfstrike)
 	{
 		defusetime = stof (infokey (world, "bombdefusetime"));
-		if (((defusetime < AS_MELEE) || (defusetime > 15)))
+		if (((defusetime < 3) || (defusetime > 15)))
 		{
 			defusetime = 8;
 		}
@@ -575,7 +575,7 @@ void () TeamFortress_DetpackTouch =
 	}
 	else
 	{
-		disarm.nextthink = (time + AS_MELEE);
+		disarm.nextthink = (time + 3);
 		sprint (other, 2, "Disarming detpack...\n");
 	}
 	disarm.think = TeamFortress_DetpackDisarm;

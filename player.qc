@@ -155,12 +155,12 @@ void () player_shot2 = [ 114, player_shot3 ]
 
 void () player_shot3 = [ 115, player_shot4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 };
 
 void () player_shot4 = [ 116, player_shot5 ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_shot5 = [ 117, player_shot6 ]
@@ -201,7 +201,7 @@ void () player_axe2 = [ 120, player_axe3 ]
 
 void () player_axe3 = [ 121, player_axe4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 	if ((self.current_weapon == 16))
 	{
 		W_FireAxe ();
@@ -214,7 +214,7 @@ void () player_axe3 = [ 121, player_axe4 ]
 
 void () player_axe4 = [ 122, player_run ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_axeb1 = [ 125, player_axeb2 ]
@@ -257,7 +257,7 @@ void () player_axec2 = [ 132, player_axec3 ]
 
 void () player_axec3 = [ 133, player_axec4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 	if ((self.current_weapon == 16))
 	{
 		W_FireAxe ();
@@ -270,7 +270,7 @@ void () player_axec3 = [ 133, player_axec4 ]
 
 void () player_axec4 = [ 134, player_run ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_axed1 = [ 137, player_axed2 ]
@@ -314,12 +314,12 @@ void () player_chain1a = [ 137, player_chain2 ]
 
 void () player_chain2 = [ 138, player_chain2a ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 };
 
 void () player_chain2a = [ 138, player_chain3 ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_chain3 = [ 139, player_chain3 ]
@@ -369,13 +369,13 @@ void () player_medikit2 = [ 120, player_medikit3 ]
 
 void () player_medikit3 = [ 121, player_medikit4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 	W_FireMedikit ();
 };
 
 void () player_medikit4 = [ 122, player_run ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_medikitb1 = [ 125, player_medikitb2 ]
@@ -411,13 +411,13 @@ void () player_medikitc2 = [ 132, player_medikitc3 ]
 
 void () player_medikitc3 = [ 133, player_medikitc4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 	W_FireMedikit ();
 };
 
 void () player_medikitc4 = [ 134, player_run ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_medikitd1 = [ 137, player_medikitd2 ]
@@ -453,13 +453,13 @@ void () player_bioweapon2 = [ 120, player_bioweapon3 ]
 
 void () player_bioweapon3 = [ 121, player_bioweapon4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 	W_FireBioweapon ();
 };
 
 void () player_bioweapon4 = [ 122, player_run ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_bioweaponb1 = [ 125, player_bioweaponb2 ]
@@ -495,13 +495,13 @@ void () player_bioweaponc2 = [ 132, player_bioweaponc3 ]
 
 void () player_bioweaponc3 = [ 133, player_bioweaponc4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 	W_FireBioweapon ();
 };
 
 void () player_bioweaponc4 = [ 134, player_run ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_bioweapond1 = [ 137, player_bioweapond2 ]
@@ -541,7 +541,7 @@ void () player_nail1 = [ 103, player_nail2 ]
 	SuperDamageSound ();
 	if ((self.nailpos == 0))
 	{
-		W_FireSpikes (AS_MISSILE);
+		W_FireSpikes (4);
 		self.nailpos = 1;
 	}
 	else
@@ -585,9 +585,9 @@ void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 	}
 	SuperDamageSound ();
 	Attack_Finished (0.1);
-	if (((self.heat != 2) && (self.heat != AS_MISSILE)))
+	if (((self.heat != 2) && (self.heat != 4)))
 	{
-		if ((self.weaponframe >= AS_MELEE))
+		if ((self.weaponframe >= 3))
 		{
 			self.weaponframe = 0;
 		}
@@ -617,7 +617,7 @@ void () player_assaultcannonup2 = [ 103, player_assaultcannonup1 ]
 	}
 	SuperDamageSound ();
 	Attack_Finished (0.1);
-	if ((((self.heat != 2) && (self.heat != AS_MISSILE)) && (self.heat != 7)))
+	if ((((self.heat != 2) && (self.heat != 4)) && (self.heat != 7)))
 	{
 		if (((self.weaponframe == 2) && (self.heat >= 9)))
 		{
@@ -625,7 +625,7 @@ void () player_assaultcannonup2 = [ 103, player_assaultcannonup1 ]
 		}
 		else
 		{
-			if ((self.weaponframe >= AS_MELEE))
+			if ((self.weaponframe >= 3))
 			{
 				self.weaponframe = 0;
 			}
@@ -651,7 +651,7 @@ void () player_assaultcannon1 = [ 103, player_assaultcannon2 ]
 		sound (self, 1, "weapons/asscan2.wav", 1, 1);
 		if ((self.weaponframe == 2))
 		{
-			self.weaponframe = AS_MISSILE;
+			self.weaponframe = 4;
 		}
 		else
 		{
@@ -690,7 +690,7 @@ void () player_assaultcannon2 = [ 104, player_assaultcannon1 ]
 	{
 		if ((self.weaponframe == 2))
 		{
-			self.weaponframe = AS_MISSILE;
+			self.weaponframe = 4;
 		}
 		else
 		{
@@ -754,7 +754,7 @@ void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 		}
 		if (((((self.count != 8) && (self.count != enter)) && (self.count != 12)) && (self.count != 14)))
 		{
-			if ((self.weaponframe == AS_MELEE))
+			if ((self.weaponframe == 3))
 			{
 				self.weaponframe = 0;
 			}
@@ -834,12 +834,12 @@ void () player_rocket2 = [ 108, player_rocket3 ]
 
 void () player_rocket3 = [ 109, player_rocket4 ]
 {
-	self.weaponframe = AS_MELEE;
+	self.weaponframe = 3;
 };
 
 void () player_rocket4 = [ 110, player_rocket5 ]
 {
-	self.weaponframe = AS_MISSILE;
+	self.weaponframe = 4;
 };
 
 void () player_rocket5 = [ 111, player_rocket6 ]
@@ -866,7 +866,7 @@ void () PainSound =
 		sound (self, 2, "player/teledth1.wav", 1, 0);
 		return;
 	}
-	if (((self.watertype == -3) && (self.waterlevel == AS_MELEE)))
+	if (((self.watertype == -3) && (self.waterlevel == 3)))
 	{
 		DeathBubbles (1);
 		if ((random () > 0.5))
@@ -929,13 +929,13 @@ void () PainSound =
 		}
 		else
 		{
-			if ((rs == AS_MELEE))
+			if ((rs == 3))
 			{
 				self.noise = "player/pain3.wav";
 			}
 			else
 			{
-				if ((rs == AS_MISSILE))
+				if ((rs == 4))
 				{
 					self.noise = "player/pain4.wav";
 				}
@@ -1050,7 +1050,7 @@ void () player_die_ax1;
 
 void () DeathBubblesSpawn =
 {
-	if ((self.owner.waterlevel != AS_MELEE))
+	if ((self.owner.waterlevel != 3))
 	{
 		dremove (self);
 		return;
@@ -1096,7 +1096,7 @@ void () DeathSound =
 {
 	local float rs;
 
-	if ((self.waterlevel == AS_MELEE))
+	if ((self.waterlevel == 3))
 	{
 		if (self.is_feigning)
 		{
@@ -1109,7 +1109,7 @@ void () DeathSound =
 		sound (self, 2, "player/h2odeath.wav", 1, 0);
 		return;
 	}
-	rs = rint (((random () * AS_MISSILE) + 1));
+	rs = rint (((random () * 4) + 1));
 	if ((rs == 1))
 	{
 		self.noise = "player/death1.wav";
@@ -1118,11 +1118,11 @@ void () DeathSound =
 	{
 		self.noise = "player/death2.wav";
 	}
-	if ((rs == AS_MELEE))
+	if ((rs == 3))
 	{
 		self.noise = "player/death3.wav";
 	}
-	if ((rs == AS_MISSILE))
+	if ((rs == 4))
 	{
 		self.noise = "player/death4.wav";
 	}
@@ -1369,13 +1369,13 @@ void () PlayerDie =
 		}
 		else
 		{
-			if ((i == AS_MELEE))
+			if ((i == 3))
 			{
 				player_diec1 ();
 			}
 			else
 			{
-				if ((i == AS_MISSILE))
+				if ((i == 4))
 				{
 					player_died1 ();
 				}

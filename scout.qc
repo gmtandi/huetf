@@ -131,11 +131,11 @@ void () ConcussionGrenadeTouch =
 void () ConcussionGrenadeExplode =
 {
 	T_RadiusBounce (self, self.owner, 240, world);
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
 };
@@ -210,7 +210,7 @@ void () ConcussionGrenadeTimer =
 			stumble = (crandom () * self.health);
 			if ((self.owner.playerclass == 6))
 			{
-				stumble = (stumble / AS_MELEE);
+				stumble = (stumble / 3);
 			}
 			if (!((pos == -2) && (self.owner.velocity == '0 0 0')))
 			{
@@ -376,13 +376,13 @@ void () TeamFortress_Scan =
 			WriteCoord (1, lightningvec_x);
 			WriteCoord (1, lightningvec_y);
 			WriteCoord (1, (lightningvec_z + 8));
-			if ((self.owner.tf_items_flags & AS_MISSILE))
+			if ((self.owner.tf_items_flags & 4))
 			{
 				stuffcmd (self.owner, "play misc/basekey.wav\n");
 			}
 			num = vlen ((list.origin - self.owner.origin));
 			num = (num / enter);
-			num = (num / AS_MELEE);
+			num = (num / 3);
 			num = rint (num);
 			self.health = num;
 			if ((list.classname == "player"))

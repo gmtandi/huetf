@@ -82,7 +82,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 			{
 				Attack_Finished (0.7);
 				rt = ((16 - self.reload_super_shotgun) / 16);
-				rt = (AS_MELEE - (AS_MELEE * rt));
+				rt = (3 - (3 * rt));
 				self.reload_super_shotgun = 0;
 				if ((self.ammo_shells < 16))
 				{
@@ -126,7 +126,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 				{
 					Attack_Finished (0.6);
 					rt = ((6 - self.reload_grenade_launcher) / 6);
-					rt = (AS_MISSILE - (AS_MISSILE * rt));
+					rt = (4 - (4 * rt));
 					self.reload_grenade_launcher = 0;
 					if ((self.ammo_rockets < 6))
 					{
@@ -161,7 +161,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 						sprint (self, 2, "clip full.\n");
 						return;
 					}
-					if (((AS_MISSILE - self.reload_rocket_launcher) == self.ammo_rockets))
+					if (((4 - self.reload_rocket_launcher) == self.ammo_rockets))
 					{
 						sprint (self, 2, "all rockets are in the clip.\n");
 						return;
@@ -169,12 +169,12 @@ void () TeamFortress_ReloadCurrentWeapon =
 					if ((self.reload_rocket_launcher < self.ammo_rockets))
 					{
 						Attack_Finished (0.8);
-						rt = ((AS_MISSILE - self.reload_rocket_launcher) / AS_MISSILE);
+						rt = ((4 - self.reload_rocket_launcher) / 4);
 						rt = (5 - (5 * rt));
 						self.reload_rocket_launcher = 0;
-						if ((self.ammo_rockets < AS_MISSILE))
+						if ((self.ammo_rockets < 4))
 						{
-							self.reload_rocket_launcher = (AS_MISSILE - self.ammo_rockets);
+							self.reload_rocket_launcher = (4 - self.ammo_rockets);
 						}
 						sprint (self, 2, "reloading...\n");
 						self.tfstate = (self.tfstate | 2);

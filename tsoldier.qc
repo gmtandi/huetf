@@ -58,7 +58,7 @@ void () NailGrenadeLaunchNail =
 	local float cur_yaw;
 
 	i = 0;
-	while ((i < AS_MELEE))
+	while ((i < 3))
 	{
 		j = ((random () + 2) * 5);
 		cur_yaw = anglemod ((self.angles_y + j));

@@ -15,7 +15,7 @@ void () TeamFortress_SaveMe =
 		{
 			sound (self, 1, "speech/saveme2.wav", 1, 1);
 		}
-		self.last_sound = (time + AS_MISSILE);
+		self.last_sound = (time + 4);
 	}
 	te = find (world, classname, "player");
 	while (te)

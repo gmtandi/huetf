@@ -55,7 +55,7 @@ void () CheckAllRates =
 					sprint (p, 2, "\nYour עבפו setting is too high for this server.\n");
 					tmp = ftos (maxrate);
 					sprint (p, 2, "Rate set to ");
-					sprint2 (p, AS_MELEE, tmp, "\n");
+					sprint2 (p, 3, tmp, "\n");
 					stuffcmd (p, "rate ");
 					stuffcmd (p, tmp);
 					stuffcmd (p, "\n");
@@ -65,7 +65,7 @@ void () CheckAllRates =
 					sprint (p, 2, "\nYour עבפו setting is too low for this server.\n");
 					tmp = ftos (minrate);
 					sprint (p, 2, "Rate set to ");
-					sprint2 (p, AS_MELEE, tmp, "\n");
+					sprint2 (p, 3, tmp, "\n");
 					stuffcmd (p, "rate ");
 					stuffcmd (p, tmp);
 					stuffcmd (p, "\n");
@@ -101,7 +101,7 @@ void () CheckConnectRate =
 			sprint (self, 2, "\nYour עבפו setting is too high for this server.\n");
 			tmp = ftos (maxrate);
 			sprint (self, 2, "Rate set to ");
-			sprint2 (self, AS_MELEE, tmp, "\n");
+			sprint2 (self, 3, tmp, "\n");
 			stuffcmd (self, "rate ");
 			stuffcmd (self, tmp);
 			stuffcmd (self, "\n");
@@ -111,7 +111,7 @@ void () CheckConnectRate =
 			sprint (self, 2, "\nYour עבפו setting is too low for this server.\n");
 			tmp = ftos (minrate);
 			sprint (self, 2, "Rate set to ");
-			sprint2 (self, AS_MELEE, tmp, "\n");
+			sprint2 (self, 3, tmp, "\n");
 			stuffcmd (self, "rate ");
 			stuffcmd (self, tmp);
 			stuffcmd (self, "\n");
@@ -264,7 +264,7 @@ void () DecodeLevelParms =
 			ParseTFDetect (ent);
 			if (((number_of_teams <= 0) || (number_of_teams >= 5)))
 			{
-				number_of_teams = AS_MISSILE;
+				number_of_teams = 4;
 			}
 		}
 		else
@@ -284,7 +284,7 @@ void () DecodeLevelParms =
 			}
 			else
 			{
-				number_of_teams = AS_MISSILE;
+				number_of_teams = 4;
 			}
 			team1maxplayers = _d;
 			team2maxplayers = _d;
@@ -687,7 +687,7 @@ void () ExitIntermission =
 		{
 			WriteByte (2, space);
 			WriteByte (2, 2);
-			WriteByte (2, AS_MELEE);
+			WriteByte (2, 3);
 			if (!cvar ("registered"))
 			{
 				WriteByte (2, 31);
@@ -706,7 +706,7 @@ void () ExitIntermission =
 			{
 				WriteByte (2, space);
 				WriteByte (2, 2);
-				WriteByte (2, AS_MELEE);
+				WriteByte (2, 3);
 				WriteByte (2, 31);
 				WriteString (2, "The Rune of Black Magic throbs evilly in\nyour hand && whispers dark thoughts\ninto your brain. You learn the inmost\nlore of the Hell-Mother; Shub-Niggurath!\nYou now know that she is behind all the\nterrible plotting which has led to so\nmuch death...");
 				return;
@@ -717,7 +717,7 @@ void () ExitIntermission =
 				{
 					WriteByte (2, space);
 					WriteByte (2, 2);
-					WriteByte (2, AS_MELEE);
+					WriteByte (2, 3);
 					WriteByte (2, 31);
 					WriteString (2, "The charred viscera of diabolic horrors\nbubble viscously as you seize the Rune\nof Hell Magic. Its heat scorches your\nhand, && its terrible secrets blight\nyour mind. Gathering the shreds of your\ncourage, you shake the devil's shackles\nfrom your ...");
 					return;
@@ -728,7 +728,7 @@ void () ExitIntermission =
 					{
 						WriteByte (2, space);
 						WriteByte (2, 2);
-						WriteByte (2, AS_MELEE);
+						WriteByte (2, 3);
 						WriteByte (2, 31);
 						WriteString (2, "Despite the awful might of the Elder\nWorld, you have achieved the Rune of\nElder Magic, capstone of all types of\narcane wisdom. Beyond good && evil,\nbeyond life && death, the Rune\npulsates, heavy with import. Patient and\npotent, the Elder Being...");
 						return;
@@ -738,7 +738,7 @@ void () ExitIntermission =
 		}
 		GotoNextMap ();
 	}
-	if ((intermission_running == AS_MELEE))
+	if ((intermission_running == 3))
 	{
 		if (!cvar ("registered"))
 		{
@@ -838,7 +838,7 @@ void () execute_changelevel =
 	intermission_exittime = (time + 5);
 	pos = FindIntermission ();
 	WriteByte (2, space);
-	WriteByte (2, AS_MELEE);
+	WriteByte (2, 3);
 	WriteByte (2, 30);
 	WriteCoord (2, pos.origin_x);
 	WriteCoord (2, pos.origin_y);
@@ -870,7 +870,7 @@ void () changelevel_touch =
 	{
 		return;
 	}
-	if (((cvar ("samelevel") == 2) || ((cvar ("samelevel") == AS_MELEE) && (mapname != "start"))))
+	if (((cvar ("samelevel") == 2) || ((cvar ("samelevel") == 3) && (mapname != "start"))))
 	{
 		return;
 	}
@@ -979,7 +979,7 @@ void () ClientKill =
 	TeamFortress_SetupRespawn ();
 	self.health = -1;
 	self.th_die ();
-	self.deadflag = AS_MELEE;
+	self.deadflag = 3;
 	self.takedamage = 0;
 };
 entity lastspawn_team1;
@@ -1100,7 +1100,7 @@ entity (float team_num) FindTeamSpawnPoint =
 		}
 		else
 		{
-			if ((team_num == AS_MELEE))
+			if ((team_num == 3))
 			{
 				spot = lastspawn_team3;
 				attempts = 0;
@@ -1139,7 +1139,7 @@ entity (float team_num) FindTeamSpawnPoint =
 			}
 			else
 			{
-				if ((team_num == AS_MISSILE))
+				if ((team_num == 4))
 				{
 					spot = lastspawn_team4;
 					attempts = 0;
@@ -1281,8 +1281,8 @@ void () PutClientInServer =
 	self.touch = player_touch;
 	self.classname = "player";
 	self.health = _d;
-	self.solid = AS_MELEE;
-	self.movetype = AS_MELEE;
+	self.solid = 3;
+	self.movetype = 3;
 	self.show_hostile = 0;
 	self.max_health = _d;
 	self.flags = 8;
@@ -1682,7 +1682,7 @@ void () PlayerDeathThink =
 		{
 			return;
 		}
-		self.deadflag = AS_MELEE;
+		self.deadflag = 3;
 		return;
 	}
 	if ((round_over == 2))
@@ -1800,11 +1800,11 @@ void () PlayerJump =
 			self.swim_flag = (time + 1);
 			if ((random () < 0.5))
 			{
-				sound (self, AS_MISSILE, "misc/water1.wav", 1, 1);
+				sound (self, 4, "misc/water1.wav", 1, 1);
 			}
 			else
 			{
-				sound (self, AS_MISSILE, "misc/water2.wav", 1, 1);
+				sound (self, 4, "misc/water2.wav", 1, 1);
 			}
 		}
 		if ((self.fire_held_down && (self.current_weapon == 32768)))
@@ -1828,7 +1828,7 @@ void () PlayerJump =
 	}
 	self.flags = (self.flags - (self.flags & 4096));
 	self.button2 = 0;
-	sound (self, AS_MISSILE, "player/plyrjmp8.wav", 1, 1);
+	sound (self, 4, "player/plyrjmp8.wav", 1, 1);
 	te = find (world, classname, "timer");
 	while ((((te.owner != self) || (te.think != ConcussionGrenadeTimer)) && (te != world)))
 	{
@@ -1877,7 +1877,7 @@ void () WaterMove =
 	{
 		return;
 	}
-	if ((self.waterlevel != AS_MELEE))
+	if ((self.waterlevel != 3))
 	{
 		if ((self.air_finished < time))
 		{
@@ -1913,7 +1913,7 @@ void () WaterMove =
 	{
 		if ((self.flags & 16))
 		{
-			sound (self, AS_MISSILE, "misc/outwater.wav", 1, 1);
+			sound (self, 4, "misc/outwater.wav", 1, 1);
 			self.flags = (self.flags - 16);
 		}
 		return;
@@ -1940,7 +1940,7 @@ void () WaterMove =
 			if (((self.dmgtime < time) && (self.radsuit_finished < time)))
 			{
 				self.dmgtime = (time + 1);
-				T_Damage (self, world, world, (AS_MISSILE * self.waterlevel));
+				T_Damage (self, world, world, (4 * self.waterlevel));
 			}
 		}
 	}
@@ -1948,15 +1948,15 @@ void () WaterMove =
 	{
 		if ((self.watertype == -5))
 		{
-			sound (self, AS_MISSILE, "player/inlava.wav", 1, 1);
+			sound (self, 4, "player/inlava.wav", 1, 1);
 		}
 		if ((self.watertype == -3))
 		{
-			sound (self, AS_MISSILE, "player/inh2o.wav", 1, 1);
+			sound (self, 4, "player/inh2o.wav", 1, 1);
 		}
 		if ((self.watertype == -4))
 		{
-			sound (self, AS_MISSILE, "player/slimbrn2.wav", 1, 1);
+			sound (self, 4, "player/slimbrn2.wav", 1, 1);
 		}
 		self.flags = (self.flags + 16);
 		self.dmgtime = 0;
@@ -1997,7 +1997,7 @@ void () PlayerPreThink =
 	if ((self.is_feigning && (self.waterlevel == 1)))
 	{
 		self.watertype = -3;
-		self.waterlevel = AS_MELEE;
+		self.waterlevel = 3;
 	}
 	if (intermission_running)
 	{
@@ -2019,7 +2019,7 @@ void () PlayerPreThink =
 	}
 	if (((self.undercover_team || self.undercover_skin) || self.is_undercover))
 	{
-		if ((self.effects & (8 | AS_MISSILE)))
+		if ((self.effects & (8 | 4)))
 		{
 			sprint (self, 1, "The glowing removes your disguise.\n");
 			Spy_RemoveDisguise (self);
@@ -2094,9 +2094,9 @@ void () CheckPowerups =
 			if ((self.invisible_sound < time))
 			{
 				sound (self, 0, "items/inv3.wav", 0.5, 2);
-				self.invisible_sound = (time + ((random () * AS_MELEE) + 1));
+				self.invisible_sound = (time + ((random () * 3) + 1));
 			}
-			if ((self.invisible_finished < (time + AS_MELEE)))
+			if ((self.invisible_finished < (time + 3)))
 			{
 				if ((self.invisible_time == 1))
 				{
@@ -2134,7 +2134,7 @@ void () CheckPowerups =
 				self.invincible_finished = (time + 666);
 			}
 		}
-		if ((self.invincible_finished < (time + AS_MELEE)))
+		if ((self.invincible_finished < (time + 3)))
 		{
 			if ((self.invincible_time == 1))
 			{
@@ -2192,7 +2192,7 @@ void () CheckPowerups =
 				self.super_damage_finished = (time + 666);
 			}
 		}
-		if ((self.super_damage_finished < (time + AS_MELEE)))
+		if ((self.super_damage_finished < (time + 3)))
 		{
 			if ((self.super_time == 1))
 			{
@@ -2251,7 +2251,7 @@ void () CheckPowerups =
 				self.radsuit_finished = (time + 666);
 			}
 		}
-		if ((self.radsuit_finished < (time + AS_MELEE)))
+		if ((self.radsuit_finished < (time + 3)))
 		{
 			if ((self.rad_time == 1))
 			{
@@ -2402,7 +2402,7 @@ void () PlayerPostThink =
 			{
 				if ((self.watertype == -3))
 				{
-					sound (self, AS_MISSILE, "player/h2ojump.wav", 1, 1);
+					sound (self, 4, "player/h2ojump.wav", 1, 1);
 				}
 				else
 				{
@@ -2470,7 +2470,7 @@ void (string cl_pwd) Admin_Check =
 		stuffcmd (self, "\"\n");
 		if (((st2 != string_null) && (cl_pwd == st2)))
 		{
-			self.is_admin = AS_MELEE;
+			self.is_admin = 3;
 		}
 	}
 };
@@ -2637,7 +2637,7 @@ void () ClientConnect =
 	{
 		if ((self.tfkey & 8))
 		{
-			self.StatusBarSize = AS_MELEE;
+			self.StatusBarSize = 3;
 		}
 		else
 		{
@@ -2697,7 +2697,7 @@ if (self.captain) {
 
 }
 
-	sound (self, AS_MISSILE, "player/tornoff2.wav", 1, 0);
+	sound (self, 4, "player/tornoff2.wav", 1, 0);
 	self.has_disconnected = 1;
 	TeamFortress_RemoveTimers ();
 	RemoveVotes ();
@@ -2917,13 +2917,13 @@ void (entity targ, entity attacker) ClientObituary =
 					}
 					else
 					{
-						if ((targ.playerclass == AS_MELEE))
+						if ((targ.playerclass == 3))
 						{
 							deathstring = " sat on his own grenade\n";
 						}
 						else
 						{
-							if ((targ.playerclass == AS_MISSILE))
+							if ((targ.playerclass == 4))
 							{
 								deathstring = " got to know his grenade too well\n";
 							}
@@ -2979,7 +2979,7 @@ void (entity targ, entity attacker) ClientObituary =
 					{
 						if ((deathmsg == enter))
 						{
-							if ((targ.playerclass == AS_MISSILE))
+							if ((targ.playerclass == 4))
 							{
 								deathstring = " practiced his own Mirv dance\n";
 							}
@@ -3184,14 +3184,14 @@ void (entity targ, entity attacker) ClientObituary =
 						}
 						else
 						{
-							if ((attacker.playerclass == AS_MELEE))
+							if ((attacker.playerclass == 3))
 							{
 								deathstring = " played catch with ";
 								deathstring2 = "'s grenade\n";
 							}
 							else
 							{
-								if ((attacker.playerclass == AS_MISSILE))
+								if ((attacker.playerclass == 4))
 								{
 									deathstring = " received a pineapple enema from ";
 									deathstring2 = "\n";
@@ -3255,7 +3255,7 @@ void (entity targ, entity attacker) ClientObituary =
 						{
 							if ((deathmsg == enter))
 							{
-								if ((attacker.playerclass == AS_MISSILE))
+								if ((attacker.playerclass == 4))
 								{
 									deathstring = " does a dance on ";
 									deathstring2 = "'s Mirv grenade\n";
@@ -3429,14 +3429,14 @@ void (entity targ, entity attacker) ClientObituary =
 																									}
 																									else
 																									{
-																										if ((attacker.playerclass == AS_MELEE))
+																										if ((attacker.playerclass == 3))
 																										{
 																											deathstring = " was sliced && diced by ";
 																											deathstring2 = "'s blade\n";
 																										}
 																										else
 																										{
-																											if ((attacker.playerclass == AS_MISSILE))
+																											if ((attacker.playerclass == 4))
 																											{
 																												deathstring = " is split from crotch to sternum by ";
 																												deathstring2 = "'s axe swing\n";
@@ -3483,14 +3483,14 @@ void (entity targ, entity attacker) ClientObituary =
 																									}
 																									else
 																									{
-																										if ((attacker.playerclass == AS_MELEE))
+																										if ((attacker.playerclass == 3))
 																										{
 																											deathstring = " practices being ";
 																											deathstring2 = "'s clay pigeon\n";
 																										}
 																										else
 																										{
-																											if ((attacker.playerclass == AS_MISSILE))
+																											if ((attacker.playerclass == 4))
 																											{
 																												deathstring = " was on the receiving end of ";
 																												deathstring2 = "'s shotgun barrel\n";
@@ -3531,7 +3531,7 @@ void (entity targ, entity attacker) ClientObituary =
 																								{
 																									if ((deathmsg == 2))
 																									{
-																										if ((attacker.playerclass == AS_MELEE))
+																										if ((attacker.playerclass == 3))
 																										{
 																											deathstring = " was turned into swiss cheese by ";
 																											deathstring2 = "'s buckshot\n";
@@ -3576,7 +3576,7 @@ void (entity targ, entity attacker) ClientObituary =
 																									}
 																									else
 																									{
-																										if ((deathmsg == AS_MELEE))
+																										if ((deathmsg == 3))
 																										{
 																											if ((attacker.playerclass == 1))
 																											{
@@ -3607,7 +3607,7 @@ void (entity targ, entity attacker) ClientObituary =
 																										}
 																										else
 																										{
-																											if ((deathmsg == AS_MISSILE))
+																											if ((deathmsg == 4))
 																											{
 																												deathstring = " was punctured by ";
 																												deathstring2 = "\n";
@@ -3906,7 +3906,7 @@ void (entity targ, entity attacker) ClientObituary =
 							}
 							else
 							{
-								if (((attacker.solid == AS_MISSILE) && (attacker != world)))
+								if (((attacker.solid == 4) && (attacker != world)))
 								{
 									deathstring = " was squished\n";
 								}

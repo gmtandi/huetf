@@ -23,14 +23,14 @@ void () UseSpecialSkill =
 		}
 		else
 		{
-			if ((self.playerclass == AS_MELEE))
+			if ((self.playerclass == 3))
 			{
 				self.impulse = 173;
 				return;
 			}
 			else
 			{
-				if ((self.playerclass == AS_MISSILE))
+				if ((self.playerclass == 4))
 				{
 					self.impulse = 170;
 					return;
@@ -63,7 +63,7 @@ void () UseSpecialSkill =
 								}
 								else
 								{
-									self.impulse = AS_MELEE;
+									self.impulse = 3;
 									return;
 								}
 							}
@@ -252,11 +252,11 @@ void (float inp) TeamFortress_ChangeClass =
 	}
 	self.nextpc = 0;
 	self.takedamage = 2;
-	self.movetype = AS_MELEE;
+	self.movetype = 3;
 	self.flags = (8 | 512);
 	self.waterlevel = 0;
 	self.air_finished = (time + 12);
-	self.solid = AS_MELEE;
+	self.solid = 3;
 	self.pausetime = 0;
 	self.gravity = 1;
 	spot = SelectSpawnPoint ();
@@ -394,7 +394,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Sniper");
 	}
-	if ((!(illegalclasses & AS_MISSILE) && !(ill & AS_MISSILE)))
+	if ((!(illegalclasses & 4) && !(ill & 4)))
 	{
 		if (gotone)
 		{
@@ -498,13 +498,13 @@ void () TeamFortress_Inventory =
 			}
 			else
 			{
-				if ((self.tp_grenades_1 == AS_MELEE))
+				if ((self.tp_grenades_1 == 3))
 				{
 					sprint (self, 2, " Nail(");
 				}
 				else
 				{
-					if ((self.tp_grenades_1 == AS_MISSILE))
+					if ((self.tp_grenades_1 == 4))
 					{
 						sprint (self, 2, " Mirv(");
 					}
@@ -576,13 +576,13 @@ else
 			}
 			else
 			{
-				if ((self.tp_grenades_2 == AS_MELEE))
+				if ((self.tp_grenades_2 == 3))
 				{
 					sprint (self, 2, " Nail(");
 				}
 				else
 				{
-					if ((self.tp_grenades_2 == AS_MISSILE))
+					if ((self.tp_grenades_2 == 4))
 					{
 						sprint (self, 2, " Mirv(");
 					}
@@ -629,7 +629,7 @@ else
 	{
 		sprint (self, 2, "Scanner. ");
 	}
-	if ((self.weapons_carried & AS_MISSILE))
+	if ((self.weapons_carried & 4))
 	{
 		sprint (self, 2, "Medikit (");
 		ac = ftos (self.ammo_medikit);
@@ -720,7 +720,7 @@ void () TeamFortress_ShowTF =
 	{
 		sprint (self, 2, "AutoTeam On.\n");
 	}
-	if ((toggleflags & AS_MISSILE))
+	if ((toggleflags & 4))
 	{
 		st = ftos (respawn_delay_time);
 	}
@@ -810,13 +810,13 @@ void () TeamFortress_PrimeGrenade =
 		}
 		else
 		{
-			if ((self.tp_grenades_1 == AS_MELEE))
+			if ((self.tp_grenades_1 == 3))
 			{
 				gs = "Nail grenade";
 			}
 			else
 			{
-				if ((self.tp_grenades_1 == AS_MISSILE))
+				if ((self.tp_grenades_1 == 4))
 				{
 					gs = "Mirv grenade";
 				}
@@ -904,7 +904,7 @@ if ((self.tp_grenades_1 == 11))
 			}
 			else
 			{
-				ptime = ftos (AS_MELEE);
+				ptime = ftos (3);
 				sprint (self, 2, gs);
 				sprint (self, 2, " primed, ");
 				sprint (self, 2, ptime);
@@ -928,13 +928,13 @@ if ((self.tp_grenades_1 == 11))
 		}
 		else
 		{
-			if ((self.tp_grenades_2 == AS_MELEE))
+			if ((self.tp_grenades_2 == 3))
 			{
 				gs = "Nail grenade";
 			}
 			else
 			{
-				if ((self.tp_grenades_2 == AS_MISSILE))
+				if ((self.tp_grenades_2 == 4))
 				{
 					gs = "Mirv grenade";
 				}
@@ -1017,7 +1017,7 @@ if ((self.tp_grenades_1 == 11))
 			}
 			else
 			{
-				ptime = ftos (AS_MELEE);
+				ptime = ftos (3);
 				sprint (self, 2, gs);
 				sprint (self, 2, " primed, ");
 				sprint (self, 2, ptime);
@@ -1155,7 +1155,7 @@ else  if ((self.weapon == 11)) // impact grenade
 
 		else
 		{
-			if ((self.weapon == AS_MELEE))
+			if ((self.weapon == 3))
 			{
 				newmis.touch = NailGrenadeTouch;
 				newmis.think = NailGrenadeExplode;
@@ -1165,7 +1165,7 @@ else  if ((self.weapon == 11)) // impact grenade
 			}
 			else
 			{
-				if ((self.weapon == AS_MISSILE))
+				if ((self.weapon == 4))
 				{
 					newmis.touch = MirvGrenadeTouch;
 					newmis.think = MirvGrenadeExplode;
@@ -1201,7 +1201,7 @@ else  if ((self.weapon == 11)) // impact grenade
 							{
 								newmis.touch = GasGrenadeTouch;
 								newmis.think = GasGrenadeExplode;
-								newmis.skin = AS_MELEE;
+								newmis.skin = 3;
 								newmis.avelocity = '300 300 300';
 								setmodel (newmis, "progs/grenade2.mdl");
 							}
@@ -1211,7 +1211,7 @@ else  if ((self.weapon == 11)) // impact grenade
 								{
 									newmis.touch = EMPGrenadeTouch;
 									newmis.think = EMPGrenadeExplode;
-									newmis.skin = AS_MISSILE;
+									newmis.skin = 4;
 									newmis.avelocity = '300 300 300';
 									setmodel (newmis, "progs/grenade2.mdl");
 								}
@@ -1265,13 +1265,13 @@ float (float pc) IsLegalClass =
 		}
 		else
 		{
-			if ((pc == AS_MELEE))
+			if ((pc == 3))
 			{
-				bit = AS_MISSILE;
+				bit = 4;
 			}
 			else
 			{
-				if ((pc == AS_MISSILE))
+				if ((pc == 4))
 				{
 					bit = 8;
 				}
@@ -1369,13 +1369,13 @@ void (entity p) TeamFortress_SetSpeed =
 		}
 		else
 		{
-			if ((p.playerclass == AS_MELEE))
+			if ((p.playerclass == 3))
 			{
 				p.maxspeed = 240;
 			}
 			else
 			{
-				if ((p.playerclass == AS_MISSILE))
+				if ((p.playerclass == 4))
 				{
 					p.maxspeed = 280;
 				}
@@ -1516,13 +1516,13 @@ void () TeamFortress_SetHealth =
 		}
 		else
 		{
-			if ((self.playerclass == AS_MELEE))
+			if ((self.playerclass == 3))
 			{
 				self.max_health = _d;
 			}
 			else
 			{
-				if ((self.playerclass == AS_MISSILE))
+				if ((self.playerclass == 4))
 				{
 					self.max_health = _Z;
 				}
@@ -1846,7 +1846,7 @@ if (skins24b) {
     }
 
 } else {
-	if ((tn == AS_MISSILE))
+	if ((tn == 4))
 	{
 		if ((tfvsdm == 1))
 		{
@@ -1884,7 +1884,7 @@ if (skins24b) {
 				}
 				else
 				{
-					if ((pc == AS_MELEE))
+					if ((pc == 3))
 					{
 						st = infokey (world, "sk_t4_soldier");
 						if ((st != string_null))
@@ -1895,7 +1895,7 @@ if (skins24b) {
 					}
 					else
 					{
-						if ((pc == AS_MISSILE))
+						if ((pc == 4))
 						{
 							st = infokey (world, "sk_t4_demoman");
 							if ((st != string_null))
@@ -1971,7 +1971,7 @@ if (skins24b) {
 	}
 	else
 	{
-		if ((tn == AS_MELEE))
+		if ((tn == 3))
 		{
 			if ((pc == 1))
 			{
@@ -1995,7 +1995,7 @@ if (skins24b) {
 				}
 				else
 				{
-					if ((pc == AS_MELEE))
+					if ((pc == 3))
 					{
 						st = infokey (world, "sk_t3_soldier");
 						if ((st != string_null))
@@ -2006,7 +2006,7 @@ if (skins24b) {
 					}
 					else
 					{
-						if ((pc == AS_MISSILE))
+						if ((pc == 4))
 						{
 							st = infokey (world, "sk_t3_demoman");
 							if ((st != string_null))
@@ -2119,7 +2119,7 @@ if (skins24b) {
 						}
 						else
 						{
-							if ((pc == AS_MELEE))
+							if ((pc == 3))
 							{
 								st = infokey (world, "sk_t2_soldier");
 								if ((st != string_null))
@@ -2130,7 +2130,7 @@ if (skins24b) {
 							}
 							else
 							{
-								if ((pc == AS_MISSILE))
+								if ((pc == 4))
 								{
 									st = infokey (world, "sk_t2_demoman");
 									if ((st != string_null))
@@ -2228,7 +2228,7 @@ if (skins24b) {
 					}
 					else
 					{
-						if ((pc == AS_MELEE))
+						if ((pc == 3))
 						{
 							st = infokey (world, "sk_t1_soldier");
 							if ((st != string_null))
@@ -2239,7 +2239,7 @@ if (skins24b) {
 						}
 						else
 						{
-							if ((pc == AS_MISSILE))
+							if ((pc == 4))
 							{
 								st = infokey (world, "sk_t1_demoman");
 								if ((st != string_null))
@@ -2409,7 +2409,7 @@ void () TeamFortress_SetEquipment =
 		self.maxammo_shells = _2;
 		self.maxammo_cells = _d;
 		self.no_grenades_1 = 2;
-		self.no_grenades_2 = AS_MELEE;
+		self.no_grenades_2 = 3;
 if (!impactgren)
 		self.tp_grenades_1 = enter;
 else
@@ -2429,7 +2429,7 @@ else
 		self.maxarmor = _2;
 		self.current_weapon = 512;
 		self.items_allowed = ((16 | 128) | 512);
-		self.items = ((self.items | 1) | AS_MISSILE);
+		self.items = ((self.items | 1) | 4);
 	}
 	else
 	{
@@ -2456,11 +2456,11 @@ else
 			self.maxarmor = _2;
 			self.current_weapon = space;
 			self.items_allowed = (((space | 64) | 16) | 512);
-			self.items = (((self.items | 1) | 2) | AS_MISSILE);
+			self.items = (((self.items | 1) | 2) | 4);
 		}
 		else
 		{
-			if ((self.playerclass == AS_MELEE))
+			if ((self.playerclass == 3))
 			{
 				self.weapons_carried = ((((self.weapons_carried | 16) | 128) | 256) | 8192);
 				self.ammo_rockets = enter;
@@ -2471,10 +2471,10 @@ else
 				self.maxammo_nails = _2;
 				self.maxammo_shells = _d;
 				self.maxammo_cells = _2;
-				self.no_grenades_1 = AS_MISSILE;
+				self.no_grenades_1 = 4;
 				self.no_grenades_2 = 1;
 				self.tp_grenades_1 = 1;
-				self.tp_grenades_2 = AS_MELEE;
+				self.tp_grenades_2 = 3;
 				self.tf_items = 0;
 				self.armorclass = (self.armorclass | 0);
 				self.armortype = 0.8;
@@ -2487,7 +2487,7 @@ else
 			}
 			else
 			{
-				if ((self.playerclass == AS_MISSILE))
+				if ((self.playerclass == 4))
 				{
 					self.weapons_carried = ((((self.weapons_carried | 16) | 128) | 2048) | 131072);
 					self.ammo_rockets = 20;
@@ -2498,10 +2498,10 @@ else
 					self.maxammo_nails = _2;
 					self.maxammo_shells = _F;
 					self.maxammo_cells = _2;
-					self.no_grenades_1 = AS_MISSILE;
-					self.no_grenades_2 = AS_MISSILE;
+					self.no_grenades_1 = 4;
+					self.no_grenades_2 = 4;
 					self.tp_grenades_1 = 1;
-					self.tp_grenades_2 = AS_MISSILE;
+					self.tp_grenades_2 = 4;
 					self.tf_items = 0;
 					self.ammo_detpack = 1;
 					self.maxammo_detpack = 1;
@@ -2518,7 +2518,7 @@ else
 				{
 					if ((self.playerclass == 5))
 					{
-						self.weapons_carried = (((((self.weapons_carried | 2) | AS_MISSILE) | 128) | 256) | 1024);
+						self.weapons_carried = (((((self.weapons_carried | 2) | 4) | 128) | 256) | 1024);
 						self.ammo_rockets = 0;
 						self.ammo_nails = _2;
 						self.ammo_shells = _2;
@@ -2527,8 +2527,8 @@ else
 						self.maxammo_nails = 150;
 						self.maxammo_shells = _P;
 						self.maxammo_cells = _2;
-						self.no_grenades_1 = AS_MELEE;
-						self.no_grenades_2 = AS_MELEE;
+						self.no_grenades_1 = 3;
+						self.no_grenades_2 = 3;
 						self.tp_grenades_1 = 1;
 						self.tp_grenades_2 = 2;
 						self.tf_items = 0;
@@ -2541,11 +2541,11 @@ else
 						self.ammo_medikit = _2;
 						self.maxammo_medikit = _d;
 						te = spawn ();
-						te.nextthink = (time + AS_MELEE);
+						te.nextthink = (time + 3);
 						te.think = TeamFortress_Regenerate;
 						te.owner = self;
 						te.classname = "timer";
-						self.items_allowed = ((((2 | AS_MISSILE) | 128) | 256) | 1024);
+						self.items_allowed = ((((2 | 4) | 128) | 256) | 1024);
 						self.items = (((self.items | 1) | 2) | 8);
 					}
 					else
@@ -2561,10 +2561,10 @@ else
 							self.maxammo_nails = 200;
 							self.maxammo_shells = 200;
 							self.maxammo_cells = _8;
-							self.no_grenades_1 = AS_MISSILE;
+							self.no_grenades_1 = 4;
 							self.no_grenades_2 = 1;
 							self.tp_grenades_1 = 1;
-							self.tp_grenades_2 = AS_MISSILE;
+							self.tp_grenades_2 = 4;
 							self.tf_items = 0;
 							self.armorclass = (self.armorclass | 0);
 							self.armortype = 0.8;
@@ -2589,7 +2589,7 @@ else
 								self.maxammo_shells = 40;
 								self.maxammo_cells = 200;
 								self.no_grenades_1 = 2;
-								self.no_grenades_2 = AS_MELEE;
+								self.no_grenades_2 = 3;
 								self.tp_grenades_1 = 1;
 								self.tp_grenades_2 = 5;
 								self.tf_items = 0;
@@ -2622,7 +2622,7 @@ else
 										self.maxarmor = 140;
 										self.current_weapon = 8192;
 										self.items_allowed = ((((((((self.weapons_carried | 16) | 128) | 256) | 512) | 1024) | 2048) | 65536) | 8192);
-										self.items = (((((((self.items | 1) | 2) | AS_MISSILE) | 8) | 16) | space) | 64);
+										self.items = (((((((self.items | 1) | 2) | 4) | 8) | 16) | space) | 64);
 									}
 									else
 									{
@@ -2663,8 +2663,8 @@ else
 										self.maxammo_nails = _d;
 										self.maxammo_shells = 40;
 										self.maxammo_cells = 30;
-										self.no_grenades_1 = AS_MELEE;
-										self.no_grenades_2 = AS_MELEE;
+										self.no_grenades_1 = 3;
+										self.no_grenades_2 = 3;
 										self.tp_grenades_1 = 1;
 										self.tp_grenades_2 = 7;
 										self.tf_items = 0;
@@ -2675,7 +2675,7 @@ else
 										self.maxarmor = _d;
 										self.current_weapon = 262144;
 										self.items_allowed = (((16 | 262144) | 256) | 512);
-										self.items = (((self.items | 1) | 2) | AS_MISSILE);
+										self.items = (((self.items | 1) | 2) | 4);
 									}
 									else
 									{
@@ -2752,7 +2752,7 @@ else
 		{
 			self.armorvalue = self.maxarmor;
 			self.ammo_detpack = self.maxammo_detpack;
-			self.no_grenades_1 = AS_MISSILE;
+			self.no_grenades_1 = 4;
 			self.ammo_rockets = ceil ((self.maxammo_rockets / 2));
 			if ((self.playerclass == 5))
 			{
@@ -2818,7 +2818,7 @@ else
 		self.no_grenades_2 = 0;
 		self.tp_grenades_2 = 0;
 	}
-	if ((noitems & AS_MISSILE))
+	if ((noitems & 4))
 	{
 		self.ammo_detpack = 0;
 		self.maxammo_detpack = 0;
@@ -2861,7 +2861,7 @@ float (entity Retriever, float AmmoType) TeamFortress_GetMaxAmmo =
 				}
 				else
 				{
-					if ((AmmoType == AS_MISSILE))
+					if ((AmmoType == 4))
 					{
 						return (Retriever.maxammo_medikit);
 					}
@@ -2906,7 +2906,7 @@ void (entity Player, float Armorclass) TeamFortress_DescribeArmor =
 	{
 		sprint (Player, 2, "Wooden ");
 	}
-	if ((Armorclass & AS_MISSILE))
+	if ((Armorclass & 4))
 	{
 		sprint (Player, 2, "Blast ");
 	}
@@ -2940,13 +2940,13 @@ string (float pc) TeamFortress_GetClassName =
 		}
 		else
 		{
-			if ((pc == AS_MELEE))
+			if ((pc == 3))
 			{
 				return ("Soldier");
 			}
 			else
 			{
-				if ((pc == AS_MISSILE))
+				if ((pc == 4))
 				{
 					return ("Demolitions Man");
 				}
@@ -3149,7 +3149,7 @@ void () TeamFortress_SetupRespawn =
 	{
 		return;
 	}
-	if ((toggleflags & AS_MISSILE))
+	if ((toggleflags & 4))
 	{
 		restime = respawn_delay_time;
 	}
@@ -3164,7 +3164,7 @@ void () TeamFortress_SetupRespawn =
 	else
 	{
 		self.respawn_time = (time + restime);
-		if ((restime > AS_MELEE))
+		if ((restime > 3))
 		{
 			db = ftos (restime);
 			sprint (self, 2, db);
@@ -3223,9 +3223,9 @@ void () TeamFortress_CheckClassStats =
 	{
 		self.ammo_cells = 0;
 	}
-	if ((self.ammo_medikit > TeamFortress_GetMaxAmmo (self, AS_MISSILE)))
+	if ((self.ammo_medikit > TeamFortress_GetMaxAmmo (self, 4)))
 	{
-		self.ammo_medikit = TeamFortress_GetMaxAmmo (self, AS_MISSILE);
+		self.ammo_medikit = TeamFortress_GetMaxAmmo (self, 4);
 	}
 	if ((self.ammo_medikit < 0))
 	{
@@ -3356,7 +3356,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 
 		else
 		{
-			if ((Gren.weapon == AS_MELEE))
+			if ((Gren.weapon == 3))
 			{
 				newmis.touch = NailGrenadeTouch;
 				newmis.think = NailGrenadeExplode;
@@ -3366,7 +3366,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 			}
 			else
 			{
-				if ((Gren.weapon == AS_MISSILE))
+				if ((Gren.weapon == 4))
 				{
 					newmis.touch = MirvGrenadeTouch;
 					newmis.think = MirvGrenadeExplode;
@@ -3395,7 +3395,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 							te.nextthink = (time + 25);
 							te.owner = Gren.owner;
 							te.solid = 0;
-							Gren.owner.effects = (Gren.owner.effects | AS_MISSILE);
+							Gren.owner.effects = (Gren.owner.effects | 4);
 							dremove (Gren);
 							dremove (newmis);
 							return;
@@ -3416,7 +3416,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 								{
 									newmis.touch = EMPGrenadeTouch;
 									newmis.think = EMPGrenadeExplode;
-									newmis.skin = AS_MISSILE;
+									newmis.skin = 4;
 									newmis.avelocity = '300 300 300';
 									setmodel (newmis, "progs/grenade2.mdl");
 								}
@@ -3449,13 +3449,13 @@ else  if ((Gren.weapon == 11)) // impact grenade
 		}
 		else
 		{
-			if ((Gren.owner.playerclass == AS_MELEE))
+			if ((Gren.owner.playerclass == 3))
 			{
 				bprint3 (1, "Ummm, ", Gren.owner.netname, ", you're supposed to THROW the grenade!\n");
 			}
 			else
 			{
-				if ((Gren.owner.playerclass == AS_MISSILE))
+				if ((Gren.owner.playerclass == 4))
 				{
 					bprint3 (1, "Ack! ", Gren.owner.netname, "! The grenade is your friend for another reason!\n");
 				}
@@ -3521,11 +3521,11 @@ void () NormalGrenadeExplode =
 {
 	deathmsg = 8;
 	T_RadiusDamage (self, self.owner, 180, world);
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
 };
@@ -3658,7 +3658,7 @@ void () BioInfection_Decay =
 		}
 		te = te.chain;
 	}
-	self.nextthink = (time + AS_MELEE);
+	self.nextthink = (time + 3);
 	deathmsg = 13;
 	TF_T_Damage (self.owner, self, self.enemy, 8, 1, 0);
 	SpawnBlood (self.owner.origin, 30);
@@ -3697,7 +3697,7 @@ void () TeamFortress_Regenerate =
 {
 	if ((self.owner.playerclass == 5))
 	{
-		self.nextthink = (time + AS_MELEE);
+		self.nextthink = (time + 3);
 		if ((self.owner.has_disconnected == 1))
 		{
 			dremove (self);
@@ -3766,13 +3766,13 @@ void (entity pl, float fr, float type) TF_AddFrags =
 			}
 			else
 			{
-				if ((pl.team_no == AS_MELEE))
+				if ((pl.team_no == 3))
 				{
 					team3score = (team3score + fr);
 				}
 				else
 				{
-					if ((pl.team_no == AS_MISSILE))
+					if ((pl.team_no == 4))
 					{
 						team4score = (team4score + fr);
 					}
@@ -3792,13 +3792,13 @@ void (entity pl, float fr, float type) TF_AddFrags =
 		}
 		else
 		{
-			if ((pl.team_no == AS_MELEE))
+			if ((pl.team_no == 3))
 			{
 				team3frags = (team3frags + fr);
 			}
 			else
 			{
-				if ((pl.team_no == AS_MISSILE))
+				if ((pl.team_no == 4))
 				{
 					team4frags = (team4frags + fr);
 				}
@@ -3849,13 +3849,13 @@ void (entity p) TeamFortress_ExecClassScript =
 			}
 			else
 			{
-				if ((p.playerclass == AS_MELEE))
+				if ((p.playerclass == 3))
 				{
 					stuffcmd (p, "exec soldier.cfg\n");
 				}
 				else
 				{
-					if ((p.playerclass == AS_MISSILE))
+					if ((p.playerclass == 4))
 					{
 						stuffcmd (p, "exec demoman.cfg\n");
 					}
@@ -3916,7 +3916,7 @@ void (entity p) TeamFortress_ExecMapScript =
 	{
 		st = infokey (p, "exec_map");
 	}
-	if (((st == "on") || (self.tfkey & AS_MISSILE)))
+	if (((st == "on") || (self.tfkey & 4)))
 	{
 		stuffcmd (p, "exec mapdefault.cfg\n");
 		stuffcmd (p, "exec ");

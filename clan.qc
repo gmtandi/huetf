@@ -318,8 +318,8 @@ void () PreMatch_Think =
 				if ((p.netname != ""))
 				{
 					p.takedamage = 2;
-					p.solid = AS_MELEE;
-					p.movetype = AS_MELEE;
+					p.solid = 3;
+					p.movetype = 3;
 				}
 				p = find (p, classname, "player");
 			}
@@ -328,7 +328,7 @@ void () PreMatch_Think =
 		}
 	}
 	fl = (self.cnt2 / 60);
-	if (((((((((((fl == 1) || (fl == 2)) || (fl == AS_MELEE)) || (fl == AS_MISSILE)) || (fl == 5)) || (fl == 6)) || (fl == 7)) || (fl == 8)) || (fl == 9)) || (fl == enter)))
+	if (((((((((((fl == 1) || (fl == 2)) || (fl == 3)) || (fl == 4)) || (fl == 5)) || (fl == 6)) || (fl == 7)) || (fl == 8)) || (fl == 9)) || (fl == enter)))
 	{
 		num = ftos (fl);
 		bprint3 (2, "Match will begin in ", num, " minute(s).\n");
@@ -559,7 +559,7 @@ void () PlayerBreak =
 	{
 		return;
 	}
-	self.allowvote = (time + AS_MELEE);
+	self.allowvote = (time + 3);
 	if (self.bvote)
 	{
 		bprint2 (2, self.netname, " קיפטהעבקף ");
@@ -571,18 +571,18 @@ void () PlayerBreak =
 		{
 			bprint (2, "טיף ");
 		}
-		bprint (AS_MELEE, "vote\n");
+		bprint (3, "vote\n");
 		self.bvote = 0;
 		v_break = (v_break - 1);
 		return;
 	}
 	if (clanbattle)
 	{
-		bprint2 (AS_MELEE, self.netname, " votes for stopping the match\n");
+		bprint2 (3, self.netname, " votes for stopping the match\n");
 	}
 	else
 	{
-		bprint2 (AS_MELEE, self.netname, " votes to end the current map\n");
+		bprint2 (3, self.netname, " votes to end the current map\n");
 	}
 	self.bvote = 1;
 	v_break = (v_break + 1);
@@ -628,7 +628,7 @@ void () RemoveVotes =
 		{
 			bprint (2, "טיף ");
 		}
-		bprint (AS_MELEE, "vote\n");
+		bprint (3, "vote\n");
 		self.bvote = 0;
 		v_break = (v_break - 1);
 	}
@@ -637,7 +637,7 @@ void () RemoveVotes =
 		if ((self.is_admin == 2))
 		{
 			bprint2 (2, self.netname, " aborts election!");
-			bprint (AS_MELEE, "\n");
+			bprint (3, "\n");
 			AbortElect ();
 		}
 	}

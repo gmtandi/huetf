@@ -29,11 +29,11 @@ float () CheckWinner =
 			{
 				team2alive = (team2alive + 1);
 			}
-			if ((Player.team_no == AS_MELEE))
+			if ((Player.team_no == 3))
 			{
 				team3alive = (team3alive + 1);
 			}
-			if ((Player.team_no == AS_MISSILE))
+			if ((Player.team_no == 4))
 			{
 				team4alive = (team4alive + 1);
 			}
@@ -60,11 +60,11 @@ float () CheckWinner =
 		}
 		if ((((!team1alive && !team2alive) && team3alive) && !team4alive))
 		{
-			return (AS_MELEE);
+			return (3);
 		}
 		if ((((!team1alive && !team2alive) && !team3alive) && team4alive))
 		{
-			return (AS_MISSILE);
+			return (4);
 		}
 	}
 	if (!nump)
@@ -123,13 +123,13 @@ void () RoundOver =
 			}
 			else
 			{
-				if ((tfs_winner == AS_MELEE))
+				if ((tfs_winner == 3))
 				{
 					bprint (2, "Yellow Team Wins the Round!\n");
 				}
 				else
 				{
-					if ((tfs_winner == AS_MISSILE))
+					if ((tfs_winner == 4))
 					{
 						bprint (2, "Green Team Wins the Round!\n");
 					}
@@ -167,7 +167,7 @@ void () RoundThink =
 	if (!TeamFortress_GetNoPlayers ())
 	{
 		self.think = StartRound;
-		self.nextthink = (time + AS_MELEE);
+		self.nextthink = (time + 3);
 		return;
 	}
 	self.cnt2 = (self.cnt2 - 0.5);
@@ -266,7 +266,7 @@ void () RoundBegin =
 	while (te)
 	{
 		setmodel (te, te.mdl);
-		te.solid = AS_MISSILE;
+		te.solid = 4;
 		te = find (te, classname, "func_breakable");
 	}
 	te = find (world, classname, "func_bomb_target");
@@ -360,7 +360,7 @@ void () RoundBegin =
 	}
 	if (!self.cnt)
 	{
-		self.cnt = AS_MELEE;
+		self.cnt = 3;
 		self.cnt2 = 60;
 	}
 	else
@@ -432,8 +432,8 @@ void () RoundInit =
 				if ((p.netname != ""))
 				{
 					p.takedamage = 2;
-					p.solid = AS_MELEE;
-					p.movetype = AS_MELEE;
+					p.solid = 3;
+					p.movetype = 3;
 				}
 				p = find (p, classname, "player");
 			}
@@ -452,7 +452,7 @@ void () RoundInit =
 				cease_fire = 0;
 				if (duel)
 				{
-					if ((self.cnt2 == AS_MELEE))
+					if ((self.cnt2 == 3))
 					{
 						stuffcmd (p, "play 3.wav\n");
 					}
@@ -579,7 +579,7 @@ void () StartRound =
 		{
 			oldself = spawn ();
 			oldself.enemy = te;
-			oldself.weapon = AS_MELEE;
+			oldself.weapon = 3;
 			oldself.nextthink = (time + 0.2);
 			oldself.think = ReturnItem;
 		}
@@ -605,7 +605,7 @@ void () StartRound =
 	te = find (world, classname, "round");
 	st = infokey (world, "count");
 	fl = stof (st);
-	if (((fl < AS_MELEE) || (fl > 20)))
+	if (((fl < 3) || (fl > 20)))
 	{
 		fl = enter;
 	}

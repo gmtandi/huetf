@@ -120,7 +120,7 @@ void () light_fluoro =
 		}
 	}
 	precache_sound ("ambience/fl_hum1.wav");
-	ambientsound (self.origin, "ambience/fl_hum1.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/fl_hum1.wav", 0.5, 3);
 };
 
 void () light_fluorospark =
@@ -135,7 +135,7 @@ void () light_fluorospark =
 		self.style = enter;
 	}
 	precache_sound ("ambience/buzz1.wav");
-	ambientsound (self.origin, "ambience/buzz1.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/buzz1.wav", 0.5, 3);
 };
 
 void () light_globe =
@@ -153,7 +153,7 @@ void () light_globe =
 void () FireAmbient =
 {
 	precache_sound ("ambience/fire1.wav");
-	ambientsound (self.origin, "ambience/fire1.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/fire1.wav", 0.5, 3);
 };
 
 void () light_torch_small_walltorch =
@@ -200,7 +200,7 @@ void () light_flame_small_yellow =
 	}
 	if (!self.style)
 	{
-		self.style = AS_MELEE;
+		self.style = 3;
 	}
 	precache_model ("progs/flame2.mdl");
 	setmodel (self, "progs/flame2.mdl");
@@ -217,7 +217,7 @@ void () light_flame_small_white =
 	}
 	if (!self.style)
 	{
-		self.style = AS_MELEE;
+		self.style = 3;
 	}
 	precache_model ("progs/flame2.mdl");
 	setmodel (self, "progs/flame2.mdl");
@@ -260,7 +260,7 @@ void () fire_fly =
 	newmis.nextthink = (time + 5);
 	newmis.think = SUB_Remove;
 	newmis.touch = fire_touch;
-	self.nextthink = ((time + (random () * 5)) + AS_MELEE);
+	self.nextthink = ((time + (random () * 5)) + 3);
 	self.think = fire_fly;
 };
 
@@ -278,11 +278,11 @@ void () barrel_explode =
 	self.takedamage = 0;
 	self.classname = "explo_box";
 	T_RadiusDamage (self, self, 160, world);
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, (self.origin_z + space));
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, (self.origin_z + space));
 	multicast (self.origin, 1);
 	remove (self);
 };
@@ -361,7 +361,7 @@ void () Laser_Touch =
 		dremove (self);
 		return;
 	}
-	sound (self, 1, "enforcer/enfstop.wav", 1, AS_MELEE);
+	sound (self, 1, "enforcer/enfstop.wav", 1, 3);
 	org = (self.origin - (8 * normalize (self.velocity)));
 	if (other.health)
 	{
@@ -370,12 +370,12 @@ void () Laser_Touch =
 	}
 	else
 	{
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 2);
-		WriteByte (AS_MISSILE, 5);
-		WriteCoord (AS_MISSILE, org_x);
-		WriteCoord (AS_MISSILE, org_y);
-		WriteCoord (AS_MISSILE, org_z);
+		WriteByte (4, 23);
+		WriteByte (4, 2);
+		WriteByte (4, 5);
+		WriteCoord (4, org_x);
+		WriteCoord (4, org_y);
+		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
 	dremove (self);
@@ -511,7 +511,7 @@ void () bubble_split =
 	setsize (newmis, '-8 -8 -8', '8 8 8');
 	self.frame = 1;
 	self.cnt = enter;
-	if ((self.waterlevel != AS_MELEE))
+	if ((self.waterlevel != 3))
 	{
 		remove (self);
 	}
@@ -535,7 +535,7 @@ void () bubble_bob =
 	local vector modi;
 
 	self.cnt = (self.cnt + 1);
-	if ((self.cnt == AS_MISSILE))
+	if ((self.cnt == 4))
 	{
 		bubble_split ();
 	}
@@ -604,7 +604,7 @@ void () func_wall =
 	}
 	self.angles = '0 0 0';
 	self.movetype = 7;
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.use = func_wall_use;
 	setmodel (self, self.model);
 };
@@ -636,7 +636,7 @@ void () func_episodegate =
 	}
 	self.angles = '0 0 0';
 	self.movetype = 7;
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.use = func_wall_use;
 	setmodel (self, self.model);
 };
@@ -654,7 +654,7 @@ void () func_bossgate =
 	}
 	self.angles = '0 0 0';
 	self.movetype = 7;
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.use = func_wall_use;
 	setmodel (self, self.model);
 };
@@ -667,7 +667,7 @@ void () ambient_suck_wind =
 		return;
 	}
 	precache_sound ("ambience/suck1.wav");
-	ambientsound (self.origin, "ambience/suck1.wav", 1, AS_MELEE);
+	ambientsound (self.origin, "ambience/suck1.wav", 1, 3);
 };
 
 void () ambient_drone =
@@ -678,7 +678,7 @@ void () ambient_drone =
 		return;
 	}
 	precache_sound ("ambience/drone6.wav");
-	ambientsound (self.origin, "ambience/drone6.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/drone6.wav", 0.5, 3);
 };
 
 void () ambient_flouro_buzz =
@@ -689,7 +689,7 @@ void () ambient_flouro_buzz =
 		return;
 	}
 	precache_sound ("ambience/buzz1.wav");
-	ambientsound (self.origin, "ambience/buzz1.wav", 1, AS_MELEE);
+	ambientsound (self.origin, "ambience/buzz1.wav", 1, 3);
 };
 
 void () ambient_drip =
@@ -700,7 +700,7 @@ void () ambient_drip =
 		return;
 	}
 	precache_sound ("ambience/drip1.wav");
-	ambientsound (self.origin, "ambience/drip1.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/drip1.wav", 0.5, 3);
 };
 
 void () ambient_comp_hum =
@@ -711,7 +711,7 @@ void () ambient_comp_hum =
 		return;
 	}
 	precache_sound ("ambience/comp1.wav");
-	ambientsound (self.origin, "ambience/comp1.wav", 1, AS_MELEE);
+	ambientsound (self.origin, "ambience/comp1.wav", 1, 3);
 };
 
 void () ambient_thunder =
@@ -722,7 +722,7 @@ void () ambient_thunder =
 		return;
 	}
 	precache_sound ("ambience/thunder1.wav");
-	ambientsound (self.origin, "ambience/thunder1.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/thunder1.wav", 0.5, 3);
 };
 
 void () ambient_light_buzz =
@@ -733,7 +733,7 @@ void () ambient_light_buzz =
 		return;
 	}
 	precache_sound ("ambience/fl_hum1.wav");
-	ambientsound (self.origin, "ambience/fl_hum1.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/fl_hum1.wav", 0.5, 3);
 };
 
 void () ambient_swamp1 =
@@ -744,7 +744,7 @@ void () ambient_swamp1 =
 		return;
 	}
 	precache_sound ("ambience/swamp1.wav");
-	ambientsound (self.origin, "ambience/swamp1.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/swamp1.wav", 0.5, 3);
 };
 
 void () ambient_swamp2 =
@@ -755,7 +755,7 @@ void () ambient_swamp2 =
 		return;
 	}
 	precache_sound ("ambience/swamp2.wav");
-	ambientsound (self.origin, "ambience/swamp2.wav", 0.5, AS_MELEE);
+	ambientsound (self.origin, "ambience/swamp2.wav", 0.5, 3);
 };
 
 void () noise_think =
@@ -763,8 +763,8 @@ void () noise_think =
 	self.nextthink = (time + 0.5);
 	sound (self, 1, "enforcer/enfire.wav", 1, 1);
 	sound (self, 2, "enforcer/enfstop.wav", 1, 1);
-	sound (self, AS_MELEE, "enforcer/sight1.wav", 1, 1);
-	sound (self, AS_MISSILE, "enforcer/sight2.wav", 1, 1);
+	sound (self, 3, "enforcer/sight1.wav", 1, 1);
+	sound (self, 4, "enforcer/sight2.wav", 1, 1);
 	sound (self, 5, "enforcer/sight3.wav", 1, 1);
 	sound (self, 6, "enforcer/sight4.wav", 1, 1);
 	sound (self, 7, "enforcer/pain1.wav", 1, 1);

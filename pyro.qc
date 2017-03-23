@@ -199,11 +199,11 @@ void () NapalmGrenadeNetThink =
 		}
 		head = head.chain;
 	}
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	self.heat = (self.heat + 1);
 	if ((self.heat > 7))
@@ -274,11 +274,11 @@ void (vector org, entity shooter) NapalmGrenadeLaunch =
 	{
 		newmis.avelocity = '300 400 250';
 	}
-	if ((spin == AS_MELEE))
+	if ((spin == 3))
 	{
 		newmis.avelocity = '300 300 300';
 	}
-	if ((spin >= AS_MISSILE))
+	if ((spin >= 4))
 	{
 		newmis.avelocity = '400 250 400';
 	}
@@ -333,9 +333,9 @@ void () FlameFollow =
 	self.health = (self.health - 1);
 	if ((vlen (self.enemy.velocity) < _2))
 	{
-		dir_x = (((random () * boundsize_x) / 2) + (boundsize_x / AS_MISSILE));
-		dir_y = (((random () * boundsize_y) / 2) + (boundsize_y / AS_MISSILE));
-		dir_z = (((random () * boundsize_z) / AS_MELEE) + (boundsize_z / 2));
+		dir_x = (((random () * boundsize_x) / 2) + (boundsize_x / 4));
+		dir_y = (((random () * boundsize_y) / 2) + (boundsize_y / 4));
+		dir_z = (((random () * boundsize_z) / 3) + (boundsize_z / 2));
 		vtemp = (vtemp + dir);
 		setorigin (self, vtemp);
 		if ((self.model != "progs/flame2.mdl"))
@@ -360,9 +360,9 @@ void () FlameFollow =
 		return;
 	}
 	self.nextthink = (time + 0.1);
-	if (((self.effects == 8) && (self.heat >= AS_MELEE)))
+	if (((self.effects == 8) && (self.heat >= 3)))
 	{
-		damage = ((self.enemy.numflames * 0.3) * AS_MELEE);
+		damage = ((self.enemy.numflames * 0.3) * 3);
 		if ((damage < 1))
 		{
 			damage = 1;
@@ -391,7 +391,7 @@ void () OnPlayerFlame_touch =
 		{
 			return;
 		}
-		if ((other.numflames >= AS_MISSILE))
+		if ((other.numflames >= 4))
 		{
 			other.tfstate = (other.tfstate | 131072);
 			return;
@@ -453,7 +453,7 @@ void () WorldFlame_touch =
 		{
 			return;
 		}
-		if ((other.numflames >= AS_MISSILE))
+		if ((other.numflames >= 4))
 		{
 			other.tfstate = (other.tfstate | 131072);
 			return;
@@ -521,7 +521,7 @@ void () Flamer_stream_touch =
 			{
 				return;
 			}
-			if ((other.numflames >= AS_MISSILE))
+			if ((other.numflames >= 4))
 			{
 				other.tfstate = (other.tfstate | 131072);
 				return;
@@ -608,7 +608,7 @@ void () Napalm_touch =
 			{
 				return;
 			}
-			if ((other.numflames >= AS_MISSILE))
+			if ((other.numflames >= 4))
 			{
 				other.tfstate = (other.tfstate | 131072);
 				return;
@@ -754,11 +754,11 @@ void () IncendiaryRadius =
 	deathmsg = 15;
 	T_RadiusDamage (self, self.owner, damg, other);
 	self.origin = (self.origin - (8 * normalize (self.velocity)));
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
 };
@@ -778,7 +778,7 @@ void () T_IncendiaryTouch =
 		remove (self);
 		return;
 	}
-	self.effects = (self.effects | AS_MISSILE);
+	self.effects = (self.effects | 4);
 	if ((self.weaponmode == 1))
 	{
 		damg = (space + (random () * enter));
@@ -810,11 +810,11 @@ void () W_FireIncendiaryCannon =
 		}
 		else
 		{
-			if ((self.ammo_rockets < AS_MELEE))
+			if ((self.ammo_rockets < 3))
 			{
 				return;
 			}
-			self.ammo_rockets = (self.ammo_rockets - AS_MELEE);
+			self.ammo_rockets = (self.ammo_rockets - 3);
 			self.currentammo = self.ammo_rockets;
 		}
 	}
@@ -862,7 +862,7 @@ void () TeamFortress_IncendiaryCannon =
 	}
 	else
 	{
-		if ((self.ammo_rockets < AS_MELEE))
+		if ((self.ammo_rockets < 3))
 		{
 			sprint (self, 2, "not enough ammo.\n");
 			return;

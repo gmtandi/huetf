@@ -13,13 +13,13 @@ float (float tno) num_team_ammoboxes =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				return (num_team_ammoboxes_3);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					return (num_team_ammoboxes_4);
 				}
@@ -46,13 +46,13 @@ void (float tno) increment_num_ammoboxes =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				num_team_ammoboxes_3 = (num_team_ammoboxes_3 + 1);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					num_team_ammoboxes_4 = (num_team_ammoboxes_4 + 1);
 				}
@@ -79,13 +79,13 @@ void (float tno) decrement_num_ammoboxes =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				num_team_ammoboxes_3 = (num_team_ammoboxes_3 - 1);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					num_team_ammoboxes_4 = (num_team_ammoboxes_4 - 1);
 				}
@@ -214,7 +214,7 @@ void () TeamFortress_AmmoboxTouch =
 			}
 			else
 			{
-				if ((self.weapon == AS_MELEE))
+				if ((self.weapon == 3))
 				{
 					if ((other.ammo_rockets >= other.maxammo_rockets))
 					{
@@ -230,7 +230,7 @@ void () TeamFortress_AmmoboxTouch =
 				}
 				else
 				{
-					if ((self.weapon == AS_MISSILE))
+					if ((self.weapon == 4))
 					{
 						if ((other.ammo_cells >= other.maxammo_cells))
 						{
@@ -248,7 +248,7 @@ void () TeamFortress_AmmoboxTouch =
 					{
 						if ((self.weapon == 5))
 						{
-							if (((other.no_grenades_1 >= AS_MISSILE) || (other.tp_grenades_1 != self.tp_grenades_1)))
+							if (((other.no_grenades_1 >= 4) || (other.tp_grenades_1 != self.tp_grenades_1)))
 							{
 								return;
 							}
@@ -259,7 +259,7 @@ void () TeamFortress_AmmoboxTouch =
 						{
 							if ((self.weapon == 6))
 							{
-								if ((((other.no_grenades_2 >= AS_MISSILE) || ((other.no_grenades_2 >= 2) && (other.tp_grenades_2 == AS_MELEE))) || (other.tp_grenades_2 != self.tp_grenades_2)))
+								if ((((other.no_grenades_2 >= 4) || ((other.no_grenades_2 >= 2) && (other.tp_grenades_2 == 3))) || (other.tp_grenades_2 != self.tp_grenades_2)))
 								{
 									return;
 								}
@@ -317,7 +317,7 @@ void () TeamFortress_AmmoboxTouch =
 		}
 		sprint (other, 0, "\n");
 	}
-	sound (other, AS_MELEE, "weapons/lock4.wav", 1, 1);
+	sound (other, 3, "weapons/lock4.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	if (took)
 	{
@@ -340,10 +340,10 @@ void (float type) TeamFortress_DropAmmo =
 		{
 			if ((self.playerclass == 9))
 			{
-				if (((self.ammo_cells / AS_MELEE) > (ammo - self.ammo_shells)))
+				if (((self.ammo_cells / 3) > (ammo - self.ammo_shells)))
 				{
 					sprint (self, 2, "you make some shells.\n");
-					self.ammo_cells = (self.ammo_cells - ((ammo - self.ammo_shells) * AS_MELEE));
+					self.ammo_cells = (self.ammo_cells - ((ammo - self.ammo_shells) * 3));
 					self.ammo_shells = ammo;
 				}
 			}
@@ -379,7 +379,7 @@ void (float type) TeamFortress_DropAmmo =
 		}
 		else
 		{
-			if ((type == AS_MELEE))
+			if ((type == 3))
 			{
 				ammo = enter;
 				if ((self.ammo_rockets < ammo))
@@ -402,7 +402,7 @@ void (float type) TeamFortress_DropAmmo =
 			}
 			else
 			{
-				if ((type == AS_MISSILE))
+				if ((type == 4))
 				{
 					ammo = enter;
 					if ((self.ammo_cells < ammo))
@@ -459,13 +459,13 @@ void (float type) TeamFortress_DropAmmo =
 		}
 		else
 		{
-			if ((newmis.weapon == AS_MELEE))
+			if ((newmis.weapon == 3))
 			{
 				newmis.ammo_rockets = ammo;
 			}
 			else
 			{
-				if ((newmis.weapon == AS_MISSILE))
+				if ((newmis.weapon == 4))
 				{
 					newmis.ammo_cells = ammo;
 				}
@@ -512,7 +512,7 @@ void (float type) TeamFortress_DropAmmo =
 	newmis.think = TeamFortress_AmmoboxThink;
 	newmis.touch = TeamFortress_AmmoboxTouch;
 	newmis.skin = (type - 1);
-	if ((newmis.skin > AS_MELEE))
+	if ((newmis.skin > 3))
 	{
 		newmis.skin = 2;
 	}
@@ -606,14 +606,14 @@ void () TeamFortress_Discard =
 		}
 		else
 		{
-			if ((self.playerclass == AS_MELEE))
+			if ((self.playerclass == 3))
 			{
 				newmis.ammo_cells = self.ammo_cells;
 				newmis.ammo_nails = self.ammo_nails;
 			}
 			else
 			{
-				if ((self.playerclass == AS_MISSILE))
+				if ((self.playerclass == 4))
 				{
 					newmis.ammo_cells = self.ammo_cells;
 					newmis.ammo_nails = self.ammo_nails;
@@ -669,7 +669,7 @@ void () TeamFortress_Discard =
 	self.ammo_rockets = (self.ammo_rockets - newmis.ammo_rockets);
 	self.ammo_cells = (self.ammo_cells - newmis.ammo_cells);
 	W_SetCurrentAmmo ();
-	sound (self, AS_MELEE, "weapons/lock4.wav", 1, 1);
+	sound (self, 3, "weapons/lock4.wav", 1, 1);
 	increment_num_ammoboxes (self.team_no);
 	if ((num_team_ammoboxes (self.team_no) > (num_max_ammoboxes / number_of_teams)))
 	{
@@ -711,11 +711,11 @@ void () Ammobox_Explode =
 		self.solid = 0;
 		deathmsg = 30;
 		T_RadiusDamage (self.enemy, self.enemy.owner, expsize, self);
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, AS_MELEE);
-		WriteCoord (AS_MISSILE, self.origin_x);
-		WriteCoord (AS_MISSILE, self.origin_y);
-		WriteCoord (AS_MISSILE, self.origin_z);
+		WriteByte (4, 23);
+		WriteByte (4, 3);
+		WriteCoord (4, self.origin_x);
+		WriteCoord (4, self.origin_y);
+		WriteCoord (4, self.origin_z);
 		multicast (self.origin, 1);
 	}
 	TeamFortress_AmmoboxThink ();

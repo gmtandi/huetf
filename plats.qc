@@ -57,7 +57,7 @@ void () plat_hit_top =
 	sound (self, 2, self.noise1, 1, 1);
 	self.state = 0;
 	self.think = plat_go_down;
-	self.nextthink = (self.ltime + AS_MELEE);
+	self.nextthink = (self.ltime + 3);
 };
 
 void () plat_hit_bottom =
@@ -69,7 +69,7 @@ void () plat_hit_bottom =
 void () plat_go_down =
 {
 	sound (self, 2, self.noise, 1, 1);
-	self.state = AS_MELEE;
+	self.state = 3;
 	SUB_CalcMove (self.pos2, self.speed, plat_hit_bottom);
 };
 
@@ -191,7 +191,7 @@ void () plat_crush =
 	}
 	else
 	{
-		if ((self.state == AS_MELEE))
+		if ((self.state == 3))
 		{
 			plat_go_up ();
 		}
@@ -250,7 +250,7 @@ void () func_plat =
 	self.mangle = self.angles;
 	self.angles = '0 0 0';
 	self.classname = "plat";
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.movetype = 7;
 	setorigin (self, self.origin);
 	setmodel (self, self.model);
@@ -389,7 +389,7 @@ void () func_train =
 		precache_sound ("plats/train1.wav");
 	}
 	self.cnt = 1;
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.movetype = 7;
 	self.blocked = train_blocked;
 	self.use = train_use;

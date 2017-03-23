@@ -39,16 +39,16 @@ float () CheckAttack =
 	targ = self.enemy;
 	spot1 = (self.origin + self.view_ofs);
 	spot2 = (targ.origin + targ.view_ofs);
-	traceline (spot1, spot2, RANGE_MELEE, self);
+	traceline (spot1, spot2, 0, self);
 	if ((trace_ent != targ))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((trace_inopen && trace_inwater))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
-	if ((enemy_range == RANGE_MELEE))
+	if ((enemy_range == 0))
 	{
 		if (self.th_melee)
 		{
@@ -58,24 +58,24 @@ float () CheckAttack =
 	}
 	if (!self.th_missile)
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((time < self.attack_finished))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((enemy_range == RANGE_FAR))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
-	if ((enemy_range == RANGE_MELEE))
+	if ((enemy_range == 0))
 	{
 		chance = 0.9;
-		self.attack_finished = RANGE_MELEE;
+		self.attack_finished = 0;
 	}
 	else
 	{
-		if ((enemy_range == RANGE_NEAR))
+		if ((enemy_range == 1))
 		{
 			if (self.th_melee)
 			{
@@ -88,7 +88,7 @@ float () CheckAttack =
 		}
 		else
 		{
-			if ((enemy_range == RANGE_MID))
+			if ((enemy_range == 2))
 			{
 				if (self.th_melee)
 				{
@@ -101,7 +101,7 @@ float () CheckAttack =
 			}
 			else
 			{
-				chance = RANGE_MELEE;
+				chance = 0;
 			}
 		}
 	}
@@ -111,7 +111,7 @@ float () CheckAttack =
 		SUB_AttackFinished ((AS_SLIDING * random ()));
 		return (AS_STRAIGHT);
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 float (entity targ) infront;
 float (entity targ) range;
@@ -149,7 +149,7 @@ void () ai_melee =
 	{
 		return;
 	}
-	ldmg = (((random () + random ()) + random ()) * AS_MELEE);
+	ldmg = (((random () + random ()) + random ()) * 3);
 	T_Damage (self.enemy, self, self, ldmg);
 };
 
@@ -172,7 +172,7 @@ void () ai_melee_side =
 	{
 		return;
 	}
-	ldmg = (((random () + random ()) + random ()) * AS_MELEE);
+	ldmg = (((random () + random ()) + random ()) * 3);
 	T_Damage (self.enemy, self, self, ldmg);
 };
 void () t_movetarget;
@@ -228,7 +228,7 @@ float (float v) anglemod =
 	{
 		v = (v - 360);
 	}
-	while ((v < RANGE_MELEE))
+	while ((v < 0))
 	{
 		v = (v + 360);
 	}
@@ -246,7 +246,7 @@ float (entity targ) range =
 	r = vlen ((spot1 - spot2));
 	if ((r < 120))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((r < 500))
 	{
@@ -256,7 +256,7 @@ float (entity targ) range =
 	{
 		return (AS_SLIDING);
 	}
-	return (AS_MELEE);
+	return (3);
 };
 
 float (entity targ) visible =
@@ -269,13 +269,13 @@ float (entity targ) visible =
 	traceline (spot1, spot2, AS_STRAIGHT, self);
 	if ((trace_inopen && trace_inwater))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((trace_fraction == AS_STRAIGHT))
 	{
 		return (AS_STRAIGHT);
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 
 float (entity targ) infront =
@@ -290,7 +290,7 @@ float (entity targ) infront =
 	{
 		return (AS_STRAIGHT);
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 
 void () HuntTarget =
@@ -318,12 +318,12 @@ float () FindTarget =
 	local entity client;
 	local float r;
 
-	if (((sight_entity_time >= (time - 0.1)) && !(self.spawnflags & AS_MELEE)))
+	if (((sight_entity_time >= (time - 0.1)) && !(self.spawnflags & 3)))
 	{
 		client = sight_entity;
 		if ((client.enemy == self.enemy))
 		{
-			return (RANGE_MELEE);
+			return (0);
 		}
 	}
 	else
@@ -331,59 +331,59 @@ float () FindTarget =
 		client = checkclient ();
 		if (!client)
 		{
-			return (RANGE_MELEE);
+			return (0);
 		}
 	}
 	if (tfstrike)
 	{
 		if (round_over)
 		{
-			return (RANGE_MELEE);
+			return (0);
 		}
 		if ((client.team_no != AS_STRAIGHT))
 		{
-			return (RANGE_MELEE);
+			return (0);
 		}
 		if (self.tfstate)
 		{
-			return (RANGE_MELEE);
+			return (0);
 		}
 	}
 	if ((client == self.enemy))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((client.flags & 128))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((client.items & WEAP_RAILGUN))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	r = range (client);
 	if ((r == RANGE_FAR))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if (!visible (client))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
-	if ((r == RANGE_NEAR))
+	if ((r == 1))
 	{
 		if (((client.show_hostile < time) && !infront (client)))
 		{
-			return (RANGE_MELEE);
+			return (0);
 		}
 	}
 	else
 	{
-		if ((r == RANGE_MID))
+		if ((r == 2))
 		{
 			if (!infront (client))
 			{
-				return (RANGE_MELEE);
+				return (0);
 			}
 		}
 	}
@@ -394,7 +394,7 @@ float () FindTarget =
 		if ((self.enemy.classname != "player"))
 		{
 			self.enemy = world;
-			return (RANGE_MELEE);
+			return (0);
 		}
 	}
 	FoundTarget ();
@@ -466,19 +466,19 @@ void (vector dest3) ChooseTurn =
 
 	dir = (self.origin - dest3);
 	newdir_x = trace_plane_normal_y;
-	newdir_y = (RANGE_MELEE - trace_plane_normal_x);
-	newdir_z = RANGE_MELEE;
-	if (((dir * newdir) > RANGE_MELEE))
+	newdir_y = (0 - trace_plane_normal_x);
+	newdir_z = 0;
+	if (((dir * newdir) > 0))
 	{
-		dir_x = (RANGE_MELEE - trace_plane_normal_y);
+		dir_x = (0 - trace_plane_normal_y);
 		dir_y = trace_plane_normal_x;
 	}
 	else
 	{
 		dir_x = trace_plane_normal_y;
-		dir_y = (RANGE_MELEE - trace_plane_normal_x);
+		dir_y = (0 - trace_plane_normal_x);
 	}
-	dir_z = RANGE_MELEE;
+	dir_z = 0;
 	self.ideal_yaw = vectoyaw (dir);
 };
 
@@ -489,7 +489,7 @@ float () FacingIdeal =
 	delta = anglemod ((self.angles_y - self.ideal_yaw));
 	if (((delta > 45) && (delta < 315)))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	return (AS_STRAIGHT);
 };
@@ -548,10 +548,10 @@ void (float dist) ai_run =
 	local float ang_ceil;
 
 	movedist = dist;
-	if ((self.enemy.health <= RANGE_MELEE))
+	if ((self.enemy.health <= 0))
 	{
 		self.enemy = world;
-		if ((self.oldenemy.health > RANGE_MELEE))
+		if ((self.oldenemy.health > 0))
 		{
 			self.enemy = self.oldenemy;
 			HuntTarget ();
@@ -585,12 +585,12 @@ void (float dist) ai_run =
 	enemy_infront = infront (self.enemy);
 	enemy_range = range (self.enemy);
 	enemy_yaw = vectoyaw ((self.enemy.origin - self.origin));
-	if ((self.attack_state == AS_MISSILE))
+	if ((self.attack_state == 4))
 	{
 		ai_run_missile ();
 		return;
 	}
-	if ((self.attack_state == AS_MELEE))
+	if ((self.attack_state == 3))
 	{
 		ai_run_melee ();
 		return;
@@ -842,7 +842,7 @@ void () RefreshStatusBar =
 				WriteIntXX (te.cnt, COLOR_WHITE);
 				WriteByte (1, dperiod);
 				WriteIntXX (te.cnt2, COLOR_WHITE);
-				WriteSpace (AS_MISSILE);
+				WriteSpace (4);
 			}
 		}
 		if (tfstrike)
@@ -872,8 +872,8 @@ void () RefreshStatusBar =
 				}
 				if ((self.ScannerOn == 1))
 				{
-					x = RANGE_MELEE;
-					if ((te.health > RANGE_MELEE))
+					x = 0;
+					if ((te.health > 0))
 					{
 						if ((te.team_no == 1))
 						{
@@ -885,11 +885,11 @@ void () RefreshStatusBar =
 							if ((te.team_no == 2))
 							{
 								WriteStr ("Red ");
-								x = AS_MISSILE;
+								x = 4;
 							}
 							else
 							{
-								if ((te.team_no == AS_MELEE))
+								if ((te.team_no == 3))
 								{
 
 									WriteStr ("Yellow ");
@@ -897,7 +897,7 @@ void () RefreshStatusBar =
 								}
 								else
 								{
-									if ((te.team_no == AS_MISSILE))
+									if ((te.team_no == 4))
 									{
 										WriteStr ("Green ");
 										x = 6;
@@ -919,14 +919,14 @@ void () RefreshStatusBar =
 							}
 							else
 							{
-								if ((te.playerclass == AS_MELEE))
+								if ((te.playerclass == 3))
 								{
 									WriteStr ("Soldier");
 									x = (x + 7);
 								}
 								else
 								{
-									if ((te.playerclass == AS_MISSILE))
+									if ((te.playerclass == 4))
 									{
 										WriteStr ("Demoman");
 										x = (x + 7);
@@ -950,14 +950,14 @@ void () RefreshStatusBar =
 												if ((te.playerclass == 7))
 												{
 													WriteStr ("Pyro");
-													x = (x + AS_MISSILE);
+													x = (x + 4);
 												}
 												else
 												{
 													if ((te.playerclass == 8))
 													{
 														WriteStr ("Spy");
-														x = (x + AS_MELEE);
+														x = (x + 3);
 													}
 													else
 													{
@@ -1014,7 +1014,7 @@ void () RefreshStatusBar =
 			}
 			else
 			{
-				if ((self.playerclass == AS_MISSILE))
+				if ((self.playerclass == 4))
 				{
 					if (self.is_detpacking)
 					{
@@ -1035,7 +1035,7 @@ void () RefreshStatusBar =
 							}
 							else
 							{
-								x = RANGE_MELEE;
+								x = 0;
 								if ((self.undercover_team == 1))
 								{
 									WriteStr ("Blue ");
@@ -1046,18 +1046,18 @@ void () RefreshStatusBar =
 									if ((self.undercover_team == 2))
 									{
 										WriteStr ("Red ");
-										x = AS_MISSILE;
+										x = 4;
 									}
 									else
 									{
-										if ((self.undercover_team == AS_MELEE))
+										if ((self.undercover_team == 3))
 										{
 											WriteStr ("Yellow ");
 											x = 7;
 										}
 										else
 										{
-											if ((self.undercover_team == AS_MISSILE))
+											if ((self.undercover_team == 4))
 											{
 												WriteStr ("Green ");
 												x = 6;
@@ -1079,14 +1079,14 @@ void () RefreshStatusBar =
 									}
 									else
 									{
-										if ((self.undercover_skin == AS_MELEE))
+										if ((self.undercover_skin == 3))
 										{
 											WriteStr ("Soldier");
 											x = (x + 7);
 										}
 										else
 										{
-											if ((self.undercover_skin == AS_MISSILE))
+											if ((self.undercover_skin == 4))
 											{
 												WriteStr ("Demoman");
 												x = (x + 7);
@@ -1110,7 +1110,7 @@ void () RefreshStatusBar =
 														if ((self.undercover_skin == 7))
 														{
 															WriteStr ("Pyro");
-															x = (x + AS_MISSILE);
+															x = (x + 4);
 														}
 														else
 														{
@@ -1137,7 +1137,7 @@ void () RefreshStatusBar =
 					{
 						if ((self.playerclass == 9))
 						{
-							x = RANGE_MELEE;
+							x = 0;
 							if (self.has_sentry)
 							{
 								te = find (world, classname, "building_sentrygun");
@@ -1150,7 +1150,7 @@ void () RefreshStatusBar =
 								x = (x + 11);
 								if (!(self.sbar_type & 1))
 								{
-									if (((te.ammo_rockets == RANGE_MELEE) && (te.ammo_shells == RANGE_MELEE)))
+									if (((te.ammo_rockets == 0) && (te.ammo_shells == 0)))
 									{
 										WriteStr (" no ammo");
 										x = (x + 8);
@@ -1164,7 +1164,7 @@ void () RefreshStatusBar =
 										}
 										else
 										{
-											if ((!te.ammo_rockets && (te.weapon == AS_MELEE)))
+											if ((!te.ammo_rockets && (te.weapon == 3)))
 											{
 												WriteStr (" no rockets");
 												x = (x + 11);
@@ -1184,12 +1184,12 @@ void () RefreshStatusBar =
 								{
 									WriteByte (1, slash);
 									WriteIntXXX (te.ammo_shells, COLOR_WHITE);
-									x = (x + AS_MISSILE);
-									if ((te.weapon == AS_MELEE))
+									x = (x + 4);
+									if ((te.weapon == 3))
 									{
 										WriteByte (1, slash);
 										WriteIntXX (te.ammo_rockets, COLOR_WHITE);
-										x = (x + AS_MELEE);
+										x = (x + 3);
 									}
 								}
 							}
@@ -1204,7 +1204,7 @@ void () RefreshStatusBar =
 								WriteIntXXX (newmis.health, COLOR_WHITE);
 								x = (x + 9);
 							}
-							if (((x >= RANGE_MELEE) && (x < 35)))
+							if (((x >= 0) && (x < 35)))
 							{
 								WriteSpace ((35 - x));
 							}
@@ -1281,11 +1281,11 @@ void () RefreshStatusBar =
 				{
 					if ((self.current_weapon == 8192))
 					{
-						if (((AS_MISSILE - self.reload_rocket_launcher) > self.ammo_rockets))
+						if (((4 - self.reload_rocket_launcher) > self.ammo_rockets))
 						{
-							self.reload_rocket_launcher = (AS_MISSILE - self.ammo_rockets);
+							self.reload_rocket_launcher = (4 - self.ammo_rockets);
 						}
-						num = (AS_MISSILE - self.reload_rocket_launcher);
+						num = (4 - self.reload_rocket_launcher);
 					}
 					else
 					{
@@ -1294,7 +1294,7 @@ void () RefreshStatusBar =
 				}
 			}
 		}
-		if ((num >= RANGE_MELEE))
+		if ((num >= 0))
 		{
 			WriteStr("\sCLIP\s:"); //W7C (space, space, (_C | 128), (_L | 128), (_I | 128), (_P | 128), (dperiod | 128));
 			WriteIntXX (num, COLOR_WHITE);
@@ -1330,7 +1330,7 @@ void () Status_StartWrite =
 	{
 		WriteByte (1, 26);
 		i = (self.StatusBarRes + self.StatusBarSize);
-		while ((i > RANGE_MELEE))
+		while ((i > 0))
 		{
 			WriteByte (1, enter);
 			i = (i - 1);
@@ -1493,12 +1493,12 @@ void (float f) WriteSIntXXXX =
 	local float b3;
 	local float b4;
 
-	if ((f >= RANGE_MELEE))
+	if ((f >= 0))
 	{
 		WriteIntXXXX (f, COLOR_WHITE);
 		return;
 	}
-	f = (RANGE_MELEE - f);
+	f = (0 - f);
 	if ((f > _c))
 	{
 		WriteByte (1, (minus + 128));
@@ -1529,7 +1529,7 @@ void (float i) WriteSpace =
 
 void () Status_EndWrite =
 {
-	WriteByte (1, RANGE_MELEE);
+	WriteByte (1, 0);
 };
 
 void () StatusBar_On =
@@ -1557,11 +1557,11 @@ float (float f) Impulse2Res =
 	{
 		return (SBAR_240);
 	}
-	if ((f == AS_MELEE))
+	if ((f == 3))
 	{
 		return (SBAR_300);
 	}
-	if ((f == AS_MISSILE))
+	if ((f == 4))
 	{
 		return (SBAR_350);
 	}
@@ -1590,7 +1590,7 @@ float (float f) Impulse2Res =
 
 void (float res) StatusRes =
 {
-	self.last_impulse = RANGE_MELEE;
+	self.last_impulse = 0;
 	if (!res)
 	{
 		return;
@@ -1626,13 +1626,13 @@ void (float res) StatusRes =
 					}
 					else
 					{
-						if ((res == AS_MISSILE))
+						if ((res == 4))
 						{
 							sprint (self, 2, "Status Bar Res set to 320x350.\n");
 						}
 						else
 						{
-							if ((res == AS_MELEE))
+							if ((res == 3))
 							{
 								sprint (self, 2, "Status Bar Res set to 400x300.\n");
 							}
@@ -1682,11 +1682,11 @@ string (float type) Status_GrenTypeToString =
 	{
 		return ("Concussion grenade");
 	}
-	if ((type == AS_MELEE))
+	if ((type == 3))
 	{
 		return ("Nail grenade");
 	}
-	if ((type == AS_MISSILE))
+	if ((type == 4))
 	{
 		return ("Mirv grenade");
 	}
@@ -1727,11 +1727,11 @@ string (float tm) Status_TeamNumToTeamString =
 	{
 		return ("red");
 	}
-	if ((tm == AS_MELEE))
+	if ((tm == 3))
 	{
 		return ("yellow");
 	}
-	if ((tm == AS_MISSILE))
+	if ((tm == 4))
 	{
 		return ("green");
 	}
@@ -1792,7 +1792,7 @@ void (float inp) Menu_Admin_Input;
 
 void () ResetMenu =
 {
-	if ((self.StatusBarSize == RANGE_MELEE))
+	if ((self.StatusBarSize == 0))
 	{
 		CenterPrint (self, "\n");
 	}
@@ -1810,7 +1810,7 @@ void () Player_Menu =
 {
 	if ((self.menu_count > 30))
 	{
-		self.menu_count = RANGE_MELEE;
+		self.menu_count = 0;
 	}
 	else
 	{
@@ -1861,7 +1861,7 @@ void () Player_Menu =
 			}
 			else
 			{
-				if ((self.current_menu == AS_MISSILE))
+				if ((self.current_menu == 4))
 				{
 					Menu_Drop ();
 				}
@@ -1934,7 +1934,7 @@ else if (self.current_menu == 24) {
 														}
 														else
 														{
-															if (((self.team_no == RANGE_MELEE) && teamplay && !captainmode))
+															if (((self.team_no == 0) && teamplay && !captainmode))
 															{
 																if ((round_over >= 2))
 																{
@@ -1945,7 +1945,7 @@ else if (self.current_menu == 24) {
 															}
 															else
 															{
-																if ((self.playerclass == RANGE_MELEE))
+																if ((self.playerclass == 0))
 																{
 																	if (round_active && !captainmode)
 																	{
@@ -1956,12 +1956,12 @@ else if (self.current_menu == 24) {
 																		PutClientInServer ();
 																		return;
 																	}
-																	self.current_menu = AS_MELEE;
+																	self.current_menu = 3;
 																	Menu_Class ();
 																}
 																else
 																{
-																	self.current_menu = RANGE_MELEE;
+																	self.current_menu = 0;
 																}
 															}
 														}
@@ -1993,7 +1993,7 @@ void (float menu_no) DisplayMenu =
 	}
 	else
 	{
-		if ((menu_no == AS_MELEE))
+		if ((menu_no == 3))
 		{
 			Menu_Class ();
 		}
@@ -2048,10 +2048,10 @@ void (float inp) Menu_Team_Input =
 	if ((inp == 6))
 	{
 		TeamFortress_TeamSet (-1);
-		self.current_menu = RANGE_MELEE;
+		self.current_menu = 0;
 		Menu_StuffClassHelp ();
 		Menu_ClassHelp ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	else
@@ -2062,13 +2062,13 @@ void (float inp) Menu_Team_Input =
 		}
 		else
 		{
-			if (((inp <= number_of_teams) && (inp > RANGE_MELEE)))
+			if (((inp <= number_of_teams) && (inp > 0)))
 			{
 				TeamFortress_TeamSet (inp);
 			}
 			else
 			{
-				if (((number_of_teams == RANGE_MELEE) && (inp <= AS_MISSILE)))
+				if (((number_of_teams == 0) && (inp <= 4)))
 				{
 					TeamFortress_TeamSet (inp);
 				}
@@ -2076,7 +2076,7 @@ void (float inp) Menu_Team_Input =
 		}
 	}
 	ResetMenu ();
-	self.impulse = RANGE_MELEE;
+	self.impulse = 0;
 };
 
 void () Menu_Class =
@@ -2110,7 +2110,7 @@ void () Menu_Class =
 			}
 			else
 			{
-				if ((self.team_no == AS_MELEE))
+				if ((self.team_no == 3))
 				{
 					if ((AD.noise3 != string_null))
 					{
@@ -2120,7 +2120,7 @@ void () Menu_Class =
 				}
 				else
 				{
-					if ((self.team_no == AS_MISSILE))
+					if ((self.team_no == 4))
 					{
 						if ((AD.noise4 != string_null))
 						{
@@ -2183,7 +2183,7 @@ void (float inp) Menu_Class_Input =
 			self.current_menu = 1;
 		}
 	}
-	self.menu_displaytime = RANGE_MELEE;
+	self.menu_displaytime = 0;
 };
 
 void () Menu_Drop =
@@ -2205,15 +2205,15 @@ void () Menu_RepeatHelp =
 
 void (float inp) Menu_Drop_Input =
 {
-	if (((inp > RANGE_MELEE) && (inp < 5)))
+	if (((inp > 0) && (inp < 5)))
 	{
 		TeamFortress_DropAmmo (inp);
 	}
-	if (((inp > RANGE_MELEE) && (inp < 6)))
+	if (((inp > 0) && (inp < 6)))
 	{
 		ResetMenu ();
 	}
-	self.impulse = RANGE_MELEE;
+	self.impulse = 0;
 };
 
 void (float inp) Menu_Input =
@@ -2228,13 +2228,13 @@ void (float inp) Menu_Input =
 	}
 	else
 	{
-		if (((self.current_menu == AS_MELEE) || (self.current_menu == 20)) && !captainmode)
+		if (((self.current_menu == 3) || (self.current_menu == 20)) && !captainmode)
 		{
 			Menu_Class_Input (inp);
 		}
 		else
 		{
-			if ((self.current_menu == AS_MISSILE))
+			if ((self.current_menu == 4))
 			{
 				Menu_Drop_Input (inp);
 			}
@@ -2331,13 +2331,13 @@ void () Menu_ClassHelp =
 			}
 			else
 			{
-				if ((self.playerclass == AS_MELEE))
+				if ((self.playerclass == 3))
 				{
 					CenterPrint (self, "ÓÏÌÄÉÅÒ Details:             \n\n×ÅÁÐÏÎÓ:                     \n”‘ Shotgun                  \n•‘ Super Shotgun            \n™‘ Rocket Launcher          \n\nPress š for alias help\n");
 				}
 				else
 				{
-					if ((self.playerclass == AS_MISSILE))
+					if ((self.playerclass == 4))
 					{
 						CenterPrint (self, "ÄÅÍÏÌÉÔÉÏÎÓ ÍÁÎ Details:     \n\n×ÅÁÐÏÎÓ:                     \n”‘ Shotgun                  \n˜‘ Grenade Launcher         \n™‘ Pipebomb Launcher        \n\nPress š for alias help\n");
 					}
@@ -2401,13 +2401,13 @@ void () Menu_ClassHelp =
 			}
 			else
 			{
-				if ((self.playerclass == AS_MELEE))
+				if ((self.playerclass == 3))
 				{
 					CenterPrint (self, "ÇÒÅÎÁÄÅÓ:            \nHand Grenade        \nNail Grenade        \n\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:   \nNone\n\n\nPress š for alias help\n");
 				}
 				else
 				{
-					if ((self.playerclass == AS_MISSILE))
+					if ((self.playerclass == 4))
 					{
 						CenterPrint (self, "ÇÒÅÎÁÄÅÓ:            \nHand Grenade        \nMirv Grenade        \n\nÓÐÅÃÉÁÌ ÃÏÍÍÁÎÄÓ:   \nThe Detpack : +det5,+det20,+det50,+det255\nDetonate Pipebombs : detpipe  \n\n\nPress š for alias help\n");
 					}
@@ -2470,7 +2470,7 @@ void () Menu_StuffClassHelp =
 		}
 		else
 		{
-			if ((self.playerclass == AS_MELEE))
+			if ((self.playerclass == 3))
 			{
 				sprint (self, 2, "ÓÏÌÄÉÅÒ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   •‘ Super Shotgun\n");
 				sprint (self, 2, "   ™‘ Rocket Launcher\nÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Nail Grenade\n");
@@ -2478,7 +2478,7 @@ void () Menu_StuffClassHelp =
 			}
 			else
 			{
-				if ((self.playerclass == AS_MISSILE))
+				if ((self.playerclass == 4))
 				{
 					sprint (self, 2, "ÄÅÍÏÌÉÔÉÏÎÓ ÍÁÎ Details:\n\n×ÅÁÐÏÎÓ:\n   ”‘ Shotgun\n   ˜‘ Grenade/Pipebomb Launcher\n");
 					sprint (self, 2, "ÇÒÅÎÁÄÅÓ:\n   Hand Grenade\n   Mirv Grenade\n");
@@ -2548,7 +2548,7 @@ void () Menu_ClassHelp2 =
 
 void (float inp) Menu_ClassHelp_Input =
 {
-	if (((self.team_no == 2) || (self.team_no == AS_MISSILE)))
+	if (((self.team_no == 2) || (self.team_no == 4)))
 	{
 		if ((tfvsdm == 1))
 		{
@@ -2560,33 +2560,33 @@ void (float inp) Menu_ClassHelp_Input =
 		Menu_ClassHelp2 ();
 		self.menu_count = 30;
 		self.current_menu = 7;
-		self.menu_displaytime = RANGE_MELEE;
-		self.impulse = RANGE_MELEE;
+		self.menu_displaytime = 0;
+		self.impulse = 0;
 	}
 };
 
 void () Menu_Spy =
 {
-	if (((self.effects & (8 | AS_MISSILE)) || (self.is_unabletospy == 1)))
+	if (((self.effects & (8 | 4)) || (self.is_unabletospy == 1)))
 	{
 		ResetMenu ();
 		return;
 	}
 	if (self.is_feigning)
 	{
-		if (((self.undercover_team != RANGE_MELEE) && (self.undercover_skin != RANGE_MELEE)))
+		if (((self.undercover_team != 0) && (self.undercover_skin != 0)))
 		{
 			CenterPrint (self, "Action:                           \n“‘ Change Skin                 \n”‘ Change Color                \n•‘ Stop Feigning               \n–‘ Reset Skin && Color        \n—‘ Nothing                     \n\n");
 		}
 		else
 		{
-			if ((self.undercover_team != RANGE_MELEE))
+			if ((self.undercover_team != 0))
 			{
 				CenterPrint (self, "Action:                           \n“‘ Change Skin                 \n”‘ Change Color                \n•‘ Stop Feigning               \n–‘ Reset Color                 \n—‘ Nothing                     \n\n");
 			}
 			else
 			{
-				if ((self.undercover_skin != RANGE_MELEE))
+				if ((self.undercover_skin != 0))
 				{
 					CenterPrint (self, "Action:                           \n“‘ Change Skin                 \n”‘ Change Color                \n•‘ Stop Feigning               \n–‘ Reset Skin                  \n—‘ Nothing                     \n\n");
 				}
@@ -2599,19 +2599,19 @@ void () Menu_Spy =
 	}
 	else
 	{
-		if (((self.undercover_team != RANGE_MELEE) && (self.undercover_skin != RANGE_MELEE)))
+		if (((self.undercover_team != 0) && (self.undercover_skin != 0)))
 		{
 			CenterPrint (self, "Action:                           \n“‘ Change Skin                 \n”‘ Change Color                \n•‘ Start Feigning              \n–‘ Reset Skin && Color        \n—‘ Nothing                     \n\n");
 		}
 		else
 		{
-			if ((self.undercover_team != RANGE_MELEE))
+			if ((self.undercover_team != 0))
 			{
 				CenterPrint (self, "Action:                           \n“‘ Change Skin                 \n”‘ Change Color                \n•‘ Start Feigning              \n–‘ Reset Color                 \n—‘ Nothing                     \n\n");
 			}
 			else
 			{
-				if ((self.undercover_skin != RANGE_MELEE))
+				if ((self.undercover_skin != 0))
 				{
 					CenterPrint (self, "Action:                           \n“‘ Change Skin                 \n”‘ Change Color                \n•‘ Start Feigning              \n–‘ Reset Skin                  \n—‘ Nothing                     \n\n");
 				}
@@ -2631,18 +2631,18 @@ void (float inp) Menu_Spy_Input =
 
 	if (((inp == 1) || (inp == 2)))
 	{
-		if ((self.effects & (8 | AS_MISSILE)))
+		if ((self.effects & (8 | 4)))
 		{
 			sprint (self, 2, "You can't go undercover while glowing.\n");
 			ResetMenu ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return;
 		}
 		if ((self.is_unabletospy == 1))
 		{
 			sprint (self, 2, "You can't go undercover right now.\n");
 			ResetMenu ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return;
 		}
 	}
@@ -2651,8 +2651,8 @@ void (float inp) Menu_Spy_Input =
 		Menu_Spy_Skin ();
 		self.menu_count = 30;
 		self.current_menu = 13;
-		self.menu_displaytime = RANGE_MELEE;
-		self.impulse = RANGE_MELEE;
+		self.menu_displaytime = 0;
+		self.impulse = 0;
 	}
 	else
 	{
@@ -2661,31 +2661,31 @@ void (float inp) Menu_Spy_Input =
 			Menu_Spy_Color ();
 			self.menu_count = 30;
 			self.current_menu = 14;
-			self.menu_displaytime = RANGE_MELEE;
-			self.impulse = RANGE_MELEE;
+			self.menu_displaytime = 0;
+			self.impulse = 0;
 		}
 		else
 		{
-			if ((inp == AS_MELEE))
+			if ((inp == 3))
 			{
-				TeamFortress_SpyFeignDeath (RANGE_MELEE);
+				TeamFortress_SpyFeignDeath (0);
 				ResetMenu ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 			}
 			else
 			{
-				if ((inp == AS_MISSILE))
+				if ((inp == 4))
 				{
 					Spy_RemoveDisguise (self);
 					ResetMenu ();
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 				}
 				else
 				{
-					if (((inp == 5) && ((self.undercover_team != RANGE_MELEE) || (self.undercover_skin != RANGE_MELEE))))
+					if (((inp == 5) && ((self.undercover_team != 0) || (self.undercover_skin != 0))))
 					{
 						ResetMenu ();
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 					}
 				}
 			}
@@ -2695,7 +2695,7 @@ void (float inp) Menu_Spy_Input =
 
 void () Menu_Spy_Skin =
 {
-	if (((self.undercover_team == 2) || (self.undercover_team == AS_MISSILE)))
+	if (((self.undercover_team == 2) || (self.undercover_team == 4)))
 	{
 		if ((tfvsdm == 1))
 		{
@@ -2708,7 +2708,7 @@ void () Menu_Spy_Skin =
 
 void (float inp) Menu_Spy_Skin_Input =
 {
-	if (((self.undercover_team == 2) || (self.undercover_team == AS_MISSILE)))
+	if (((self.undercover_team == 2) || (self.undercover_team == 4)))
 	{
 		if ((tfvsdm == 1))
 		{
@@ -2716,26 +2716,26 @@ void (float inp) Menu_Spy_Skin_Input =
 			{
 				TeamFortress_SpyChangeSkin (inp);
 				ResetMenu ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 			}
 			return;
 		}
 	}
-	if (((inp < enter) && (inp > RANGE_MELEE)))
+	if (((inp < enter) && (inp > 0)))
 	{
 		TeamFortress_SpyChangeSkin (inp);
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 	}
 };
 
 void () Menu_Spy_Color =
 {
-	if ((number_of_teams == RANGE_MELEE))
+	if ((number_of_teams == 0))
 	{
 		sprint (self, 2, "No Color changing allowed in deathmatch.\n");
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	if ((number_of_teams == 2))
@@ -2754,9 +2754,9 @@ void (float inp) Menu_Spy_Color_Input =
 	{
 		if ((tfvsdm == 1))
 		{
-			if ((self.undercover_skin != RANGE_MELEE))
+			if ((self.undercover_skin != 0))
 			{
-				if (((inp == 2) || (inp == AS_MISSILE)))
+				if (((inp == 2) || (inp == 4)))
 				{
 					CenterPrint (self, "žžž Cannot change Color, You must Reset your Skin. žžž\n");
 					return;
@@ -2765,7 +2765,7 @@ void (float inp) Menu_Spy_Color_Input =
 		}
 		TeamFortress_SpyChangeColor (inp);
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 	}
 };
 
@@ -2821,7 +2821,7 @@ void (float inp) Menu_Engineer_Input =
 	{
 		TeamFortress_Build (1);
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 	}
 	else
 	{
@@ -2829,7 +2829,7 @@ void (float inp) Menu_Engineer_Input =
 		{
 			TeamFortress_Build (2);
 			ResetMenu ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 		}
 		else
 		{
@@ -2837,7 +2837,7 @@ void (float inp) Menu_Engineer_Input =
 			{
 				DestroyBuilding (self, "building_dispenser");
 				ResetMenu ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 			}
 			else
 			{
@@ -2845,14 +2845,14 @@ void (float inp) Menu_Engineer_Input =
 				{
 					DestroyBuilding (self, "building_sentrygun");
 					ResetMenu ();
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 				}
 				else
 				{
 					if ((inp == 5))
 					{
 						ResetMenu ();
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 					}
 				}
 			}
@@ -2954,7 +2954,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 		}
 		else
 		{
-			if ((inp == AS_MELEE))
+			if ((inp == 3))
 			{
 				metalcost = ((self.building.max_health - self.building.health) / 5);
 				if ((metalcost > self.ammo_cells))
@@ -2969,7 +2969,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 			}
 			else
 			{
-				if ((inp == AS_MISSILE))
+				if ((inp == 4))
 				{
 					sprint (self, 2, "You dismantle the Dispenser.\n");
 					if (!practice)
@@ -2985,7 +2985,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 						teamsprint (self.building.real_owner.team_no, self.building.real_owner, "'s Dispenser.\n");
 					}
 					dremove (self.building);
-					self.building.real_owner.has_dispenser = RANGE_MELEE;
+					self.building.real_owner.has_dispenser = 0;
 				}
 			}
 		}
@@ -2993,13 +2993,13 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 	if (((inp >= 1) && (inp <= 5)))
 	{
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		self.building = world;
 		bound_other_ammo (self);
-		if ((self.armorvalue == RANGE_MELEE))
+		if ((self.armorvalue == 0))
 		{
-			self.armortype = RANGE_MELEE;
-			self.armorclass = RANGE_MELEE;
+			self.armortype = 0;
+			self.armorclass = 0;
 			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
 		}
 		W_SetCurrentAmmo ();
@@ -3044,7 +3044,7 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 	local float metalcost;
 	local string st;
 
-	if ((self.building.real_owner.has_sentry == RANGE_MELEE))
+	if ((self.building.real_owner.has_sentry == 0))
 	{
 		return;
 	}
@@ -3068,7 +3068,7 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 			self.ammo_shells = (self.ammo_shells - am);
 		}
 		self.building.ammo_shells = (self.building.ammo_shells + am);
-		if ((self.building.weapon == AS_MELEE))
+		if ((self.building.weapon == 3))
 		{
 			am = (enter * 2);
 			if ((am > self.ammo_rockets))
@@ -3088,7 +3088,7 @@ void (float inp) Menu_EngineerFix_SentryGun_Input =
 	}
 	else
 	{
-		if ((((self.building.weapon < AS_MELEE) && (inp == 2)) && (self.ammo_cells >= 130)))
+		if ((((self.building.weapon < 3) && (inp == 2)) && (self.ammo_cells >= 130)))
 		{
 			if (!practice)
 			{
@@ -3126,7 +3126,7 @@ if (!sglvl2to3) {
 
 			if ((self.building.weapon == 2) && !sglvl2to3)
 			{
-				sound (self.building, AS_MELEE, "weapons/turrset.wav", 1, 1);
+				sound (self.building, 3, "weapons/turrset.wav", 1, 1);
 				if (sgtype)
 				{
 					self.building.think = lvl2_sentry_stand;
@@ -3139,7 +3139,7 @@ if (!sglvl2to3) {
 			}
 			else
 			{
-				sound (self.building, AS_MELEE, "weapons/turrset.wav", 1, 1);
+				sound (self.building, 3, "weapons/turrset.wav", 1, 1);
 				if (sgtype)
 				{
 					self.building.think = lvl3_sentry_stand;
@@ -3157,7 +3157,7 @@ if (!sglvl2to3) {
 		}
 		else
 		{
-			if ((inp == AS_MELEE))
+			if ((inp == 3))
 			{
 				metalcost = ((self.building.max_health - self.building.health) / 5);
 				if ((metalcost > self.ammo_cells))
@@ -3172,7 +3172,7 @@ if (!sglvl2to3) {
 			}
 			else
 			{
-				if ((inp == AS_MISSILE))
+				if ((inp == 4))
 				{
 					sprint (self, 2, "You dismantle the Sentry Gun.\n");
 					if (!practice)
@@ -3189,7 +3189,7 @@ if (!sglvl2to3) {
 					}
 					dremove (self.building.trigger_field);
 					dremove (self.building);
-					self.building.real_owner.has_sentry = RANGE_MELEE;
+					self.building.real_owner.has_sentry = 0;
 				}
 				else
 				{
@@ -3206,12 +3206,12 @@ if (!sglvl2to3) {
 	if (((inp >= 1) && (inp <= 6)))
 	{
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		bound_other_ammo (self);
-		if ((self.armorvalue == RANGE_MELEE))
+		if ((self.armorvalue == 0))
 		{
-			self.armortype = RANGE_MELEE;
-			self.armorclass = RANGE_MELEE;
+			self.armortype = 0;
+			self.armorclass = 0;
 			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
 		}
 		W_SetCurrentAmmo ();
@@ -3247,17 +3247,17 @@ void (float inp) Menu_EngineerFix_SentryGun_Rotate_Input = {
 		}
 		dremove (self.building.trigger_field);
 		dremove (self.building);
-		self.building.real_owner.has_sentry = RANGE_MELEE;
+		self.building.real_owner.has_sentry = 0;
     }
     if (((inp >= 1) && (inp <= 3)) || (inp == 5))
 	{
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		bound_other_ammo (self);
-		if ((self.armorvalue == RANGE_MELEE))
+		if ((self.armorvalue == 0))
 		{
-			self.armortype = RANGE_MELEE;
-			self.armorclass = RANGE_MELEE;
+			self.armortype = 0;
+			self.armorclass = 0;
 			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
 		}
 		W_SetCurrentAmmo ();
@@ -3274,10 +3274,10 @@ void (float inp) Menu_Dispenser_Input =
 	local float am;
 	local float empty;
 
-	empty = RANGE_MELEE;
+	empty = 0;
 	if ((inp == 1))
 	{
-		if (((((self.building.ammo_shells == RANGE_MELEE) && (self.building.ammo_nails == RANGE_MELEE)) && (self.building.ammo_rockets == RANGE_MELEE)) && (self.building.ammo_cells == RANGE_MELEE)))
+		if (((((self.building.ammo_shells == 0) && (self.building.ammo_nails == 0)) && (self.building.ammo_rockets == 0)) && (self.building.ammo_cells == 0)))
 		{
 			empty = 1;
 		}
@@ -3317,7 +3317,7 @@ void (float inp) Menu_Dispenser_Input =
 	{
 		if ((inp == 2))
 		{
-			if ((self.building.armorvalue == RANGE_MELEE))
+			if ((self.building.armorvalue == 0))
 			{
 				empty = 1;
 			}
@@ -3328,7 +3328,7 @@ void (float inp) Menu_Dispenser_Input =
 				{
 					am = self.building.armorvalue;
 				}
-				if ((self.armortype == RANGE_MELEE))
+				if ((self.armortype == 0))
 				{
 					self.armortype = 0.3;
 					self.items = (self.items | 8192);
@@ -3338,21 +3338,21 @@ void (float inp) Menu_Dispenser_Input =
 			}
 		}
 	}
-	if (((inp >= 1) && (inp <= AS_MELEE)))
+	if (((inp >= 1) && (inp <= 3)))
 	{
 		if (empty)
 		{
 			sprint (self, 2, "The dispenser is empty.\n");
 		}
 		ResetMenu ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		self.building = world;
 		self.building_wait = (time + 0.5);
 		bound_other_ammo (self);
-		if ((self.armorvalue == RANGE_MELEE))
+		if ((self.armorvalue == 0))
 		{
-			self.armortype = RANGE_MELEE;
-			self.armorclass = RANGE_MELEE;
+			self.armortype = 0;
+			self.armorclass = 0;
 			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
 		}
 		W_SetCurrentAmmo ();
@@ -3658,10 +3658,10 @@ if (self.current_menu_type != 5) {
 				if (!self.captain)
 				{
 					TeamFortress_TeamSet (-1);
-					self.current_menu = RANGE_MELEE;
+					self.current_menu = 0;
 					Menu_StuffClassHelp ();
 					Menu_ClassHelp ();
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 				} else {
 					bprint(2, "\[\sCaptain Mode\s\]\s:\s ");
 					bprint(2, self.netname);

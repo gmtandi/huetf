@@ -241,7 +241,7 @@ void (entity Goal) UpdateAbbreviations =
 				}
 				else
 				{
-					if ((flag == AS_MELEE))
+					if ((flag == 3))
 					{
 						toggleflags = (toggleflags | 16384);
 					}
@@ -390,7 +390,7 @@ void () TF_StartItem =
 	UpdateAbbreviations (self);
 	self.nextthink = (time + 0.2);
 	self.think = TF_PlaceItem;
-	if ((self.goal_state == AS_MELEE))
+	if ((self.goal_state == 3))
 	{
 		RemoveGoal (self);
 	}
@@ -439,7 +439,7 @@ void () TF_StartGoal =
 	self.nextthink = (time + 0.2);
 	self.think = TF_PlaceGoal;
 	self.use = info_tfgoal_use;
-	if ((self.goal_state == AS_MELEE))
+	if ((self.goal_state == 3))
 	{
 		RemoveGoal (self);
 	}
@@ -488,7 +488,7 @@ void () info_player_teamspawn =
 		dremove (self);
 		return;
 	}
-	if (((self.team_no <= 0) || (self.team_no > AS_MISSILE)))
+	if (((self.team_no <= 0) || (self.team_no > 4)))
 	{
 		objerror ("error: bad team_no associated with info_player_teamspawn\n");
 		dremove (self);
@@ -510,13 +510,13 @@ void () info_player_teamspawn =
 		}
 		else
 		{
-			if ((self.team_no == AS_MELEE))
+			if ((self.team_no == 3))
 			{
 				self.team_str_home = "ts3";
 			}
 			else
 			{
-				if ((self.team_no == AS_MISSILE))
+				if ((self.team_no == 4))
 				{
 					self.team_str_home = "ts4";
 				}
@@ -812,7 +812,7 @@ void (entity AD) ParseTFDetect =
 	}
 	if ((AD.maxammo_rockets == -1))
 	{
-		civilianteams = (civilianteams | AS_MISSILE);
+		civilianteams = (civilianteams | 4);
 	}
 	if ((AD.maxammo_cells == -1))
 	{
@@ -905,7 +905,7 @@ void (entity Goal) InactivateGoal =
 
 void (entity Goal) RestoreGoal =
 {
-	if ((Goal.goal_state == AS_MELEE))
+	if ((Goal.goal_state == 3))
 	{
 		if ((Goal.search_time == 0))
 		{
@@ -933,7 +933,7 @@ void (entity Goal) RestoreGoal =
 void (entity Goal) RemoveGoal =
 {
 	Goal.solid = 0;
-	Goal.goal_state = AS_MELEE;
+	Goal.goal_state = 3;
 	if ((Goal.mdl != string_null))
 	{
 		setmodel (Goal, string_null);
@@ -984,7 +984,7 @@ float (entity Goal, entity Player, entity AP) IsAffectedBy =
 		{
 			return (1);
 		}
-		if (((Goal.goal_effects & AS_MISSILE) && (AP.team_no != Player.team_no)))
+		if (((Goal.goal_effects & 4) && (AP.team_no != Player.team_no)))
 		{
 			return (1);
 		}
@@ -1094,19 +1094,19 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			Player.ammo_detpack = (Player.ammo_detpack + Goal.ammo_detpack);
 			Player.no_grenades_1 = (Player.no_grenades_1 + Goal.no_grenades_1);
 			Player.no_grenades_2 = (Player.no_grenades_2 + Goal.no_grenades_2);
-			if ((Player.no_grenades_1 > AS_MISSILE))
+			if ((Player.no_grenades_1 > 4))
 			{
-				Player.no_grenades_1 = AS_MISSILE;
+				Player.no_grenades_1 = 4;
 			}
-			if ((Player.no_grenades_2 > AS_MISSILE))
+			if ((Player.no_grenades_2 > 4))
 			{
-				Player.no_grenades_2 = AS_MISSILE;
+				Player.no_grenades_2 = 4;
 			}
-			if (((Player.tp_grenades_1 == AS_MELEE) && (Player.no_grenades_1 > 2)))
+			if (((Player.tp_grenades_1 == 3) && (Player.no_grenades_1 > 2)))
 			{
 				Player.no_grenades_1 = 2;
 			}
-			if (((Player.tp_grenades_2 == AS_MELEE) && (Player.no_grenades_2 > 2)))
+			if (((Player.tp_grenades_2 == 3) && (Player.no_grenades_2 > 2)))
 			{
 				Player.no_grenades_2 = 2;
 			}
@@ -1341,19 +1341,19 @@ void (entity Goal, entity Player) RemoveResults =
 	Player.ammo_detpack = (Player.ammo_detpack - Goal.ammo_detpack);
 	Player.no_grenades_1 = (Player.no_grenades_1 - Goal.no_grenades_1);
 	Player.no_grenades_2 = (Player.no_grenades_2 - Goal.no_grenades_2);
-	if ((Player.no_grenades_1 > AS_MISSILE))
+	if ((Player.no_grenades_1 > 4))
 	{
-		Player.no_grenades_1 = AS_MISSILE;
+		Player.no_grenades_1 = 4;
 	}
-	if ((Player.no_grenades_2 > AS_MISSILE))
+	if ((Player.no_grenades_2 > 4))
 	{
-		Player.no_grenades_2 = AS_MISSILE;
+		Player.no_grenades_2 = 4;
 	}
-	if (((Player.tp_grenades_1 == AS_MELEE) && (Player.no_grenades_1 > 2)))
+	if (((Player.tp_grenades_1 == 3) && (Player.no_grenades_1 > 2)))
 	{
 		Player.no_grenades_1 = 2;
 	}
-	if (((Player.tp_grenades_2 == AS_MELEE) && (Player.no_grenades_2 > 2)))
+	if (((Player.tp_grenades_2 == 3) && (Player.no_grenades_2 > 2)))
 	{
 		Player.no_grenades_2 = 2;
 	}
@@ -1504,7 +1504,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 	if (Goal.if_goal_is_removed)
 	{
 		te = Findgoal (Goal.if_goal_is_removed);
-		if ((te.goal_state != AS_MELEE))
+		if ((te.goal_state != 3))
 		{
 			return (0);
 		}
@@ -1546,7 +1546,7 @@ float (entity Goal, entity AP) APMeetsCriteria =
 		{
 			if ((te.group_no == Goal.if_group_is_removed))
 			{
-				if ((te.goal_state != AS_MELEE))
+				if ((te.goal_state != 3))
 				{
 					return (0);
 				}
@@ -1661,11 +1661,11 @@ float (entity Goal, entity AP) Activated =
 	{
 		return (0);
 	}
-	if ((Goal.goal_state == AS_MELEE))
+	if ((Goal.goal_state == 3))
 	{
 		return (0);
 	}
-	if ((Goal.goal_state == AS_MISSILE))
+	if ((Goal.goal_state == 4))
 	{
 		return (0);
 	}
@@ -1676,7 +1676,7 @@ float (entity Goal, entity AP) Activated =
 	}
 	else
 	{
-		RevAct = (Goal.goal_activation & AS_MISSILE);
+		RevAct = (Goal.goal_activation & 4);
 	}
 	Act = 0;
 	if (APMet)
@@ -1799,7 +1799,7 @@ void (entity Goal, entity AP) DoGoalWork =
 		te = Findteamspawn (Goal.remove_spawnpoint);
 		if (te)
 		{
-			te.goal_state = AS_MELEE;
+			te.goal_state = 3;
 			te.team_str_home = string_null;
 		}
 	}
@@ -1808,7 +1808,7 @@ void (entity Goal, entity AP) DoGoalWork =
 		te = Findteamspawn (Goal.restore_spawnpoint);
 		if (te)
 		{
-			if ((te.goal_state == AS_MELEE))
+			if ((te.goal_state == 3))
 			{
 				te.goal_state = 2;
 				if ((te.team_no == 1))
@@ -1823,13 +1823,13 @@ void (entity Goal, entity AP) DoGoalWork =
 					}
 					else
 					{
-						if ((te.team_no == AS_MELEE))
+						if ((te.team_no == 3))
 						{
 							te.team_str_home = "ts3";
 						}
 						else
 						{
-							if ((te.team_no == AS_MISSILE))
+							if ((te.team_no == 4))
 							{
 								te.team_str_home = "ts4";
 							}
@@ -1936,7 +1936,7 @@ void (entity Goal, entity AP) DoGroupWork =
 		{
 			if ((tg.group_no == Goal.remove_spawngroup))
 			{
-				tg.goal_state = AS_MELEE;
+				tg.goal_state = 3;
 				tg.team_str_home = string_null;
 			}
 			tg = find (tg, classname, "info_player_teamspawn");
@@ -1962,13 +1962,13 @@ void (entity Goal, entity AP) DoGroupWork =
 					}
 					else
 					{
-						if ((tg.team_no == AS_MELEE))
+						if ((tg.team_no == 3))
 						{
 							tg.team_str_home = "ts3";
 						}
 						else
 						{
-							if ((tg.team_no == AS_MISSILE))
+							if ((tg.team_no == 4))
 							{
 								tg.team_str_home = "ts4";
 							}
@@ -2116,7 +2116,7 @@ void (entity Goal, entity AP) DoTriggerWork =
 
 void () DelayedResult =
 {
-	if ((self.enemy.goal_state == AS_MISSILE))
+	if ((self.enemy.goal_state == 4))
 	{
 		DoResults (self.enemy, self.owner, self.weapon);
 	}
@@ -2143,9 +2143,9 @@ void (entity Goal, entity AP, float addb) DoResults =
 	{
 		return;
 	}
-	if (((Goal.delay_time > 0) && (Goal.goal_state != AS_MISSILE)))
+	if (((Goal.delay_time > 0) && (Goal.goal_state != 4)))
 	{
-		Goal.goal_state = AS_MISSILE;
+		Goal.goal_state = 4;
 		te = spawn ();
 		te.think = DelayedResult;
 		te.nextthink = (time + Goal.delay_time);
@@ -2162,7 +2162,7 @@ void (entity Goal, entity AP, float addb) DoResults =
 	}
 	if (Goal.noise)
 	{
-		sound (other, AS_MELEE, Goal.noise, 1, 1);
+		sound (other, 3, Goal.noise, 1, 1);
 	}
 	winners = 0;
 	if ((Goal.increase_team1 != 0))
@@ -2177,12 +2177,12 @@ void (entity Goal, entity AP, float addb) DoResults =
 	}
 	if ((Goal.increase_team3 != 0))
 	{
-		TeamFortress_TeamIncreaseScore (AS_MELEE, Goal.increase_team3);
+		TeamFortress_TeamIncreaseScore (3, Goal.increase_team3);
 		winners = 1;
 	}
 	if ((Goal.increase_team4 != 0))
 	{
-		TeamFortress_TeamIncreaseScore (AS_MISSILE, Goal.increase_team4);
+		TeamFortress_TeamIncreaseScore (4, Goal.increase_team4);
 		winners = 1;
 	}
 	if ((winners == 1))
@@ -2346,7 +2346,7 @@ void (entity Goal, entity AP, float addb) DoResults =
 				}
 				else
 				{
-					if ((Goal.goal_no == AS_MELEE))
+					if ((Goal.goal_no == 3))
 					{
 						te = find (world, classname, "player");
 						while ((te != world))
@@ -2375,7 +2375,7 @@ void (entity Goal, entity AP, float addb) DoResults =
 					}
 					else
 					{
-						if ((Goal.goal_no == AS_MISSILE))
+						if ((Goal.goal_no == 4))
 						{
 							te = find (world, classname, "player");
 							while ((te != world))
@@ -2518,7 +2518,7 @@ void (entity Goal, entity AP, float addb) DoResults =
 	{
 		Goal.goal_state = 1;
 	}
-	if ((Goal.goal_result & AS_MISSILE))
+	if ((Goal.goal_result & 4))
 	{
 		TeamFortress_TeamShowScores (1);
 		winners = TeamFortress_TeamGetWinner ();
@@ -2572,7 +2572,7 @@ void () tfgoal_touch =
 	}
 	if ((CTF_Map == 1))
 	{
-		if (((self.goal_no == AS_MELEE) && (other.team_no == 1)))
+		if (((self.goal_no == 3) && (other.team_no == 1)))
 		{
 			te = Finditem (1);
 			if (((te.goal_state == 1) || (te.origin != te.oldorigin)))
@@ -2580,7 +2580,7 @@ void () tfgoal_touch =
 				return;
 			}
 		}
-		if (((self.goal_no == AS_MISSILE) && (other.team_no == 2)))
+		if (((self.goal_no == 4) && (other.team_no == 2)))
 		{
 			te = Finditem (2);
 			if (((te.goal_state == 1) || (te.origin != te.oldorigin)))
@@ -2607,7 +2607,7 @@ void () info_tfgoal_use =
 
 void () tfgoal_timer_tick =
 {
-	if ((self.goal_state != AS_MELEE))
+	if ((self.goal_state != 3))
 	{
 		if (APMeetsCriteria (self, world))
 		{
@@ -2939,13 +2939,13 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 	}
 	if (!lighton)
 	{
-		if ((AP.invincible_finished > (time + AS_MELEE)))
+		if ((AP.invincible_finished > (time + 3)))
 		{
 			lighton = 1;
 		}
 		else
 		{
-			if ((AP.super_damage_finished > (time + AS_MELEE)))
+			if ((AP.super_damage_finished > (time + 3)))
 			{
 				lighton = 1;
 			}
@@ -3064,7 +3064,7 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 		}
 		else
 		{
-			if ((Item.goal_activation & AS_MISSILE))
+			if ((Item.goal_activation & 4))
 			{
 				if (((method == 2) && ((Item.goal_activation & 4096) || (toggleflags & 8))))
 				{
@@ -3125,7 +3125,7 @@ void () tfgoalitem_dropthink =
 		pos = pointcontents (self.origin);
 		if ((pos == -4))
 		{
-			self.nextthink = (time + (self.pausetime / AS_MISSILE));
+			self.nextthink = (time + (self.pausetime / 4));
 		}
 		else
 		{
@@ -3137,7 +3137,7 @@ void () tfgoalitem_dropthink =
 			{
 				if (((pos == -2) || (pos == -6)))
 				{
-					if ((self.camdist < AS_MELEE))
+					if ((self.camdist < 3))
 					{
 						self.origin = self.camangle;
 						setorigin (self, self.origin);
@@ -3252,7 +3252,7 @@ void () tfgoalitem_remove =
 	{
 		te = spawn ();
 		te.enemy = self;
-		te.weapon = AS_MELEE;
+		te.weapon = 3;
 		te.nextthink = (time + 0.1);
 		te.think = ReturnItem;
 		return;
@@ -3378,7 +3378,7 @@ void () item_flag_team1 =
 	self.skin = 1;
 	setmodel (self, self.mdl);
 	self.goal_no = 1;
-	self.goal_activation = (((((1 | AS_MISSILE) | 128) | space) | 16) | 512);
+	self.goal_activation = (((((1 | 4) | 128) | space) | 16) | 512);
 	self.goal_effects = 1;
 	self.effects = 128;
 	self.pausetime = 128;
@@ -3397,8 +3397,8 @@ void () item_flag_team1 =
 	dp.goal_activation = 1;
 	dp.team_no = 1;
 	dp.items_allowed = 2;
-	dp.goal_no = AS_MELEE;
-	dp.goal_effects = AS_MELEE;
+	dp.goal_no = 3;
+	dp.goal_effects = 3;
 	dp.broadcast = " цаптуред the enemy flag!\n";
 	dp.message = "You цаптуред the enemy flag!\n";
 	dp.noise = "boss2/pop2.wav";
@@ -3448,7 +3448,7 @@ void () item_flag_team2 =
 	setmodel (self, self.mdl);
 	self.skin = 2;
 	self.goal_no = 2;
-	self.goal_activation = (((((1 | AS_MISSILE) | 128) | space) | 16) | 512);
+	self.goal_activation = (((((1 | 4) | 128) | space) | 16) | 512);
 	self.goal_effects = 1;
 	self.pausetime = 128;
 	self.effects = 64;
@@ -3467,8 +3467,8 @@ void () item_flag_team2 =
 	dp.goal_activation = 1;
 	dp.team_no = 2;
 	dp.items_allowed = 1;
-	dp.goal_no = AS_MISSILE;
-	dp.goal_effects = AS_MELEE;
+	dp.goal_no = 4;
+	dp.goal_effects = 3;
 	dp.broadcast = " цаптуред the enemy flag!\n";
 	dp.message = "You цаптуред the enemy flag!\n";
 	dp.noise = "boss2/pop2.wav";

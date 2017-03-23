@@ -76,7 +76,7 @@ float () UserCmd =
 				{
 					if ((arg_num == 2))
 					{
-						if ((self.is_admin == AS_MELEE))
+						if ((self.is_admin == 3))
 						{
 							sprint (self, 2, "You are already an admin\n");
 							return (1);
@@ -87,11 +87,11 @@ float () UserCmd =
 							return (1);
 						}
 						Admin_Check (argv (1));
-						if ((self.is_admin == AS_MELEE))
+						if ((self.is_admin == 3))
 						{
 							Admin_Aliases ();
 							bprint2 (2, self.netname, " ηαιξσ ζυμμ αδνιξ στατυσ!");
-							bprint (AS_MELEE, "\n");
+							bprint (3, "\n");
 							sprint (self, 2, "Type γονναξδσ for admin commands.\n");
 						}
 						else
@@ -113,7 +113,7 @@ float () UserCmd =
 				{
 					if ((argv (0) == "timelimit"))
 					{
-						if ((self.is_admin != AS_MELEE))
+						if ((self.is_admin != 3))
 						{
 							sprint (self, 2, "You need full admin rights to use this command\n");
 							return (1);
@@ -139,7 +139,7 @@ float () UserCmd =
 					{
 						if ((argv (0) == "prematch"))
 						{
-							if ((self.is_admin != AS_MELEE))
+							if ((self.is_admin != 3))
 							{
 								sprint (self, 2, "You need full admin rights to use this command\n");
 								return (1);
@@ -165,7 +165,7 @@ float () UserCmd =
 						{
 							if ((argv (0) == "fraglimit"))
 							{
-								if ((self.is_admin != AS_MELEE))
+								if ((self.is_admin != 3))
 								{
 									sprint (self, 2, "You need full admin rights to use this command\n");
 									return (1);
@@ -191,7 +191,7 @@ float () UserCmd =
 							{
 								if ((argv (0) == "teamplay"))
 								{
-									if ((self.is_admin != AS_MELEE))
+									if ((self.is_admin != 3))
 									{
 										sprint (self, 2, "You need full admin rights to use this command\n");
 										return (1);
@@ -217,7 +217,7 @@ float () UserCmd =
 								{
 									if ((argv (0) == "overtime"))
 									{
-										if ((self.is_admin != AS_MELEE))
+										if ((self.is_admin != 3))
 										{
 											sprint (self, 2, "You need full admin rights to use this command\n");
 											return (1);
@@ -243,7 +243,7 @@ float () UserCmd =
 									{
 										if ((argv (0) == "cft"))
 										{
-											if ((self.is_admin != AS_MELEE))
+											if ((self.is_admin != 3))
 											{
 												sprint (self, 2, "You need full admin rights to use this command\n");
 												return (1);
@@ -269,7 +269,7 @@ float () UserCmd =
 										{
 											if ((argv (0) == "password"))
 											{
-												if ((self.is_admin != AS_MELEE))
+												if ((self.is_admin != 3))
 												{
 													sprint (self, 2, "You need full admin rights to use this command\n");
 													return (1);
@@ -304,7 +304,7 @@ float () UserCmd =
 											{
 												if ((argv (0) == "record"))
 												{
-													if ((self.is_admin != AS_MELEE))
+													if ((self.is_admin != 3))
 													{
 														sprint (self, 2, "You need full admin rights to use this command\n");
 														return (1);
@@ -327,7 +327,7 @@ float () UserCmd =
 												{
 													if ((argv (0) == "easyrecord"))
 													{
-														if ((self.is_admin != AS_MELEE))
+														if ((self.is_admin != 3))
 														{
 															sprint (self, 2, "You need full admin rights to use this command\n");
 															return (1);
@@ -349,7 +349,7 @@ float () UserCmd =
 													{
 														if ((argv (0) == "autorecord"))
 														{
-															if ((self.is_admin != AS_MELEE))
+															if ((self.is_admin != 3))
 															{
 																sprint (self, 2, "You need full admin rights to use this command\n");
 																return (1);
@@ -382,7 +382,7 @@ float () UserCmd =
 														{
 															if ((argv (0) == "cancel"))
 															{
-																if ((self.is_admin != AS_MELEE))
+																if ((self.is_admin != 3))
 																{
 																	sprint (self, 2, "You need full admin rights to use this command\n");
 																	return (1);
@@ -394,7 +394,7 @@ float () UserCmd =
 															{
 																if ((argv (0) == "stop"))
 																{
-																	if ((self.is_admin != AS_MELEE))
+																	if ((self.is_admin != 3))
 																	{
 																		sprint (self, 2, "You need full admin rights to use this command\n");
 																		return (1);
@@ -406,7 +406,7 @@ float () UserCmd =
 																{
 																	if ((argv (0) == "kick"))
 																	{
-																		if ((self.is_admin != AS_MELEE))
+																		if ((self.is_admin != 3))
 																		{
 																			sprint (self, 2, "You need full admin rights to use this command\n");
 																			return (1);
@@ -418,12 +418,12 @@ float () UserCmd =
 																	{
 																		if ((argv (0) == "map"))
 																		{
-																			if (((self.is_admin != 1) && (self.is_admin != AS_MELEE)))
+																			if (((self.is_admin != 1) && (self.is_admin != 3)))
 																			{
 																				sprint (self, 2, "You need admin rights to use this command\n");
 																				return (1);
 																			}
-																			if ((self.is_admin != AS_MELEE))
+																			if ((self.is_admin != 3))
 																			{
 																				if ((stof (infokey (world, "adminlevel")) < 2))
 																				{
@@ -527,7 +527,7 @@ float () ConsoleCmd =
 	{
 		if ((argv (0) == "info"))
 		{
-			if ((arg_num == AS_MELEE))
+			if ((arg_num == 3))
 			{
 				if ((argv (2) == "\\"))
 				{
@@ -568,7 +568,7 @@ float () ConsoleCmd =
 		{
 			if ((argv (0) == "svinfo"))
 			{
-				if ((arg_num == AS_MELEE))
+				if ((arg_num == 3))
 				{
 					if ((argv (2) == "\\"))
 					{
@@ -675,7 +675,7 @@ float () ConsoleCmd =
 								if ((arg_num == 2))
 								{
 									gspeed = stof (argv (1));
-									if (((gspeed < 0) || (gspeed > AS_MELEE)))
+									if (((gspeed < 0) || (gspeed > 3)))
 									{
 										gspeed = 0;
 									}

@@ -19,7 +19,7 @@ void () button_done =
 void () button_return =
 {
 	self.goal_state = 2;
-	self.state = AS_MELEE;
+	self.state = 3;
 	SUB_CalcMove (self.pos1, self.speed, button_done);
 	self.frame = 0;
 	if (self.health)
@@ -122,14 +122,14 @@ void () func_button =
 		precache_sound ("buttons/switch02.wav");
 		self.noise = "buttons/switch02.wav";
 	}
-	if ((self.sounds == AS_MELEE))
+	if ((self.sounds == 3))
 	{
 		precache_sound ("buttons/switch04.wav");
 		self.noise = "buttons/switch04.wav";
 	}
 	SetMovedir ();
 	self.movetype = 7;
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	setmodel (self, self.model);
 	self.blocked = button_blocked;
 	self.use = button_use;
@@ -153,7 +153,7 @@ void () func_button =
 	}
 	if (!self.lip)
 	{
-		self.lip = AS_MISSILE;
+		self.lip = 4;
 	}
 	self.state = 1;
 	self.pos1 = self.origin;

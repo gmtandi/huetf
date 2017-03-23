@@ -28,8 +28,8 @@ void () CheckFps =
 	{
 		self.real_time = time;
 		self.fFrameReset = (time + 15);
-		self.fAverageFrameTime = RANGE_MELEE;
-		self.fFrameCount = RANGE_MELEE;
+		self.fAverageFrameTime = 0;
+		self.fFrameCount = 0;
 		self.fLowestFrameTime = 0.013;
 	}
 };
@@ -44,7 +44,7 @@ void () Calibrate_Level =
 	num_max_pipebombs = (stof (st) + 1);
 	if (((num_max_pipebombs < 11) || (num_max_pipebombs > 25)))
 	{
-		if ((number_of_teams == AS_MISSILE))
+		if ((number_of_teams == 4))
 		{
 			num_max_pipebombs = 21;
 		}
@@ -72,7 +72,7 @@ void () Calibrate_Level =
 	}
 	else
 	{
-		allow_hook = RANGE_MELEE;
+		allow_hook = 0;
 	}
 	st = infokey (world, "flashlight");
 	if ((st == "on"))
@@ -81,7 +81,7 @@ void () Calibrate_Level =
 	}
 	else
 	{
-		allow_flash = RANGE_MELEE;
+		allow_flash = 0;
 	}
 	st = infokey (world, "grenpacks");
 	if ((st == "on"))
@@ -90,7 +90,7 @@ void () Calibrate_Level =
 	}
 	else
 	{
-		allow_grenpack = RANGE_MELEE;
+		allow_grenpack = 0;
 	}
 	st = infokey (world, "autoteam");
 	if ((st == "on"))
@@ -106,7 +106,7 @@ void () Calibrate_Level =
 		}
 		else
 		{
-			if ((stof (st) != RANGE_MELEE))
+			if ((stof (st) != 0))
 			{
 				toggleflags = (toggleflags | 64);
 				autoteam_time = stof (st);
@@ -115,7 +115,7 @@ void () Calibrate_Level =
 	}
 	st = infokey (world, "autokick_time");
 	autokick_time = stof (st);
-	if ((autokick_time != RANGE_MELEE))
+	if ((autokick_time != 0))
 	{
 		st = infokey (world, "autokick_kills");
 		autokick_kills = stof (st);
@@ -141,11 +141,11 @@ void () Calibrate_Level =
 	respawn_delay_time = stof (st);
 	if (respawn_delay_time)
 	{
-		toggleflags = (toggleflags | AS_MISSILE);
+		toggleflags = (toggleflags | 4);
 	}
-	if (((toggleflags & AS_MISSILE) && (respawn_delay_time == RANGE_MELEE)))
+	if (((toggleflags & 4) && (respawn_delay_time == 0)))
 	{
-		respawn_delay_time = AS_MELEE;
+		respawn_delay_time = 3;
 	}
 	if ((toggleflags & 64))
 	{
@@ -156,20 +156,20 @@ void () Calibrate_Level =
 	}
 	st = infokey (world, "grentype");
 	grentype = stof (st);
-	if (((grentype > 1) || (grentype < RANGE_MELEE)))
+	if (((grentype > 1) || (grentype < 0)))
 	{
-		grentype = RANGE_MELEE;
+		grentype = 0;
 	}
 	gspeed = stof (infokey (world, "gspeed"));
-	if (((gspeed < RANGE_MELEE) || (gspeed > AS_MELEE)))
+	if (((gspeed < 0) || (gspeed > 3)))
 	{
-		gspeed = RANGE_MELEE;
+		gspeed = 0;
 	}
 	st = infokey (world, "sentrytype");
 	sgtype = stof (st);
-	if (((sgtype > AS_MELEE) || (sgtype < RANGE_MELEE)))
+	if (((sgtype > 3) || (sgtype < 0)))
 	{
-		sgtype = RANGE_MELEE;
+		sgtype = 0;
 	}
 	st = infokey (world, "sentryspeed");
 	sentry_speed = stof (st);
@@ -185,14 +185,14 @@ void () Calibrate_Level =
 	}
 	st = infokey (world, "sentryfire");
 	sentry_fire = stof (st);
-	if (((sentry_fire > 2) || (sentry_fire < RANGE_MELEE)))
+	if (((sentry_fire > 2) || (sentry_fire < 0)))
 	{
-		sentry_fire = RANGE_MELEE;
+		sentry_fire = 0;
 	}
 	st = infokey (world, "pipedelay");
 	if ((st == "off"))
 	{
-		pipedelay = RANGE_MELEE;
+		pipedelay = 0;
 	}
 	else
 	{
@@ -202,16 +202,16 @@ void () Calibrate_Level =
 
 void () flash_update =
 {
-	if ((self.owner.deadflag != RANGE_MELEE))
+	if ((self.owner.deadflag != 0))
 	{
-		self.effects = RANGE_MELEE;
+		self.effects = 0;
 	}
 	else
 	{
 		self.effects = 8;
 	}
 	makevectors (self.owner.v_angle);
-	traceline (self.owner.origin, (self.owner.origin + (v_forward * 500)), RANGE_MELEE, self);
+	traceline (self.owner.origin, (self.owner.origin + (v_forward * 500)), 0, self);
 	setorigin (self, (trace_endpos + (v_forward * -5)));
 	self.nextthink = (time + 0.02);
 };
@@ -221,8 +221,8 @@ void () flash_on =
 	local entity myflash;
 
 	myflash = spawn ();
-	myflash.movetype = RANGE_MELEE;
-	myflash.solid = RANGE_MELEE;
+	myflash.movetype = 0;
+	myflash.solid = 0;
 	setmodel (myflash, "progs/s_bubble.spr");
 	setsize (myflash, '0 0 0', '0 0 0');
 	myflash.owner = self;
@@ -230,7 +230,7 @@ void () flash_on =
 	myflash.classname = "flash";
 	myflash.effects = 8;
 	makevectors (self.v_angle);
-	traceline (self.origin, (self.origin + (v_forward * 500)), RANGE_MELEE, self);
+	traceline (self.origin, (self.origin + (v_forward * 500)), 0, self);
 	setorigin (myflash, trace_endpos);
 	myflash.think = flash_update;
 	myflash.nextthink = (time + 0.02);
@@ -242,14 +242,14 @@ void () flash_toggle =
 	{
 		return;
 	}
-	if ((self.flash_flag == RANGE_MELEE))
+	if ((self.flash_flag == 0))
 	{
 		self.flash_flag = 1;
 		flash_on ();
 	}
 	else
 	{
-		self.flash_flag = RANGE_MELEE;
+		self.flash_flag = 0;
 		W_SetCurrentAmmo ();
 		self.flash.think = SUB_Remove;
 		self.flash.nextthink = (time + 0.1);
@@ -279,7 +279,7 @@ void () fadefromblack =
 	local string x;
 
 	fade = 250;
-	while ((fade >= RANGE_MELEE))
+	while ((fade >= 0))
 	{
 		x = ftos (fade);
 		stuffcmd (self, "v_cshift 0 0 0 ");
