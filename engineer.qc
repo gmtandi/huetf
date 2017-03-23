@@ -869,6 +869,7 @@ void (entity gun) Engineer_UseSentryGun =
 		sprint (self, 2, st);
 		sprint (self, 2, " rockets");
 	}
+	sprint (self, 2, "\n");
 
 	//Autospanner, first tries to upgrade if it has cells, then tries to repair if sentry gun is not repaired, then finally tries to put some ammo on it
 	if (autospanner) 
