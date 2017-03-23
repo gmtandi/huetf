@@ -901,25 +901,51 @@ void (entity gun) Engineer_UseSentryGun =
 
 void (entity gun) Engineer_SentryGun_Upgrade = {
 	local string st;
-    if (self.ammo_cells < 130)
-        return;
+	if (!practice)
+		self.ammo_cells = (self.ammo_cells - 130);
+	
+	if (!sglvl2to3) {
+		self.building.weapon = (self.building.weapon + 1);
+		if (sgtype)
+			self.building.max_health = floor ((self.building.max_health * 1.25));
+		else 
+			self.building.max_health = floor ((self.building.max_health * 1.2));
+		self.building.maxammo_shells = (self.building.maxammo_shells * 1.2);
+	}
+	else {
+		self.building.weapon = (self.building.weapon + 2);
+		if (sgtype) {
+			self.building.max_health = floor ((self.building.max_health * 1.25));
+			self.building.max_health = floor ((self.building.max_health * 1.25));
+		} else {
+			self.building.max_health = floor ((self.building.max_health * 1.2));
+			self.building.max_health = floor ((self.building.max_health * 1.2));
+		}
 
-    self.ammo_cells = self.ammo_cells - 130;
-    gun.weapon = gun.weapon + 1;
-    gun.max_health = gun.max_health * 1.2;
-    gun.health = gun.max_health;
-    gun.maxammo_shells = gun.maxammo_shells * 1.2;
-    if ((gun.weapon == 2) && !sglvl2to3) {
-        sound(gun, 3, "weapons/turrset.wav", 1, 1);
-        gun.think = lvl2_sentry_stand;
-        gun.skin = 1;
-    } else {
-        sound(gun, 3, "weapons/turrset.wav", 1, 1);
-        gun.think = lvl3_sentry_stand;
-        gun.skin = 2;
-    }
-    sprint (self, 2, "\n\n\n\n\n\n\nYou upgrade the Sentry Gun to level ");
-	st = ftos (gun.weapon);
+		self.building.maxammo_shells = (self.building.maxammo_shells * 1.2);
+		self.building.maxammo_shells = (self.building.maxammo_shells * 1.2);
+	}
+
+	self.building.health = self.building.max_health;
+
+	if ((self.building.weapon == 2) && !sglvl2to3) {
+		sound (self.building, AS_MELEE, "weapons/turrset.wav", 1, 1);
+		if (sgtype)
+			self.building.think = lvl2_sentry_stand;
+		else
+			self.building.think = lvl2_oldsentry_stand;		
+		self.building.skin = 1;
+	}
+	else {
+		sound (self.building, AS_MELEE, "weapons/turrset.wav", 1, 1);
+		if (sgtype)
+			self.building.think = lvl3_sentry_stand;
+		else		
+			self.building.think = lvl3_oldsentry_stand;		
+		self.building.skin = 2;
+	}
+	sprint (self, 2, "You upgrade the Sentry Gun to level ");
+	st = ftos (self.building.weapon);
 	sprint (self, 2, st);
 	sprint (self, 2, "\n");
 };
@@ -940,7 +966,7 @@ void (entity gun) Engineer_SentryGun_Repair = {
         gun.health = gun.max_health;
 
     if (metalcost > 0) {
-    	sprint (self, 2, "\n\n\n\n\n\n\nSentry Gun: ");
+    	sprint (self, 2, "Sentry Gun: ");
 		st = ftos (healamount);
 		sprint (self, 2, st);
 		sprint (self, 2, " hp repaired\n");
@@ -980,8 +1006,8 @@ void (entity gun) Engineer_SentryGun_InsertAmmo = {
                 ammo = strcat(ammo, " and ");
             ammo = strcat(ammo, strcat(ftos(floor(rockets)), " rockets"));
         }
-        ammo = strcat(ammo, " into sentry gun");
-        sprint (self, 2, "\n\n\n\n\n\n\n", ammo);
+        ammo = strcat(ammo, " into sentry gun\n");
+        sprint (self, 2, ammo);
     }
 };
 
