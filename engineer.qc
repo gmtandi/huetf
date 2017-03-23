@@ -56,11 +56,11 @@ void () Rail_Touch =
 	}
 	else
 	{
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 0);
-		WriteCoord (AS_MISSILE, self.origin_x);
-		WriteCoord (AS_MISSILE, self.origin_y);
-		WriteCoord (AS_MISSILE, self.origin_z);
+		WriteByte (4, 23);
+		WriteByte (4, 0);
+		WriteCoord (4, self.origin_x);
+		WriteCoord (4, self.origin_y);
+		WriteCoord (4, self.origin_z);
 		multicast (self.origin, 1);
 	}
 	dremove (self);
@@ -121,13 +121,13 @@ void () EMPExplode =
 			{
 				if ((self.classname == "item_rockets"))
 				{
-					expsize = (_d + (self.aflag * AS_MISSILE));
+					expsize = (_d + (self.aflag * 4));
 				}
 				else
 				{
 					if ((self.classname == "item_cells"))
 					{
-						expsize = (60 + (self.aflag * AS_MELEE));
+						expsize = (60 + (self.aflag * 3));
 					}
 					else
 					{
@@ -149,11 +149,11 @@ void () EMPExplode =
 	}
 	deathmsg = 31;
 	T_RadiusDamage (self, self.enemy, expsize, world);
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	Respawn_Item (self, self.enemy);
 };
@@ -173,11 +173,11 @@ void () EMPGrenadeExplode =
 	local entity te;
 	local entity oldself;
 
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MISSILE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 4);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	te = findradius (self.origin, 240);
 	while (te)
@@ -210,7 +210,7 @@ void () EMPGrenadeExplode =
 							T_RadiusDamage (te, self.owner, expsize, te);
 							if ((te.touch != BackpackTouch))
 							{
-								TF_T_Damage (te, self, self.owner, expsize, 2, AS_MISSILE);
+								TF_T_Damage (te, self, self.owner, expsize, 2, 4);
 								if (!practice)
 								{
 									te.ammo_shells = ceil ((te.ammo_shells * 0.25));
@@ -233,11 +233,11 @@ void () EMPGrenadeExplode =
 								te.think = SUB_Remove;
 								te.nextthink = (time + 0.1);
 							}
-							WriteByte (AS_MISSILE, 23);
-							WriteByte (AS_MISSILE, AS_MELEE);
-							WriteCoord (AS_MISSILE, te.origin_x);
-							WriteCoord (AS_MISSILE, te.origin_y);
-							WriteCoord (AS_MISSILE, te.origin_z);
+							WriteByte (4, 23);
+							WriteByte (4, 3);
+							WriteCoord (4, te.origin_x);
+							WriteCoord (4, te.origin_y);
+							WriteCoord (4, te.origin_z);
 							multicast (te.origin, 1);
 						}
 					}
@@ -263,7 +263,7 @@ void () EMPGrenadeExplode =
 							{
 								if (!(((teamplay & 16) && (te.team_no > 0)) && (te.team_no == self.owner.team_no)))
 								{
-									TF_T_Damage (te, self, self.owner, 200, 0, AS_MISSILE);
+									TF_T_Damage (te, self, self.owner, 200, 0, 4);
 								}
 							}
 							else
@@ -281,11 +281,11 @@ void () EMPGrenadeExplode =
 										T_RadiusDamage (te, self.owner, expsize, te);
 										te.think = SUB_Remove;
 										te.nextthink = (time + 0.1);
-										WriteByte (AS_MISSILE, 23);
-										WriteByte (AS_MISSILE, AS_MELEE);
-										WriteCoord (AS_MISSILE, te.origin_x);
-										WriteCoord (AS_MISSILE, te.origin_y);
-										WriteCoord (AS_MISSILE, te.origin_z);
+										WriteByte (4, 23);
+										WriteByte (4, 3);
+										WriteCoord (4, te.origin_x);
+										WriteCoord (4, te.origin_y);
+										WriteCoord (4, te.origin_z);
 										multicast (te.origin, 1);
 									}
 								}
@@ -553,7 +553,7 @@ void (entity bld) CheckBelowBuilding =
 void () DispenserThink =
 {
 	CheckBelowBuilding (self);
-	if ((self.hook_out > AS_MELEE))
+	if ((self.hook_out > 3))
 	{
 		self.ammo_shells = (self.ammo_shells + rint ((400 / 20)));
 		self.ammo_cells = (self.ammo_cells + rint ((400 / 20)));
@@ -583,7 +583,7 @@ void () DispenserThink =
 		self.hook_out = 0;
 	}
 	self.hook_out = (self.hook_out + 1);
-	self.nextthink = (time + AS_MELEE);
+	self.nextthink = (time + 3);
 };
 
 void () TeamFortress_FinishedBuilding =
@@ -623,7 +623,7 @@ void () TeamFortress_FinishedBuilding =
 		oldself.health = 150;
 		oldself.hook_out = 1;
 		oldself.think = DispenserThink;
-		oldself.nextthink = (time + AS_MELEE);
+		oldself.nextthink = (time + 3);
 		oldself.th_die = Dispenser_Die;
 		oldself.mdl = "progs/disp.mdl";
 		oldself.team_no = self.team_no;
@@ -675,7 +675,7 @@ void () TeamFortress_FinishedBuilding =
 			newmis.th_die = Sentry_Die;
 			newmis.th_pain = Sentry_Pain;
 			newmis.mdl = "progs/turrgun.mdl";
-			sound (oldself, AS_MELEE, "weapons/turrset.wav", 1, 1);
+			sound (oldself, 3, "weapons/turrset.wav", 1, 1);
 			newmis.solid = 2;
 			setmodel (newmis, newmis.mdl);
 			setsize (newmis, '-16 -16 0', '16 16 48');
@@ -684,7 +684,7 @@ void () TeamFortress_FinishedBuilding =
 			newmis.real_owner = oldself.real_owner;
 			newmis.trigger_field = oldself;
 			oldself.oldenemy = newmis;
-			newmis.movetype = AS_MISSILE;
+			newmis.movetype = 4;
 			oldself.colormap = self.colormap;
 			newmis.colormap = self.colormap;
 			newmis.takedamage = 2;
@@ -796,11 +796,11 @@ void () Dispenser_Explode =
 	ThrowGib ("progs/dgib1.mdl", -30);
 	ThrowGib ("progs/dgib2.mdl", -50);
 	ThrowGib ("progs/dgib3.mdl", -50);
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
 };
@@ -862,7 +862,7 @@ void (entity gun) Engineer_UseSentryGun =
 	st = ftos (gun.ammo_shells);
 	sprint (self, 2, st);
 	sprint (self, 2, " shells");
-	if ((gun.weapon == AS_MELEE))
+	if ((gun.weapon == 3))
 	{
 		st = ftos (gun.ammo_rockets);
 		sprint (self, 2, ", ");

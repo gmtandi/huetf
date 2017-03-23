@@ -19,7 +19,7 @@ void () door_blocked =
 	T_Damage (other, self, self, self.dmg);
 	if ((self.wait >= 0))
 	{
-		if ((self.state == AS_MELEE))
+		if ((self.state == 3))
 		{
 			door_go_up ();
 		}
@@ -57,7 +57,7 @@ void () door_go_down =
 		self.takedamage = 1;
 		self.health = self.max_health;
 	}
-	self.state = AS_MELEE;
+	self.state = 3;
 	SUB_CalcMove (self.pos1, self.speed, door_hit_bottom);
 };
 
@@ -352,7 +352,7 @@ void () LinkDoors =
 	{
 		return;
 	}
-	if ((self.spawnflags & AS_MISSILE))
+	if ((self.spawnflags & 4))
 	{
 		self.enemy = self;
 		self.owner = self;
@@ -493,14 +493,14 @@ void () func_door =
 		self.noise2 = "doors/hydro1.wav";
 		self.noise1 = "doors/hydro2.wav";
 	}
-	if ((self.sounds == AS_MELEE))
+	if ((self.sounds == 3))
 	{
 		precache_sound ("doors/stndr1.wav");
 		precache_sound ("doors/stndr2.wav");
 		self.noise2 = "doors/stndr1.wav";
 		self.noise1 = "doors/stndr2.wav";
 	}
-	if ((self.sounds == AS_MISSILE))
+	if ((self.sounds == 4))
 	{
 		precache_sound ("doors/ddoor1.wav");
 		precache_sound ("doors/ddoor2.wav");
@@ -509,7 +509,7 @@ void () func_door =
 	}
 	SetMovedir ();
 	self.max_health = self.health;
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.movetype = 7;
 	setorigin (self, self.origin);
 	setmodel (self, self.model);
@@ -530,7 +530,7 @@ void () func_door =
 	}
 	if (!self.wait)
 	{
-		self.wait = AS_MELEE;
+		self.wait = 3;
 	}
 	if (!self.lip)
 	{
@@ -597,7 +597,7 @@ void () fd_secret_use =
 	makevectors (self.mangle);
 	if (!self.t_width)
 	{
-		if ((self.spawnflags & AS_MISSILE))
+		if ((self.spawnflags & 4))
 		{
 			self.t_width = fabs ((v_up * self.size));
 		}
@@ -610,7 +610,7 @@ void () fd_secret_use =
 	{
 		self.t_length = fabs ((v_forward * self.size));
 	}
-	if ((self.spawnflags & AS_MISSILE))
+	if ((self.spawnflags & 4))
 	{
 		self.dest1 = (self.origin - (v_up * self.t_width));
 	}
@@ -709,7 +709,7 @@ void () secret_touch =
 	if (self.message)
 	{
 		CenterPrint (other, self.message);
-		sound (other, AS_MISSILE, "misc/talk.wav", 1, 1);
+		sound (other, 4, "misc/talk.wav", 1, 1);
 	}
 };
 
@@ -722,7 +722,7 @@ void () func_door_secret =
 	}
 	if ((self.sounds == 0))
 	{
-		self.sounds = AS_MELEE;
+		self.sounds = 3;
 	}
 	if ((self.sounds == 1))
 	{
@@ -741,7 +741,7 @@ void () func_door_secret =
 		self.noise1 = "doors/airdoor2.wav";
 		self.noise3 = "doors/airdoor2.wav";
 	}
-	if ((self.sounds == AS_MELEE))
+	if ((self.sounds == 3))
 	{
 		precache_sound ("doors/basesec1.wav");
 		precache_sound ("doors/basesec2.wav");
@@ -755,7 +755,7 @@ void () func_door_secret =
 	}
 	self.mangle = self.angles;
 	self.angles = '0 0 0';
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.movetype = 7;
 	self.classname = "door";
 	setmodel (self, self.model);

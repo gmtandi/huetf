@@ -99,13 +99,13 @@ void () SniperSight_Create =
 		}
 		else
 		{
-			if ((self.team_no == AS_MELEE))
+			if ((self.team_no == 3))
 			{
 				setmodel (sight, "progs/dot3.spr");
 			}
 			else
 			{
-				if ((self.team_no == AS_MISSILE))
+				if ((self.team_no == 4))
 				{
 					setmodel (sight, "progs/dot4.spr");
 				}

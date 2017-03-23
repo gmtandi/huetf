@@ -171,7 +171,7 @@ void () OldSentry_Rotate =
 			self.heat = 1;
 			if ((random () < 0.1))
 			{
-				sound (self, AS_MELEE, "weapons/turridle.wav", 1, 1);
+				sound (self, 3, "weapons/turridle.wav", 1, 1);
 			}
 		}
 	}
@@ -339,7 +339,7 @@ void () Sentry_Rotate =
 			self.heat = 1;
 			if ((random () < 0.1))
 			{
-				sound (self, AS_MELEE, "weapons/turridle.wav", 1, 1);
+				sound (self, 3, "weapons/turridle.wav", 1, 1);
 			}
 		}
 	}
@@ -534,7 +534,7 @@ float () OldSentry_FindTarget =
 			gotone = 0;
 		}
 		r = range (client);
-		if ((r == AS_MELEE))
+		if ((r == 3))
 		{
 			gotone = 0;
 		}
@@ -567,7 +567,7 @@ float () OldSentry_FindTarget =
 
 void () OldSentry_FoundTarget =
 {
-	if (((self.ammo_shells > 0) || ((self.ammo_rockets > 0) && (self.weapon == AS_MELEE))))
+	if (((self.ammo_shells > 0) || ((self.ammo_rockets > 0) && (self.weapon == 3))))
 	{
 		sound (self, 2, "weapons/turrspot.wav", 1, 1);
 	}
@@ -647,11 +647,11 @@ void () Sentry_Explode =
 	{
 		dremove (self.trigger_field);
 	}
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
 };
@@ -666,7 +666,7 @@ void (float damg, vector dir, vector spread) FireSentry =
 	src_z = (self.absmin_z + (self.size_z * 0.7));
 	ClearMultiDamage ();
 	traceline (src, (src + (dir * 2048)), 0, self);
-	puff_org = (trace_endpos - (dir * AS_MISSILE));
+	puff_org = (trace_endpos - (dir * 4));
 	direction = ((dir + ((crandom () * spread_x) * v_right)) + ((crandom () * spread_y) * v_up));
 	traceline (src, (src + (direction * 2048)), 0, self);
 	if ((trace_fraction != 1))
@@ -701,7 +701,7 @@ float () OldSentry_Fire =
 	{
 		return (0);
 	}
-	if ((((self.weapon == AS_MELEE) && (self.ammo_rockets > 0)) && (self.super_damage_finished < time)))
+	if ((((self.weapon == 3) && (self.ammo_rockets > 0)) && (self.super_damage_finished < time)))
 	{
 		Sentry_MuzzleFlash ();
 		sound (self, 1, "weapons/rocket1i.wav", 1, 1);
@@ -718,7 +718,7 @@ float () OldSentry_Fire =
 		setmodel (newmis, "progs/missile.mdl");
 		setsize (newmis, '0 0 0', '0 0 0');
 		setorigin (newmis, ((self.origin + (v_forward * 8)) + '0 0 16'));
-		self.super_damage_finished = (time + AS_MELEE);
+		self.super_damage_finished = (time + 3);
 		self.ammo_rockets = (self.ammo_rockets - 1);
 		if ((self.ammo_rockets == enter))
 		{
@@ -735,7 +735,7 @@ float () OldSentry_Fire =
 	sound (self, 1, "weapons/sniper.wav", 1, 1);
 	deathmsg = 27;
 	self.v_angle = self.angles;
-	FireBullets (AS_MISSILE, dir, '0.1 0.1 0');
+	FireBullets (4, dir, '0.1 0.1 0');
 	if (((self.ammo_shells == 0) && (random () < 0.1)))
 	{
 		sprint (self.real_owner, 2, "Sentry Gun is out of shells.\n");
@@ -747,7 +747,7 @@ float () OldSentry_Fire =
 			sprint (self.real_owner, 2, "Sentry Gun is low on shells.\n");
 		}
 	}
-	if ((((self.ammo_rockets == 0) && (self.weapon == AS_MELEE)) && (random () < 0.1)))
+	if ((((self.ammo_rockets == 0) && (self.weapon == 3)) && (random () < 0.1)))
 	{
 		sprint (self.real_owner, 2, "Sentry Gun is out of rockets.\n");
 		if ((self.ammo_shells == 0))
@@ -835,7 +835,7 @@ float () Sentry_Fire =
 			}
 		}
 	}
-	if ((((self.weapon == AS_MELEE) && (self.ammo_rockets > 0)) && (self.super_damage_finished < time)))
+	if ((((self.weapon == 3) && (self.ammo_rockets > 0)) && (self.super_damage_finished < time)))
 	{
 		Sentry_MuzzleFlash ();
 		sound (self, 1, "weapons/rocket1i.wav", 1, 1);
@@ -852,7 +852,7 @@ float () Sentry_Fire =
 		setmodel (newmis, "progs/missile.mdl");
 		setsize (newmis, '0 0 0', '0 0 0');
 		setorigin (newmis, ((self.origin + (v_forward * 8)) + '0 0 16'));
-		self.super_damage_finished = (time + AS_MELEE);
+		self.super_damage_finished = (time + 3);
 		self.ammo_rockets = (self.ammo_rockets - 1);
 		if ((self.ammo_rockets == enter))
 		{
@@ -871,29 +871,29 @@ float () Sentry_Fire =
 			Sentry_MuzzleFlash ();
 			sound (self, 1, "weapons/lhit.wav", 1, 1);
 			traceline (org, (self.enemy.origin + '0 0 16'), 1, self);
-			WriteByte (AS_MISSILE, 23);
-			WriteByte (AS_MISSILE, 6);
-			WriteEntity (AS_MISSILE, self);
-			WriteCoord (AS_MISSILE, org_x);
-			WriteCoord (AS_MISSILE, org_y);
-			WriteCoord (AS_MISSILE, org_z);
-			WriteCoord (AS_MISSILE, trace_endpos_x);
-			WriteCoord (AS_MISSILE, trace_endpos_y);
-			WriteCoord (AS_MISSILE, trace_endpos_z);
+			WriteByte (4, 23);
+			WriteByte (4, 6);
+			WriteEntity (4, self);
+			WriteCoord (4, org_x);
+			WriteCoord (4, org_y);
+			WriteCoord (4, org_z);
+			WriteCoord (4, trace_endpos_x);
+			WriteCoord (4, trace_endpos_y);
+			WriteCoord (4, trace_endpos_z);
 			multicast (org, 1);
 			if ((r <= 700))
 			{
-				LightningDamage (org, (trace_endpos + (v_forward * AS_MISSILE)), self, 23);
+				LightningDamage (org, (trace_endpos + (v_forward * 4)), self, 23);
 			}
 			else
 			{
 				if ((r <= 1100))
 				{
-					LightningDamage (org, (trace_endpos + (v_forward * AS_MISSILE)), self, 17);
+					LightningDamage (org, (trace_endpos + (v_forward * 4)), self, 17);
 				}
 				else
 				{
-					LightningDamage (org, (trace_endpos + (v_forward * AS_MISSILE)), self, enter);
+					LightningDamage (org, (trace_endpos + (v_forward * 4)), self, enter);
 				}
 			}
 			self.ammo_shells = (self.ammo_shells - 1);

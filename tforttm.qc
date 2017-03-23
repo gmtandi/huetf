@@ -67,11 +67,11 @@ float (float tno) TeamFortress_TeamGetColor =
 	{
 		return (5);
 	}
-	if ((tno == AS_MELEE))
+	if ((tno == 3))
 	{
 		return (13);
 	}
-	if ((tno == AS_MISSILE))
+	if ((tno == 4))
 	{
 		return (12);
 	}
@@ -88,11 +88,11 @@ float (float tno) TeamFortress_GetColor =
 	{
 		return (5);
 	}
-	if ((tno == AS_MELEE))
+	if ((tno == 3))
 	{
 		return (13);
 	}
-	if ((tno == AS_MISSILE))
+	if ((tno == 4))
 	{
 		return (12);
 	}
@@ -111,12 +111,12 @@ void (float tno) TeamFortress_TeamSetColor =
 		team2col = 5;
 		return;
 	}
-	if ((tno == AS_MELEE))
+	if ((tno == 3))
 	{
 		team3col = 13;
 		return;
 	}
-	if ((tno == AS_MISSILE))
+	if ((tno == 4))
 	{
 		team4col = 12;
 		return;
@@ -154,7 +154,7 @@ string (float tno) GetTeamName =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				st = infokey (world, "team3");
 				if ((st == string_null))
@@ -164,7 +164,7 @@ string (float tno) GetTeamName =
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					st = infokey (world, "team4");
 					if ((st == string_null))
@@ -556,11 +556,11 @@ void (float tno, float scoretoadd) TeamFortress_TeamIncreaseScore =
 	{
 		team2score = (team2score + scoretoadd);
 	}
-	if ((tno == AS_MELEE))
+	if ((tno == 3))
 	{
 		team3score = (team3score + scoretoadd);
 	}
-	if ((tno == AS_MISSILE))
+	if ((tno == 4))
 	{
 		team4score = (team4score + scoretoadd);
 	}
@@ -588,11 +588,11 @@ float (float tno) TeamFortress_TeamGetScore =
 	{
 		return (team2score);
 	}
-	if ((tno == AS_MELEE))
+	if ((tno == 3))
 	{
 		return (team3score);
 	}
-	if ((tno == AS_MISSILE))
+	if ((tno == 4))
 	{
 		return (team4score);
 	}
@@ -615,11 +615,11 @@ float (float tno) TeamFortress_TeamGetScoreFrags =
 		{
 			return (team2frags);
 		}
-		if ((tno == AS_MELEE))
+		if ((tno == 3))
 		{
 			return (team3frags);
 		}
-		if ((tno == AS_MISSILE))
+		if ((tno == 4))
 		{
 			return (team4frags);
 		}
@@ -723,11 +723,11 @@ float (float tno) TeamFortress_TeamGetMaxPlayers =
 	{
 		return (team2maxplayers);
 	}
-	if ((tno == AS_MELEE))
+	if ((tno == 3))
 	{
 		return (team3maxplayers);
 	}
-	if ((tno == AS_MISSILE))
+	if ((tno == 4))
 	{
 		return (team4maxplayers);
 	}
@@ -929,11 +929,11 @@ string (float tno) TeamFortress_TeamGetColorString =
 	{
 		return ("Brown");
 	}
-	if ((col == AS_MELEE))
+	if ((col == 3))
 	{
 		return ("Blue");
 	}
-	if ((col == AS_MISSILE))
+	if ((col == 4))
 	{
 		return ("Green");
 	}
@@ -1021,11 +1021,11 @@ void () TeamFortress_StatusQuery =
 	st = ftos (ft);
 	sprint (self, 2, st);
 	sprint (self, 2, "  ");
-	ft = TeamFortress_TeamGetNoPlayers (AS_MELEE);
+	ft = TeamFortress_TeamGetNoPlayers (3);
 	st = ftos (ft);
 	sprint (self, 2, st);
 	sprint (self, 2, "  ");
-	ft = TeamFortress_TeamGetNoPlayers (AS_MISSILE);
+	ft = TeamFortress_TeamGetNoPlayers (4);
 	st = ftos (ft);
 	sprint (self, 2, st);
 	sprint (self, 2, "\n");
@@ -1050,11 +1050,11 @@ float (float tno) TeamFortress_TeamGetIllegalClasses =
 		{
 			return (te.maxammo_nails);
 		}
-		if ((tno == AS_MELEE))
+		if ((tno == 3))
 		{
 			return (te.maxammo_rockets);
 		}
-		if ((tno == AS_MISSILE))
+		if ((tno == 4))
 		{
 			return (te.maxammo_cells);
 		}
@@ -1084,9 +1084,9 @@ float (float tno) TeamFortress_TeamIsCivilian =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
-				if ((civilianteams & AS_MISSILE))
+				if ((civilianteams & 4))
 				{
 					return (1);
 				}
@@ -1144,14 +1144,14 @@ float (float tno, float pc) ClassIsRestricted =
 		}
 		else
 		{
-			if ((pc == AS_MELEE))
+			if ((pc == 3))
 			{
 				st = infokey (world, "cr_soldier");
 				max = stof (st);
 			}
 			else
 			{
-				if ((pc == AS_MISSILE))
+				if ((pc == 4))
 				{
 					st = infokey (world, "cr_demoman");
 					max = stof (st);

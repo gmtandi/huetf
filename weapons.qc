@@ -164,12 +164,12 @@ void () W_FireAxe =
 
 	makevectors (self.v_angle);
 	source = (self.origin + '0 0 16');
-	traceline (source, (source + (v_forward * 64)), RANGE_MELEE, self);
+	traceline (source, (source + (v_forward * 64)), 0, self);
 	if ((trace_fraction == 1))
 	{
 		return;
 	}
-	org = (trace_endpos - (v_forward * AS_MISSILE));
+	org = (trace_endpos - (v_forward * 4));
 	if (trace_ent.takedamage)
 	{
 		trace_ent.axhitme = 1;
@@ -177,7 +177,7 @@ void () W_FireAxe =
 		if (((self.playerclass != 8) || (trace_ent.classname != "player")))
 		{
 			deathmsg = 17;
-			TF_T_Damage (trace_ent, self, self, 20, 2, RANGE_MELEE);
+			TF_T_Damage (trace_ent, self, self, 20, 2, 0);
 		}
 		else
 		{
@@ -186,27 +186,27 @@ void () W_FireAxe =
 			makevectors (trace_ent.v_angle);
 			def = v_right;
 			makevectors (self.v_angle);
-			if ((crossproduct (def, v_forward) > RANGE_MELEE))
+			if ((crossproduct (def, v_forward) > 0))
 			{
 				deathmsg = 22;
-				TF_T_Damage (trace_ent, self, self, _x, (2 | 1), RANGE_MELEE);
+				TF_T_Damage (trace_ent, self, self, _x, (2 | 1), 0);
 			}
 			else
 			{
 				deathmsg = 17;
-				TF_T_Damage (trace_ent, self, self, 40, 2, RANGE_MELEE);
+				TF_T_Damage (trace_ent, self, self, 40, 2, 0);
 			}
 		}
 	}
 	else
 	{
 		sound (self, 1, "player/axhit2.wav", 1, 1);
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 2);
-		WriteByte (AS_MISSILE, AS_MELEE);
-		WriteCoord (AS_MISSILE, org_x);
-		WriteCoord (AS_MISSILE, org_y);
-		WriteCoord (AS_MISSILE, org_z);
+		WriteByte (4, 23);
+		WriteByte (4, 2);
+		WriteByte (4, 3);
+		WriteCoord (4, org_x);
+		WriteCoord (4, org_y);
+		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
 };
@@ -221,12 +221,12 @@ void () W_FireSpanner =
 
 	makevectors (self.v_angle);
 	source = (self.origin + '0 0 16');
-	traceline (source, (source + (v_forward * 64)), RANGE_MELEE, self);
+	traceline (source, (source + (v_forward * 64)), 0, self);
 	if ((trace_fraction == 1))
 	{
 		return;
 	}
-	org = (trace_endpos - (v_forward * AS_MISSILE));
+	org = (trace_endpos - (v_forward * 4));
 	if ((trace_ent.goal_activation & 8))
 	{
 		if (Activated (trace_ent, self))
@@ -244,7 +244,7 @@ void () W_FireSpanner =
 		}
 		else
 		{
-			if ((trace_ent.else_goal != RANGE_MELEE))
+			if ((trace_ent.else_goal != 0))
 			{
 				te = Findgoal (trace_ent.else_goal);
 				if (te)
@@ -255,12 +255,12 @@ void () W_FireSpanner =
 			else
 			{
 				sound (self, 1, "player/axhit2.wav", 1, 1);
-				WriteByte (AS_MISSILE, 23);
-				WriteByte (AS_MISSILE, 2);
-				WriteByte (AS_MISSILE, AS_MELEE);
-				WriteCoord (AS_MISSILE, org_x);
-				WriteCoord (AS_MISSILE, org_y);
-				WriteCoord (AS_MISSILE, org_z);
+				WriteByte (4, 23);
+				WriteByte (4, 2);
+				WriteByte (4, 3);
+				WriteCoord (4, org_x);
+				WriteCoord (4, org_y);
+				WriteCoord (4, org_z);
 				multicast (org, 2);
 			}
 		}
@@ -294,36 +294,36 @@ void () W_FireSpanner =
 				{
 					if ((trace_ent.classname == "player"))
 					{
-						if (((((trace_ent.team_no == self.team_no) && (self.team_no != RANGE_MELEE)) && teamplay) || coop))
+						if (((((trace_ent.team_no == self.team_no) && (self.team_no != 0)) && teamplay) || coop))
 						{
 							healam = enter;
 							if ((self.ammo_cells < healam))
 							{
 								healam = self.ammo_cells;
 							}
-							if ((trace_ent.armortype == RANGE_MELEE))
+							if ((trace_ent.armortype == 0))
 							{
 								return;
 							}
-							if (((trace_ent.maxarmor - trace_ent.armorvalue) < (healam * AS_MISSILE)))
+							if (((trace_ent.maxarmor - trace_ent.armorvalue) < (healam * 4)))
 							{
-								healam = ceil (((trace_ent.maxarmor - trace_ent.armorvalue) / AS_MISSILE));
+								healam = ceil (((trace_ent.maxarmor - trace_ent.armorvalue) / 4));
 							}
-							if ((healam > RANGE_MELEE))
+							if ((healam > 0))
 							{
-								trace_ent.armorvalue = (trace_ent.armorvalue + (healam * AS_MISSILE));
+								trace_ent.armorvalue = (trace_ent.armorvalue + (healam * 4));
 								if ((trace_ent.armorvalue > trace_ent.maxarmor))
 								{
 									trace_ent.armorvalue = trace_ent.maxarmor;
 								}
 								self.ammo_cells = (self.ammo_cells - healam);
 								sound (trace_ent, 1, "items/r_item1.wav", 1, 1);
-								WriteByte (AS_MISSILE, 23);
-								WriteByte (AS_MISSILE, 2);
-								WriteByte (AS_MISSILE, AS_MELEE);
-								WriteCoord (AS_MISSILE, org_x);
-								WriteCoord (AS_MISSILE, org_y);
-								WriteCoord (AS_MISSILE, org_z);
+								WriteByte (4, 23);
+								WriteByte (4, 2);
+								WriteByte (4, 3);
+								WriteCoord (4, org_x);
+								WriteCoord (4, org_y);
+								WriteCoord (4, org_z);
 								multicast (org, 2);
 								W_SetCurrentAmmo ();
 							}
@@ -333,7 +333,7 @@ void () W_FireSpanner =
 					trace_ent.axhitme = 1;
 					SpawnBlood (org, 20);
 					deathmsg = space;
-					TF_T_Damage (trace_ent, self, self, 20, 2, RANGE_MELEE);
+					TF_T_Damage (trace_ent, self, self, 20, 2, 0);
 				}
 			}
 		}
@@ -341,12 +341,12 @@ void () W_FireSpanner =
 	else
 	{
 		sound (self, 1, "player/axhit2.wav", 1, 1);
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 2);
-		WriteByte (AS_MISSILE, AS_MELEE);
-		WriteCoord (AS_MISSILE, org_x);
-		WriteCoord (AS_MISSILE, org_y);
-		WriteCoord (AS_MISSILE, org_z);
+		WriteByte (4, 23);
+		WriteByte (4, 2);
+		WriteByte (4, 3);
+		WriteCoord (4, org_x);
+		WriteCoord (4, org_y);
+		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
 };
@@ -360,17 +360,17 @@ void () W_FireMedikit =
 	local entity BioInfection;
 
 	source = (self.origin + '0 0 16');
-	traceline (source, (source + (v_forward * 64)), RANGE_MELEE, self);
+	traceline (source, (source + (v_forward * 64)), 0, self);
 	if ((trace_fraction == 1))
 	{
 		return;
 	}
-	org = (trace_endpos - (v_forward * AS_MISSILE));
+	org = (trace_endpos - (v_forward * 4));
 	if (trace_ent.takedamage)
 	{
 		if ((trace_ent.classname == "player"))
 		{
-			if ((((trace_ent.team_no == self.team_no) && (self.team_no != RANGE_MELEE)) || coop))
+			if ((((trace_ent.team_no == self.team_no) && (self.team_no != 0)) || coop))
 			{
 				healam = 200;
 				te = find (world, classname, "timer");
@@ -387,7 +387,7 @@ void () W_FireMedikit =
 					bprint (1, "'s concussion\n");
 					if ((te.team_no != self.team_no))
 					{
-						TF_AddFrags (self, 1, RANGE_MELEE);
+						TF_AddFrags (self, 1, 0);
 					}
 					dremove (te);
 				}
@@ -408,7 +408,7 @@ void () W_FireMedikit =
 						bprint (1, " of his hallucinations\n");
 						if ((te.team_no != self.team_no))
 						{
-							TF_AddFrags (self, 1, RANGE_MELEE);
+							TF_AddFrags (self, 1, 0);
 						}
 						dremove (te);
 					}
@@ -435,7 +435,7 @@ void () W_FireMedikit =
 						bprint (1, "'s tranquilisation\n");
 						if ((te.team_no != self.team_no))
 						{
-							TF_AddFrags (self, 1, RANGE_MELEE);
+							TF_AddFrags (self, 1, 0);
 						}
 						dremove (te);
 					}
@@ -459,15 +459,15 @@ void () W_FireMedikit =
 						bprint (1, "'s infection\n");
 						if ((trace_ent.infection_team_no != self.team_no))
 						{
-							TF_AddFrags (self, 1, RANGE_MELEE);
+							TF_AddFrags (self, 1, 0);
 						}
 					}
 					return;
 				}
-				if ((trace_ent.numflames > RANGE_MELEE))
+				if ((trace_ent.numflames > 0))
 				{
 					sound (trace_ent, 1, "items/r_item1.wav", 1, 1);
-					trace_ent.numflames = RANGE_MELEE;
+					trace_ent.numflames = 0;
 					if ((self.classname == "player"))
 					{
 						bprint (1, self.netname);
@@ -477,12 +477,12 @@ void () W_FireMedikit =
 					}
 					return;
 				}
-				if (((healam > RANGE_MELEE) && (trace_ent.health < trace_ent.max_health)))
+				if (((healam > 0) && (trace_ent.health < trace_ent.max_health)))
 				{
 					sound (trace_ent, 1, "items/r_item1.wav", 1, 1);
 					trace_ent.axhitme = 1;
 					SpawnBlood (org, 20);
-					T_Heal (trace_ent, healam, RANGE_MELEE);
+					T_Heal (trace_ent, healam, 0);
 				}
 				else
 				{
@@ -493,9 +493,9 @@ void () W_FireMedikit =
 						{
 							healam = (self.ammo_medikit * 5);
 						}
-						if ((healam > RANGE_MELEE))
+						if ((healam > 0))
 						{
-							sound (trace_ent, AS_MELEE, "items/r_item2.wav", 1, 1);
+							sound (trace_ent, 3, "items/r_item2.wav", 1, 1);
 							T_Heal (trace_ent, healam, 1);
 							self.ammo_medikit = (self.ammo_medikit - rint ((healam / 5)));
 							if (!(trace_ent.items & 65536))
@@ -542,12 +542,12 @@ void () W_FireMedikit =
 	else
 	{
 		sound (self, 1, "player/axhit2.wav", 1, 1);
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 2);
-		WriteByte (AS_MISSILE, AS_MELEE);
-		WriteCoord (AS_MISSILE, org_x);
-		WriteCoord (AS_MISSILE, org_y);
-		WriteCoord (AS_MISSILE, org_z);
+		WriteByte (4, 23);
+		WriteByte (4, 2);
+		WriteByte (4, 3);
+		WriteCoord (4, org_x);
+		WriteCoord (4, org_y);
+		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
 };
@@ -560,17 +560,17 @@ void () W_FireBioweapon =
 	local entity BioInfection;
 
 	source = (self.origin + '0 0 16');
-	traceline (source, (source + (v_forward * 64)), RANGE_MELEE, self);
+	traceline (source, (source + (v_forward * 64)), 0, self);
 	if ((trace_fraction == 1))
 	{
 		return;
 	}
-	org = (trace_endpos - (v_forward * AS_MISSILE));
+	org = (trace_endpos - (v_forward * 4));
 	if (trace_ent.takedamage)
 	{
 		if ((trace_ent.classname == "player"))
 		{
-			if (((((trace_ent.team_no != self.team_no) && (self.team_no != RANGE_MELEE)) && teamplay) || (teamplay == RANGE_MELEE)))
+			if (((((trace_ent.team_no != self.team_no) && (self.team_no != 0)) && teamplay) || (teamplay == 0)))
 			{
 				trace_ent.axhitme = 1;
 				SpawnBlood (org, 20);
@@ -619,12 +619,12 @@ void () W_FireBioweapon =
 	else
 	{
 		sound (self, 1, "player/axhit2.wav", 1, 1);
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 2);
-		WriteByte (AS_MISSILE, AS_MELEE);
-		WriteCoord (AS_MISSILE, org_x);
-		WriteCoord (AS_MISSILE, org_y);
-		WriteCoord (AS_MISSILE, org_z);
+		WriteByte (4, 23);
+		WriteByte (4, 2);
+		WriteByte (4, 3);
+		WriteCoord (4, org_x);
+		WriteCoord (4, org_y);
+		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
 };
@@ -647,7 +647,7 @@ void (vector org, vector vel) SpawnMeatSpray =
 	missile = spawn ();
 	missile.owner = self;
 	missile.movetype = enter;
-	missile.solid = RANGE_MELEE;
+	missile.solid = 0;
 	makevectors (self.angles);
 	missile.velocity = vel;
 	missile.velocity_z = ((missile.velocity_z + 250) + (_2 * random ()));
@@ -661,12 +661,12 @@ void (vector org, vector vel) SpawnMeatSpray =
 
 void (vector org, float damage) SpawnBlood =
 {
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, 12);
-	WriteByte (AS_MISSILE, 1);
-	WriteCoord (AS_MISSILE, org_x);
-	WriteCoord (AS_MISSILE, org_y);
-	WriteCoord (AS_MISSILE, org_z);
+	WriteByte (4, 23);
+	WriteByte (4, 12);
+	WriteByte (4, 1);
+	WriteCoord (4, org_x);
+	WriteCoord (4, org_y);
+	WriteCoord (4, org_z);
 	multicast (org, 2);
 };
 
@@ -680,7 +680,7 @@ void (float damage) spawn_touchblood =
 
 void (vector org, vector vel) SpawnChunk =
 {
-	particle (org, (vel * 0.02), RANGE_MELEE, enter);
+	particle (org, (vel * 0.02), 0, enter);
 };
 entity multi_ent;
 float multi_damage;
@@ -692,9 +692,9 @@ float puff_count;
 void () ClearMultiDamage =
 {
 	multi_ent = world;
-	multi_damage = RANGE_MELEE;
-	blood_count = RANGE_MELEE;
-	puff_count = RANGE_MELEE;
+	multi_damage = 0;
+	blood_count = 0;
+	puff_count = 0;
 };
 
 void () ApplyMultiDamage =
@@ -728,22 +728,22 @@ void () Multi_Finish =
 {
 	if (puff_count)
 	{
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 2);
-		WriteByte (AS_MISSILE, puff_count);
-		WriteCoord (AS_MISSILE, puff_org_x);
-		WriteCoord (AS_MISSILE, puff_org_y);
-		WriteCoord (AS_MISSILE, puff_org_z);
+		WriteByte (4, 23);
+		WriteByte (4, 2);
+		WriteByte (4, puff_count);
+		WriteCoord (4, puff_org_x);
+		WriteCoord (4, puff_org_y);
+		WriteCoord (4, puff_org_z);
 		multicast (puff_org, 2);
 	}
 	if (blood_count)
 	{
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 12);
-		WriteByte (AS_MISSILE, blood_count);
-		WriteCoord (AS_MISSILE, blood_org_x);
-		WriteCoord (AS_MISSILE, blood_org_y);
-		WriteCoord (AS_MISSILE, blood_org_z);
+		WriteByte (4, 23);
+		WriteByte (4, 12);
+		WriteByte (4, blood_count);
+		WriteCoord (4, blood_org_x);
+		WriteCoord (4, blood_org_y);
+		WriteCoord (4, blood_org_z);
 		multicast (puff_org, 2);
 	}
 };
@@ -756,7 +756,7 @@ void (float damage, vector dir) TraceAttack =
 	vel = normalize (((dir + (v_up * crandom ())) + (v_right * crandom ())));
 	vel = (vel + (2 * trace_plane_normal));
 	vel = (vel * 200);
-	org = (trace_endpos - (dir * AS_MISSILE));
+	org = (trace_endpos - (dir * 4));
 	if (trace_ent.takedamage)
 	{
 		blood_count = (blood_count + 1);
@@ -778,17 +778,17 @@ void (float shotcount, vector dir, vector spread) FireBullets =
 	src = (self.origin + (v_forward * enter));
 	src_z = (self.absmin_z + (self.size_z * 0.7));
 	ClearMultiDamage ();
-	traceline (src, (src + (dir * 2048)), RANGE_MELEE, self);
-	puff_org = (trace_endpos - (dir * AS_MISSILE));
-	while ((shotcount > RANGE_MELEE))
+	traceline (src, (src + (dir * 2048)), 0, self);
+	puff_org = (trace_endpos - (dir * 4));
+	while ((shotcount > 0))
 	{
 		direction = ((dir + ((crandom () * spread_x) * v_right)) + ((crandom () * spread_y) * v_up));
-		traceline (src, (src + (direction * 2048)), RANGE_MELEE, self);
+		traceline (src, (src + (direction * 2048)), 0, self);
 		if ((trace_fraction != 1))
 		{
 			if ((self.current_weapon != 32768))
 			{
-				TraceAttack (AS_MISSILE, direction);
+				TraceAttack (4, direction);
 			}
 			else
 			{
@@ -854,7 +854,7 @@ void (vector direction, float damage) FireSniperBullet =
 	src = (self.origin + (v_forward * enter));
 	src_z = (self.absmin_z + (self.size_z * 0.7));
 	ClearMultiDamage ();
-	traceline (src, (src + (direction * 4096)), RANGE_MELEE, self);
+	traceline (src, (src + (direction * 4096)), 0, self);
 	if ((trace_fraction != 1))
 	{
 		TraceAttack (damage, direction);
@@ -884,8 +884,8 @@ void () W_FireSniperRifle =
 	makevectors (self.v_angle);
 	src = (self.origin + (v_forward * enter));
 	src_z = (self.absmin_z + (self.size_z * 0.7));
-	use_this = RANGE_MELEE;
-	traceline (src, (src + (dir * 8092)), RANGE_MELEE, self);
+	use_this = 0;
+	traceline (src, (src + (dir * 8092)), 0, self);
 	if ((trace_fraction != 1))
 	{
 		if ((trace_ent != world))
@@ -900,7 +900,7 @@ void () W_FireSniperRifle =
 	if (!use_this)
 	{
 		dir = aim (self, 10000);
-		traceline (src, (src + (dir * 3072)), RANGE_MELEE, self);
+		traceline (src, (src + (dir * 3072)), 0, self);
 	}
 	deathmsg = COLOR_GREEN;
 	dam_mult = 0.8;
@@ -911,25 +911,25 @@ void () W_FireSniperRifle =
 			f = (trace_endpos - src);
 			g_x = trace_endpos_x;
 			g_y = trace_endpos_y;
-			g_z = RANGE_MELEE;
+			g_z = 0;
 			h_x = trace_ent.origin_x;
 			h_y = trace_ent.origin_y;
-			h_z = RANGE_MELEE;
+			h_z = 0;
 			x = vlen ((g - h));
 			f = ((normalize (f) * x) + trace_endpos);
 			zdif = (f_z - trace_ent.origin_z);
 			deathmsg = COLOR_GREEN;
 			trace_ent.head_shot_vector = '0 0 0';
-			if ((zdif < RANGE_MELEE))
+			if ((zdif < 0))
 			{
 				dam_mult = 0.4;
 				trace_ent.leg_damage = (trace_ent.leg_damage + 1);
 				TeamFortress_SetSpeed (trace_ent);
 				deathmsg = 28;
 				TF_T_Damage (trace_ent, self, self, (self.heat * dam_mult), 2, 1);
-				if ((trace_ent.health > RANGE_MELEE))
+				if ((trace_ent.health > 0))
 				{
-					sprint (trace_ent, RANGE_MELEE, "Leg injury!\n");
+					sprint (trace_ent, 0, "Leg injury!\n");
 					sprint (self, 1, "Leg shot - that'll slow him down!\n");
 				}
 				return;
@@ -943,9 +943,9 @@ void () W_FireSniperRifle =
 					trace_ent.head_shot_vector = (trace_ent.origin - self.origin);
 					deathmsg = 29;
 					TF_T_Damage (trace_ent, self, self, (self.heat * dam_mult), 2, 1);
-					if ((trace_ent.health > RANGE_MELEE))
+					if ((trace_ent.health > 0))
 					{
-						sprint (trace_ent, RANGE_MELEE, "Head injury!\n");
+						sprint (trace_ent, 0, "Head injury!\n");
 						sprint (self, 1, "Head shot - that's gotta hurt!\n");
 					}
 					return;
@@ -1000,7 +1000,7 @@ void () W_FireAssaultCannon =
 	}
 	else
 	{
-		FireBullets (AS_MISSILE, dir, '0.1 0.1 0');
+		FireBullets (4, dir, '0.1 0.1 0');
 	}
 };
 
@@ -1050,11 +1050,11 @@ void () MissileRadius =
 	deathmsg = self.weapon;
 	T_RadiusDamage (self, self.owner, damg, other);
 	self.origin = (self.origin - (8 * normalize (self.velocity)));
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
 };
@@ -1084,7 +1084,7 @@ void () T_MissileTouch =
 	deathmsg = self.weapon;
 	if (other.health)
 	{
-		TF_T_Damage (other, self, self.owner, damg, 2, RANGE_MELEE);
+		TF_T_Damage (other, self, self.owner, damg, 2, 0);
 	}
 	MissileRadius ();
 };
@@ -1115,7 +1115,7 @@ void () W_FireRocket =
 	newmis.angles = vectoangles (newmis.velocity);
 	newmis.classname = "rocket";
 	newmis.touch = T_MissileTouch;
-	newmis.voided = RANGE_MELEE;
+	newmis.voided = 0;
 	newmis.nextthink = (time + 5);
 	newmis.think = MissileRadius;
 	newmis.weapon = 6;
@@ -1126,11 +1126,11 @@ void () W_FireRocket =
 
 void (entity from, float damage) LightningHit =
 {
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, 13);
-	WriteCoord (AS_MISSILE, trace_endpos_x);
-	WriteCoord (AS_MISSILE, trace_endpos_y);
-	WriteCoord (AS_MISSILE, trace_endpos_z);
+	WriteByte (4, 23);
+	WriteByte (4, 13);
+	WriteCoord (4, trace_endpos_x);
+	WriteCoord (4, trace_endpos_y);
+	WriteCoord (4, trace_endpos_z);
 	multicast (trace_endpos, 2);
 	deathmsg = 7;
 	TF_T_Damage (trace_ent, from, from, damage, 2, 8);
@@ -1144,13 +1144,13 @@ void (vector p1, vector p2, entity from, float damage) LightningDamage =
 
 	f = (p2 - p1);
 	normalize (f);
-	f_x = (RANGE_MELEE - f_y);
+	f_x = (0 - f_y);
 	f_y = f_x;
-	f_z = RANGE_MELEE;
+	f_z = 0;
 	f = (f * 16);
 	e2 = world;
 	e1 = world;
-	traceline (p1, p2, RANGE_MELEE, self);
+	traceline (p1, p2, 0, self);
 	if (trace_ent.takedamage)
 	{
 		LightningHit (from, damage);
@@ -1163,13 +1163,13 @@ void (vector p1, vector p2, entity from, float damage) LightningDamage =
 		}
 	}
 	e1 = trace_ent;
-	traceline ((p1 + f), (p2 + f), RANGE_MELEE, self);
+	traceline ((p1 + f), (p2 + f), 0, self);
 	if (((trace_ent != e1) && trace_ent.takedamage))
 	{
 		LightningHit (from, damage);
 	}
 	e2 = trace_ent;
-	traceline ((p1 - f), (p2 - f), RANGE_MELEE, self);
+	traceline ((p1 - f), (p2 - f), 0, self);
 	if ((((trace_ent != e1) && (trace_ent != e2)) && trace_ent.takedamage))
 	{
 		LightningHit (from, damage);
@@ -1193,7 +1193,7 @@ void () W_FireLightning =
 	if ((self.waterlevel > 1))
 	{
 		cells = self.ammo_cells;
-		self.ammo_cells = RANGE_MELEE;
+		self.ammo_cells = 0;
 		W_SetCurrentAmmo ();
 		deathmsg = 7;
 		T_RadiusDamage (self, self, (35 * cells), world);
@@ -1212,17 +1212,17 @@ void () W_FireLightning =
 	}
 	org = (self.origin + '0 0 16');
 	traceline (org, (org + (v_forward * 600)), 1, self);
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, 6);
-	WriteEntity (AS_MISSILE, self);
-	WriteCoord (AS_MISSILE, org_x);
-	WriteCoord (AS_MISSILE, org_y);
-	WriteCoord (AS_MISSILE, org_z);
-	WriteCoord (AS_MISSILE, trace_endpos_x);
-	WriteCoord (AS_MISSILE, trace_endpos_y);
-	WriteCoord (AS_MISSILE, trace_endpos_z);
+	WriteByte (4, 23);
+	WriteByte (4, 6);
+	WriteEntity (4, self);
+	WriteCoord (4, org_x);
+	WriteCoord (4, org_y);
+	WriteCoord (4, org_z);
+	WriteCoord (4, trace_endpos_x);
+	WriteCoord (4, trace_endpos_y);
+	WriteCoord (4, trace_endpos_z);
 	multicast (org, 1);
-	LightningDamage (self.origin, (trace_endpos + (v_forward * AS_MISSILE)), self, 30);
+	LightningDamage (self.origin, (trace_endpos + (v_forward * 4)), self, 30);
 };
 
 float (float tno) num_team_pipebombs =
@@ -1239,20 +1239,20 @@ float (float tno) num_team_pipebombs =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				return (num_team_pipebombs_3);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					return (num_team_pipebombs_4);
 				}
 			}
 		}
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 
 float (float tno) num_team_flares =
@@ -1269,20 +1269,20 @@ float (float tno) num_team_flares =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				return (num_team_flares_3);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					return (num_team_flares_4);
 				}
 			}
 		}
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 
 void (float tno) RemoveOldFlare =
@@ -1290,7 +1290,7 @@ void (float tno) RemoveOldFlare =
 	local entity old;
 	local float index;
 
-	if ((tno != RANGE_MELEE))
+	if ((tno != 0))
 	{
 		index = num_team_flares (tno);
 		index = (index - (num_max_flares / number_of_teams));
@@ -1300,18 +1300,18 @@ void (float tno) RemoveOldFlare =
 		index = (num_world_flares - num_max_flares);
 	}
 	old = find (world, mdl, "flare");
-	while ((index > RANGE_MELEE))
+	while ((index > 0))
 	{
 		if ((old == world))
 		{
-			num_world_flares = RANGE_MELEE;
-			num_team_flares_1 = RANGE_MELEE;
-			num_team_flares_2 = RANGE_MELEE;
-			num_team_flares_3 = RANGE_MELEE;
-			num_team_flares_4 = RANGE_MELEE;
+			num_world_flares = 0;
+			num_team_flares_1 = 0;
+			num_team_flares_2 = 0;
+			num_team_flares_3 = 0;
+			num_team_flares_4 = 0;
 			return;
 		}
-		if (((old.weapon == tno) || (tno == RANGE_MELEE)))
+		if (((old.weapon == tno) || (tno == 0)))
 		{
 			old.think = RemoveFlare;
 			old.nextthink = (time + 0.1);
@@ -1326,7 +1326,7 @@ void (float tno) ExplodeOldPipebomb =
 	local entity old;
 	local float index;
 
-	if ((tno != RANGE_MELEE))
+	if ((tno != 0))
 	{
 		index = num_team_pipebombs (tno);
 		index = (index - (num_max_pipebombs / number_of_teams));
@@ -1336,18 +1336,18 @@ void (float tno) ExplodeOldPipebomb =
 		index = (num_world_pipebombs - num_max_pipebombs);
 	}
 	old = find (world, classname, "pipebomb");
-	while ((index > RANGE_MELEE))
+	while ((index > 0))
 	{
 		if ((old == world))
 		{
-			num_world_pipebombs = RANGE_MELEE;
-			num_team_pipebombs_1 = RANGE_MELEE;
-			num_team_pipebombs_2 = RANGE_MELEE;
-			num_team_pipebombs_3 = RANGE_MELEE;
-			num_team_pipebombs_4 = RANGE_MELEE;
+			num_world_pipebombs = 0;
+			num_team_pipebombs_1 = 0;
+			num_team_pipebombs_2 = 0;
+			num_team_pipebombs_3 = 0;
+			num_team_pipebombs_4 = 0;
 			return;
 		}
-		if (((old.owner.team_no == tno) || (tno == RANGE_MELEE)))
+		if (((old.owner.team_no == tno) || (tno == 0)))
 		{
 			old.nextthink = (time + 0.5);
 			index = (index - 1);
@@ -1370,13 +1370,13 @@ void (float tno) increment_team_pipebombs =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				num_team_pipebombs_3 = (num_team_pipebombs_3 + 1);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					num_team_pipebombs_4 = (num_team_pipebombs_4 + 1);
 				}
@@ -1399,13 +1399,13 @@ void (float tno) decrement_team_pipebombs =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				num_team_pipebombs_3 = (num_team_pipebombs_3 - 1);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					num_team_pipebombs_4 = (num_team_pipebombs_4 - 1);
 				}
@@ -1428,13 +1428,13 @@ void (float tno) increment_team_flares =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				num_team_flares_3 = (num_team_flares_3 + 1);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					num_team_flares_4 = (num_team_flares_4 + 1);
 				}
@@ -1457,13 +1457,13 @@ void (float tno) decrement_team_flares =
 		}
 		else
 		{
-			if ((tno == AS_MELEE))
+			if ((tno == 3))
 			{
 				num_team_flares_3 = (num_team_flares_3 - 1);
 			}
 			else
 			{
-				if ((tno == AS_MISSILE))
+				if ((tno == 4))
 				{
 					num_team_flares_4 = (num_team_flares_4 - 1);
 				}
@@ -1495,25 +1495,25 @@ void () GrenadeExplode =
 		deathmsg = self.weapon;
 		T_RadiusDamage (self, self.owner, _x, world);
 	}
-	if ((self.no_active_nail_grens != RANGE_MELEE))
+	if ((self.no_active_nail_grens != 0))
 	{
-		self.no_active_nail_grens = RANGE_MELEE;
+		self.no_active_nail_grens = 0;
 		self.owner.no_active_nail_grens = (self.owner.no_active_nail_grens - 1);
 		te = find (world, classname, "grenade");
 		while (te)
 		{
-			if (((te.owner == self.owner) && (te.no_active_nail_grens > RANGE_MELEE)))
+			if (((te.owner == self.owner) && (te.no_active_nail_grens > 0)))
 			{
 				te.no_active_nail_grens = (te.no_active_nail_grens - 1);
 			}
 			te = find (te, classname, "grenade");
 		}
 	}
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
 };
@@ -1559,11 +1559,11 @@ void () W_FireGrenade =
 	sound (self, 1, "weapons/grenade.wav", 1, 1);
 	KickPlayer (-2, self);
 	newmis = spawn ();
-	newmis.voided = RANGE_MELEE;
+	newmis.voided = 0;
 	newmis.owner = self;
 	newmis.movetype = enter;
 	newmis.solid = 2;
-	if (((self.weaponmode == RANGE_MELEE) || cb_prematch))
+	if (((self.weaponmode == 0) || cb_prematch))
 	{
 		newmis.weapon = 5;
 		newmis.classname = "grenade";
@@ -1573,7 +1573,7 @@ void () W_FireGrenade =
 	}
 	else
 	{
-		if ((self.team_no != RANGE_MELEE))
+		if ((self.team_no != 0))
 		{
 			increment_team_pipebombs (self.team_no);
 			if ((num_team_pipebombs (self.team_no) > (num_max_pipebombs / number_of_teams)))
@@ -1586,7 +1586,7 @@ void () W_FireGrenade =
 			num_world_pipebombs = (num_world_pipebombs + 1);
 			if ((num_world_pipebombs > num_max_pipebombs))
 			{
-				ExplodeOldPipebomb (RANGE_MELEE);
+				ExplodeOldPipebomb (0);
 			}
 		}
 		newmis.classname = "pipebomb";
@@ -1620,16 +1620,16 @@ void () superspike_touch;
 void (vector org, vector dir) launch_spike =
 {
 	newmis = spawn ();
-	newmis.voided = RANGE_MELEE;
+	newmis.voided = 0;
 	newmis.owner = self;
 	newmis.movetype = 9;
 	newmis.solid = 2;
 	newmis.angles = vectoangles (dir);
 	newmis.touch = spike_touch;
-	newmis.weapon = AS_MELEE;
+	newmis.weapon = 3;
 	newmis.classname = "spike";
 	newmis.think = SUB_Remove;
-	newmis.nextthink = (time + AS_MELEE);
+	newmis.nextthink = (time + 3);
 	setmodel (newmis, "progs/spike.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, org);
@@ -1644,13 +1644,13 @@ void () W_FireSuperSpikes =
 	sound (self, 1, "weapons/spike2.wav", 1, 1);
 	if (!practice)
 	{
-		self.ammo_nails = (self.ammo_nails - AS_MISSILE);
+		self.ammo_nails = (self.ammo_nails - 4);
 		self.currentammo = self.ammo_nails;
 	}
 	dir = aim (self, 1000);
 	launch_spike ((self.origin + '0 0 16'), dir);
 	newmis.touch = superspike_touch;
-	newmis.weapon = AS_MISSILE;
+	newmis.weapon = 4;
 	setmodel (newmis, "progs/s_spike.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	KickPlayer (-2, self);
@@ -1662,7 +1662,7 @@ void (float ox) W_FireSpikes =
 	local entity old;
 
 	makevectors (self.v_angle);
-	if (((self.ammo_nails >= AS_MISSILE) && (self.current_weapon == 1024)))
+	if (((self.ammo_nails >= 4) && (self.current_weapon == 1024)))
 	{
 		W_FireSuperSpikes ();
 		return;
@@ -1727,25 +1727,25 @@ void () spike_touch =
 	}
 	else
 	{
-		WriteByte (AS_MISSILE, 23);
+		WriteByte (4, 23);
 		if ((self.classname == "wizspike"))
 		{
-			WriteByte (AS_MISSILE, 7);
+			WriteByte (4, 7);
 		}
 		else
 		{
 			if ((self.classname == "knightspike"))
 			{
-				WriteByte (AS_MISSILE, 8);
+				WriteByte (4, 8);
 			}
 			else
 			{
-				WriteByte (AS_MISSILE, RANGE_MELEE);
+				WriteByte (4, 0);
 			}
 		}
-		WriteCoord (AS_MISSILE, self.origin_x);
-		WriteCoord (AS_MISSILE, self.origin_y);
-		WriteCoord (AS_MISSILE, self.origin_z);
+		WriteCoord (4, self.origin_x);
+		WriteCoord (4, self.origin_y);
+		WriteCoord (4, self.origin_z);
 		multicast (self.origin, 1);
 	}
 	dremove (self);
@@ -1796,11 +1796,11 @@ void () superspike_touch =
 	}
 	else
 	{
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, 1);
-		WriteCoord (AS_MISSILE, self.origin_x);
-		WriteCoord (AS_MISSILE, self.origin_y);
-		WriteCoord (AS_MISSILE, self.origin_z);
+		WriteByte (4, 23);
+		WriteByte (4, 1);
+		WriteCoord (4, self.origin_x);
+		WriteCoord (4, self.origin_y);
+		WriteCoord (4, self.origin_z);
 		multicast (self.origin, 1);
 	}
 	dremove (self);
@@ -1810,7 +1810,7 @@ void () W_SetCurrentAmmo =
 {
 	local string st;
 
-	if (((self.health <= RANGE_MELEE) || (self.current_weapon == RANGE_MELEE)))
+	if (((self.health <= 0) || (self.current_weapon == 0)))
 	{
 		return;
 	}
@@ -1820,13 +1820,13 @@ void () W_SetCurrentAmmo =
 	}
 	player_run ();
 	self.items = (self.items - (self.items & (((256 | 512) | 1024) | 2048)));
-	self.weapon = RANGE_MELEE;
+	self.weapon = 0;
 	if ((self.current_weapon == 16))
 	{
-		self.currentammo = RANGE_MELEE;
+		self.currentammo = 0;
 		if ((self.playerclass == 8))
 		{
-			if ((self.weaponmode == RANGE_MELEE))
+			if ((self.weaponmode == 0))
 			{
 				self.weaponmodel = "progs/v_knife.mdl";
 			}
@@ -1846,15 +1846,15 @@ void () W_SetCurrentAmmo =
 				self.weaponmodel = "progs/v_axe.mdl";
 			}
 		}
-		self.weaponframe = RANGE_MELEE;
+		self.weaponframe = 0;
 	}
 	else
 	{
 		if ((self.current_weapon == 1))
 		{
-			self.currentammo = RANGE_MELEE;
+			self.currentammo = 0;
 			self.weaponmodel = "progs/v_grap.mdl";
-			self.weaponframe = RANGE_MELEE;
+			self.weaponframe = 0;
 		}
 		else
 		{
@@ -1862,7 +1862,7 @@ void () W_SetCurrentAmmo =
 			{
 				self.currentammo = self.ammo_cells;
 				self.weaponmodel = "progs/v_span.mdl";
-				self.weaponframe = RANGE_MELEE;
+				self.weaponframe = 0;
 			}
 			else
 			{
@@ -1873,7 +1873,7 @@ void () W_SetCurrentAmmo =
 					if (!(self.tfstate & 2))
 					{
 						self.weaponmodel = "progs/v_shot.mdl";
-						self.weaponframe = RANGE_MELEE;
+						self.weaponframe = 0;
 					}
 					self.items = (self.items | 256);
 					self.weapon = 1;
@@ -1886,7 +1886,7 @@ void () W_SetCurrentAmmo =
 						if (!(self.tfstate & 2))
 						{
 							self.weaponmodel = "progs/v_shot2.mdl";
-							self.weaponframe = RANGE_MELEE;
+							self.weaponframe = 0;
 						}
 						self.items = (self.items | 256);
 						self.weapon = 2;
@@ -1899,10 +1899,10 @@ void () W_SetCurrentAmmo =
 							if (!(self.tfstate & 2))
 							{
 								self.weaponmodel = "progs/v_nail.mdl";
-								self.weaponframe = RANGE_MELEE;
+								self.weaponframe = 0;
 							}
 							self.items = (self.items | 512);
-							self.weapon = AS_MISSILE;
+							self.weapon = 4;
 						}
 						else
 						{
@@ -1912,7 +1912,7 @@ void () W_SetCurrentAmmo =
 								if (!(self.tfstate & 2))
 								{
 									self.weaponmodel = "progs/v_nail2.mdl";
-									self.weaponframe = RANGE_MELEE;
+									self.weaponframe = 0;
 								}
 								self.items = (self.items | 512);
 								self.weapon = 8;
@@ -1925,7 +1925,7 @@ void () W_SetCurrentAmmo =
 									if (!(self.tfstate & 2))
 									{
 										self.weaponmodel = "progs/v_rock.mdl";
-										self.weaponframe = RANGE_MELEE;
+										self.weaponframe = 0;
 									}
 									self.weapon = 16;
 									self.items = (self.items | 1024);
@@ -1938,7 +1938,7 @@ void () W_SetCurrentAmmo =
 										if (!(self.tfstate & 2))
 										{
 											self.weaponmodel = "progs/v_rock2.mdl";
-											self.weaponframe = RANGE_MELEE;
+											self.weaponframe = 0;
 										}
 										self.items = (self.items | 1024);
 										self.weapon = space;
@@ -1951,7 +1951,7 @@ void () W_SetCurrentAmmo =
 											if (!(self.tfstate & 2))
 											{
 												self.weaponmodel = "progs/v_light.mdl";
-												self.weaponframe = RANGE_MELEE;
+												self.weaponframe = 0;
 											}
 											self.items = (self.items | 2048);
 											self.weapon = 64;
@@ -1964,7 +1964,7 @@ void () W_SetCurrentAmmo =
 												if (!(self.tfstate & 2))
 												{
 													self.weaponmodel = "progs/v_srifle.mdl";
-													self.weaponframe = RANGE_MELEE;
+													self.weaponframe = 0;
 												}
 												self.items = (self.items | 256);
 												self.weapon = 1;
@@ -1977,7 +1977,7 @@ void () W_SetCurrentAmmo =
 													if (!(self.tfstate & 2))
 													{
 														self.weaponmodel = "progs/v_srifle.mdl";
-														self.weaponframe = RANGE_MELEE;
+														self.weaponframe = 0;
 													}
 													self.items = (self.items | 256);
 													self.weapon = 2;
@@ -1990,7 +1990,7 @@ void () W_SetCurrentAmmo =
 														if (!(self.tfstate & 2))
 														{
 															self.weaponmodel = "progs/v_asscan.mdl";
-															self.weaponframe = RANGE_MELEE;
+															self.weaponframe = 0;
 														}
 														self.items = (self.items | 256);
 														self.weapon = space;
@@ -2003,7 +2003,7 @@ void () W_SetCurrentAmmo =
 															if (!(self.tfstate & 2))
 															{
 																self.weaponmodel = "progs/v_rock.mdl";
-																self.weaponframe = RANGE_MELEE;
+																self.weaponframe = 0;
 															}
 															self.items = (self.items | 2048);
 															self.weapon = 8;
@@ -2016,26 +2016,26 @@ void () W_SetCurrentAmmo =
 																if (!(self.tfstate & 2))
 																{
 																	self.weaponmodel = "progs/v_rock2.mdl";
-																	self.weaponframe = RANGE_MELEE;
+																	self.weaponframe = 0;
 																}
 																self.items = (self.items | 1024);
 																self.weapon = 16;
 															}
 															else
 															{
-																if ((self.current_weapon == AS_MISSILE))
+																if ((self.current_weapon == 4))
 																{
 																	self.currentammo = self.ammo_medikit;
 																	self.weaponmodel = "progs/v_medi.mdl";
-																	self.weaponframe = RANGE_MELEE;
+																	self.weaponframe = 0;
 																}
 																else
 																{
 																	if ((self.current_weapon == 2))
 																	{
-																		self.currentammo = RANGE_MELEE;
+																		self.currentammo = 0;
 																		self.weaponmodel = "progs/v_bio.mdl";
-																		self.weaponframe = RANGE_MELEE;
+																		self.weaponframe = 0;
 																	}
 																	else
 																	{
@@ -2045,7 +2045,7 @@ void () W_SetCurrentAmmo =
 																			if (!(self.tfstate & 2))
 																			{
 																				self.weaponmodel = "progs/v_shot.mdl";
-																				self.weaponframe = RANGE_MELEE;
+																				self.weaponframe = 0;
 																			}
 																			self.items = (self.items | 256);
 																			self.weapon = 1;
@@ -2058,16 +2058,16 @@ void () W_SetCurrentAmmo =
 																				if (!(self.tfstate & 2))
 																				{
 																					self.weaponmodel = "progs/v_rail.mdl";
-																					self.weaponframe = RANGE_MELEE;
+																					self.weaponframe = 0;
 																				}
 																				self.items = (self.items | 512);
 																				self.weapon = 1;
 																			}
 																			else
 																			{
-																				self.currentammo = RANGE_MELEE;
+																				self.currentammo = 0;
 																				self.weaponmodel = "";
-																				self.weaponframe = RANGE_MELEE;
+																				self.weaponframe = 0;
 																			}
 																		}
 																	}
@@ -2315,9 +2315,9 @@ float () CheckForReload =
 			{
 				if ((self.current_weapon == 2048))
 				{
-					if (((self.reload_grenade_launcher >= 6) && (self.ammo_rockets > RANGE_MELEE)))
+					if (((self.reload_grenade_launcher >= 6) && (self.ammo_rockets > 0)))
 					{
-						self.reload_grenade_launcher = RANGE_MELEE;
+						self.reload_grenade_launcher = 0;
 						if ((self.ammo_rockets < 6))
 						{
 							self.reload_grenade_launcher = (6 - self.ammo_rockets);
@@ -2327,10 +2327,10 @@ float () CheckForReload =
 						tWeapon = spawn ();
 						tWeapon.owner = self;
 						tWeapon.classname = "timer";
-						tWeapon.nextthink = (time + AS_MISSILE);
+						tWeapon.nextthink = (time + 4);
 						tWeapon.think = W_Reload_grenade_launcher;
 						self.weaponmodel = "";
-						self.weaponframe = RANGE_MELEE;
+						self.weaponframe = 0;
 						return (1);
 					}
 				}
@@ -2338,12 +2338,12 @@ float () CheckForReload =
 				{
 					if ((self.current_weapon == 8192))
 					{
-						if (((self.reload_rocket_launcher >= AS_MISSILE) && (self.ammo_rockets > RANGE_MELEE)))
+						if (((self.reload_rocket_launcher >= 4) && (self.ammo_rockets > 0)))
 						{
-							self.reload_rocket_launcher = RANGE_MELEE;
-							if ((self.ammo_rockets < AS_MISSILE))
+							self.reload_rocket_launcher = 0;
+							if ((self.ammo_rockets < 4))
 							{
-								self.reload_rocket_launcher = (AS_MISSILE - self.ammo_rockets);
+								self.reload_rocket_launcher = (4 - self.ammo_rockets);
 							}
 							sprint (self, 2, "reloading... \n");
 							self.tfstate = (self.tfstate | 2);
@@ -2353,7 +2353,7 @@ float () CheckForReload =
 							tWeapon.nextthink = (time + 5);
 							tWeapon.think = W_Reload_rocket_launcher;
 							self.weaponmodel = "";
-							self.weaponframe = RANGE_MELEE;
+							self.weaponframe = 0;
 							return (1);
 						}
 					}
@@ -2361,7 +2361,7 @@ float () CheckForReload =
 			}
 		}
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 void () player_axe1;
 void () player_axeb1;
@@ -2412,7 +2412,7 @@ void () W_Attack =
 	{
 		return;
 	}
-	if (((self.is_undercover || (self.undercover_team != RANGE_MELEE)) || (self.undercover_skin != RANGE_MELEE)))
+	if (((self.is_undercover || (self.undercover_team != 0)) || (self.undercover_skin != 0)))
 	{
 		Spy_RemoveDisguise (self);
 	}
@@ -2542,7 +2542,7 @@ void () W_Attack =
 										{
 											player_light1 ();
 											Attack_Finished (0.1);
-											sound (self, RANGE_MELEE, "weapons/lstart.wav", 1, 1);
+											sound (self, 0, "weapons/lstart.wav", 1, 1);
 										}
 									}
 								}
@@ -2620,7 +2620,7 @@ void () W_Attack =
 					}
 					else
 					{
-						if ((self.current_weapon == AS_MISSILE))
+						if ((self.current_weapon == 4))
 						{
 							sound (self, 1, "weapons/ax1.wav", 1, 1);
 							r = random ();
@@ -2725,7 +2725,7 @@ void () W_PrintWeaponMessage =
 		{
 			if ((self.current_weapon == 2048))
 			{
-				if (((self.weaponmode == RANGE_MELEE) && (self.playerclass != 11)))
+				if (((self.weaponmode == 0) && (self.playerclass != 11)))
 				{
 					sprint (self, 1, "Normal grenade mode\n");
 				}
@@ -2770,7 +2770,7 @@ void () W_PrintWeaponMessage =
 							}
 							else
 							{
-								if ((self.current_weapon == AS_MISSILE))
+								if ((self.current_weapon == 4))
 								{
 									sprint (self, 1, "Medikit/Bioweapon readied\n");
 								}
@@ -2778,7 +2778,7 @@ void () W_PrintWeaponMessage =
 								{
 									if ((self.current_weapon == 16384))
 									{
-										if ((self.weaponmode == RANGE_MELEE))
+										if ((self.weaponmode == 0))
 										{
 											sprint (self, 1, "Heavy Incendiary Cannon\n");
 										}
@@ -2815,14 +2815,14 @@ void () W_ChangeWeapon =
 	}
 	it = self.weapons_carried;
 	fl = self.current_weapon;
-	am = RANGE_MELEE;
-	usable = RANGE_MELEE;
+	am = 0;
+	usable = 0;
 	have_weapon = 1;
 	if ((self.impulse == 1))
 	{
-		if (!(it & ((((1 | 2) | AS_MISSILE) | 16) | 8)))
+		if (!(it & ((((1 | 2) | 4) | 16) | 8)))
 		{
-			have_weapon = RANGE_MELEE;
+			have_weapon = 0;
 		}
 		while ((!usable && have_weapon))
 		{
@@ -2833,21 +2833,21 @@ void () W_ChangeWeapon =
 				{
 					usable = 1;
 				}
-				usable = RANGE_MELEE;
+				usable = 0;
 			}
 			else
 			{
 				if ((fl == 2))
 				{
-					fl = AS_MISSILE;
-					if ((it & AS_MISSILE))
+					fl = 4;
+					if ((it & 4))
 					{
 						usable = 1;
 					}
 				}
 				else
 				{
-					if ((fl == AS_MISSILE))
+					if ((fl == 4))
 					{
 						fl = 1;
 						if ((allow_hook && (fl & 1)))
@@ -2892,9 +2892,9 @@ void () W_ChangeWeapon =
 		{
 			if ((self.impulse == 40))
 			{
-				if (!(it & (((2 | AS_MISSILE) | 16) | 8)))
+				if (!(it & (((2 | 4) | 16) | 8)))
 				{
-					have_weapon = RANGE_MELEE;
+					have_weapon = 0;
 				}
 				while ((!usable && have_weapon))
 				{
@@ -2905,21 +2905,21 @@ void () W_ChangeWeapon =
 						{
 							usable = 1;
 						}
-						usable = RANGE_MELEE;
+						usable = 0;
 					}
 					else
 					{
 						if ((fl == 2))
 						{
-							fl = AS_MISSILE;
-							if ((it & AS_MISSILE))
+							fl = 4;
+							if ((it & 4))
 							{
 								usable = 1;
 							}
 						}
 						else
 						{
-							if ((fl == AS_MISSILE))
+							if ((fl == 4))
 							{
 								fl = 16;
 								if ((it & 16))
@@ -2983,7 +2983,7 @@ void () W_ChangeWeapon =
 								}
 								else
 								{
-									have_weapon = RANGE_MELEE;
+									have_weapon = 0;
 								}
 							}
 						}
@@ -2991,7 +2991,7 @@ void () W_ChangeWeapon =
 				}
 				else
 				{
-					if ((self.impulse == AS_MELEE))
+					if ((self.impulse == 3))
 					{
 						if ((it & 64))
 						{
@@ -3012,7 +3012,7 @@ void () W_ChangeWeapon =
 					}
 					else
 					{
-						if ((self.impulse == AS_MISSILE))
+						if ((self.impulse == 4))
 						{
 							fl = 512;
 							if ((self.ammo_nails < 1))
@@ -3066,11 +3066,11 @@ void () W_ChangeWeapon =
 											{
 												am = 1;
 											}
-											wm = RANGE_MELEE;
+											wm = 0;
 										}
 										else
 										{
-											have_weapon = RANGE_MELEE;
+											have_weapon = 0;
 										}
 									}
 								}
@@ -3081,11 +3081,11 @@ void () W_ChangeWeapon =
 										if ((it & 16384))
 										{
 											fl = 16384;
-											if ((self.ammo_rockets < AS_MELEE))
+											if ((self.ammo_rockets < 3))
 											{
 												am = 1;
 											}
-											wm = RANGE_MELEE;
+											wm = 0;
 										}
 										else
 										{
@@ -3127,7 +3127,7 @@ void () W_ChangeWeapon =
 													}
 													else
 													{
-														have_weapon = RANGE_MELEE;
+														have_weapon = 0;
 													}
 												}
 											}
@@ -3147,8 +3147,8 @@ void () W_ChangeWeapon =
 										{
 											if ((self.impulse == COLOR_RED))
 											{
-												fl = AS_MISSILE;
-												if ((it & AS_MISSILE))
+												fl = 4;
+												if ((it & 4))
 												{
 													usable = 1;
 												}
@@ -3162,31 +3162,31 @@ void () W_ChangeWeapon =
 													{
 														usable = 1;
 													}
-													if ((((fl & (((((space | 64) | 128) | 256) | 32768) | 262144)) != RANGE_MELEE) && (self.ammo_shells < 1)))
+													if ((((fl & (((((space | 64) | 128) | 256) | 32768) | 262144)) != 0) && (self.ammo_shells < 1)))
 													{
 														am = 1;
 													}
 													else
 													{
-														if ((((fl & ((512 | 1024) | 524288)) != RANGE_MELEE) && (self.ammo_nails < 1)))
+														if ((((fl & ((512 | 1024) | 524288)) != 0) && (self.ammo_nails < 1)))
 														{
 															am = 1;
 														}
 														else
 														{
-															if ((((fl & (2048 | 8192)) != RANGE_MELEE) && (self.ammo_rockets < 1)))
+															if ((((fl & (2048 | 8192)) != 0) && (self.ammo_rockets < 1)))
 															{
 																am = 1;
 															}
 															else
 															{
-																if ((((fl & (4096 | 65536)) != RANGE_MELEE) && (self.ammo_cells < 1)))
+																if ((((fl & (4096 | 65536)) != 0) && (self.ammo_cells < 1)))
 																{
 																	am = 1;
 																}
 																else
 																{
-																	if (((fl & 16384) != RANGE_MELEE))
+																	if (((fl & 16384) != 0))
 																	{
 																		if ((self.weaponmode == 1))
 																		{
@@ -3197,7 +3197,7 @@ void () W_ChangeWeapon =
 																		}
 																		else
 																		{
-																			if ((self.ammo_rockets < AS_MELEE))
+																			if ((self.ammo_rockets < 3))
 																			{
 																				am = 1;
 																			}
@@ -3214,7 +3214,7 @@ void () W_ChangeWeapon =
 															}
 														}
 													}
-													if ((am == RANGE_MELEE))
+													if ((am == 0))
 													{
 														wm = self.last_weaponmode;
 													}
@@ -3230,7 +3230,7 @@ void () W_ChangeWeapon =
 			}
 		}
 	}
-	self.impulse = RANGE_MELEE;
+	self.impulse = 0;
 	if ((!have_weapon || !(it & fl)))
 	{
 		sprint (self, 2, "no weapon.\n");
@@ -3263,7 +3263,7 @@ void () CycleWeaponCommand =
 	local float loopcount;
 	local float lw;
 
-	if (((self.weaponmodel == string_null) || (self.current_weapon == RANGE_MELEE)))
+	if (((self.weaponmodel == string_null) || (self.current_weapon == 0)))
 	{
 		return;
 	}
@@ -3272,13 +3272,13 @@ void () CycleWeaponCommand =
 		return;
 	}
 	it = self.weapons_carried;
-	self.impulse = RANGE_MELEE;
-	loopcount = RANGE_MELEE;
+	self.impulse = 0;
+	loopcount = 0;
 	lw = self.current_weapon;
 	while (1)
 	{
-		am = RANGE_MELEE;
-		cont = RANGE_MELEE;
+		am = 0;
+		cont = 0;
 		if ((self.current_weapon == 16))
 		{
 			self.current_weapon = 8;
@@ -3368,7 +3368,7 @@ void () CycleWeaponCommand =
 											if ((self.current_weapon == 1024))
 											{
 												self.current_weapon = 2048;
-												self.weaponmode = RANGE_MELEE;
+												self.weaponmode = 0;
 												if ((self.ammo_rockets < 1))
 												{
 													am = 1;
@@ -3376,7 +3376,7 @@ void () CycleWeaponCommand =
 											}
 											else
 											{
-												if (((self.current_weapon == 2048) && (self.weaponmode == RANGE_MELEE)))
+												if (((self.current_weapon == 2048) && (self.weaponmode == 0)))
 												{
 													if ((self.playerclass != 11))
 													{
@@ -3428,7 +3428,7 @@ void () CycleWeaponCommand =
 																{
 																	self.current_weapon = 16384;
 																	self.weaponmode = 1;
-																	if ((self.ammo_rockets < AS_MELEE))
+																	if ((self.ammo_rockets < 3))
 																	{
 																		am = 1;
 																	}
@@ -3438,7 +3438,7 @@ void () CycleWeaponCommand =
 																	if (((self.current_weapon == 16384) && (self.weaponmode == 1)))
 																	{
 																		self.current_weapon = 16384;
-																		self.weaponmode = RANGE_MELEE;
+																		self.weaponmode = 0;
 																		if ((self.ammo_rockets < 2))
 																		{
 																			am = 1;
@@ -3446,7 +3446,7 @@ void () CycleWeaponCommand =
 																	}
 																	else
 																	{
-																		if (((self.current_weapon == 16384) && (self.weaponmode == RANGE_MELEE)))
+																		if (((self.current_weapon == 16384) && (self.weaponmode == 0)))
 																		{
 																			self.current_weapon = 32768;
 																			if ((self.ammo_cells < 7))
@@ -3472,17 +3472,17 @@ void () CycleWeaponCommand =
 																			{
 																				if ((self.current_weapon == 1))
 																				{
-																					self.current_weapon = AS_MISSILE;
+																					self.current_weapon = 4;
 																				}
 																				else
 																				{
 																					if ((self.current_weapon == 2))
 																					{
-																						self.current_weapon = AS_MISSILE;
+																						self.current_weapon = 4;
 																					}
 																					else
 																					{
-																						if ((self.current_weapon == AS_MISSILE))
+																						if ((self.current_weapon == 4))
 																						{
 																							self.current_weapon = 16;
 																						}
@@ -3511,11 +3511,11 @@ void () CycleWeaponCommand =
 			return;
 		}
 		loopcount = (loopcount + 1);
-		if (((self.weapons_carried & self.current_weapon) && (am == RANGE_MELEE)))
+		if (((self.weapons_carried & self.current_weapon) && (am == 0)))
 		{
 			if (((self.current_weapon != 2048) && (self.current_weapon != 16384)))
 			{
-				self.weaponmode = RANGE_MELEE;
+				self.weaponmode = 0;
 			}
 			self.last_weapon = lw;
 			W_SetCurrentAmmo ();
@@ -3541,13 +3541,13 @@ void () ImpulseCommands =
 			if ((self.last_impulse == 168))
 			{
 				TeamFortress_SetDetpack (self.impulse);
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return;
 			}
 			if ((self.last_impulse == _G))
 			{
 				StatusRes (self.impulse);
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return;
 			}
 		}
@@ -3558,8 +3558,8 @@ void () ImpulseCommands =
                 self.current_menu_type = 5;
                 self.current_menu_page = 1;
                 self.menu_count = 30;
-                self.menu_displaytime = RANGE_MELEE;
-                self.impulse = RANGE_MELEE;
+                self.menu_displaytime = 0;
+                self.impulse = 0;
                 return;
 	}
 
@@ -3567,8 +3567,8 @@ void () ImpulseCommands =
 	{
 		self.current_menu = 24;
 		self.menu_count = 30;
-		self.menu_displaytime = RANGE_MELEE;
-		self.impulse = RANGE_MELEE;
+		self.menu_displaytime = 0;
+		self.impulse = 0;
 		return;
 	}
 
@@ -3584,7 +3584,7 @@ void () ImpulseCommands =
 			return;
 		}
 		CommandImpulses ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	if ((self.impulse == 171))
@@ -3595,14 +3595,14 @@ void () ImpulseCommands =
 
 	if (tfvsdm)
 	{
-		if (((self.team_no == 1) || (self.team_no == AS_MELEE)))
+		if (((self.team_no == 1) || (self.team_no == 3)))
 		{
 			if (((self.impulse == 8) && (self.current_menu != 6)))
 			{
 				self.current_menu = 6;
 				self.menu_count = 30;
-				self.menu_displaytime = RANGE_MELEE;
-				self.impulse = RANGE_MELEE;
+				self.menu_displaytime = 0;
+				self.impulse = 0;
 				return;
 			}
 		}
@@ -3613,7 +3613,7 @@ void () ImpulseCommands =
 		{
 			self.current_menu = 6;
 			self.menu_count = 30;
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return;
 		}
 	}
@@ -3622,19 +3622,19 @@ void () ImpulseCommands =
 		if ((clanbattle && !cb_prematch))
 		{
 			sprint (self, 2, "Clan Battle in progress....\n");
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return;
 		}
 		self.current_menu = 2;
 		self.menu_count = 30;
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	if ((self.impulse == 168))
 	{
 		dprint ("hi\n");
 		self.last_impulse = self.impulse;
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	if ((self.impulse == 170))
@@ -3647,7 +3647,7 @@ void () ImpulseCommands =
 			}
 		}
 		TeamFortress_DetonatePipebombs ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	if (((!self.is_building && !self.is_detpacking) && !self.is_feigning))
@@ -3655,7 +3655,7 @@ void () ImpulseCommands =
 		if ((((self.impulse >= 1) && (self.impulse < 9)) || (self.impulse == COLOR_RED)))
 		{
 			W_ChangeWeapon ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return;
 		}
 		else
@@ -3663,7 +3663,7 @@ void () ImpulseCommands =
 			if ((allow_hook && ((self.impulse == 22) || (self.impulse == 39))))
 			{
 				W_ChangeWeapon ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return;
 			}
 			else
@@ -3671,7 +3671,7 @@ void () ImpulseCommands =
 				if ((self.impulse == 40))
 				{
 					W_ChangeWeapon ();
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return;
 				}
 				else
@@ -3679,15 +3679,15 @@ void () ImpulseCommands =
 					if ((self.impulse == enter))
 					{
 						CycleWeaponCommand ();
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 						return;
 					}
 					else
 					{
-						if (((self.impulse == 12) && (self.last_weapon != RANGE_MELEE)))
+						if (((self.impulse == 12) && (self.last_weapon != 0)))
 						{
 							W_ChangeWeapon ();
-							self.impulse = RANGE_MELEE;
+							self.impulse = 0;
 							return;
 						}
 						else
@@ -3695,7 +3695,7 @@ void () ImpulseCommands =
 							if ((self.impulse == 150))
 							{
 								TeamFortress_PrimeGrenade ();
-								self.impulse = RANGE_MELEE;
+								self.impulse = 0;
 								return;
 							}
 							else
@@ -3703,7 +3703,7 @@ void () ImpulseCommands =
 								if ((self.impulse == 151))
 								{
 									TeamFortress_PrimeGrenade ();
-									self.impulse = RANGE_MELEE;
+									self.impulse = 0;
 									return;
 								}
 								else
@@ -3715,7 +3715,7 @@ void () ImpulseCommands =
 											return;
 										}
 										TeamFortress_ReloadCurrentWeapon ();
-										self.impulse = RANGE_MELEE;
+										self.impulse = 0;
 										return;
 									}
 									else
@@ -3723,7 +3723,7 @@ void () ImpulseCommands =
 										if ((self.impulse == 164))
 										{
 											TeamFortress_SetDetpack (5);
-											self.impulse = RANGE_MELEE;
+											self.impulse = 0;
 											return;
 										}
 										else
@@ -3731,7 +3731,7 @@ void () ImpulseCommands =
 											if ((self.impulse == 165))
 											{
 												TeamFortress_SetDetpack (20);
-												self.impulse = RANGE_MELEE;
+												self.impulse = 0;
 												return;
 											}
 											else
@@ -3739,7 +3739,7 @@ void () ImpulseCommands =
 												if ((self.impulse == 166))
 												{
 													TeamFortress_SetDetpack (_2);
-													self.impulse = RANGE_MELEE;
+													self.impulse = 0;
 													return;
 												}
 												else
@@ -3747,16 +3747,16 @@ void () ImpulseCommands =
 													if ((self.impulse == 167))
 													{
 														TeamFortress_SetDetpack (255);
-														self.impulse = RANGE_MELEE;
+														self.impulse = 0;
 														return;
 													}
 													else
 													{
 														if ((self.impulse == 172))
 														{
-															self.current_menu = AS_MISSILE;
+															self.current_menu = 4;
 															self.menu_count = 30;
-															self.impulse = RANGE_MELEE;
+															self.impulse = 0;
 															return;
 														}
 														else
@@ -3764,7 +3764,7 @@ void () ImpulseCommands =
 															if ((self.impulse == 184))
 															{
 																TeamFortress_Discard ();
-																self.impulse = RANGE_MELEE;
+																self.impulse = 0;
 																return;
 															}
 														}
@@ -3784,7 +3784,7 @@ void () ImpulseCommands =
 	if ((self.impulse == redlamp))
 	{
 		TeamFortress_Inventory ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	else
@@ -3792,7 +3792,7 @@ void () ImpulseCommands =
 		if ((self.playerclass && (self.impulse == 181)))
 		{
 			TeamFortress_SaveMe ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return;
 		}
 		else
@@ -3800,7 +3800,7 @@ void () ImpulseCommands =
 			if ((self.impulse == 152))
 			{
 				TeamFortress_ThrowGrenade ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return;
 			}
 			else
@@ -3808,7 +3808,7 @@ void () ImpulseCommands =
 				if ((self.impulse == 185))
 				{
 					TeamFortress_ID ();
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return;
 				}
 				else
@@ -3816,7 +3816,7 @@ void () ImpulseCommands =
 					if ((self.playerclass && (self.impulse == 194)))
 					{
 						DropGoalItems ();
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 						return;
 					}
 					else
@@ -3824,7 +3824,7 @@ void () ImpulseCommands =
 						if ((self.impulse == 169))
 						{
 							TeamFortress_DetpackStop ();
-							self.impulse = RANGE_MELEE;
+							self.impulse = 0;
 							return;
 						}
 						else
@@ -3832,7 +3832,7 @@ void () ImpulseCommands =
 							if (((self.impulse == 188) && (self.playerclass == 9)))
 							{
 								DestroyBuilding (self, "building_sentrygun");
-								self.impulse = RANGE_MELEE;
+								self.impulse = 0;
 								return;
 							}
 							else
@@ -3840,7 +3840,7 @@ void () ImpulseCommands =
 								if (((self.impulse == 187) && (self.playerclass == 9)))
 								{
 									DestroyBuilding (self, "building_dispenser");
-									self.impulse = RANGE_MELEE;
+									self.impulse = 0;
 									return;
 								}
 								else
@@ -3848,15 +3848,15 @@ void () ImpulseCommands =
 									if (((self.impulse == 177) && (self.playerclass == 8)))
 									{
 										TeamFortress_SpyGoUndercover ();
-										self.impulse = RANGE_MELEE;
+										self.impulse = 0;
 										return;
 									}
 									else
 									{
 										if (((self.impulse == 178) && (self.playerclass == 8)))
 										{
-											TeamFortress_SpyFeignDeath (RANGE_MELEE);
-											self.impulse = RANGE_MELEE;
+											TeamFortress_SpyFeignDeath (0);
+											self.impulse = 0;
 											return;
 										}
 										else
@@ -3864,7 +3864,7 @@ void () ImpulseCommands =
 											if (((self.impulse == 199) && (self.playerclass == 8)))
 											{
 												TeamFortress_SpyFeignDeath (1);
-												self.impulse = RANGE_MELEE;
+												self.impulse = 0;
 												return;
 											}
 											else
@@ -3872,7 +3872,7 @@ void () ImpulseCommands =
 												if (((self.impulse == 179) && (self.playerclass == 9)))
 												{
 													TeamFortress_EngineerBuild ();
-													self.impulse = RANGE_MELEE;
+													self.impulse = 0;
 													return;
 												}
 												else
@@ -3887,7 +3887,7 @@ void () ImpulseCommands =
 														{
 															TeamFortress_DisplayDetectionItems ();
 														}
-														self.impulse = RANGE_MELEE;
+														self.impulse = 0;
 														return;
 													}
 													else
@@ -3895,7 +3895,7 @@ void () ImpulseCommands =
 														if ((self.impulse == _v))
 														{
 															display_location ();
-															self.impulse = RANGE_MELEE;
+															self.impulse = 0;
 															return;
 														}
 														else
@@ -3919,7 +3919,7 @@ void () ImpulseCommands =
 			}
 		}
 	}
-	self.impulse = RANGE_MELEE;
+	self.impulse = 0;
 };
 
 void () CommandImpulses =
@@ -3927,7 +3927,7 @@ void () CommandImpulses =
 	if ((self.impulse == 41))
 	{
 		Toggle_Tracking ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return;
 	}
 	else
@@ -3939,7 +3939,7 @@ void () CommandImpulses =
 				if (clanbattle)
 				{
 					sprint (self, 2, "Clan Battle in progress....\n");
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return;
 				}
 			}
@@ -3952,7 +3952,7 @@ void () CommandImpulses =
 				return;
 			}
 			Pan_In (15);
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return;
 		}
 		else
@@ -3964,7 +3964,7 @@ void () CommandImpulses =
 					if (clanbattle)
 					{
 						sprint (self, 2, "Clan Battle in progress....\n");
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 						return;
 					}
 				}
@@ -3977,7 +3977,7 @@ void () CommandImpulses =
 					return;
 				}
 				Pan_Out (15);
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return;
 			}
 			else
@@ -3989,7 +3989,7 @@ void () CommandImpulses =
 						if (clanbattle)
 						{
 							sprint (self, 2, "Clan Battle in progress....\n");
-							self.impulse = RANGE_MELEE;
+							self.impulse = 0;
 							return;
 						}
 					}
@@ -3999,7 +3999,7 @@ void () CommandImpulses =
 					}
 					Track_Player ();
 					self.last_impulse = self.impulse;
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return;
 				}
 				else
@@ -4011,7 +4011,7 @@ void () CommandImpulses =
 							if (clanbattle)
 							{
 								sprint (self, 2, "Clan Battle in progress....\n");
-								self.impulse = RANGE_MELEE;
+								self.impulse = 0;
 								return;
 							}
 						}
@@ -4021,7 +4021,7 @@ void () CommandImpulses =
 						}
 						Track_Tfgoal ();
 						self.last_impulse = self.impulse;
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 						return;
 					}
 					else
@@ -4033,7 +4033,7 @@ void () CommandImpulses =
 								if (clanbattle)
 								{
 									sprint (self, 2, "Clan Battle in progress....\n");
-									self.impulse = RANGE_MELEE;
+									self.impulse = 0;
 									return;
 								}
 							}
@@ -4047,7 +4047,7 @@ void () CommandImpulses =
 								Toggle_Tracking ();
 							}
 							self.last_impulse = self.impulse;
-							self.impulse = RANGE_MELEE;
+							self.impulse = 0;
 							return;
 						}
 						else
@@ -4055,7 +4055,7 @@ void () CommandImpulses =
 							if ((self.impulse == 180))
 							{
 								Drop_detpack ();
-								self.impulse = RANGE_MELEE;
+								self.impulse = 0;
 								return;
 							}
 							else
@@ -4063,7 +4063,7 @@ void () CommandImpulses =
 								if ((self.impulse == _H))
 								{
 									ShowFrags (self);
-									self.impulse = RANGE_MELEE;
+									self.impulse = 0;
 									return;
 								}
 								else
@@ -4071,7 +4071,7 @@ void () CommandImpulses =
 									if ((self.impulse == _I))
 									{
 										ShowFps ();
-										self.impulse = RANGE_MELEE;
+										self.impulse = 0;
 										return;
 									}
 									else
@@ -4079,7 +4079,7 @@ void () CommandImpulses =
 										if ((self.impulse == _J))
 										{
 											ShowStats ();
-											self.impulse = RANGE_MELEE;
+											self.impulse = 0;
 											return;
 										}
 										else
@@ -4087,7 +4087,7 @@ void () CommandImpulses =
 											if ((self.impulse == _S))
 											{
 												VoteYes ();
-												self.impulse = RANGE_MELEE;
+												self.impulse = 0;
 												return;
 											}
 											else
@@ -4095,7 +4095,7 @@ void () CommandImpulses =
 												if ((self.impulse == _T))
 												{
 													VoteNo ();
-													self.impulse = RANGE_MELEE;
+													self.impulse = 0;
 													return;
 												}
 												else
@@ -4103,7 +4103,7 @@ void () CommandImpulses =
 													if ((self.impulse == _U))
 													{
 														PlayerBreak ();
-														self.impulse = RANGE_MELEE;
+														self.impulse = 0;
 														return;
 													}
 													else
@@ -4114,7 +4114,7 @@ void () CommandImpulses =
 															{
 																flash_toggle ();
 															}
-															self.impulse = RANGE_MELEE;
+															self.impulse = 0;
 															return;
 														}
 														else
@@ -4122,7 +4122,7 @@ void () CommandImpulses =
 															if ((self.impulse == _X))
 															{
 																Commands ();
-																self.impulse = RANGE_MELEE;
+																self.impulse = 0;
 																return;
 															}
 															else
@@ -4130,7 +4130,7 @@ void () CommandImpulses =
 																if ((self.impulse == _W))
 																{
 																	ShowVersion ();
-																	self.impulse = RANGE_MELEE;
+																	self.impulse = 0;
 																	return;
 																}
 																else
@@ -4138,7 +4138,7 @@ void () CommandImpulses =
 																	if ((self.impulse == _Y))
 																	{
 																		ModStatus ();
-																		self.impulse = RANGE_MELEE;
+																		self.impulse = 0;
 																		return;
 																	}
 																	else
@@ -4148,779 +4148,779 @@ void () CommandImpulses =
 																			if (!stof (infokey (world, "adminlevel")))
 																			{
 																				sprint (self, 2, "Admins are not allowed on this server.\n");
-																				self.impulse = RANGE_MELEE;
+																				self.impulse = 0;
 																				return;
 																			}
 																			VoteAdmin ();
-																			self.impulse = RANGE_MELEE;
+																			self.impulse = 0;
 																			return;
 																		}
 																		else
 																		{
-																			if (((self.is_admin != 1) && (self.is_admin != AS_MELEE)))
+																			if (((self.is_admin != 1) && (self.is_admin != 3)))
 																			{
-																				self.impulse = RANGE_MELEE;
+																				self.impulse = 0;
 																				return;
 																			}
 																			else
 																			{
 																				if ((self.impulse == 192))
 																				{
-																					if ((self.is_admin != AS_MELEE))
+																					if ((self.is_admin != 3))
 																					{
 																						if (!stof (infokey (world, "adminlevel")))
 																						{
 																							sprint (self, 2, "Admins are not allowed on this server.\n");
-																							self.impulse = RANGE_MELEE;
+																							self.impulse = 0;
 																							return;
 																						}
 																					}
 																					Admin_CountPlayers ();
-																					self.impulse = RANGE_MELEE;
+																					self.impulse = 0;
 																					return;
 																				}
 																				else
 																				{
 																					if ((self.impulse == 218))
 																					{
-																						if ((self.is_admin != AS_MELEE))
+																						if ((self.is_admin != 3))
 																						{
-																							if ((stof (infokey (world, "adminlevel")) < AS_MELEE))
+																							if ((stof (infokey (world, "adminlevel")) < 3))
 																							{
 																								sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																								self.impulse = RANGE_MELEE;
+																								self.impulse = 0;
 																								return;
 																							}
 																						}
 																						Calibrate_Level ();
-																						self.impulse = RANGE_MELEE;
+																						self.impulse = 0;
 																						return;
 																					}
 																					else
 																					{
 																						if ((self.impulse == 189))
 																						{
-																							if ((self.is_admin != AS_MELEE))
+																							if ((self.is_admin != 3))
 																							{
-																								if ((stof (infokey (world, "adminlevel")) < AS_MELEE))
+																								if ((stof (infokey (world, "adminlevel")) < 3))
 																								{
 																									sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																									self.impulse = RANGE_MELEE;
+																									self.impulse = 0;
 																									return;
 																								}
 																							}
 																							Admin_CycleDeal ();
-																							self.impulse = RANGE_MELEE;
+																							self.impulse = 0;
 																							return;
 																						}
 																						else
 																						{
 																							if (((self.impulse == 190) && (self.admin_mode == 1)))
 																							{
-																								if ((self.is_admin != AS_MELEE))
+																								if ((self.is_admin != 3))
 																								{
-																									if ((stof (infokey (world, "adminlevel")) < AS_MELEE))
+																									if ((stof (infokey (world, "adminlevel")) < 3))
 																									{
 																										sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																										self.impulse = RANGE_MELEE;
+																										self.impulse = 0;
 																										return;
 																									}
 																								}
 																								Admin_DoKick ();
-																								self.impulse = RANGE_MELEE;
+																								self.impulse = 0;
 																								return;
 																							}
 																							else
 																							{
 																								if (((self.impulse == 195) && (self.admin_mode == 1)))
 																								{
-																									if ((self.is_admin != AS_MELEE))
+																									if ((self.is_admin != 3))
 																									{
-																										if ((stof (infokey (world, "adminlevel")) < AS_MELEE))
+																										if ((stof (infokey (world, "adminlevel")) < 3))
 																										{
 																											sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																											self.impulse = RANGE_MELEE;
+																											self.impulse = 0;
 																											return;
 																										}
 																									}
 																									Admin_CycleDeal ();
-																									self.impulse = RANGE_MELEE;
+																									self.impulse = 0;
 																									return;
 																								}
 																								else
 																								{
 																									if ((self.impulse == 198))
 																									{
-																										if ((self.is_admin != AS_MELEE))
+																										if ((self.is_admin != 3))
 																										{
-																											if ((stof (infokey (world, "adminlevel")) < AS_MELEE))
+																											if ((stof (infokey (world, "adminlevel")) < 3))
 																											{
 																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																												self.impulse = RANGE_MELEE;
+																												self.impulse = 0;
 																												return;
 																											}
 																										}
 																										Admin_ListIPs ();
-																										self.impulse = RANGE_MELEE;
+																										self.impulse = 0;
 																										return;
 																									}
 																									else
 																									{
 																										if ((self.impulse == 200))
 																										{
-																											if ((self.is_admin != AS_MELEE))
+																											if ((self.is_admin != 3))
 																											{
 																												if (!stof (infokey (world, "adminlevel")))
 																												{
 																													sprint (self, 2, "Admins are not allowed on this server.\n");
-																													self.impulse = RANGE_MELEE;
+																													self.impulse = 0;
 																													return;
 																												}
 																											}
 																											if (((clanbattle == 1) && !cb_prematch))
 																											{
 																												sprint (self, 2, "Clan Battle in progress....\n");
-																												self.impulse = RANGE_MELEE;
+																												self.impulse = 0;
 																												return;
 																											}
 																											TimeDown (5);
-																											self.impulse = RANGE_MELEE;
+																											self.impulse = 0;
 																											return;
 																										}
 																										else
 																										{
 																											if ((self.impulse == 201))
 																											{
-																												if ((self.is_admin != AS_MELEE))
+																												if ((self.is_admin != 3))
 																												{
 																													if (!stof (infokey (world, "adminlevel")))
 																													{
 																														sprint (self, 2, "Admins are not allowed on this server.\n");
-																														self.impulse = RANGE_MELEE;
+																														self.impulse = 0;
 																														return;
 																													}
 																												}
 																												if (((clanbattle == 1) && !cb_prematch))
 																												{
 																													sprint (self, 2, "Clan Battle in progress....\n");
-																													self.impulse = RANGE_MELEE;
+																													self.impulse = 0;
 																													return;
 																												}
 																												TimeUp (5);
-																												self.impulse = RANGE_MELEE;
+																												self.impulse = 0;
 																												return;
 																											}
 																											else
 																											{
 																												if ((self.impulse == 228))
 																												{
-																													if ((self.is_admin != AS_MELEE))
+																													if ((self.is_admin != 3))
 																													{
 																														if (!stof (infokey (world, "adminlevel")))
 																														{
 																															sprint (self, 2, "Admins are not allowed on this server.\n");
-																															self.impulse = RANGE_MELEE;
+																															self.impulse = 0;
 																															return;
 																														}
 																													}
 																													if (((clanbattle == 1) && !cb_prematch))
 																													{
 																														sprint (self, 2, "Clan Battle in progress....\n");
-																														self.impulse = RANGE_MELEE;
+																														self.impulse = 0;
 																														return;
 																													}
 																													PmTimeDown (1);
-																													self.impulse = RANGE_MELEE;
+																													self.impulse = 0;
 																													return;
 																												}
 																												else
 																												{
 																													if ((self.impulse == 229))
 																													{
-																														if ((self.is_admin != AS_MELEE))
+																														if ((self.is_admin != 3))
 																														{
 																															if (!stof (infokey (world, "adminlevel")))
 																															{
 																																sprint (self, 2, "Admins are not allowed on this server.\n");
-																																self.impulse = RANGE_MELEE;
+																																self.impulse = 0;
 																																return;
 																															}
 																														}
 																														if (((clanbattle == 1) && !cb_prematch))
 																														{
 																															sprint (self, 2, "Clan Battle in progress....\n");
-																															self.impulse = RANGE_MELEE;
+																															self.impulse = 0;
 																															return;
 																														}
 																														PmTimeUp (1);
-																														self.impulse = RANGE_MELEE;
+																														self.impulse = 0;
 																														return;
 																													}
 																													else
 																													{
 																														if ((self.impulse == 96))
 																														{
-																															if ((self.is_admin != AS_MELEE))
+																															if ((self.is_admin != 3))
 																															{
 																																if (!stof (infokey (world, "adminlevel")))
 																																{
 																																	sprint (self, 2, "Admins are not allowed on this server.\n");
-																																	self.impulse = RANGE_MELEE;
+																																	self.impulse = 0;
 																																	return;
 																																}
 																															}
 																															if (((clanbattle == 1) && !cb_prematch))
 																															{
 																																sprint (self, 2, "Clan Battle in progress....\n");
-																																self.impulse = RANGE_MELEE;
+																																self.impulse = 0;
 																																return;
 																															}
 																															CFTimeDown (1);
-																															self.impulse = RANGE_MELEE;
+																															self.impulse = 0;
 																															return;
 																														}
 																														else
 																														{
 																															if ((self.impulse == _a))
 																															{
-																																if ((self.is_admin != AS_MELEE))
+																																if ((self.is_admin != 3))
 																																{
 																																	if (!stof (infokey (world, "adminlevel")))
 																																	{
 																																		sprint (self, 2, "Admins are not allowed on this server.\n");
-																																		self.impulse = RANGE_MELEE;
+																																		self.impulse = 0;
 																																		return;
 																																	}
 																																}
 																																if (((clanbattle == 1) && !cb_prematch))
 																																{
 																																	sprint (self, 2, "Clan Battle in progress....\n");
-																																	self.impulse = RANGE_MELEE;
+																																	self.impulse = 0;
 																																	return;
 																																}
 																																CFTimeUp (1);
-																																self.impulse = RANGE_MELEE;
+																																self.impulse = 0;
 																																return;
 																															}
 																															else
 																															{
 																																if ((self.impulse == _b))
 																																{
-																																	if ((self.is_admin != AS_MELEE))
+																																	if ((self.is_admin != 3))
 																																	{
 																																		if (!stof (infokey (world, "adminlevel")))
 																																		{
 																																			sprint (self, 2, "Admins are not allowed on this server.\n");
-																																			self.impulse = RANGE_MELEE;
+																																			self.impulse = 0;
 																																			return;
 																																		}
 																																	}
 																																	if (((clanbattle == 1) && !cb_prematch))
 																																	{
 																																		sprint (self, 2, "Clan Battle in progress....\n");
-																																		self.impulse = RANGE_MELEE;
+																																		self.impulse = 0;
 																																		return;
 																																	}
 																																	OverTimeDown (1);
-																																	self.impulse = RANGE_MELEE;
+																																	self.impulse = 0;
 																																	return;
 																																}
 																																else
 																																{
 																																	if ((self.impulse == _c))
 																																	{
-																																		if ((self.is_admin != AS_MELEE))
+																																		if ((self.is_admin != 3))
 																																		{
 																																			if (!stof (infokey (world, "adminlevel")))
 																																			{
 																																				sprint (self, 2, "Admins are not allowed on this server.\n");
-																																				self.impulse = RANGE_MELEE;
+																																				self.impulse = 0;
 																																				return;
 																																			}
 																																		}
 																																		if (((clanbattle == 1) && !cb_prematch))
 																																		{
 																																			sprint (self, 2, "Clan Battle in progress....\n");
-																																			self.impulse = RANGE_MELEE;
+																																			self.impulse = 0;
 																																			return;
 																																		}
 																																		OverTimeUp (1);
-																																		self.impulse = RANGE_MELEE;
+																																		self.impulse = 0;
 																																		return;
 																																	}
 																																	else
 																																	{
 																																		if ((self.impulse == 202))
 																																		{
-																																			if ((self.is_admin != AS_MELEE))
+																																			if ((self.is_admin != 3))
 																																			{
 																																				if (!stof (infokey (world, "adminlevel")))
 																																				{
 																																					sprint (self, 2, "Admins are not allowed on this server.\n");
-																																					self.impulse = RANGE_MELEE;
+																																					self.impulse = 0;
 																																					return;
 																																				}
 																																			}
 																																			if (((clanbattle == 1) && !cb_prematch))
 																																			{
 																																				sprint (self, 2, "Clan Battle in progress....\n");
-																																				self.impulse = RANGE_MELEE;
+																																				self.impulse = 0;
 																																				return;
 																																			}
-																																			pmtime = RANGE_MELEE;
+																																			pmtime = 0;
 																																			StartTimer ();
-																																			self.impulse = RANGE_MELEE;
+																																			self.impulse = 0;
 																																			return;
 																																		}
 																																		else
 																																		{
 																																			if ((self.impulse == 204))
 																																			{
-																																				if ((self.is_admin != AS_MELEE))
+																																				if ((self.is_admin != 3))
 																																				{
 																																					if (!stof (infokey (world, "adminlevel")))
 																																					{
 																																						sprint (self, 2, "Admins are not allowed on this server.\n");
-																																						self.impulse = RANGE_MELEE;
+																																						self.impulse = 0;
 																																						return;
 																																					}
 																																				}
 																																				if (((clanbattle == 1) && !cb_prematch))
 																																				{
 																																					sprint (self, 2, "Clan Battle in progress....\n");
-																																					self.impulse = RANGE_MELEE;
+																																					self.impulse = 0;
 																																					return;
 																																				}
 																																				FragsDown ();
-																																				self.impulse = RANGE_MELEE;
+																																				self.impulse = 0;
 																																				return;
 																																			}
 																																			else
 																																			{
 																																				if ((self.impulse == 205))
 																																				{
-																																					if ((self.is_admin != AS_MELEE))
+																																					if ((self.is_admin != 3))
 																																					{
 																																						if (!stof (infokey (world, "adminlevel")))
 																																						{
 																																							sprint (self, 2, "Admins are not allowed on this server.\n");
-																																							self.impulse = RANGE_MELEE;
+																																							self.impulse = 0;
 																																							return;
 																																						}
 																																					}
 																																					if (((clanbattle == 1) && !cb_prematch))
 																																					{
 																																						sprint (self, 2, "Clan Battle in progress....\n");
-																																						self.impulse = RANGE_MELEE;
+																																						self.impulse = 0;
 																																						return;
 																																					}
 																																					FragsUp ();
-																																					self.impulse = RANGE_MELEE;
+																																					self.impulse = 0;
 																																					return;
 																																				}
 																																				else
 																																				{
 																																					if ((self.impulse == 207))
 																																					{
-																																						if ((self.is_admin != AS_MELEE))
+																																						if ((self.is_admin != 3))
 																																						{
 																																							if ((stof (infokey (world, "adminlevel")) < 2))
 																																							{
 																																								sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																								self.impulse = RANGE_MELEE;
+																																								self.impulse = 0;
 																																								return;
 																																							}
 																																						}
 																																						ClanMode ();
-																																						self.impulse = RANGE_MELEE;
+																																						self.impulse = 0;
 																																						return;
 																																					}
 																																					else
 																																					{
 																																						if ((self.impulse == 208))
 																																						{
-																																							if ((self.is_admin != AS_MELEE))
+																																							if ((self.is_admin != 3))
 																																							{
 																																								if (!stof (infokey (world, "adminlevel")))
 																																								{
 																																									sprint (self, 2, "Admins are not allowed on this server.\n");
-																																									self.impulse = RANGE_MELEE;
+																																									self.impulse = 0;
 																																									return;
 																																								}
 																																							}
 																																							if (((clanbattle == 1) && !cb_prematch))
 																																							{
 																																								sprint (self, 2, "Clan Battle in progress....\n");
-																																								self.impulse = RANGE_MELEE;
+																																								self.impulse = 0;
 																																								return;
 																																							}
 																																							RestartMap ();
-																																							self.impulse = RANGE_MELEE;
+																																							self.impulse = 0;
 																																							return;
 																																						}
 																																						else
 																																						{
 																																							if ((self.impulse == 214))
 																																							{
-																																								if ((self.is_admin != AS_MELEE))
+																																								if ((self.is_admin != 3))
 																																								{
 																																									if (!stof (infokey (world, "adminlevel")))
 																																									{
 																																										sprint (self, 2, "Admins are not allowed on this server.\n");
-																																										self.impulse = RANGE_MELEE;
+																																										self.impulse = 0;
 																																										return;
 																																									}
 																																								}
 																																								if (((clanbattle == 1) && !cb_prematch))
 																																								{
 																																									sprint (self, 2, "Clan Battle in progress....\n");
-																																									self.impulse = RANGE_MELEE;
+																																									self.impulse = 0;
 																																									return;
 																																								}
 																																								ToggleSpecTalk ();
-																																								self.impulse = RANGE_MELEE;
+																																								self.impulse = 0;
 																																								return;
 																																							}
 																																							else
 																																							{
 																																								if ((self.impulse == 216))
 																																								{
-																																									if ((self.is_admin != AS_MELEE))
+																																									if ((self.is_admin != 3))
 																																									{
 																																										if ((stof (infokey (world, "adminlevel")) < 2))
 																																										{
 																																											sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																											self.impulse = RANGE_MELEE;
+																																											self.impulse = 0;
 																																											return;
 																																										}
 																																									}
 																																									Toggle_TFvsDM ();
-																																									self.impulse = RANGE_MELEE;
+																																									self.impulse = 0;
 																																									return;
 																																								}
 																																								else
 																																								{
 																																									if ((self.impulse == 94))
 																																									{
-																																										if ((self.is_admin != AS_MELEE))
+																																										if ((self.is_admin != 3))
 																																										{
 																																											if ((stof (infokey (world, "adminlevel")) < 2))
 																																											{
 																																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																												self.impulse = RANGE_MELEE;
+																																												self.impulse = 0;
 																																												return;
 																																											}
 																																										}
 																																										Toggle_Practice ();
-																																										self.impulse = RANGE_MELEE;
+																																										self.impulse = 0;
 																																										return;
 																																									}
 																																									else
 																																									{
 																																										if ((self.impulse == _Q))
 																																										{
-																																											if ((self.is_admin != AS_MELEE))
+																																											if ((self.is_admin != 3))
 																																											{
 																																												if ((stof (infokey (world, "adminlevel")) < 2))
 																																												{
 																																													sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																													self.impulse = RANGE_MELEE;
+																																													self.impulse = 0;
 																																													return;
 																																												}
 																																											}
 																																											Toggle_SpeedCap ();
-																																											self.impulse = RANGE_MELEE;
+																																											self.impulse = 0;
 																																											return;
 																																										}
 																																										else
 																																										{
 																																											if ((self.impulse == _P))
 																																											{
-																																												if ((self.is_admin != AS_MELEE))
+																																												if ((self.is_admin != 3))
 																																												{
 																																													if ((stof (infokey (world, "adminlevel")) < 2))
 																																													{
 																																														sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																														self.impulse = RANGE_MELEE;
+																																														self.impulse = 0;
 																																														return;
 																																													}
 																																												}
 																																												Toggle_Duel ();
-																																												self.impulse = RANGE_MELEE;
+																																												self.impulse = 0;
 																																												return;
 																																											}
 																																											else
 																																											{
 																																												if ((self.impulse == _O))
 																																												{
-																																													if ((self.is_admin != AS_MELEE))
+																																													if ((self.is_admin != 3))
 																																													{
 																																														if ((stof (infokey (world, "adminlevel")) < 2))
 																																														{
 																																															sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																															self.impulse = RANGE_MELEE;
+																																															self.impulse = 0;
 																																															return;
 																																														}
 																																													}
 																																													Toggle_Rounds ();
-																																													self.impulse = RANGE_MELEE;
+																																													self.impulse = 0;
 																																													return;
 																																												}
 																																												else
 																																												{
 																																													if ((self.impulse == _N))
 																																													{
-																																														if ((self.is_admin != AS_MELEE))
+																																														if ((self.is_admin != 3))
 																																														{
 																																															if ((stof (infokey (world, "adminlevel")) < 2))
 																																															{
 																																																sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																self.impulse = RANGE_MELEE;
+																																																self.impulse = 0;
 																																																return;
 																																															}
 																																														}
 																																														Toggle_TFStrike ();
-																																														self.impulse = RANGE_MELEE;
+																																														self.impulse = 0;
 																																														return;
 																																													}
 																																													else
 																																													{
 																																														if ((self.impulse == 220))
 																																														{
-																																															if ((self.is_admin != AS_MELEE))
+																																															if ((self.is_admin != 3))
 																																															{
 																																																if ((stof (infokey (world, "adminlevel")) < 2))
 																																																{
 																																																	sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																	self.impulse = RANGE_MELEE;
+																																																	self.impulse = 0;
 																																																	return;
 																																																}
 																																															}
 																																															if (((clanbattle == 1) && !cb_prematch))
 																																															{
 																																																sprint (self, 2, "Clan Battle in progress....\n");
-																																																self.impulse = RANGE_MELEE;
+																																																self.impulse = 0;
 																																																return;
 																																															}
 																																															ResetSetup ();
-																																															self.impulse = RANGE_MELEE;
+																																															self.impulse = 0;
 																																															return;
 																																														}
 																																														else
 																																														{
 																																															if ((self.impulse == 221))
 																																															{
-																																																if ((self.is_admin != AS_MELEE))
+																																																if ((self.is_admin != 3))
 																																																{
 																																																	if (!stof (infokey (world, "adminlevel")))
 																																																	{
 																																																		sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																		self.impulse = RANGE_MELEE;
+																																																		self.impulse = 0;
 																																																		return;
 																																																	}
 																																																}
 																																																Toggle_Teamfrags ();
-																																																self.impulse = RANGE_MELEE;
+																																																self.impulse = 0;
 																																																return;
 																																															}
 																																															else
 																																															{
 																																																if ((self.impulse == 222))
 																																																{
-																																																	if ((self.is_admin != AS_MELEE))
+																																																	if ((self.is_admin != 3))
 																																																	{
 																																																		if (!stof (infokey (world, "adminlevel")))
 																																																		{
 																																																			sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																			self.impulse = RANGE_MELEE;
+																																																			self.impulse = 0;
 																																																			return;
 																																																		}
 																																																	}
 																																																	Toggle_Fullts ();
-																																																	self.impulse = RANGE_MELEE;
+																																																	self.impulse = 0;
 																																																	return;
 																																																}
 																																																else
 																																																{
 																																																	if ((self.impulse == 223))
 																																																	{
-																																																		if ((self.is_admin != AS_MELEE))
+																																																		if ((self.is_admin != 3))
 																																																		{
 																																																			if (!stof (infokey (world, "adminlevel")))
 																																																			{
 																																																				sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																				self.impulse = RANGE_MELEE;
+																																																				self.impulse = 0;
 																																																				return;
 																																																			}
 																																																		}
 																																																		Toggle_Grapple ();
-																																																		self.impulse = RANGE_MELEE;
+																																																		self.impulse = 0;
 																																																		return;
 																																																	}
 																																																	else
 																																																	{
 																																																		if ((self.impulse == 217))
 																																																		{
-																																																			if ((self.is_admin != AS_MELEE))
+																																																			if ((self.is_admin != 3))
 																																																			{
 																																																				if (!stof (infokey (world, "adminlevel")))
 																																																				{
 																																																					sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																					self.impulse = RANGE_MELEE;
+																																																					self.impulse = 0;
 																																																					return;
 																																																				}
 																																																			}
 																																																			ToggleFlash ();
-																																																			self.impulse = RANGE_MELEE;
+																																																			self.impulse = 0;
 																																																			return;
 																																																		}
 																																																		else
 																																																		{
 																																																			if ((self.impulse == 224))
 																																																			{
-																																																				if ((self.is_admin != AS_MELEE))
+																																																				if ((self.is_admin != 3))
 																																																				{
 																																																					if ((stof (infokey (world, "adminlevel")) < 2))
 																																																					{
 																																																						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																						self.impulse = RANGE_MELEE;
+																																																						self.impulse = 0;
 																																																						return;
 																																																					}
 																																																				}
 																																																				if (((clanbattle == 1) && !cb_prematch))
 																																																				{
 																																																					sprint (self, 2, "Clan Battle in progress....\n");
-																																																					self.impulse = RANGE_MELEE;
+																																																					self.impulse = 0;
 																																																					return;
 																																																				}
 																																																				ClanSetup ();
-																																																				self.impulse = RANGE_MELEE;
+																																																				self.impulse = 0;
 																																																				return;
 																																																			}
 																																																			else
 																																																			{
 																																																				if ((self.impulse == 230))
 																																																				{
-																																																					if ((self.is_admin != AS_MELEE))
+																																																					if ((self.is_admin != 3))
 																																																					{
 																																																						if (!stof (infokey (world, "adminlevel")))
 																																																						{
 																																																							sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																							self.impulse = RANGE_MELEE;
+																																																							self.impulse = 0;
 																																																							return;
 																																																						}
 																																																					}
 																																																					if (((clanbattle == 1) && !cb_prematch))
 																																																					{
 																																																						sprint (self, 2, "Clan Battle in progress....\n");
-																																																						self.impulse = RANGE_MELEE;
+																																																						self.impulse = 0;
 																																																						return;
 																																																					}
 																																																					Toggle_Gibs ();
-																																																					self.impulse = RANGE_MELEE;
+																																																					self.impulse = 0;
 																																																					return;
 																																																				}
 																																																				else
 																																																				{
 																																																					if ((self.impulse == 193))
 																																																					{
-																																																						if ((self.is_admin != AS_MELEE))
+																																																						if ((self.is_admin != 3))
 																																																						{
 																																																							if ((stof (infokey (world, "adminlevel")) < 2))
 																																																							{
 																																																								sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																								self.impulse = RANGE_MELEE;
+																																																								self.impulse = 0;
 																																																								return;
 																																																							}
 																																																						}
 																																																						Admin_CeaseFire ();
-																																																						self.impulse = RANGE_MELEE;
+																																																						self.impulse = 0;
 																																																						return;
 																																																					}
 																																																					else
 																																																					{
 																																																						if ((self.impulse == 215))
 																																																						{
-																																																							if ((self.is_admin != AS_MELEE))
+																																																							if ((self.is_admin != 3))
 																																																							{
 																																																								if ((stof (infokey (world, "adminlevel")) < 2))
 																																																								{
 																																																									sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																									self.impulse = RANGE_MELEE;
+																																																									self.impulse = 0;
 																																																									return;
 																																																								}
 																																																							}
 																																																							if (((clanbattle == 1) && !cb_prematch))
 																																																							{
 																																																								sprint (self, 2, "Clan Battle in progress....\n");
-																																																								self.impulse = RANGE_MELEE;
+																																																								self.impulse = 0;
 																																																								return;
 																																																							}
 																																																							ToggleFreeze ();
-																																																							self.impulse = RANGE_MELEE;
+																																																							self.impulse = 0;
 																																																							return;
 																																																						}
 																																																						else
 																																																						{
 																																																							if ((self.impulse == 231))
 																																																							{
-																																																								if ((self.is_admin != AS_MELEE))
+																																																								if ((self.is_admin != 3))
 																																																								{
 																																																									if ((stof (infokey (world, "adminlevel")) < 2))
 																																																									{
 																																																										sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																										self.impulse = RANGE_MELEE;
+																																																										self.impulse = 0;
 																																																										return;
 																																																									}
 																																																								}
 																																																								Toggle_Highlander ();
-																																																								self.impulse = RANGE_MELEE;
+																																																								self.impulse = 0;
 																																																								return;
 																																																							}
 																																																							else
 																																																							{
 																																																								if ((self.impulse == 206))
 																																																								{
-																																																									if ((self.is_admin != AS_MELEE))
+																																																									if ((self.is_admin != 3))
 																																																									{
 																																																										if ((stof (infokey (world, "adminlevel")) < 2))
 																																																										{
 																																																											sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																											self.impulse = RANGE_MELEE;
+																																																											self.impulse = 0;
 																																																											return;
 																																																										}
 																																																									}
 																																																									if (((clanbattle == 1) && !cb_prematch))
 																																																									{
 																																																										sprint (self, 2, "Clan Battle in progress....\n");
-																																																										self.impulse = RANGE_MELEE;
+																																																										self.impulse = 0;
 																																																										return;
 																																																									}
 																																																									ChangeTP ();
-																																																									self.impulse = RANGE_MELEE;
+																																																									self.impulse = 0;
 																																																									return;
 																																																								}
 																																																								else
 																																																								{
 																																																									if ((self.impulse == 213))
 																																																									{
-																																																										if ((self.is_admin != AS_MELEE))
+																																																										if ((self.is_admin != 3))
 																																																										{
 																																																											if ((stof (infokey (world, "adminlevel")) < 2))
 																																																											{
 																																																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																												self.impulse = RANGE_MELEE;
+																																																												self.impulse = 0;
 																																																												return;
 																																																											}
 																																																										}
 																																																										if (((clanbattle == 1) && !cb_prematch))
 																																																										{
 																																																											sprint (self, 2, "Clan Battle in progress....\n");
-																																																											self.impulse = RANGE_MELEE;
+																																																											self.impulse = 0;
 																																																											return;
 																																																										}
 																																																										GroundSpeed ();
-																																																										self.impulse = RANGE_MELEE;
+																																																										self.impulse = 0;
 																																																										return;
 																																																									}
 																																																									else
@@ -4930,218 +4930,218 @@ void () CommandImpulses =
 																																																											if ((stof (infokey (world, "adminlevel")) < 2))
 																																																											{
 																																																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																												self.impulse = RANGE_MELEE;
+																																																												self.impulse = 0;
 																																																												return;
 																																																											}
 																																																											if (((clanbattle == 1) && !cb_prematch))
 																																																											{
 																																																												sprint (self, 2, "Clan Battle in progress....\n");
-																																																												self.impulse = RANGE_MELEE;
+																																																												self.impulse = 0;
 																																																												return;
 																																																											}
 																																																											Toggle_Grenpacks ();
-																																																											self.impulse = RANGE_MELEE;
+																																																											self.impulse = 0;
 																																																											return;
 																																																										}
 																																																										else
 																																																										{
 																																																											if ((self.impulse == 225))
 																																																											{
-																																																												if ((self.is_admin != AS_MELEE))
+																																																												if ((self.is_admin != 3))
 																																																												{
 																																																													if ((stof (infokey (world, "adminlevel")) < 2))
 																																																													{
 																																																														sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																														self.impulse = RANGE_MELEE;
+																																																														self.impulse = 0;
 																																																														return;
 																																																													}
 																																																												}
 																																																												if (((clanbattle == 1) && !cb_prematch))
 																																																												{
 																																																													sprint (self, 2, "Clan Battle in progress....\n");
-																																																													self.impulse = RANGE_MELEE;
+																																																													self.impulse = 0;
 																																																													return;
 																																																												}
 																																																												ToggleFbskins ();
-																																																												self.impulse = RANGE_MELEE;
+																																																												self.impulse = 0;
 																																																												return;
 																																																											}
 																																																											else
 																																																											{
 																																																												if ((self.impulse == 226))
 																																																												{
-																																																													if ((self.is_admin != AS_MELEE))
+																																																													if ((self.is_admin != 3))
 																																																													{
 																																																														if ((stof (infokey (world, "adminlevel")) < 2))
 																																																														{
 																																																															sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																															self.impulse = RANGE_MELEE;
+																																																															self.impulse = 0;
 																																																															return;
 																																																														}
 																																																													}
 																																																													if (((clanbattle == 1) && !cb_prematch))
 																																																													{
 																																																														sprint (self, 2, "Clan Battle in progress....\n");
-																																																														self.impulse = RANGE_MELEE;
+																																																														self.impulse = 0;
 																																																														return;
 																																																													}
 																																																													ToggleEnemy ();
-																																																													self.impulse = RANGE_MELEE;
+																																																													self.impulse = 0;
 																																																													return;
 																																																												}
 																																																												else
 																																																												{
 																																																													if ((self.impulse == 227))
 																																																													{
-																																																														if ((self.is_admin != AS_MELEE))
+																																																														if ((self.is_admin != 3))
 																																																														{
 																																																															if ((stof (infokey (world, "adminlevel")) < 2))
 																																																															{
 																																																																sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																self.impulse = RANGE_MELEE;
+																																																																self.impulse = 0;
 																																																																return;
 																																																															}
 																																																														}
 																																																														if (((clanbattle == 1) && !cb_prematch))
 																																																														{
 																																																															sprint (self, 2, "Clan Battle in progress....\n");
-																																																															self.impulse = RANGE_MELEE;
+																																																															self.impulse = 0;
 																																																															return;
 																																																														}
 																																																														TogglePointing ();
-																																																														self.impulse = RANGE_MELEE;
+																																																														self.impulse = 0;
 																																																														return;
 																																																													}
 																																																													else
 																																																													{
 																																																														if ((self.impulse == 235))
 																																																														{
-																																																															if ((self.is_admin != AS_MELEE))
+																																																															if ((self.is_admin != 3))
 																																																															{
 																																																																if ((stof (infokey (world, "adminlevel")) < 2))
 																																																																{
 																																																																	sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																	self.impulse = RANGE_MELEE;
+																																																																	self.impulse = 0;
 																																																																	return;
 																																																																}
 																																																															}
 																																																															if (((clanbattle == 1) && !cb_prematch))
 																																																															{
 																																																																sprint (self, 2, "Clan Battle in progress....\n");
-																																																																self.impulse = RANGE_MELEE;
+																																																																self.impulse = 0;
 																																																																return;
 																																																															}
 																																																															Toggle_Detpack ();
-																																																															self.impulse = RANGE_MELEE;
+																																																															self.impulse = 0;
 																																																															return;
 																																																														}
 																																																														else
 																																																														{
 																																																															if ((self.impulse == 236))
 																																																															{
-																																																																if ((self.is_admin != AS_MELEE))
+																																																																if ((self.is_admin != 3))
 																																																																{
 																																																																	if ((stof (infokey (world, "adminlevel")) < 2))
 																																																																	{
 																																																																		sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																		self.impulse = RANGE_MELEE;
+																																																																		self.impulse = 0;
 																																																																		return;
 																																																																	}
 																																																																}
 																																																																Toggle_flag_emu ();
-																																																																self.impulse = RANGE_MELEE;
+																																																																self.impulse = 0;
 																																																																return;
 																																																															}
 																																																															else
 																																																															{
 																																																																if ((self.impulse == 232))
 																																																																{
-																																																																	if ((self.is_admin != AS_MELEE))
+																																																																	if ((self.is_admin != 3))
 																																																																	{
 																																																																		if ((stof (infokey (world, "adminlevel")) < 2))
 																																																																		{
 																																																																			sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																			self.impulse = RANGE_MELEE;
+																																																																			self.impulse = 0;
 																																																																			return;
 																																																																		}
 																																																																	}
 																																																																	if (((clanbattle == 1) && !cb_prematch))
 																																																																	{
 																																																																		sprint (self, 2, "Clan Battle in progress....\n");
-																																																																		self.impulse = RANGE_MELEE;
+																																																																		self.impulse = 0;
 																																																																		return;
 																																																																	}
 																																																																	Toggle_SentryType ();
-																																																																	self.impulse = RANGE_MELEE;
+																																																																	self.impulse = 0;
 																																																																	return;
 																																																																}
 																																																																else
 																																																																{
 																																																																	if ((self.impulse == 191))
 																																																																	{
-																																																																		if ((self.is_admin != AS_MELEE))
+																																																																		if ((self.is_admin != 3))
 																																																																		{
 																																																																			if ((stof (infokey (world, "adminlevel")) < 2))
 																																																																			{
 																																																																				sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																				self.impulse = RANGE_MELEE;
+																																																																				self.impulse = 0;
 																																																																				return;
 																																																																			}
 																																																																		}
 																																																																		if (((clanbattle == 1) && !cb_prematch))
 																																																																		{
 																																																																			sprint (self, 2, "Clan Battle in progress....\n");
-																																																																			self.impulse = RANGE_MELEE;
+																																																																			self.impulse = 0;
 																																																																			return;
 																																																																		}
 																																																																		Toggle_SentryFire ();
-																																																																		self.impulse = RANGE_MELEE;
+																																																																		self.impulse = 0;
 																																																																		return;
 																																																																	}
 																																																																	else
 																																																																	{
 																																																																		if ((self.impulse == 234))
 																																																																		{
-																																																																			if ((self.is_admin != AS_MELEE))
+																																																																			if ((self.is_admin != 3))
 																																																																			{
 																																																																				if ((stof (infokey (world, "adminlevel")) < 2))
 																																																																				{
 																																																																					sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																					self.impulse = RANGE_MELEE;
+																																																																					self.impulse = 0;
 																																																																					return;
 																																																																				}
 																																																																			}
 																																																																			if (((clanbattle == 1) && !cb_prematch))
 																																																																			{
 																																																																				sprint (self, 2, "Clan Battle in progress....\n");
-																																																																				self.impulse = RANGE_MELEE;
+																																																																				self.impulse = 0;
 																																																																				return;
 																																																																			}
 																																																																			Toggle_PipeDelay ();
-																																																																			self.impulse = RANGE_MELEE;
+																																																																			self.impulse = 0;
 																																																																			return;
 																																																																		}
 																																																																		else
 																																																																		{
 																																																																			if ((self.impulse == 238))
 																																																																			{
-																																																																				if ((self.is_admin != AS_MELEE))
+																																																																				if ((self.is_admin != 3))
 																																																																				{
 																																																																					if ((stof (infokey (world, "adminlevel")) < 2))
 																																																																					{
 																																																																						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																						self.impulse = RANGE_MELEE;
+																																																																						self.impulse = 0;
 																																																																						return;
 																																																																					}
 																																																																				}
 																																																																				if (((clanbattle == 1) && !cb_prematch))
 																																																																				{
 																																																																					sprint (self, 2, "Clan Battle in progress....\n");
-																																																																					self.impulse = RANGE_MELEE;
+																																																																					self.impulse = 0;
 																																																																					return;
 																																																																				}
 																																																																				Toggle_Frj ();
-																																																																				self.impulse = RANGE_MELEE;
+																																																																				self.impulse = 0;
 																																																																				return;
 																																																																			}
 																																																																		}
@@ -5216,14 +5216,14 @@ float () PreMatchImpulses =
 {
 	if ((tfvsdm == 1))
 	{
-		if (((self.team_no == 1) || (self.team_no == AS_MELEE)))
+		if (((self.team_no == 1) || (self.team_no == 3)))
 		{
 			if (((self.impulse == 8) && (self.current_menu != 6)))
 			{
 				self.current_menu = 6;
 				self.menu_count = 30;
-				self.menu_displaytime = RANGE_MELEE;
-				self.impulse = RANGE_MELEE;
+				self.menu_displaytime = 0;
+				self.impulse = 0;
 				return (1);
 			}
 		}
@@ -5234,15 +5234,15 @@ float () PreMatchImpulses =
 		{
 			self.current_menu = 6;
 			self.menu_count = 30;
-			self.menu_displaytime = RANGE_MELEE;
-			self.impulse = RANGE_MELEE;
+			self.menu_displaytime = 0;
+			self.impulse = 0;
 			return (1);
 		}
 	}
 	if ((((self.impulse >= 1) && (self.impulse < 9)) || (self.impulse == COLOR_RED)))
 	{
 		W_ChangeWeapon ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return (1);
 	}
 	else
@@ -5250,7 +5250,7 @@ float () PreMatchImpulses =
 		if ((allow_hook && ((self.impulse == 22) || (self.impulse == 39))))
 		{
 			W_ChangeWeapon ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return (1);
 		}
 		else
@@ -5258,7 +5258,7 @@ float () PreMatchImpulses =
 			if ((self.impulse == 40))
 			{
 				W_ChangeWeapon ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return (1);
 			}
 			else
@@ -5266,7 +5266,7 @@ float () PreMatchImpulses =
 				if ((self.impulse == enter))
 				{
 					CycleWeaponCommand ();
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return (1);
 				}
 			}
@@ -5275,7 +5275,7 @@ float () PreMatchImpulses =
 	if ((self.impulse == redlamp))
 	{
 		TeamFortress_Inventory ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return (1);
 	}
 	else
@@ -5283,7 +5283,7 @@ float () PreMatchImpulses =
 		if ((self.impulse == 185))
 		{
 			TeamFortress_ID ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return (1);
 		}
 		else
@@ -5298,7 +5298,7 @@ float () PreMatchImpulses =
 				{
 					TeamFortress_DisplayDetectionItems ();
 				}
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return (1);
 			}
 			else
@@ -5306,7 +5306,7 @@ float () PreMatchImpulses =
 				if ((self.impulse == _v))
 				{
 					display_location ();
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return (1);
 				}
 			}
@@ -5321,7 +5321,7 @@ float () DeadImpulses =
 	if ((self.impulse == yellowlamp))
 	{
 		TeamFortress_ShowTF ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return (1);
 	}
 	else
@@ -5329,7 +5329,7 @@ float () DeadImpulses =
 		if ((self.impulse == 174))
 		{
 			TeamFortress_AutoZoomToggle ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return (1);
 		}
 		else
@@ -5337,7 +5337,7 @@ float () DeadImpulses =
 			if ((self.impulse == bluelamp))
 			{
 				TeamFortress_DisplayLegalClasses ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return (1);
 			}
 			else
@@ -5345,7 +5345,7 @@ float () DeadImpulses =
 				if (((self.impulse > _d) && (self.impulse <= (_d + 11))))
 				{
 					TeamFortress_ChangeClass ((self.impulse - _d));
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return (1);
 				}
 				else
@@ -5354,7 +5354,7 @@ float () DeadImpulses =
 					{
 						self.current_menu = 20;
 						self.menu_count = 30;
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 						return (1);
 					}
 					else
@@ -5372,7 +5372,7 @@ float () DeadImpulses =
 	if ((self.impulse == 131))
 	{
 		TeamFortress_HelpMap ();
-		self.impulse = RANGE_MELEE;
+		self.impulse = 0;
 		return (1);
 	}
 	else
@@ -5380,7 +5380,7 @@ float () DeadImpulses =
 		if ((self.impulse == _w))
 		{
 			TeamFortress_StatusQuery ();
-			self.impulse = RANGE_MELEE;
+			self.impulse = 0;
 			return (1);
 		}
 		else
@@ -5390,11 +5390,11 @@ float () DeadImpulses =
 				if (((clanbattle == 1) && !cb_prematch))
 				{
 					sprint (self, 2, "Clan Battle in progress....\n");
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return (1);
 				}
 				TeamFortress_TeamSet (1);
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 				return (1);
 			}
 			else
@@ -5404,11 +5404,11 @@ float () DeadImpulses =
 					if (((clanbattle == 1) && !cb_prematch))
 					{
 						sprint (self, 2, "Clan Battle in progress....\n");
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 						return (1);
 					}
 					TeamFortress_TeamSet (2);
-					self.impulse = RANGE_MELEE;
+					self.impulse = 0;
 					return (1);
 				}
 				else
@@ -5418,11 +5418,11 @@ float () DeadImpulses =
 						if (((clanbattle == 1) && !cb_prematch))
 						{
 							sprint (self, 2, "Clan Battle in progress....\n");
-							self.impulse = RANGE_MELEE;
+							self.impulse = 0;
 							return (1);
 						}
-						TeamFortress_TeamSet (AS_MELEE);
-						self.impulse = RANGE_MELEE;
+						TeamFortress_TeamSet (3);
+						self.impulse = 0;
 						return (1);
 					}
 					else
@@ -5432,19 +5432,19 @@ float () DeadImpulses =
 							if (((clanbattle == 1) && !cb_prematch))
 							{
 								sprint (self, 2, "Clan Battle in progress....\n");
-								self.impulse = RANGE_MELEE;
+								self.impulse = 0;
 								return (1);
 							}
-							TeamFortress_TeamSet (AS_MISSILE);
-							self.impulse = RANGE_MELEE;
+							TeamFortress_TeamSet (4);
+							self.impulse = 0;
 							return (1);
 						}
 						else
 						{
 							if ((self.impulse == 145))
 							{
-								TeamFortress_TeamShowScores (RANGE_MELEE);
-								self.impulse = RANGE_MELEE;
+								TeamFortress_TeamShowScores (0);
+								self.impulse = 0;
 								return (1);
 							}
 							else
@@ -5452,7 +5452,7 @@ float () DeadImpulses =
 								if ((self.impulse == 144))
 								{
 									TeamFortress_TeamShowMemberClasses (self);
-									self.impulse = RANGE_MELEE;
+									self.impulse = 0;
 									return (1);
 								}
 								else
@@ -5460,7 +5460,7 @@ float () DeadImpulses =
 									if (((self.playerclass == 1) && (self.impulse == 159)))
 									{
 										ScannerSwitch ();
-										self.impulse = RANGE_MELEE;
+										self.impulse = 0;
 										return (1);
 									}
 									else
@@ -5468,17 +5468,17 @@ float () DeadImpulses =
 										if (((self.playerclass == 1) && (self.impulse == 162)))
 										{
 											sprint (self, 2, "Scanner sound: ");
-											if ((self.tf_items_flags & AS_MISSILE))
+											if ((self.tf_items_flags & 4))
 											{
-												self.tf_items_flags = (self.tf_items_flags - AS_MISSILE);
+												self.tf_items_flags = (self.tf_items_flags - 4);
 												sprint (self, 2, "Off\n");
 											}
 											else
 											{
-												self.tf_items_flags = (self.tf_items_flags | AS_MISSILE);
+												self.tf_items_flags = (self.tf_items_flags | 4);
 												sprint (self, 2, "On\n");
 											}
-											self.impulse = RANGE_MELEE;
+											self.impulse = 0;
 											return (1);
 										}
 										else
@@ -5510,7 +5510,7 @@ float () DeadImpulses =
 														sprint (self, 2, "Enemies Only\n");
 													}
 												}
-												self.impulse = RANGE_MELEE;
+												self.impulse = 0;
 												return (1);
 											}
 											else
@@ -5542,7 +5542,7 @@ float () DeadImpulses =
 															sprint (self, 2, "Friendlies Only\n");
 														}
 													}
-													self.impulse = RANGE_MELEE;
+													self.impulse = 0;
 													return (1);
 												}
 												else
@@ -5557,19 +5557,19 @@ float () DeadImpulses =
 														self.StatusBarSize = stof (st);
 														if (((self.StatusBarSize > enter) || (self.StatusBarSize < 1)))
 														{
-															self.StatusBarSize = AS_MELEE;
+															self.StatusBarSize = 3;
 														}
 														StatusBar_On ();
-														self.impulse = RANGE_MELEE;
+														self.impulse = 0;
 														return (1);
 													}
 													else
 													{
 														if ((self.impulse == 183))
 														{
-															self.StatusBarSize = RANGE_MELEE;
+															self.StatusBarSize = 0;
 															StatusBar_On ();
-															self.impulse = RANGE_MELEE;
+															self.impulse = 0;
 															return (1);
 														}
 													}
@@ -5620,7 +5620,7 @@ void () W_WeaponFrame =
 					if ((self.last_impulse == _G))
 					{
 						StatusRes (self.impulse);
-						self.impulse = RANGE_MELEE;
+						self.impulse = 0;
 						return;
 					}
 				}
@@ -5632,26 +5632,26 @@ void () W_WeaponFrame =
 					return;
 				}
 				CommandImpulses ();
-				self.impulse = RANGE_MELEE;
+				self.impulse = 0;
 			}
 			return;
 		}
 	}
-	if ((self.current_menu > RANGE_MELEE))
+	if ((self.current_menu > 0))
 	{
 		Player_Menu ();
-		if (((self.impulse > RANGE_MELEE) && (((self.current_menu == 21) || (self.current_menu == 22)) || (self.current_menu == 23))))
+		if (((self.impulse > 0) && (((self.current_menu == 21) || (self.current_menu == 22)) || (self.current_menu == 23))))
 		{
 			Menu_Input (self.impulse);
 		}
 		else
 		{
-			if (((self.impulse > RANGE_MELEE) && (self.impulse < 11)))
+			if (((self.impulse > 0) && (self.impulse < 11)))
 			{
 				Menu_Input (self.impulse);
-				if ((self.impulse != RANGE_MELEE))
+				if ((self.impulse != 0))
 				{
-					if (((self.team_no == RANGE_MELEE) && teamplay))
+					if (((self.team_no == 0) && teamplay))
 					{
 						Menu_Team_Input (self.impulse);
 					}
@@ -5677,7 +5677,7 @@ void () W_WeaponFrame =
 			return;
 		}
 	}
-	if (((self.impulse != RANGE_MELEE) && (self.has_disconnected == RANGE_MELEE)))
+	if (((self.impulse != 0) && (self.has_disconnected == 0)))
 	{
 		ImpulseCommands ();
 	}
@@ -5693,13 +5693,13 @@ void () W_WeaponFrame =
 	{
 		return;
 	}
-	if ((((self.is_building != RANGE_MELEE) || (self.is_detpacking != RANGE_MELEE)) || (self.is_feigning != RANGE_MELEE)))
+	if ((((self.is_building != 0) || (self.is_detpacking != 0)) || (self.is_feigning != 0)))
 	{
 		return;
 	}
 	if (((!self.button0 && self.fire_held_down) && (self.current_weapon == 32768)))
 	{
-		self.fire_held_down = RANGE_MELEE;
+		self.fire_held_down = 0;
 		self.tfstate = (self.tfstate - (self.tfstate & 2048));
 		TeamFortress_SetSpeed (self);
 		player_run ();
@@ -5721,7 +5721,7 @@ void () W_WeaponFrame =
 				{
 					if ((self.heat < 400))
 					{
-						self.heat = (self.heat + AS_MELEE);
+						self.heat = (self.heat + 3);
 					}
 					if ((self.height > 30))
 					{
@@ -5732,7 +5732,7 @@ void () W_WeaponFrame =
 				else
 				{
 					tv = self.velocity;
-					tv_z = RANGE_MELEE;
+					tv_z = 0;
 					if ((vlen (tv) <= _2))
 					{
 						SniperSight_Create ();
@@ -5765,7 +5765,7 @@ void () W_WeaponFrame =
 	{
 		if (!self.playerclass)
 		{
-			self.weaponmode = RANGE_MELEE;
+			self.weaponmode = 0;
 		}
 		else
 		{
@@ -5777,7 +5777,7 @@ void () W_WeaponFrame =
 				}
 				self.tfstate = (self.tfstate - 2048);
 				TeamFortress_SetSpeed (self);
-				self.heat = RANGE_MELEE;
+				self.heat = 0;
 			}
 		}
 	}
@@ -5790,7 +5790,7 @@ void () SuperDamageSound =
 		if ((self.super_sound < time))
 		{
 			self.super_sound = (time + 1);
-			sound (self, AS_MISSILE, "items/damage3.wav", 1, 1);
+			sound (self, 4, "items/damage3.wav", 1, 1);
 		}
 	}
 	return;
@@ -5800,18 +5800,18 @@ void () RemoveGrenade =
 {
 	local entity te;
 
-	if ((self.no_active_napalm_grens > RANGE_MELEE))
+	if ((self.no_active_napalm_grens > 0))
 	{
-		self.no_active_napalm_grens = RANGE_MELEE;
+		self.no_active_napalm_grens = 0;
 		self.owner.no_active_napalm_grens = (self.owner.no_active_napalm_grens - 1);
-		if ((self.owner.no_active_napalm_grens < RANGE_MELEE))
+		if ((self.owner.no_active_napalm_grens < 0))
 		{
-			self.owner.no_active_napalm_grens = RANGE_MELEE;
+			self.owner.no_active_napalm_grens = 0;
 		}
 		te = find (world, classname, "grentimer");
 		while (te)
 		{
-			if (((te.owner == self.owner) && (te.no_active_napalm_grens > RANGE_MELEE)))
+			if (((te.owner == self.owner) && (te.no_active_napalm_grens > 0)))
 			{
 				te.no_active_napalm_grens = (te.no_active_napalm_grens - 1);
 			}
@@ -5820,18 +5820,18 @@ void () RemoveGrenade =
 		dremove (self.enemy);
 		dremove (self);
 	}
-	if ((self.no_active_gas_grens > RANGE_MELEE))
+	if ((self.no_active_gas_grens > 0))
 	{
-		self.no_active_gas_grens = RANGE_MELEE;
+		self.no_active_gas_grens = 0;
 		self.owner.no_active_gas_grens = (self.owner.no_active_gas_grens - 1);
-		if ((self.owner.no_active_gas_grens < RANGE_MELEE))
+		if ((self.owner.no_active_gas_grens < 0))
 		{
-			self.owner.no_active_gas_grens = RANGE_MELEE;
+			self.owner.no_active_gas_grens = 0;
 		}
 		te = find (world, classname, "grentimer");
 		while (te)
 		{
-			if (((te.owner == self.owner) && (te.no_active_gas_grens > RANGE_MELEE)))
+			if (((te.owner == self.owner) && (te.no_active_gas_grens > 0)))
 			{
 				te.no_active_gas_grens = (te.no_active_gas_grens - 1);
 			}

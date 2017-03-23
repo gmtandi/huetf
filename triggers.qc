@@ -124,7 +124,7 @@ void () trigger_multiple =
 		}
 		else
 		{
-			if ((self.sounds == AS_MELEE))
+			if ((self.sounds == 3))
 			{
 				precache_sound ("misc/trigger1.wav");
 				self.noise = "misc/trigger1.wav";
@@ -225,13 +225,13 @@ void () counter_use =
 	{
 		if (((activator.classname == "player") && ((self.spawnflags & 1) == 0)))
 		{
-			if ((self.count >= AS_MISSILE))
+			if ((self.count >= 4))
 			{
 				CenterPrint (activator, "There are more to go...");
 			}
 			else
 			{
-				if ((self.count == AS_MELEE))
+				if ((self.count == 3))
 				{
 					CenterPrint (activator, "Only 3 more to go...");
 				}
@@ -291,13 +291,13 @@ void () play_teleport =
 		}
 		else
 		{
-			if ((v < AS_MELEE))
+			if ((v < 3))
 			{
 				tmpstr = "misc/r_tele3.wav";
 			}
 			else
 			{
-				if ((v < AS_MISSILE))
+				if ((v < 4))
 				{
 					tmpstr = "misc/r_tele4.wav";
 				}
@@ -318,11 +318,11 @@ void (vector org) spawn_tfog =
 	s.origin = org;
 	s.nextthink = (time + 0.2);
 	s.think = play_teleport;
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, 11);
-	WriteCoord (AS_MISSILE, org_x);
-	WriteCoord (AS_MISSILE, org_y);
-	WriteCoord (AS_MISSILE, org_z);
+	WriteByte (4, 23);
+	WriteByte (4, 11);
+	WriteCoord (4, org_x);
+	WriteCoord (4, org_y);
+	WriteCoord (4, org_z);
 	multicast (org, 1);
 };
 
@@ -402,7 +402,7 @@ void () teleport_touch =
 		}
 		return;
 	}
-	if (((other.health <= 0) || (other.solid != AS_MELEE)))
+	if (((other.health <= 0) || (other.solid != 3)))
 	{
 		return;
 	}
@@ -491,7 +491,7 @@ void () trigger_teleport =
 	{
 		precache_sound ("ambience/hum1.wav");
 		o = ((self.mins + self.maxs) * 0.5);
-		ambientsound (o, "ambience/hum1.wav", 0.5, AS_MELEE);
+		ambientsound (o, "ambience/hum1.wav", 0.5, 3);
 	}
 };
 
@@ -560,7 +560,7 @@ void () trigger_onlyregistered_touch =
 		if ((self.message != ""))
 		{
 			CenterPrint (other, self.message);
-			sound (other, AS_MISSILE, "misc/talk.wav", 1, 1);
+			sound (other, 4, "misc/talk.wav", 1, 1);
 		}
 	}
 };

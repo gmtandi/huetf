@@ -43,8 +43,8 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("changeteam", __, 0);
 		TeamFortress_Alias ("scout", (_d + 1), 0);
 		TeamFortress_Alias ("sniper", (_d + 2), 0);
-		TeamFortress_Alias ("soldier", (_d + AS_MELEE), 0);
-		TeamFortress_Alias ("demoman", (_d + AS_MISSILE), 0);
+		TeamFortress_Alias ("soldier", (_d + 3), 0);
+		TeamFortress_Alias ("demoman", (_d + 4), 0);
 		TeamFortress_Alias ("medic", (_d + 5), 0);
 		TeamFortress_Alias ("hwguy", (_d + 6), 0);
 		TeamFortress_Alias ("pyro", (_d + 7), 0);
@@ -122,8 +122,8 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("sbar_off", 183, 0);
 		TeamFortress_Alias ("sbar_200", _G, 1);
 		TeamFortress_Alias ("sbar_240", _G, 2);
-		TeamFortress_Alias ("sbar_300", _G, AS_MELEE);
-		TeamFortress_Alias ("sbar_350", _G, AS_MISSILE);
+		TeamFortress_Alias ("sbar_300", _G, 3);
+		TeamFortress_Alias ("sbar_350", _G, 4);
 		TeamFortress_Alias ("sbar_384", _G, 5);
 		TeamFortress_Alias ("sbar_400", _G, 6);
 		TeamFortress_Alias ("sbar_480", _G, 7);

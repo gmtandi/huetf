@@ -3,7 +3,7 @@ void () Flymode =
 {
 	local entity spot;
 
-	self.tracking = RANGE_MELEE;
+	self.tracking = 0;
 	self.gravity = 1;
 	spot = find (world, classname, "info_player_start");
 	self.origin = spot.origin;
@@ -22,7 +22,7 @@ void () Toggle_Tracking =
 	if (!self.tracking)
 	{
 		self.tracking = 1;
-		self.gravity = RANGE_MELEE;
+		self.gravity = 0;
 		sprint (self, 2, "Tracking mode: 3rd Person.\n");
 	}
 	else
@@ -67,13 +67,13 @@ void () Track_Object =
 
 	if ((self.goalentity != world))
 	{
-		if ((self.goalentity.solid == RANGE_MELEE))
+		if ((self.goalentity.solid == 0))
 		{
 			goal = self.goalentity.owner;
 		}
 		else
 		{
-			if (((self.goalentity.classname == "player") && (self.goalentity.health <= RANGE_MELEE)))
+			if (((self.goalentity.classname == "player") && (self.goalentity.health <= 0)))
 			{
 				goal = self.goalentity.enemy;
 			}
@@ -126,7 +126,7 @@ void () Track_Object =
 		{
 			self.items = goal.items;
 			self.armorvalue = goal.armorvalue;
-			if ((goal.health <= RANGE_MELEE))
+			if ((goal.health <= 0))
 			{
 				self.health = 1;
 			}
@@ -141,7 +141,7 @@ void () Track_Object =
 		{
 			if ((goal.classname == "building_sentrygun"))
 			{
-				if ((goal.health <= RANGE_MELEE))
+				if ((goal.health <= 0))
 				{
 					self.health = 1;
 				}
@@ -158,7 +158,7 @@ void () Track_Object =
 				{
 					self.armorvalue = (goal.nextthink - time);
 					self.health = 1;
-					self.currentammo = RANGE_MELEE;
+					self.currentammo = 0;
 				}
 			}
 		}

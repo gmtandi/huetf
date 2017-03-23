@@ -20,7 +20,7 @@ float (entity targ, entity inflictor) CanDamage =
 		{
 			return (1);
 		}
-		return (RANGE_MELEE);
+		return (0);
 	}
 	traceline (inflictor.origin, targ.origin, 1, self);
 	if ((trace_fraction == 1))
@@ -47,7 +47,7 @@ float (entity targ, entity inflictor) CanDamage =
 	{
 		return (1);
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 
 void (entity targ, entity attacker) Killed =
@@ -61,7 +61,7 @@ void (entity targ, entity attacker) Killed =
 	{
 		self.health = -99;
 	}
-	if (((self.movetype == 7) || (self.movetype == RANGE_MELEE)))
+	if (((self.movetype == 7) || (self.movetype == 0)))
 	{
 		self.th_die ();
 		self = oself;
@@ -74,7 +74,7 @@ void (entity targ, entity attacker) Killed =
 		WriteByte (2, 27);
 	}
 	ClientObituary (self, attacker);
-	self.takedamage = RANGE_MELEE;
+	self.takedamage = 0;
 	self.touch = SUB_Null;
 	monster_death_use ();
 	self.th_die ();
@@ -101,13 +101,13 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 	{
 		if ((attacker.super_damage_finished > time))
 		{
-			damage = (damage * AS_MISSILE);
+			damage = (damage * 4);
 		}
 		if ((targ.classname != "player"))
 		{
 			if (!Activated (targ, attacker))
 			{
-				if ((targ.else_goal != RANGE_MELEE))
+				if ((targ.else_goal != 0))
 				{
 					te = Findgoal (targ.else_goal);
 					if (te)
@@ -124,8 +124,8 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 	if ((save >= targ.armorvalue))
 	{
 		save = targ.armorvalue;
-		targ.armortype = RANGE_MELEE;
-		targ.armorclass = RANGE_MELEE;
+		targ.armortype = 0;
+		targ.armorclass = 0;
 		targ.items = (targ.items - (targ.items & ((8192 | 16384) | 32768)));
 	}
 	targ.armorvalue = (targ.armorvalue - save);
@@ -136,7 +136,7 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 		targ.dmg_save = (targ.dmg_save + save);
 		targ.dmg_inflictor = inflictor;
 	}
-	if (((inflictor != world) && (targ.movetype == AS_MELEE)))
+	if (((inflictor != world) && (targ.movetype == 3)))
 	{
 		targ.immune_to_check = (time + (damage / 20));
 		dir = (targ.origin - ((inflictor.absmin + inflictor.absmax) * 0.5));
@@ -162,14 +162,14 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 	{
 		if ((self.invincible_sound < time))
 		{
-			sound (targ, AS_MELEE, "items/protect3.wav", 1, 1);
+			sound (targ, 3, "items/protect3.wav", 1, 1);
 			self.invincible_sound = (time + 2);
 		}
 		return;
 	}
 	if (((attacker.classname == "player") && ((targ.classname == "player") || (targ.classname == "building_sentrygun"))))
 	{
-		if ((((targ.team_no > RANGE_MELEE) && (targ.team_no == attacker.team_no)) && (targ != attacker)))
+		if ((((targ.team_no > 0) && (targ.team_no == attacker.team_no)) && (targ != attacker)))
 		{
 			if ((teamplay & 16))
 			{
@@ -184,7 +184,7 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 			}
 		}
 	}
-	if (((take < 1) && (take != RANGE_MELEE)))
+	if (((take < 1) && (take != 0)))
 	{
 		take = 1;
 	}
@@ -198,10 +198,10 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 	}
 	if ((targ.armorvalue < 1))
 	{
-		targ.armorclass = RANGE_MELEE;
-		targ.armorvalue = RANGE_MELEE;
+		targ.armorclass = 0;
+		targ.armorvalue = 0;
 	}
-	if ((targ.health <= RANGE_MELEE))
+	if ((targ.health <= 0))
 	{
 		Killed (targ, attacker);
 		return;
@@ -211,7 +211,7 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 	if (self.th_pain)
 	{
 		self.th_pain (attacker, take);
-		if ((skill >= AS_MELEE))
+		if ((skill >= 3))
 		{
 			self.pain_finished = (time + 5);
 		}
@@ -230,7 +230,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	local float no_damage;
 	local float moment;
 
-	if ((targ.takedamage == RANGE_MELEE))
+	if ((targ.takedamage == 0))
 	{
 		return;
 	}
@@ -243,7 +243,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	{
 		return;
 	}
-	no_damage = RANGE_MELEE;
+	no_damage = 0;
 	if ((targ.classname == "player"))
 	{
 		if (!cb_prematch)
@@ -274,13 +274,13 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		damage = (damage * 0.9);
 		if ((attacker.super_damage_finished > time))
 		{
-			damage = (damage * AS_MISSILE);
+			damage = (damage * 4);
 		}
 		if ((((targ.classname != "player") && (targ.classname != "building_sentrygun")) && (targ.classname != "building_dispenser")))
 		{
 			if (!Activated (targ, attacker))
 			{
-				if ((targ.else_goal != RANGE_MELEE))
+				if ((targ.else_goal != 0))
 				{
 					te = Findgoal (targ.else_goal);
 					if (te)
@@ -293,7 +293,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		}
 	}
 	damage_attacker = attacker;
-	if (((targ.armorclass != RANGE_MELEE) && (T_AttackType != RANGE_MELEE)))
+	if (((targ.armorclass != 0) && (T_AttackType != 0)))
 	{
 		if (((targ.armorclass & 1) && (T_AttackType & 1)))
 		{
@@ -303,7 +303,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		{
 			damage = floor ((damage * 0.5));
 		}
-		if (((targ.armorclass & AS_MISSILE) && (T_AttackType & AS_MISSILE)))
+		if (((targ.armorclass & 4) && (T_AttackType & 4)))
 		{
 			damage = floor ((damage * 0.5));
 		}
@@ -319,18 +319,18 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	if ((T_flags & 1))
 	{
 		take = damage;
-		save = RANGE_MELEE;
+		save = 0;
 	}
 	else
 	{
 		save = ceil ((targ.armortype * damage));
-		if ((((((attacker.classname == "player") && (targ.team_no > RANGE_MELEE)) && (targ.team_no == attacker.team_no)) && (targ != attacker)) && (T_flags & 2)))
+		if ((((((attacker.classname == "player") && (targ.team_no > 0)) && (targ.team_no == attacker.team_no)) && (targ != attacker)) && (T_flags & 2)))
 		{
-			if ((T_AttackType & AS_MISSILE))
+			if ((T_AttackType & 4))
 			{
 				if ((teamplay & 1024))
 				{
-					save = RANGE_MELEE;
+					save = 0;
 				}
 				else
 				{
@@ -344,7 +344,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			{
 				if ((teamplay & 256))
 				{
-					save = RANGE_MELEE;
+					save = 0;
 				}
 				else
 				{
@@ -358,8 +358,8 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		if ((save >= targ.armorvalue))
 		{
 			save = targ.armorvalue;
-			targ.armortype = RANGE_MELEE;
-			targ.armorclass = RANGE_MELEE;
+			targ.armortype = 0;
+			targ.armorclass = 0;
 			targ.items = (targ.items - (targ.items & ((8192 | 16384) | 32768)));
 		}
 		targ.armorvalue = (targ.armorvalue - save);
@@ -371,7 +371,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		targ.dmg_save = (targ.dmg_save + save);
 		targ.dmg_inflictor = inflictor;
 	}
-	if ((((inflictor != world) && (targ.movetype == AS_MELEE)) && !(targ.tfstate & 65536)))
+	if ((((inflictor != world) && (targ.movetype == 3)) && !(targ.tfstate & 65536)))
 	{
 		if ((deathmsg != 9))
 		{
@@ -380,10 +380,10 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			dir = normalize (dir);
 			if ((targ.playerclass == 6))
 			{
-				moment = (damage / AS_MISSILE);
+				moment = (damage / 4);
 				if ((damage <= _2))
 				{
-					moment = RANGE_MELEE;
+					moment = 0;
 				}
 			}
 			else
@@ -412,16 +412,16 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	{
 		if ((self.invincible_sound < time))
 		{
-			sound (targ, AS_MELEE, "items/protect3.wav", 1, 1);
+			sound (targ, 3, "items/protect3.wav", 1, 1);
 			self.invincible_sound = (time + 2);
 		}
 		return;
 	}
 	if (((attacker.classname == "player") && (((((targ.classname == "player") || (targ.classname == "building_sentrygun")) || (targ.classname == "building_dispenser")) || (targ.classname == "building_teleporter_entrance")) || (targ.classname == "building_teleporter_exit"))))
 	{
-		if (((((targ.team_no > RANGE_MELEE) && (targ.team_no == attacker.team_no)) && (targ != attacker)) && (T_flags & 2)))
+		if (((((targ.team_no > 0) && (targ.team_no == attacker.team_no)) && (targ != attacker)) && (T_flags & 2)))
 		{
-			if ((T_AttackType & AS_MISSILE))
+			if ((T_AttackType & 4))
 			{
 				if ((teamplay & 16))
 				{
@@ -437,7 +437,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			}
 			else
 			{
-				if ((teamplay & AS_MISSILE))
+				if ((teamplay & 4))
 				{
 					no_damage = 1;
 				}
@@ -451,7 +451,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			}
 		}
 	}
-	if ((T_flags & AS_MISSILE))
+	if ((T_flags & 4))
 	{
 		if ((targ == attacker))
 		{
@@ -463,7 +463,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		take = 1;
 	}
 	take = rint (take);
-	if ((no_damage == RANGE_MELEE))
+	if ((no_damage == 0))
 	{
 		if ((practice && (targ.classname == "player")))
 		{
@@ -476,21 +476,21 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	}
 	if (((attacker.classname == "player") && (((targ.classname == "player") || (targ.classname == "building_sentrygun")) || (targ.classname == "building_dispenser"))))
 	{
-		if (((((targ.team_no > RANGE_MELEE) && (targ.team_no == attacker.team_no)) && (targ != attacker)) && (T_flags & 2)))
+		if (((((targ.team_no > 0) && (targ.team_no == attacker.team_no)) && (targ != attacker)) && (T_flags & 2)))
 		{
 			olddmsg = deathmsg;
-			if ((T_AttackType & AS_MISSILE))
+			if ((T_AttackType & 4))
 			{
 				deathmsg = 37;
 				if ((teamplay & 16384))
 				{
-					TF_T_Damage (attacker, world, world, take, 1, RANGE_MELEE);
+					TF_T_Damage (attacker, world, world, take, 1, 0);
 				}
 				else
 				{
 					if ((teamplay & 8192))
 					{
-						TF_T_Damage (attacker, world, world, (take / 2), 1, RANGE_MELEE);
+						TF_T_Damage (attacker, world, world, (take / 2), 1, 0);
 					}
 				}
 			}
@@ -499,13 +499,13 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 				deathmsg = 37;
 				if ((teamplay & 4096))
 				{
-					TF_T_Damage (attacker, world, world, take, 1, RANGE_MELEE);
+					TF_T_Damage (attacker, world, world, take, 1, 0);
 				}
 				else
 				{
 					if ((teamplay & 2048))
 					{
-						TF_T_Damage (attacker, world, world, (take / 2), 1, RANGE_MELEE);
+						TF_T_Damage (attacker, world, world, (take / 2), 1, 0);
 					}
 				}
 			}
@@ -518,10 +518,10 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	}
 	if ((targ.armorvalue < 1))
 	{
-		targ.armorclass = RANGE_MELEE;
-		targ.armorvalue = RANGE_MELEE;
+		targ.armorclass = 0;
+		targ.armorvalue = 0;
 	}
-	if ((targ.health <= RANGE_MELEE))
+	if ((targ.health <= 0))
 	{
 		if ((((inflictor.classname == "detpack") && (inflictor.weaponmode == 1)) && (inflictor.enemy == targ)))
 		{
@@ -535,7 +535,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	if (self.th_pain)
 	{
 		self.th_pain (attacker, take);
-		if ((skill >= AS_MELEE))
+		if ((skill >= 3))
 		{
 			self.pain_finished = (time + 5);
 		}
@@ -559,22 +559,22 @@ void (entity inflictor, entity attacker, float damage, entity ignore) T_RadiusDa
 			{
 				org = (head.origin + ((head.mins + head.maxs) * 0.5));
 				points = (0.5 * vlen ((inflictor.origin - org)));
-				if ((points < RANGE_MELEE))
+				if ((points < 0))
 				{
-					points = RANGE_MELEE;
+					points = 0;
 				}
 				points = (damage - points);
 				if ((head == attacker))
 				{
 					points = (points * 0.75);
 				}
-				if ((points > RANGE_MELEE))
+				if ((points > 0))
 				{
 					if (CanDamage (head, inflictor))
 					{
 						if ((inflictor.weapon == 33))
 						{
-							TF_T_Damage (head, inflictor, attacker, points, 2, AS_MISSILE);
+							TF_T_Damage (head, inflictor, attacker, points, 2, 4);
 							other = head;
 							Napalm_touch ();
 							if ((other.classname == "player"))
@@ -584,7 +584,7 @@ void (entity inflictor, entity attacker, float damage, entity ignore) T_RadiusDa
 						}
 						else
 						{
-							TF_T_Damage (head, inflictor, attacker, points, 2, AS_MISSILE);
+							TF_T_Damage (head, inflictor, attacker, points, 2, 4);
 						}
 					}
 				}
@@ -610,7 +610,7 @@ void (entity attacker, float damage) T_BeamDamage =
 			{
 				points = (points * 0.5);
 			}
-			if ((points > RANGE_MELEE))
+			if ((points > 0))
 			{
 				if (CanDamage (head, attacker))
 				{

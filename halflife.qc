@@ -14,11 +14,11 @@ void () trigger_camera =
 
 void () Explode =
 {
-	WriteByte (AS_MISSILE, 23);
-	WriteByte (AS_MISSILE, AS_MELEE);
-	WriteCoord (AS_MISSILE, self.origin_x);
-	WriteCoord (AS_MISSILE, self.origin_y);
-	WriteCoord (AS_MISSILE, self.origin_z);
+	WriteByte (4, 23);
+	WriteByte (4, 3);
+	WriteCoord (4, self.origin_x);
+	WriteCoord (4, self.origin_y);
+	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 };
 
@@ -96,7 +96,7 @@ void () func_water =
 
 void () func_breakable =
 {
-	self.solid = AS_MISSILE;
+	self.solid = 4;
 	self.movetype = 7;
 	setorigin (self, self.origin);
 	self.mdl = self.model;

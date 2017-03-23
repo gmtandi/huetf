@@ -45,7 +45,7 @@ void () FlareGrenadeThink =
 			rnum = random ();
 			if ((rnum < 0.5))
 			{
-				self.effects = AS_MISSILE;
+				self.effects = 4;
 			}
 			else
 			{
@@ -57,7 +57,7 @@ void () FlareGrenadeThink =
 		{
 			if ((time_left > 15))
 			{
-				self.effects = AS_MISSILE;
+				self.effects = 4;
 				self.nextthink = (time + enter);
 			}
 			else
@@ -102,7 +102,7 @@ void () FlareGrenadeExplode =
 
 void () RemoveFlare =
 {
-	self.effects = (self.effects - (self.effects & AS_MISSILE));
+	self.effects = (self.effects - (self.effects & 4));
 	dremove (self);
 	num_world_flares = (num_world_flares - 1);
 	decrement_team_flares (self.weapon);

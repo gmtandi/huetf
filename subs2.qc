@@ -43,8 +43,8 @@ void () InitTrigger =
 	}
 	self.solid = 1;
 	setmodel (self, self.model);
-	self.movetype = RANGE_MELEE;
-	self.modelindex = RANGE_MELEE;
+	self.movetype = 0;
+	self.modelindex = 0;
 	self.model = "";
 };
 
@@ -136,7 +136,7 @@ void () SUB_UseTargets =
 
 	if (self.dont_do_triggerwork)
 	{
-		self.dont_do_triggerwork = RANGE_MELEE;
+		self.dont_do_triggerwork = 0;
 		return;
 	}
 	if (self.delay)
@@ -210,8 +210,8 @@ void () SUB_UseTargets =
 
 void (float normal) SUB_AttackFinished =
 {
-	self.cnt = RANGE_MELEE;
-	if ((skill < AS_MELEE))
+	self.cnt = 0;
+	if ((skill < 3))
 	{
 		self.attack_finished = (time + normal);
 	}

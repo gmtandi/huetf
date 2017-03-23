@@ -5,11 +5,11 @@ void () InitBodyQue;
 void () Eluminate =
 {
 	lights = 1;
-	lightstyle (RANGE_MELEE, "m");
+	lightstyle (0, "m");
 	lightstyle (1, "mmnmmommommnonmmonqnmmo");
 	lightstyle (2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba");
-	lightstyle (AS_MELEE, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg");
-	lightstyle (AS_MISSILE, "mamamamamama");
+	lightstyle (3, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg");
+	lightstyle (4, "mamamamamama");
 	lightstyle (5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj");
 	lightstyle (6, "nmonqnmomnmomomno");
 	lightstyle (7, "mmmaaaabcdefgmmmmaaaammmaamm");
@@ -22,12 +22,12 @@ void () Eluminate =
 
 void () Deluminate =
 {
-	lights = RANGE_MELEE;
-	lightstyle (RANGE_MELEE, "a");
+	lights = 0;
+	lightstyle (0, "a");
 	lightstyle (1, "a");
 	lightstyle (2, "a");
-	lightstyle (AS_MELEE, "a");
-	lightstyle (AS_MISSILE, "a");
+	lightstyle (3, "a");
+	lightstyle (4, "a");
 	lightstyle (5, "a");
 	lightstyle (6, "a");
 	lightstyle (7, "a");
@@ -120,7 +120,7 @@ void () worldspawn =
 	local string st;
 
 	lastspawn = world;
-	number_of_teams = RANGE_MELEE;
+	number_of_teams = 0;
 	InitBodyQue ();
 	if ((self.model == "maps/e1m8.bsp"))
 	{
@@ -324,7 +324,7 @@ void (entity ent) CopyToBodyQue =
 	bodyque_head.colormap = ent.colormap;
 	bodyque_head.movetype = ent.movetype;
 	bodyque_head.velocity = ent.velocity;
-	bodyque_head.flags = RANGE_MELEE;
+	bodyque_head.flags = 0;
 	setorigin (bodyque_head, ent.origin);
 	setsize (bodyque_head, ent.mins, ent.maxs);
 	bodyque_head = bodyque_head.owner;

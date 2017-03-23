@@ -23,13 +23,13 @@ void () Admin_CountPlayers =
 	}
 	if ((number_of_teams > 2))
 	{
-		nump = TeamFortress_TeamGetNoPlayers (AS_MELEE);
+		nump = TeamFortress_TeamGetNoPlayers (3);
 		st = ftos (nump);
 		sprint3 (self, 2, "Players In Team3: ", st, "\n");
 	}
-	if ((number_of_teams > AS_MELEE))
+	if ((number_of_teams > 3))
 	{
-		nump = TeamFortress_TeamGetNoPlayers (AS_MISSILE);
+		nump = TeamFortress_TeamGetNoPlayers (4);
 		st = ftos (nump);
 		sprint3 (self, 2, "Players In Team4: ", st, "\n");
 	}
@@ -306,8 +306,8 @@ void () VoteAdmin =
 		sprint (self, 2, "You cannot elect at this time.\n");
 		return;
 	}
-	self.electtime = (time + AS_MELEE);
-	if (((self.is_admin == 1) || (self.is_admin == AS_MELEE)))
+	self.electtime = (time + 3);
+	if (((self.is_admin == 1) || (self.is_admin == 3)))
 	{
 		sprint (self, 2, "You are already an admin\n");
 		return;
@@ -315,7 +315,7 @@ void () VoteAdmin =
 	if ((self.is_admin == 2))
 	{
 		bprint2 (2, self.netname, " aborts election!");
-		bprint (AS_MELEE, "\n");
+		bprint (3, "\n");
 		AbortElect ();
 		return;
 	}
@@ -345,7 +345,7 @@ void () VoteAdmin =
 		if ((self.is_admin == 2))
 		{
 			bprint2 (2, self.netname, " ηαιξσ αδνιξ στατυσ!");
-			bprint (AS_MELEE, "\n");
+			bprint (3, "\n");
 			sprint (self, 2, "Type γονναξδσ for admin commands.\n");
 			self.is_admin = 1;
 			self.get_admin_aliases = 1;
@@ -355,7 +355,7 @@ void () VoteAdmin =
 	else
 	{
 		bprint (2, "Type");
-		bprint (AS_MELEE, " yes");
+		bprint (3, " yes");
 		bprint (2, " in console to approve\n");
 		sprint (self, 2, "Type εμεγτ to abort election\n");
 		electguard = spawn ();
@@ -419,7 +419,7 @@ void () VoteYes =
 		if ((p.is_admin == 2))
 		{
 			bprint2 (2, p.netname, " ηαιξσ αδνιξ στατυσ!");
-			bprint (AS_MELEE, "\n");
+			bprint (3, "\n");
 			sprint (p, 2, "Type γονναξδσ for admin commands.\n");
 			p.is_admin = 1;
 			p.get_admin_aliases = 1;

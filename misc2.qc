@@ -161,17 +161,17 @@ void () enf_walk1 = [ 7, enf_walk2 ]
 
 void () enf_walk2 = [ 8, enf_walk3 ]
 {
-	ai_walk (AS_MISSILE);
+	ai_walk (4);
 };
 
 void () enf_walk3 = [ 9, enf_walk4 ]
 {
-	ai_walk (AS_MISSILE);
+	ai_walk (4);
 };
 
 void () enf_walk4 = [ 10, enf_walk5 ]
 {
-	ai_walk (AS_MELEE);
+	ai_walk (3);
 };
 
 void () enf_walk5 = [ 11, enf_walk6 ]
@@ -201,12 +201,12 @@ void () enf_walk9 = [ 15, enf_walk10 ]
 
 void () enf_walk10 = [ 16, enf_walk11 ]
 {
-	ai_walk (AS_MISSILE);
+	ai_walk (4);
 };
 
 void () enf_walk11 = [ 17, enf_walk12 ]
 {
-	ai_walk (AS_MISSILE);
+	ai_walk (4);
 };
 
 void () enf_walk12 = [ 18, enf_walk13 ]
@@ -221,12 +221,12 @@ void () enf_walk13 = [ 19, enf_walk14 ]
 
 void () enf_walk14 = [ 20, enf_walk15 ]
 {
-	ai_walk (AS_MELEE);
+	ai_walk (3);
 };
 
 void () enf_walk15 = [ 21, enf_walk16 ]
 {
-	ai_walk (AS_MISSILE);
+	ai_walk (4);
 };
 
 void () enf_walk16 = [ 22, enf_walk1 ]
@@ -584,7 +584,7 @@ void () enf_die8 = [ 48, enf_die9 ]
 
 void () enf_die9 = [ 49, enf_die10 ]
 {
-	ai_forward (AS_MELEE);
+	ai_forward (3);
 };
 
 void () enf_die10 = [ 50, enf_die11 ]
@@ -681,8 +681,8 @@ void () enf_die =
 
 void () spawn_hostage =
 {
-	self.solid = AS_MELEE;
-	self.movetype = AS_MISSILE;
+	self.solid = 3;
+	self.movetype = 4;
 	self.oldorigin = self.origin;
 	num_hostages = (num_hostages + 1);
 	setmodel (self, "progs/enforcer.mdl");

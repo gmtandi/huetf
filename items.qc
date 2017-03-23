@@ -31,23 +31,23 @@ void () q_touch =
 	{
 		return;
 	}
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
 	self.mdl = self.model;
 	sound (other, 2, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
-	self.solid = RANGE_MELEE;
+	self.solid = 0;
 	other.items = (other.items | 4194304);
 	self.model = string_null;
 	other.super_time = 1;
 	other.super_damage_finished = self.cnt;
 	s = ftos (rint ((other.super_damage_finished - time)));
-	bprint (RANGE_MELEE, other.netname);
-	bprint (RANGE_MELEE, " recovered a Quad with ");
-	bprint (RANGE_MELEE, s);
-	bprint (RANGE_MELEE, " seconds remaining!\n");
+	bprint (0, other.netname);
+	bprint (0, " recovered a Quad with ");
+	bprint (0, s);
+	bprint (0, " seconds remaining!\n");
 	activator = other;
 	SUB_UseTargets ();
 };
@@ -83,23 +83,23 @@ void () r_touch =
 	{
 		return;
 	}
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
 	self.mdl = self.model;
 	sound (other, 2, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
-	self.solid = RANGE_MELEE;
+	self.solid = 0;
 	other.items = (other.items | WEAP_RAILGUN);
 	self.model = string_null;
 	other.invisible_time = 1;
 	other.invisible_finished = self.cnt;
 	s = ftos (rint ((other.invisible_finished - time)));
-	bprint (RANGE_MELEE, other.netname);
-	bprint (RANGE_MELEE, " recovered a Ring with ");
-	bprint (RANGE_MELEE, s);
-	bprint (RANGE_MELEE, " seconds remaining!\n");
+	bprint (0, other.netname);
+	bprint (0, " recovered a Ring with ");
+	bprint (0, s);
+	bprint (0, " seconds remaining!\n");
 	activator = other;
 	SUB_UseTargets ();
 };
@@ -159,11 +159,11 @@ float (entity e, float healamount, float ignore) T_Heal =
 	if (practice)
 	{
 		e.health = 1000;
-		return (RANGE_MELEE);
+		return (0);
 	}
-	if ((e.health <= RANGE_MELEE))
+	if ((e.health <= 0))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
 	if ((!ignore && (e.health >= e.max_health)))
 	{
@@ -172,14 +172,14 @@ float (entity e, float healamount, float ignore) T_Heal =
 			e.leg_damage = (e.leg_damage - ceil ((e.health / 20)));
 			if ((e.leg_damage < 1))
 			{
-				e.leg_damage = RANGE_MELEE;
+				e.leg_damage = 0;
 			}
 			TeamFortress_SetSpeed (e);
 			return (1);
 		}
 		else
 		{
-			return (RANGE_MELEE);
+			return (0);
 		}
 	}
 	healamount = ceil (healamount);
@@ -196,7 +196,7 @@ float (entity e, float healamount, float ignore) T_Heal =
 	{
 		if ((e.health > __))
 		{
-			e.leg_damage = RANGE_MELEE;
+			e.leg_damage = 0;
 		}
 		else
 		{
@@ -204,7 +204,7 @@ float (entity e, float healamount, float ignore) T_Heal =
 		}
 		if ((e.leg_damage < 1))
 		{
-			e.leg_damage = RANGE_MELEE;
+			e.leg_damage = 0;
 		}
 		TeamFortress_SetSpeed (e);
 	}
@@ -217,7 +217,7 @@ void () item_megahealth_rot;
 
 void () item_health =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -230,7 +230,7 @@ void () item_health =
 		setmodel (self, "maps/b_bh10.bsp");
 		self.noise = "items/r_item1.wav";
 		self.healamount = 15;
-		self.healtype = RANGE_MELEE;
+		self.healtype = 0;
 	}
 	else
 	{
@@ -288,7 +288,7 @@ void () health_touch =
 	{
 		return;
 	}
-	medi = RANGE_MELEE;
+	medi = 0;
 	if ((self.healtype == 2))
 	{
 		if (!(other.tfstate & 16))
@@ -305,9 +305,9 @@ void () health_touch =
 	}
 	else
 	{
-		if (!T_Heal (other, self.healamount, RANGE_MELEE))
+		if (!T_Heal (other, self.healamount, 0))
 		{
-			if ((other.weapons_carried & AS_MISSILE))
+			if ((other.weapons_carried & 4))
 			{
 				if ((other.ammo_medikit < other.maxammo_medikit))
 				{
@@ -317,13 +317,13 @@ void () health_touch =
 						other.ammo_medikit = other.maxammo_medikit;
 					}
 					s = ftos (self.healamount);
-					sprint (other, RANGE_MELEE, "You gather ");
-					sprint (other, RANGE_MELEE, s);
-					sprint (other, RANGE_MELEE, " medikit ammo\n");
-					sound (other, AS_MELEE, self.noise, 1, 1);
+					sprint (other, 0, "You gather ");
+					sprint (other, 0, s);
+					sprint (other, 0, " medikit ammo\n");
+					sound (other, 3, self.noise, 1, 1);
 					stuffcmd (other, "bf\n");
 					self.model = string_null;
-					self.solid = RANGE_MELEE;
+					self.solid = 0;
 					if ((deathmatch != 2))
 					{
 						if (deathmatch)
@@ -348,14 +348,14 @@ void () health_touch =
 	else
 	{
 		s = ftos (self.healamount);
-		sprint (other, RANGE_MELEE, "You receive ");
-		sprint (other, RANGE_MELEE, s);
-		sprint (other, RANGE_MELEE, " health\n");
+		sprint (other, 0, "You receive ");
+		sprint (other, 0, s);
+		sprint (other, 0, " health\n");
 	}
-	sound (other, AS_MELEE, self.noise, 1, 1);
+	sound (other, 3, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	self.model = string_null;
-	self.solid = RANGE_MELEE;
+	self.solid = 0;
 	if ((self.healtype == 2))
 	{
 		other.items = (other.items | 65536);
@@ -408,7 +408,7 @@ void () armor_touch =
 	local string s;
 	local entity oldself;
 
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
@@ -509,14 +509,14 @@ void () armor_touch =
 			}
 		}
 	}
-	sprint (other, RANGE_MELEE, "You got armor\n");
+	sprint (other, 0, "You got armor\n");
 	if ((value > other.maxarmor))
 	{
 		if (((other.playerclass == 9) && (other.ammo_cells < other.maxammo_cells)))
 		{
 			s = ftos ((value - other.maxarmor));
-			sprint (other, RANGE_MELEE, s);
-			sprint (other, RANGE_MELEE, " metal\n");
+			sprint (other, 0, s);
+			sprint (other, 0, " metal\n");
 			other.ammo_cells = (other.ammo_cells + (value - other.maxarmor));
 			if ((other.ammo_cells > other.maxammo_cells))
 			{
@@ -535,11 +535,11 @@ void () armor_touch =
 		other.armorvalue = value;
 		other.items = ((other.items - (other.items & ((8192 | 16384) | 32768))) + bit);
 	}
-	if ((self.armorclass > RANGE_MELEE))
+	if ((self.armorclass > 0))
 	{
 		other.armorclass = self.armorclass;
 	}
-	self.solid = RANGE_MELEE;
+	self.solid = 0;
 	self.model = string_null;
 	if ((deathmatch != 2))
 	{
@@ -550,7 +550,7 @@ void () armor_touch =
 		self.nextthink = (time + 40);
 	}
 	self.think = SUB_regen;
-	sound (other, AS_MELEE, "items/armor1.wav", 1, 1);
+	sound (other, 3, "items/armor1.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	activator = other;
 	SUB_UseTargets ();
@@ -558,7 +558,7 @@ void () armor_touch =
 
 void () item_armor1 =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -566,14 +566,14 @@ void () item_armor1 =
 	self.touch = armor_touch;
 	precache_model ("progs/armor.mdl");
 	setmodel (self, "progs/armor.mdl");
-	self.skin = RANGE_MELEE;
+	self.skin = 0;
 	setsize (self, '-16 -16 0', '16 16 56');
 	StartItem ();
 };
 
 void () item_armor2 =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -588,7 +588,7 @@ void () item_armor2 =
 
 void () item_armorInv =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -632,37 +632,37 @@ void (entity p) bound_other_ammo =
 	{
 		p.armorvalue = p.maxarmor;
 	}
-	if ((p.no_grenades_1 > AS_MISSILE))
+	if ((p.no_grenades_1 > 4))
 	{
-		p.no_grenades_1 = AS_MISSILE;
+		p.no_grenades_1 = 4;
 	}
-	if ((p.no_grenades_2 > AS_MISSILE))
+	if ((p.no_grenades_2 > 4))
 	{
-		p.no_grenades_2 = AS_MISSILE;
+		p.no_grenades_2 = 4;
 	}
-	if (((p.tp_grenades_1 == AS_MELEE) && (p.no_grenades_1 > 2)))
+	if (((p.tp_grenades_1 == 3) && (p.no_grenades_1 > 2)))
 	{
 		p.no_grenades_1 = 2;
 	}
-	if (((p.tp_grenades_2 == AS_MELEE) && (p.no_grenades_2 > 2)))
+	if (((p.tp_grenades_2 == 3) && (p.no_grenades_2 > 2)))
 	{
 		p.no_grenades_2 = 2;
 	}
-	if (((p.tp_grenades_1 == 2) && (p.no_grenades_1 > AS_MELEE)))
+	if (((p.tp_grenades_1 == 2) && (p.no_grenades_1 > 3)))
 	{
-		p.no_grenades_1 = AS_MELEE;
+		p.no_grenades_1 = 3;
 	}
-	if (((p.tp_grenades_2 == 2) && (p.no_grenades_2 > AS_MELEE)))
+	if (((p.tp_grenades_2 == 2) && (p.no_grenades_2 > 3)))
 	{
-		p.no_grenades_2 = AS_MELEE;
+		p.no_grenades_2 = 3;
 	}
-	if (((p.tp_grenades_1 == enter) && (p.no_grenades_1 > AS_MELEE)))
+	if (((p.tp_grenades_1 == enter) && (p.no_grenades_1 > 3)))
 	{
-		p.no_grenades_1 = AS_MELEE;
+		p.no_grenades_1 = 3;
 	}
-	if (((p.tp_grenades_2 == enter) && (p.no_grenades_2 > AS_MELEE)))
+	if (((p.tp_grenades_2 == enter) && (p.no_grenades_2 > 3)))
 	{
-		p.no_grenades_2 = AS_MELEE;
+		p.no_grenades_2 = 3;
 	}
 };
 
@@ -678,11 +678,11 @@ float (float w) RankForWeapon =
 	}
 	if ((w == 1024))
 	{
-		return (AS_MELEE);
+		return (3);
 	}
 	if ((w == 2048))
 	{
-		return (AS_MISSILE);
+		return (4);
 	}
 	if ((w == 256))
 	{
@@ -707,7 +707,7 @@ void (entity ritem, entity act) Respawn_Item =
 	oldself = self;
 	self = ritem;
 	self.model = string_null;
-	self.solid = RANGE_MELEE;
+	self.solid = 0;
 	if ((deathmatch != 2))
 	{
 		self.nextthink = (time + 30);
@@ -765,7 +765,7 @@ void () weapon_touch =
 	}
 	else
 	{
-		leave = RANGE_MELEE;
+		leave = 0;
 	}
 	if ((self.classname == "weapon_nailgun"))
 	{
@@ -870,10 +870,10 @@ void () weapon_touch =
 			}
 		}
 	}
-	sprint (other, RANGE_MELEE, "You got the ");
-	sprint (other, RANGE_MELEE, self.netname);
-	sprint (other, RANGE_MELEE, "\n");
-	sound (other, AS_MELEE, "weapons/pkup.wav", 1, 1);
+	sprint (other, 0, "You got the ");
+	sprint (other, 0, self.netname);
+	sprint (other, 0, "\n");
+	sound (other, 3, "weapons/pkup.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	bound_other_ammo (other);
 	old = other.weapons_carried;
@@ -892,7 +892,7 @@ void () weapon_touch =
 
 void () weapon_supershotgun =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -908,7 +908,7 @@ void () weapon_supershotgun =
 
 void () weapon_nailgun =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -924,7 +924,7 @@ void () weapon_nailgun =
 
 void () weapon_supernailgun =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -940,14 +940,14 @@ void () weapon_supernailgun =
 
 void () weapon_grenadelauncher =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
 	}
 	precache_model ("progs/g_rock.mdl");
 	setmodel (self, "progs/g_rock.mdl");
-	self.weapon = AS_MELEE;
+	self.weapon = 3;
 	self.netname = "Grenade Launcher";
 	self.touch = weapon_touch;
 	setsize (self, '-16 -16 0', '16 16 56');
@@ -956,14 +956,14 @@ void () weapon_grenadelauncher =
 
 void () weapon_rocketlauncher =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
 	}
 	precache_model ("progs/g_rock2.mdl");
 	setmodel (self, "progs/g_rock2.mdl");
-	self.weapon = AS_MELEE;
+	self.weapon = 3;
 	self.netname = "Rocket Launcher";
 	self.touch = weapon_touch;
 	setsize (self, '-16 -16 0', '16 16 56');
@@ -972,14 +972,14 @@ void () weapon_rocketlauncher =
 
 void () weapon_lightning =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
 	}
 	precache_model ("progs/g_light.mdl");
 	setmodel (self, "progs/g_light.mdl");
-	self.weapon = AS_MELEE;
+	self.weapon = 3;
 	self.netname = "Thunderbolt";
 	self.touch = weapon_touch;
 	setsize (self, '-16 -16 0', '16 16 56');
@@ -1002,13 +1002,13 @@ void (entity pl, float typ) PrintGrenadeType =
 		}
 		else
 		{
-			if ((typ == AS_MELEE))
+			if ((typ == 3))
 			{
 				st = "Nail";
 			}
 			else
 			{
-				if ((typ == AS_MISSILE))
+				if ((typ == 4))
 				{
 					st = "Mirv";
 				}
@@ -1059,20 +1059,20 @@ float () GetGrenadePossibility =
 
 	if ((random () < 0.5))
 	{
-		return (RANGE_MELEE);
+		return (0);
 	}
-	maxg = AS_MISSILE;
+	maxg = 4;
 	if ((random () < 0.5))
 	{
-		if ((other.tp_grenades_1 == AS_MELEE))
+		if ((other.tp_grenades_1 == 3))
 		{
 			maxg = 2;
 		}
 		if ((other.tp_grenades_1 == enter))
 		{
-			maxg = AS_MELEE;
+			maxg = 3;
 		}
-		if (((other.tp_grenades_1 != RANGE_MELEE) && (other.no_grenades_1 < maxg)))
+		if (((other.tp_grenades_1 != 0) && (other.no_grenades_1 < maxg)))
 		{
 			other.no_grenades_1 = (other.no_grenades_1 + 1);
 			sprint (other, 2, "You found a ");
@@ -1090,15 +1090,15 @@ float () GetGrenadePossibility =
 	}
 	else
 	{
-		if ((other.tp_grenades_2 == AS_MELEE))
+		if ((other.tp_grenades_2 == 3))
 		{
 			maxg = 2;
 		}
 		if ((other.tp_grenades_2 == 2))
 		{
-			maxg = AS_MELEE;
+			maxg = 3;
 		}
-		if (((other.tp_grenades_2 != RANGE_MELEE) && (other.no_grenades_2 < maxg)))
+		if (((other.tp_grenades_2 != 0) && (other.no_grenades_2 < maxg)))
 		{
 			other.no_grenades_2 = (other.no_grenades_2 + 1);
 			sprint (other, 2, "You found a ");
@@ -1107,7 +1107,7 @@ float () GetGrenadePossibility =
 			return (1);
 		}
 	}
-	return (RANGE_MELEE);
+	return (0);
 };
 
 void () ammo_touch =
@@ -1121,7 +1121,7 @@ void () ammo_touch =
 	{
 		return;
 	}
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
@@ -1137,8 +1137,8 @@ void () ammo_touch =
 	{
 		return;
 	}
-	gotgren = RANGE_MELEE;
-	gotbox = RANGE_MELEE;
+	gotgren = 0;
+	gotbox = 0;
 	stemp = self;
 	self = other;
 	best = W_BestWeapon ();
@@ -1163,12 +1163,12 @@ void () ammo_touch =
 	}
 	else
 	{
-		if ((self.weapon == AS_MELEE))
+		if ((self.weapon == 3))
 		{
 			gotgren = GetGrenadePossibility ();
 			if ((other.ammo_rockets >= TeamFortress_GetMaxAmmo (other, 1024)))
 			{
-				gotbox = RANGE_MELEE;
+				gotbox = 0;
 			}
 			else
 			{
@@ -1178,7 +1178,7 @@ void () ammo_touch =
 		}
 		else
 		{
-			if ((self.weapon == AS_MISSILE))
+			if ((self.weapon == 4))
 			{
 				if ((other.ammo_cells >= TeamFortress_GetMaxAmmo (other, 2048)))
 				{
@@ -1193,14 +1193,14 @@ void () ammo_touch =
 	{
 		return;
 	}
-	sound (other, AS_MELEE, "weapons/lock4.wav", 1, 1);
+	sound (other, 3, "weapons/lock4.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	if (gotbox)
 	{
 		bound_other_ammo (other);
-		sprint (other, RANGE_MELEE, "You got the ");
-		sprint (other, RANGE_MELEE, self.netname);
-		sprint (other, RANGE_MELEE, "\n");
+		sprint (other, 0, "You got the ");
+		sprint (other, 0, self.netname);
+		sprint (other, 0, "\n");
 		stemp = self;
 		self = other;
 		W_SetCurrentAmmo ();
@@ -1211,7 +1211,7 @@ void () ammo_touch =
 
 void () item_shells =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1237,7 +1237,7 @@ void () item_shells =
 
 void () item_spikes =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1263,7 +1263,7 @@ void () item_spikes =
 
 void () item_rockets =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1281,7 +1281,7 @@ void () item_rockets =
 		setmodel (self, "maps/b_rock0.bsp");
 		self.aflag = 5;
 	}
-	self.weapon = AS_MELEE;
+	self.weapon = 3;
 	self.netname = "rockets";
 	setsize (self, '0 0 0', '32 32 56');
 	StartItem ();
@@ -1289,7 +1289,7 @@ void () item_rockets =
 
 void () item_cells =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1307,7 +1307,7 @@ void () item_cells =
 		setmodel (self, "maps/b_batt0.bsp");
 		self.aflag = 6;
 	}
-	self.weapon = AS_MISSILE;
+	self.weapon = 4;
 	self.netname = "cells";
 	setsize (self, '0 0 0', '32 32 56');
 	StartItem ();
@@ -1315,7 +1315,7 @@ void () item_cells =
 
 void () item_weapon =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1338,7 +1338,7 @@ void () item_weapon =
 		self.weapon = 1;
 		self.netname = "shells";
 	}
-	if ((self.spawnflags & AS_MISSILE))
+	if ((self.spawnflags & 4))
 	{
 		if ((self.spawnflags & 8))
 		{
@@ -1369,7 +1369,7 @@ void () item_weapon =
 			setmodel (self, "maps/b_rock0.bsp");
 			self.aflag = 5;
 		}
-		self.weapon = AS_MELEE;
+		self.weapon = 3;
 		self.netname = "rockets";
 	}
 	setsize (self, '0 0 0', '32 32 56');
@@ -1385,7 +1385,7 @@ void () key_touch =
 	{
 		return;
 	}
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
@@ -1409,15 +1409,15 @@ void () key_touch =
 	{
 		return;
 	}
-	sprint (other, RANGE_MELEE, "You got the ");
-	sprint (other, RANGE_MELEE, self.netname);
-	sprint (other, RANGE_MELEE, "\n");
-	sound (other, AS_MELEE, self.noise, 1, 1);
+	sprint (other, 0, "You got the ");
+	sprint (other, 0, self.netname);
+	sprint (other, 0, "\n");
+	sound (other, 3, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
 	other.items = (other.items | self.items);
 	if (!coop)
 	{
-		self.solid = RANGE_MELEE;
+		self.solid = 0;
 		self.model = string_null;
 	}
 	else
@@ -1434,7 +1434,7 @@ void () key_touch =
 
 void () key_setsounds =
 {
-	if ((world.worldtype == RANGE_MELEE))
+	if ((world.worldtype == 0))
 	{
 		precache_sound ("misc/medkey.wav");
 		self.noise = "misc/medkey.wav";
@@ -1453,12 +1453,12 @@ void () key_setsounds =
 
 void () item_key1 =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
 	}
-	if ((world.worldtype == RANGE_MELEE))
+	if ((world.worldtype == 0))
 	{
 		precache_model ("progs/w_s_key.mdl");
 		setmodel (self, "progs/w_s_key.mdl");
@@ -1491,12 +1491,12 @@ void () item_key1 =
 
 void () item_key2 =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
 	}
-	if ((world.worldtype == RANGE_MELEE))
+	if ((world.worldtype == 0))
 	{
 		precache_model ("progs/w_g_key.mdl");
 		setmodel (self, "progs/w_g_key.mdl");
@@ -1530,7 +1530,7 @@ void () sigil_touch =
 	{
 		return;
 	}
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
@@ -1550,9 +1550,9 @@ void () sigil_touch =
 	{
 		return;
 	}
-	sound (other, AS_MELEE, self.noise, 1, 1);
+	sound (other, 3, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
-	self.solid = RANGE_MELEE;
+	self.solid = 0;
 	self.model = string_null;
 	serverflags = (serverflags | (self.spawnflags & 15));
 	self.classname = "";
@@ -1562,7 +1562,7 @@ void () sigil_touch =
 
 void () item_sigil =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1583,7 +1583,7 @@ void () item_sigil =
 		precache_model2 ("progs/end2.mdl");
 		setmodel (self, "progs/end2.mdl");
 	}
-	if ((self.spawnflags & AS_MISSILE))
+	if ((self.spawnflags & 4))
 	{
 		precache_model2 ("progs/end3.mdl");
 		setmodel (self, "progs/end3.mdl");
@@ -1607,7 +1607,7 @@ void () powerup_touch =
 	{
 		return;
 	}
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
@@ -1627,9 +1627,9 @@ void () powerup_touch =
 	{
 		return;
 	}
-	sprint (other, RANGE_MELEE, "You got the ");
-	sprint (other, RANGE_MELEE, self.netname);
-	sprint (other, RANGE_MELEE, "\n");
+	sprint (other, 0, "You got the ");
+	sprint (other, 0, self.netname);
+	sprint (other, 0, "\n");
 	if (deathmatch)
 	{
 		self.mdl = self.model;
@@ -1661,7 +1661,7 @@ void () powerup_touch =
 	}
 	sound (other, 2, self.noise, 1, 1);
 	stuffcmd (other, "bf\n");
-	self.solid = RANGE_MELEE;
+	self.solid = 0;
 	other.items = (other.items | self.items);
 	self.model = string_null;
 	if ((self.classname == "item_artifact_envirosuit"))
@@ -1690,7 +1690,7 @@ void () powerup_touch =
 
 void () item_artifact_invulnerability =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1711,7 +1711,7 @@ void () item_artifact_invulnerability =
 
 void () item_artifact_envirosuit =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1730,7 +1730,7 @@ void () item_artifact_envirosuit =
 
 void () item_artifact_invisibility =
 {
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1752,7 +1752,7 @@ void () item_artifact_super_damage =
 {
 	local string st;
 
-	if ((CheckExistence () == RANGE_MELEE))
+	if ((CheckExistence () == 0))
 	{
 		dremove (self);
 		return;
@@ -1787,7 +1787,7 @@ void () BackpackTouch =
 	{
 		return;
 	}
-	if ((other.health <= RANGE_MELEE))
+	if ((other.health <= 0))
 	{
 		return;
 	}
@@ -1803,44 +1803,44 @@ void () BackpackTouch =
 	other.no_grenades_1 = (other.no_grenades_1 + self.no_grenades_1);
 	other.no_grenades_2 = (other.no_grenades_2 + self.no_grenades_2);
 	bound_other_ammo (other);
-	sprint (other, RANGE_MELEE, "You get ");
+	sprint (other, 0, "You get ");
 	if (self.ammo_shells)
 	{
 		s = ftos (self.ammo_shells);
-		sprint (other, RANGE_MELEE, s);
-		sprint (other, RANGE_MELEE, " shells  ");
+		sprint (other, 0, s);
+		sprint (other, 0, " shells  ");
 	}
 	if (self.ammo_nails)
 	{
 		s = ftos (self.ammo_nails);
-		sprint (other, RANGE_MELEE, s);
-		sprint (other, RANGE_MELEE, " nails ");
+		sprint (other, 0, s);
+		sprint (other, 0, " nails ");
 	}
 	if (self.ammo_rockets)
 	{
 		s = ftos (self.ammo_rockets);
-		sprint (other, RANGE_MELEE, s);
-		sprint (other, RANGE_MELEE, " rockets  ");
+		sprint (other, 0, s);
+		sprint (other, 0, " rockets  ");
 	}
 	if (self.ammo_cells)
 	{
 		s = ftos (self.ammo_cells);
-		sprint (other, RANGE_MELEE, s);
-		sprint (other, RANGE_MELEE, " cells  ");
+		sprint (other, 0, s);
+		sprint (other, 0, " cells  ");
 	}
 	if (((self.armorvalue && (other.playerclass == 9)) && (other.ammo_cells < other.maxammo_cells)))
 	{
 		s = ftos (self.armorvalue);
-		sprint (other, RANGE_MELEE, s);
-		sprint (other, RANGE_MELEE, " metal  ");
+		sprint (other, 0, s);
+		sprint (other, 0, " metal  ");
 		other.ammo_cells = (other.ammo_cells + self.armorvalue);
 		if ((other.ammo_cells > other.maxammo_cells))
 		{
 			other.ammo_cells = other.maxammo_cells;
 		}
 	}
-	sprint (other, RANGE_MELEE, "\n");
-	sound (other, AS_MELEE, "weapons/lock4.wav", 1, 1);
+	sprint (other, 0, "\n");
+	sound (other, 3, "weapons/lock4.wav", 1, 1);
 	stuffcmd (other, "bf\n");
 	dremove (self);
 	self = other;

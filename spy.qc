@@ -524,7 +524,7 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 			self.velocity = '0 0 0';
 			setsize (self, '-16 -16 -24', '16 16 32');
 			self.view_ofs = '0 0 22';
-			self.movetype = AS_MELEE;
+			self.movetype = 3;
 			self.is_feigning = 0;
 			self.current_weapon = self.weapon;
 			W_SetCurrentAmmo ();
@@ -547,7 +547,7 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 				}
 				else
 				{
-					if ((i == AS_MELEE))
+					if ((i == 3))
 					{
 						spy_upd1 ();
 					}
@@ -662,13 +662,13 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 			}
 			else
 			{
-				if ((i == AS_MELEE))
+				if ((i == 3))
 				{
 					spy_diec1 ();
 				}
 				else
 				{
-					if ((i == AS_MISSILE))
+					if ((i == 4))
 					{
 						spy_died1 ();
 					}
@@ -686,7 +686,7 @@ void () TeamFortress_SpyGoUndercover =
 {
 	local entity te;
 
-	if ((self.effects & (8 | AS_MISSILE)))
+	if ((self.effects & (8 | 4)))
 	{
 		sprint (self, 1, "You cannot disguise while glowing.\n");
 		return;
@@ -812,7 +812,7 @@ void (float class) TeamFortress_SpyChangeSkin =
 	te.classname = "timer";
 	te.owner = self;
 	te.think = TeamFortress_SpyUndercoverThink;
-	te.nextthink = (time + AS_MISSILE);
+	te.nextthink = (time + 4);
 	te.skin = class;
 	TeamFortress_SetSkin (self);
 };
@@ -846,7 +846,7 @@ void (float teamno) TeamFortress_SpyChangeColor =
 	te.classname = "timer";
 	te.owner = self;
 	te.think = TeamFortress_SpyUndercoverThink;
-	te.nextthink = (time + AS_MISSILE);
+	te.nextthink = (time + 4);
 	te.team = teamno;
 };
 
@@ -969,11 +969,11 @@ void () GasGrenadeMakeGas =
 	self.heat = (self.heat + 1);
 	if ((self.heat == 1))
 	{
-		WriteByte (AS_MISSILE, 23);
-		WriteByte (AS_MISSILE, AS_MISSILE);
-		WriteCoord (AS_MISSILE, self.origin_x);
-		WriteCoord (AS_MISSILE, self.origin_y);
-		WriteCoord (AS_MISSILE, self.origin_z);
+		WriteByte (4, 23);
+		WriteByte (4, 4);
+		WriteCoord (4, self.origin_x);
+		WriteCoord (4, self.origin_y);
+		WriteCoord (4, self.origin_z);
 		multicast (self.origin, 2);
 		return;
 	}
@@ -982,11 +982,11 @@ void () GasGrenadeMakeGas =
 		self.weapon = (self.weapon + 1);
 		if ((self.weapon == 1))
 		{
-			WriteByte (AS_MISSILE, 23);
-			WriteByte (AS_MISSILE, enter);
-			WriteCoord (AS_MISSILE, self.origin_x);
-			WriteCoord (AS_MISSILE, self.origin_y);
-			WriteCoord (AS_MISSILE, (self.origin_z - 24));
+			WriteByte (4, 23);
+			WriteByte (4, enter);
+			WriteCoord (4, self.origin_x);
+			WriteCoord (4, self.origin_y);
+			WriteCoord (4, (self.origin_z - 24));
 			multicast (self.origin, 2);
 		}
 		else
@@ -1010,7 +1010,7 @@ void () HallucinationTimer =
 	local float halltype2;
 	local string st;
 
-	self.health = (self.health - AS_MELEE);
+	self.health = (self.health - 3);
 	if ((self.owner.playerclass == 5))
 	{
 		self.health = (self.health - 2);
@@ -1045,13 +1045,13 @@ void () HallucinationTimer =
 		WriteByte (1, 23);
 		if ((halltype < 0.25))
 		{
-			WriteByte (1, AS_MELEE);
+			WriteByte (1, 3);
 		}
 		else
 		{
 			if ((halltype < 0.35))
 			{
-				WriteByte (1, AS_MISSILE);
+				WriteByte (1, 4);
 			}
 			else
 			{
@@ -1324,7 +1324,7 @@ void () T_TranqDartTouch =
 	}
 	if (other.takedamage)
 	{
-		if (((other.classname == "player") && !((other.team_no == self.owner.team_no) && (teamplay & (2 | AS_MISSILE)))))
+		if (((other.classname == "player") && !((other.team_no == self.owner.team_no) && (teamplay & (2 | 4)))))
 		{
 			if ((other.tfstate & 32768))
 			{
@@ -1357,25 +1357,25 @@ void () T_TranqDartTouch =
 	}
 	else
 	{
-		WriteByte (AS_MISSILE, 23);
+		WriteByte (4, 23);
 		if ((self.classname == "wizspike"))
 		{
-			WriteByte (AS_MISSILE, 7);
+			WriteByte (4, 7);
 		}
 		else
 		{
 			if ((self.classname == "knightspike"))
 			{
-				WriteByte (AS_MISSILE, 8);
+				WriteByte (4, 8);
 			}
 			else
 			{
-				WriteByte (AS_MISSILE, 0);
+				WriteByte (4, 0);
 			}
 		}
-		WriteCoord (AS_MISSILE, self.origin_x);
-		WriteCoord (AS_MISSILE, self.origin_y);
-		WriteCoord (AS_MISSILE, self.origin_z);
+		WriteCoord (4, self.origin_x);
+		WriteCoord (4, self.origin_y);
+		WriteCoord (4, self.origin_z);
 		multicast (self.origin, 2);
 	}
 	dremove (self);
