@@ -2983,7 +2983,7 @@ void () Menu_EngineerFix_SentryGun =
 };
 
 void () Menu_EngineerFix_SentryGun_Rotate = {
-	CenterPrint (self, "Rotate sentry gun:\n\n“‘ 45 degrees left \n”‘ 180 degrees     \n•‘ 45 degrees right\n\n—‘ Nothing         \n");
+	CenterPrint (self, "Rotate sentry gun:\n\n“‘ 45 degrees left     \n”‘ 180 degrees         \n•‘ 45 degrees right    \n\n–‘ Dismantle Sentry Gun\n—‘ Nothing             \n");
     if (!self.building.real_owner.has_sentry || self.building.real_owner != self
                 || self.classname != "player" || self.building == world)
         return;
@@ -3189,6 +3189,23 @@ void (float inp) Menu_EngineerFix_SentryGun_Rotate_Input = {
         sprint(self, 2, "Rotating 45 degrees to the right...\n");
         self.building.waitmin = anglemod(self.building.waitmin - 45);
         self.building.waitmax = anglemod(self.building.waitmax - 45);
+    } else if (inp == 4) {
+        sprint (self, 2, "You dismantle the Sentry Gun.\n");
+		if (!practice)
+		{
+			self.ammo_cells = (self.ammo_cells + (130 / 2));
+		}
+		if ((self.building.real_owner != self))
+		{
+			sprint2 (self.building.real_owner, 2, self.netname, " dismantled your Sentry Gun.\n");
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.netname);
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, " dismantled ");
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.building.real_owner.netname);
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, "'s Sentry Gun.\n");
+		}
+		dremove (self.building.trigger_field);
+		dremove (self.building);
+		self.building.real_owner.has_sentry = RANGE_MELEE;
     }
     if (((inp >= 1) && (inp <= 3)) || (inp == 5))
 	{
