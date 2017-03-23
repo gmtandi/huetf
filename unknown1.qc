@@ -1780,9 +1780,11 @@ void (float inp) Menu_Spy_Color_Input;
 void () Menu_Engineer;
 void () Menu_EngineerFix_Dispenser;
 void () Menu_EngineerFix_SentryGun;
+void () Menu_EngineerFix_SentryGun_Rotate;
 void (float inp) Menu_Engineer_Input;
 void (float inp) Menu_EngineerFix_Dispenser_Input;
 void (float inp) Menu_EngineerFix_SentryGun_Input;
+void (float inp) Menu_EngineerFix_SentryGun_Rotate_Input;
 void () Menu_Dispenser;
 void (float inp) Menu_Dispenser_Input;
 void () Menu_Admin;
@@ -3006,6 +3008,11 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 
 void () Menu_EngineerFix_SentryGun =
 {
+	// only show this menu if autospanner is enabled, else show the original menu
+    if (autospanner) {    	
+        Menu_EngineerFix_SentryGun_Rotate();
+        return;
+    }
 //	if (  ( (self.building.weapon < 3) && (self.ammo_cells >= 130) && !sglvl2to3 )  || ( (self.building.weapon < 2) && (self.ammo_cells >= 130) && sglvl2to3 ) )
 	if ( (self.building.weapon < 3) && (self.ammo_cells >= 130) )
 	{
@@ -3017,8 +3024,22 @@ void () Menu_EngineerFix_SentryGun =
 	}
 };
 
+void () Menu_EngineerFix_SentryGun_Rotate = {
+	CenterPrint (self, "Rotate sentry gun:\n\n“‘ 45 degrees left     \n”‘ 180 degrees         \n•‘ 45 degrees right    \n\n–‘ Dismantle Sentry Gun\n—‘ Nothing             \n");
+    if (!self.building.real_owner.has_sentry || self.building.real_owner != self
+                || self.classname != "player" || self.building == world)
+        return;
+};
+
+
+
 void (float inp) Menu_EngineerFix_SentryGun_Input =
 {
+	if (autospanner) {
+		Menu_EngineerFix_SentryGun_Rotate_Input (inp);
+		return;
+	}
+		 
 	local float am;
 	local float metalcost;
 	local string st;
@@ -3183,6 +3204,52 @@ if (!sglvl2to3) {
 		}
 	}
 	if (((inp >= 1) && (inp <= 6)))
+	{
+		ResetMenu ();
+		self.impulse = RANGE_MELEE;
+		bound_other_ammo (self);
+		if ((self.armorvalue == RANGE_MELEE))
+		{
+			self.armortype = RANGE_MELEE;
+			self.armorclass = RANGE_MELEE;
+			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
+		}
+		W_SetCurrentAmmo ();
+	}
+};
+
+void (float inp) Menu_EngineerFix_SentryGun_Rotate_Input = {
+    if (inp == 1) {
+        sprint(self, 2, "Rotating 45 degrees to the left...\n");
+        self.building.waitmin = anglemod(self.building.waitmin + 45);
+        self.building.waitmax = anglemod(self.building.waitmax + 45);
+    } else if (inp == 2) {
+        sprint(self, 2, "Rotating 180 degrees...\n");
+        self.building.waitmin = anglemod(self.building.waitmin + 180);
+        self.building.waitmax = anglemod(self.building.waitmax + 180);
+    } else if (inp == 3) {
+        sprint(self, 2, "Rotating 45 degrees to the right...\n");
+        self.building.waitmin = anglemod(self.building.waitmin - 45);
+        self.building.waitmax = anglemod(self.building.waitmax - 45);
+    } else if (inp == 4) {
+        sprint (self, 2, "You dismantle the Sentry Gun.\n");
+		if (!practice)
+		{
+			self.ammo_cells = (self.ammo_cells + (130 / 2));
+		}
+		if ((self.building.real_owner != self))
+		{
+			sprint2 (self.building.real_owner, 2, self.netname, " dismantled your Sentry Gun.\n");
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.netname);
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, " dismantled ");
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, self.building.real_owner.netname);
+			teamsprint (self.building.real_owner.team_no, self.building.real_owner, "'s Sentry Gun.\n");
+		}
+		dremove (self.building.trigger_field);
+		dremove (self.building);
+		self.building.real_owner.has_sentry = RANGE_MELEE;
+    }
+    if (((inp >= 1) && (inp <= 3)) || (inp == 5))
 	{
 		ResetMenu ();
 		self.impulse = RANGE_MELEE;

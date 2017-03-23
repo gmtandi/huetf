@@ -380,6 +380,7 @@ void () DecodeLevelParms =
 
       sgbuildlvl2 = CF_GetSetting("sgb2", "sgbuildlvl2", "off");
       sglvl2to3 = CF_GetSetting("sgnl2", "sglvl2to3", "off");
+      autospanner = CF_GetSetting("autospanner", "autospanner", "on");
 
 
       // display grenade timer in status bar [on]

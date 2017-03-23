@@ -304,6 +304,7 @@ float sglvl2to3;
 float sgbuildlvl2;
 float captainmode;
 .float captain;
+float autospanner;
 float impactgren;
 
 void (float psize, entity p) KickPlayer =
