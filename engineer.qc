@@ -1011,7 +1011,7 @@ void () CheckDistance =
 		return;
 	}
 	dist = (self.enemy.origin - self.owner.origin);
-	if ((vlen (dist) > 64))
+	if ((vlen (dist) > 80))
 	{
 		CenterPrint (self.owner, "\n");
 		self.owner.menu_count = 25;
