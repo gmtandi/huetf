@@ -1,0 +1,267 @@
+Args: ./linux64-fteqcc
+FTEQCC: Feb 11 2017
+Source file: progs.src
+outputfile: qwprogs.dat
+compiling defs.qc
+compiling constants.qc
+compiling qw.qc
+compiling subs.qc
+compiling unknown1.qc
+in function Menu_Admin_Input (line 3502),
+unknown1.qc:3653: warning Q207: te duplicate definition ignored
+unknown1.qc:3504:    entity te  is defined here
+compiling subs2.qc
+compiling combat.qc
+compiling items.qc
+in function weapon_touch (line 730),
+items.qc:762: warning: Result of comparison is constant
+qw.qc:87:    const float coop  is defined here
+compiling infocheck.qc
+compiling track.qc
+compiling weapons.qc
+in function W_FireSpanner (line 215),
+weapons.qc:297: warning: Result of comparison is constant
+qw.qc:87:    const float coop  is defined here
+in function W_FireMedikit (line 355),
+weapons.qc:373: warning: Result of comparison is constant
+qw.qc:87:    const float coop  is defined here
+in function PreMatchImpulses (line 5216),
+weapons.qc:5315: warning Q206: PreMatchImpulses: not all control paths return a value
+in function DeadImpulses (line 5318),
+weapons.qc:5588: warning Q206: DeadImpulses: not all control paths return a value
+compiling world.qc
+compiling client.qc
+in function FindIntermission (line 527),
+client.qc:558: warning Q206: FindIntermission: not all control paths return a value
+in function PutClientInServer (line 1273),
+client.qc:1392: warning F307: type mismatch: void() player_pain to void(entity attacker, float damage) self.th_pain
+client.qc:2:    const void() player_pain  is defined here
+client.qc:1472: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+in function ClientDisconnect (line 2672),
+client.qc:2846: warning F307: type mismatch: void() SUB_Null to void(entity attacker, float damage) self.th_pain
+qw.qc:6:    const void() SUB_Null  is defined here
+compiling player.qc
+in function PlayerDie (line 1267),
+player.qc:1305: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+compiling doors.qc
+in function fd_secret_use (line 574),
+doors.qc:590: warning F307: type mismatch: void() SUB_Null to void(entity attacker, float damage) self.th_pain
+qw.qc:6:    const void() SUB_Null  is defined here
+in function fd_secret_done (line 669),
+doors.qc:674: warning F307: type mismatch: void() fd_secret_use to void(entity attacker, float damage) self.th_pain
+doors.qc:574:    const void() fd_secret_use  is defined here
+in function func_door_secret (line 717),
+doors.qc:771: warning F307: type mismatch: void() fd_secret_use to void(entity attacker, float damage) self.th_pain
+doors.qc:574:    const void() fd_secret_use  is defined here
+compiling buttons.qc
+compiling triggers.qc
+compiling tforttm.qc
+compiling plats.qc
+compiling misc.qc
+compiling monsters.qc
+compiling flare.qc
+compiling sentry.qc
+compiling monsters2.qc
+compiling admin.qc
+compiling pyro.qc
+compiling spy.qc
+compiling demoman.qc
+compiling scout.qc
+compiling engineer.qc
+in function TeamFortress_FinishedBuilding (line 590),
+engineer.qc:676: warning F307: type mismatch: void() Sentry_Pain to void(entity attacker, float damage) newmis.th_pain
+sentry.qc:9:    const void() Sentry_Pain  is defined here
+in function Engineer_SentryGun_InsertAmmo (line 951),
+engineer.qc:974: warning: too many parameters on call to W_SetCurrentAmmo
+unknown1.qc:1761:    const void() W_SetCurrentAmmo  is defined here
+compiling tsoldier.qc
+compiling sniper.qc
+compiling clan.qc
+compiling rounds.qc
+compiling ammobox.qc
+compiling tfort.qc
+in function TeamFortress_ChangeClass (line 147),
+tfort.qc:276: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+in function TeamFortress_GetClassName (line 2930),
+tfort.qc:3019: warning Q206: TeamFortress_GetClassName: not all control paths return a value
+compiling tforthlp.qc
+compiling halflife.qc
+compiling newents.qc
+compiling tfortmap.qc
+in function Finditem (line 824),
+tfortmap.qc:841: warning Q206: Finditem: not all control paths return a value
+in function Findgoal (line 844),
+tfortmap.qc:861: warning Q206: Findgoal: not all control paths return a value
+in function Findteamspawn (line 864),
+tfortmap.qc:881: warning Q206: Findteamspawn: not all control paths return a value
+in function ForceRespawn (line 3552),
+tfortmap.qc:3607: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+compiling commands.qc
+compiling hook.qc
+compiling ctf.qc
+in function DoorShouldOpen (line 193),
+ctf.qc:203: warning: DoorShouldOpen: contains unreachable code (line 203)
+compiling actions.qc
+compiling reloadweapon.qc
+compiling spect.qc
+compiling mvdsv.qc
+compiling misc2.qc
+in function ai_walk (line 425),
+unknown1.qc:426: warning Q302: vector mtemp  no references.
+unknown1.qc:426: warning Q302: float mtemp_x  no references.
+unknown1.qc:426: warning Q302: float mtemp_y  no references.
+unknown1.qc:426: warning Q302: float mtemp_z  no references.
+in function ai_run (line 542),
+unknown1.qc:543: warning Q302: vector delta  no references.
+unknown1.qc:543: warning Q302: float delta_x  no references.
+unknown1.qc:543: warning Q302: float delta_y  no references.
+unknown1.qc:543: warning Q302: float delta_z  no references.
+unknown1.qc:544: warning Q302: float axis  no references.
+unknown1.qc:545: warning Q302: float direct  no references.
+at global scope,
+note: suppressed 183 more warnings about unreferenced variables, as you clearly don't care about the first 10.
+triggers.qc:432: warning F210: Sound "weapons/bounce2.wav" was used but not directly precached
+engineer.qc:985: warning F210: Sound "edge/backpack.wav" was used but not directly precached
+Compile finished: qwprogs.dat (id format)
+Done. 218 warnings
+Args: ./linux64-fteqcc
+FTEQCC: Feb 11 2017
+Source file: progs.src
+outputfile: qwprogs.dat
+compiling defs.qc
+compiling constants.qc
+compiling qw.qc
+compiling subs.qc
+compiling unknown1.qc
+in function Menu_Admin_Input (line 3502),
+unknown1.qc:3653: warning Q207: te duplicate definition ignored
+unknown1.qc:3504:    entity te  is defined here
+compiling subs2.qc
+compiling combat.qc
+compiling items.qc
+in function weapon_touch (line 730),
+items.qc:762: warning: Result of comparison is constant
+qw.qc:87:    const float coop  is defined here
+compiling infocheck.qc
+compiling track.qc
+compiling weapons.qc
+in function W_FireSpanner (line 215),
+weapons.qc:297: warning: Result of comparison is constant
+qw.qc:87:    const float coop  is defined here
+in function W_FireMedikit (line 355),
+weapons.qc:373: warning: Result of comparison is constant
+qw.qc:87:    const float coop  is defined here
+in function PreMatchImpulses (line 5216),
+weapons.qc:5315: warning Q206: PreMatchImpulses: not all control paths return a value
+in function DeadImpulses (line 5318),
+weapons.qc:5588: warning Q206: DeadImpulses: not all control paths return a value
+compiling world.qc
+compiling client.qc
+in function FindIntermission (line 527),
+client.qc:558: warning Q206: FindIntermission: not all control paths return a value
+in function PutClientInServer (line 1273),
+client.qc:1392: warning F307: type mismatch: void() player_pain to void(entity attacker, float damage) self.th_pain
+client.qc:2:    const void() player_pain  is defined here
+client.qc:1472: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+in function ClientDisconnect (line 2672),
+client.qc:2846: warning F307: type mismatch: void() SUB_Null to void(entity attacker, float damage) self.th_pain
+qw.qc:6:    const void() SUB_Null  is defined here
+compiling player.qc
+in function PlayerDie (line 1267),
+player.qc:1305: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+compiling doors.qc
+in function fd_secret_use (line 574),
+doors.qc:590: warning F307: type mismatch: void() SUB_Null to void(entity attacker, float damage) self.th_pain
+qw.qc:6:    const void() SUB_Null  is defined here
+in function fd_secret_done (line 669),
+doors.qc:674: warning F307: type mismatch: void() fd_secret_use to void(entity attacker, float damage) self.th_pain
+doors.qc:574:    const void() fd_secret_use  is defined here
+in function func_door_secret (line 717),
+doors.qc:771: warning F307: type mismatch: void() fd_secret_use to void(entity attacker, float damage) self.th_pain
+doors.qc:574:    const void() fd_secret_use  is defined here
+compiling buttons.qc
+compiling triggers.qc
+compiling tforttm.qc
+compiling plats.qc
+compiling misc.qc
+compiling monsters.qc
+compiling flare.qc
+compiling sentry.qc
+compiling monsters2.qc
+compiling admin.qc
+compiling pyro.qc
+compiling spy.qc
+compiling demoman.qc
+compiling scout.qc
+compiling engineer.qc
+in function TeamFortress_FinishedBuilding (line 590),
+engineer.qc:676: warning F307: type mismatch: void() Sentry_Pain to void(entity attacker, float damage) newmis.th_pain
+sentry.qc:9:    const void() Sentry_Pain  is defined here
+in function Engineer_SentryGun_InsertAmmo (line 951),
+engineer.qc:974: warning: too many parameters on call to W_SetCurrentAmmo
+unknown1.qc:1761:    const void() W_SetCurrentAmmo  is defined here
+compiling tsoldier.qc
+compiling sniper.qc
+compiling clan.qc
+compiling rounds.qc
+compiling ammobox.qc
+compiling tfort.qc
+in function TeamFortress_ChangeClass (line 147),
+tfort.qc:276: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+in function TeamFortress_GetClassName (line 2930),
+tfort.qc:3019: warning Q206: TeamFortress_GetClassName: not all control paths return a value
+compiling tforthlp.qc
+compiling halflife.qc
+compiling newents.qc
+compiling tfortmap.qc
+in function Finditem (line 824),
+tfortmap.qc:841: warning Q206: Finditem: not all control paths return a value
+in function Findgoal (line 844),
+tfortmap.qc:861: warning Q206: Findgoal: not all control paths return a value
+in function Findteamspawn (line 864),
+tfortmap.qc:881: warning Q206: Findteamspawn: not all control paths return a value
+in function ForceRespawn (line 3552),
+tfortmap.qc:3607: warning: Result of comparison is constant
+defs.qc:141:    float deathmatch  is defined here
+qw.qc:87:    const float coop  is defined here
+compiling commands.qc
+compiling hook.qc
+compiling ctf.qc
+in function DoorShouldOpen (line 193),
+ctf.qc:203: warning: DoorShouldOpen: contains unreachable code (line 203)
+compiling actions.qc
+compiling reloadweapon.qc
+compiling spect.qc
+compiling mvdsv.qc
+compiling misc2.qc
+in function ai_walk (line 425),
+unknown1.qc:426: warning Q302: vector mtemp  no references.
+unknown1.qc:426: warning Q302: float mtemp_x  no references.
+unknown1.qc:426: warning Q302: float mtemp_y  no references.
+unknown1.qc:426: warning Q302: float mtemp_z  no references.
+in function ai_run (line 542),
+unknown1.qc:543: warning Q302: vector delta  no references.
+unknown1.qc:543: warning Q302: float delta_x  no references.
+unknown1.qc:543: warning Q302: float delta_y  no references.
+unknown1.qc:543: warning Q302: float delta_z  no references.
+unknown1.qc:544: warning Q302: float axis  no references.
+unknown1.qc:545: warning Q302: float direct  no references.
+at global scope,
+note: suppressed 183 more warnings about unreferenced variables, as you clearly don't care about the first 10.
+triggers.qc:432: warning F210: Sound "weapons/bounce2.wav" was used but not directly precached
+Compile finished: qwprogs.dat (id format)
+Done. 217 warnings

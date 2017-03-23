@@ -325,7 +325,7 @@ float (string str) str2byte = #120;
 float (string str) str2short = #121;
 string (string str , float size) newstr = #122;
 void (string str) freestr = #123;
-void (vector v1) locationname = #124;
+string (vector v1) locationname = #124;
 
 //void(string str) conprint = #95;   // prints to server console only (no redirects)
 string (string str) readcmd = #96; // executes command on server, but result is returned by this function instead of writing to the console

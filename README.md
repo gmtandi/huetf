@@ -16,6 +16,7 @@ The built-in functions required are:
  - str2short = #121;
  - newstr = #122;
  - freestr = #123;
+ - locationname = #124
 
 
 ////
@@ -31,3 +32,4 @@ Some improvements already done to the code are:
  - Caltrop Canister wil only release when -gren1 (no more caltrop explosions);
  - Impact grenade replaces Caltrop for scout (localinfo impactgren 1);
  - Added adminmenu that allows admin to choose between few functions: kick, ban, clanmode, timelimit, captain;
+ - Added "autospanner", to make engineer's life easier by making a smart spanner to deal with his sentry gun
