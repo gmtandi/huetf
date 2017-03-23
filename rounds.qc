@@ -520,7 +520,7 @@ void () StartRound =
 				Attack_Finished (0.75);
 				self.hook_out = 1;
 			}
-			self.menu_count = 25;
+			self.menu_count = 30;
 			self.current_menu = 1;
 			TeamFortress_ThrowGrenade ();
 			TeamFortress_RemoveTimers ();

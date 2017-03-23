@@ -15,6 +15,20 @@ float enemy_infront;
 float enemy_range;
 float enemy_yaw;
 
+
+void (entity eng) Engineer_RemoveBuildings;
+
+void () Admin_CountPlayers;
+void () Admin_CycleDeal;
+void () Admin_DoKick;
+void () Admin_CeaseFire;
+void () Admin_ListIPs;
+void () AbortElect;
+void () VoteAdmin;
+void () VoteYes;
+void () VoteNo;
+
+
 float () CheckAttack =
 {
 	local vector spot1;
@@ -1721,6 +1735,8 @@ string (float tm) Status_TeamNumToTeamString =
 	{
 		return ("green");
 	}
+
+	return ("unknown");
 };
 void (float class) TeamFortress_SpyChangeSkin;
 void (float teamno) TeamFortress_SpyChangeColor;
@@ -1769,6 +1785,8 @@ void (float inp) Menu_EngineerFix_Dispenser_Input;
 void (float inp) Menu_EngineerFix_SentryGun_Input;
 void () Menu_Dispenser;
 void (float inp) Menu_Dispenser_Input;
+void () Menu_Admin;
+void (float inp) Menu_Admin_Input;
 
 void () ResetMenu =
 {
@@ -1780,13 +1798,15 @@ void () ResetMenu =
 	{
 		self.StatusRefreshTime = (time + 0.1);
 	}
-	self.menu_count = 25;
+	self.menu_count = 30;
 	self.current_menu = 1;
+	self.current_menu_type = 0;
+	self.current_menu_page = 0;
 };
 
 void () Player_Menu =
 {
-	if ((self.menu_count > 25))
+	if ((self.menu_count > 30))
 	{
 		self.menu_count = RANGE_MELEE;
 	}
@@ -1867,6 +1887,12 @@ void () Player_Menu =
 								{
 									Menu_Engineer ();
 								}
+
+else if (self.current_menu == 24) {
+	Menu_Admin ();
+}
+
+
 								else
 								{
 									if ((self.current_menu == 16))
@@ -1894,19 +1920,19 @@ void () Player_Menu =
 												}
 												else
 												{
-													if ((self.current_menu == 20))
+													if ((self.current_menu == 20) && !captainmode)
 													{
 														Menu_Class ();
 													}
 													else
 													{
-														if ((self.current_menu == 2))
+														if ((self.current_menu == 2 && !captainmode))
 														{
 															Menu_Team ();
 														}
 														else
 														{
-															if (((self.team_no == RANGE_MELEE) && teamplay))
+															if (((self.team_no == RANGE_MELEE) && teamplay && !captainmode))
 															{
 																if ((round_over >= 2))
 																{
@@ -1919,7 +1945,7 @@ void () Player_Menu =
 															{
 																if ((self.playerclass == RANGE_MELEE))
 																{
-																	if (round_active)
+																	if (round_active && !captainmode)
 																	{
 																		return;
 																	}
@@ -1954,6 +1980,10 @@ void () Player_Menu =
 
 void (float menu_no) DisplayMenu =
 {
+
+	if (captainmode)
+		return;
+
 	self.current_menu = menu_no;
 	if ((menu_no == 2))
 	{
@@ -1970,7 +2000,7 @@ void (float menu_no) DisplayMenu =
 
 void () Menu_Team =
 {
-	if (((toggleflags & 64) && teamplay))
+	if (((toggleflags & 64) && teamplay && !captainmode))
 	{
 		if (TeamFortress_TeamPutPlayerInTeam ())
 		{
@@ -2009,6 +2039,10 @@ void () Menu_Team =
 
 void (float inp) Menu_Team_Input =
 {
+
+	if (captainmode)
+		return;
+
 	if ((inp == 6))
 	{
 		TeamFortress_TeamSet (-1);
@@ -2020,7 +2054,7 @@ void (float inp) Menu_Team_Input =
 	}
 	else
 	{
-		if ((inp == 5))
+		if ((inp == 5) && !captainmode)
 		{
 			TeamFortress_TeamPutPlayerInTeam ();
 		}
@@ -2045,6 +2079,10 @@ void (float inp) Menu_Team_Input =
 
 void () Menu_Class =
 {
+
+	if (captainmode)
+		return;
+
 	local entity AD;
 
 	AD = find (world, classname, "info_tfdetect");
@@ -2178,13 +2216,17 @@ void (float inp) Menu_Drop_Input =
 
 void (float inp) Menu_Input =
 {
-	if ((self.current_menu == 2))
+	if ((self.current_menu == 24))
+	{
+		Menu_Admin_Input (inp);
+	}
+	else if ((self.current_menu == 2) && !captainmode)
 	{
 		Menu_Team_Input (inp);
 	}
 	else
 	{
-		if (((self.current_menu == AS_MELEE) || (self.current_menu == 20)))
+		if (((self.current_menu == AS_MELEE) || (self.current_menu == 20)) && !captainmode)
 		{
 			Menu_Class_Input (inp);
 		}
@@ -2514,7 +2556,7 @@ void (float inp) Menu_ClassHelp_Input =
 	if ((inp == 8))
 	{
 		Menu_ClassHelp2 ();
-		self.menu_count = 25;
+		self.menu_count = 30;
 		self.current_menu = 7;
 		self.menu_displaytime = RANGE_MELEE;
 		self.impulse = RANGE_MELEE;
@@ -2605,7 +2647,7 @@ void (float inp) Menu_Spy_Input =
 	if ((inp == 1))
 	{
 		Menu_Spy_Skin ();
-		self.menu_count = 25;
+		self.menu_count = 30;
 		self.current_menu = 13;
 		self.menu_displaytime = RANGE_MELEE;
 		self.impulse = RANGE_MELEE;
@@ -2615,7 +2657,7 @@ void (float inp) Menu_Spy_Input =
 		if ((inp == 2))
 		{
 			Menu_Spy_Color ();
-			self.menu_count = 25;
+			self.menu_count = 30;
 			self.current_menu = 14;
 			self.menu_displaytime = RANGE_MELEE;
 			self.impulse = RANGE_MELEE;
@@ -3249,4 +3291,394 @@ void (float inp) Menu_Dispenser_Input =
 		W_SetCurrentAmmo ();
 	}
 };
+
+
+
+
+// Menu_Admin
+
+void () Menu_Admin =
+{
+	local string s_menu1;
+	local string s_menu2;
+	local string s_menu3;
+	local string s_menu4;
+	local string s_menu5;
+	local string s_menu6;
+	local string s_menu7;
+	local string s_menu8;
+	local string s_menu9;
+
+	local entity te;
+	local entity temp;
+
+	local float f_tmp;
+	local float f_tmp2;
+
+	self.impulse = 0;
+
+
+	if (self.current_menu_type == 0) {
+		s_menu1 =		  "HueTF Admin Menu:                \n\n";
+		s_menu1 = strcat(s_menu1, "ê1ë Clan Mode                    \n");
+		s_menu1 = strcat(s_menu1, "ê2ë Timelimit                    \n");
+		s_menu1 = strcat(s_menu1, "ê3ë Kick                         \n");
+		s_menu1 = strcat(s_menu1, "ê4ë Ban                          \n");
+		s_menu1 = strcat(s_menu1, "ê5ë Captain                      \n");
+		s_menu1 = strcat(s_menu1, "\n");
+		s_menu1 = strcat(s_menu1, "\n\n");
+		s_menu1 = strcat(s_menu1, "ê8ë Previous Page                \n");
+		s_menu1 = strcat(s_menu1, "ê9ë Next Page                    \n");
+		s_menu1 = strcat(s_menu1, "ê0ë Exit Menu                    \n");
+
+		centerprint (self, s_menu1);
+	}
+
+// 1 = kick selection menu
+// 2 = ban selection menu
+// 3 = team 1's captain select menu
+// 4 = team 2's captain select menu
+// 5 = captain player selection menu
+
+	if (self.current_menu_type == 1 || self.current_menu_type == 2 || self.current_menu_type == 3 || self.current_menu_type == 4 || self.current_menu_type == 5) {
+		if (self.current_menu_type == 1) {
+			s_menu1 = "HueTf Admin Kick Menu:              \n\n";
+		} else if (self.current_menu_type == 2) {
+			s_menu1 = "HueTf Admin Ban Menu:              \n\n";
+		} else if (self.current_menu_type == 3) {
+			s_menu1 = "HueTf Captain Team 1 Select Menu:              \n\n";
+		} else if (self.current_menu_type == 4) {
+			s_menu1 = "HueTf Captain Team 2 Select Menu:              \n\n";
+		} else if (self.current_menu_type == 5) {
+			s_menu1 = strcat("HueTf \[\sCaptain\s\] Team ", ftos(self.team_no));
+			s_menu1 = strcat(s_menu1, " :              \n\n");
+		}
+
+		f_tmp = 0;
+		f_tmp2 = 0;
+		s_menu2 = "\sPage\s ";
+		s_menu2 = strcat (s_menu2, ftos(self.current_menu_page));
+		s_menu2 = strcat (s_menu2, " \bPlayers:\b                      \n\n");
+
+		te = find (world, classname, "player");
+		while (te != world) {
+			if ( (f_tmp < (self.current_menu_page * 7) ) && ( f_tmp >= ((self.current_menu_page - 1) * 7) ) && ( ( ( self.current_menu_type == 5 || self.current_menu_type == 4 )  && !te.captain) || (self.current_menu_type != 5 && self.current_menu_type != 4) ) )  {
+				f_tmp2 = f_tmp2 + 1;
+				f_tmp = f_tmp + 1;
+				s_menu2 = strcat( s_menu2, "\s[\s" );
+				s_menu2 = strcat( s_menu2, ftos(f_tmp2));
+				s_menu2 = strcat( s_menu2, "\s]\s " );
+				s_menu2 = strcat( s_menu2, te.netname );
+				s_menu2 = strcat( s_menu2, "\n" );
+			}
+
+			if (( f_tmp < (self.current_menu_page - 1) * 7) &&  ( ( ( self.current_menu_type == 5 || self.current_menu_type == 4 )  && !te.captain) || ( self.current_menu_type != 5 && self.current_menu_type != 4 ) ) ) {
+				f_tmp = f_tmp + 1;
+			}
+
+			te = find (te, classname, "player");
+		}
+
+if (self.current_menu_type != 3 && self.current_menu_type != 4 && self.current_menu_type != 5 ) {
+		te = find (world, classname, "observer");
+		while (te != world) {
+			if ( (f_tmp <= (self.current_menu_page * 7) ) && (f_tmp > (self.current_menu_page - 1) * 7) && te.netname != "")  {
+				f_tmp2 = f_tmp2 + 1;
+				s_menu2 = strcat( s_menu2, "\s[\s" );
+				s_menu2 = strcat( s_menu2, ftos(f_tmp2));
+				s_menu2 = strcat( s_menu2, "\s]\s " );
+				s_menu2 = strcat( s_menu2, te.netname );
+				s_menu2 = strcat( s_menu2, "\n" );
+			}
+			f_tmp = f_tmp + 1;
+			te = find (te, classname, "observer");
+		}
+}
+
+if (f_tmp2 == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4 ) ) {
+        bprint(2, "\[\sCaptain Mode\s\]\s:\s \sDone! No player remaining. Let's start the game!\s.\n");
+		temp = self;
+		te = find (world, classname, "player");
+		while (te != world) {
+			if ( te.captain )  {
+				te.captain = 0;
+				self = te;
+				ResetMenu();
+			}
+			te = find (te, classname, "player");
+		}
+		self = temp;
+		captainmode = 0;
+		return;
+}
+
+		s_menu8 = "\b[\b8\b]\b \bPrevious Page\b         \n";
+		s_menu7 = "\n\b[\b9\b]\b \bNext Page\b             \n";
+if (self.is_admin || self.captain) {
+		s_menu9 = "\b[\b0\b]\b \bBack to Main Menu\b     \n";
+} else {
+		s_menu9 = "\n";
+}
+if ((self.is_admin || self.captain) && captainmode) {
+		s_menu9 = strcat(s_menu9, "Option 0 results in canceling captain mode.\n");
+}
+
+
+		centerprint (self, s_menu1, s_menu2, s_menu7, s_menu8, s_menu9);
+	}
+
+
+
+};
+
+void (float inp) Menu_Admin_Input =
+{
+	local entity temp;
+	local entity te;
+	local string s_temp;
+        local float f_tmp;
+
+if (self.current_menu_type == 0) {
+
+//
+// clanmode
+//
+
+	if (inp == 1) {
+		localcmd("clan\n");
+		ResetMenu ();
+	}
+
+//
+// timelimit
+//
+	if (inp == 2) {
+		if (stof(infokey (world, "timelimit")) > 35) {
+			s_temp = "5";
+		} else {
+			s_temp = ftos(timelimit/60 + 5);
+		}
+
+		localcmd ("timelimit ");
+		localcmd(s_temp);
+		localcmd("\n");
+
+		bprint ( 2, "\stimelimit\s is now: ");
+		bprint ( 2, s_temp);
+		bprint ( 2, "\n");
+	}
+
+//
+// kick
+//
+
+	if (inp == 3) {
+		self.current_menu_type = 1;
+		self.current_menu_page = 1;
+	}
+
+//
+// ban
+//
+
+	if (inp == 4) {
+		self.current_menu_type = 2;
+		self.current_menu_page = 1;
+	}
+
+
+//
+// captain
+//
+
+	if (inp == 5) {
+
+
+if (!captainmode)
+{
+		captainmode = 1;
+		self.current_menu_type = 3;
+		self.current_menu_page = 1;
+
+		bprint(2, "\[\sCaptain Mode\s\]\s:\s is now \sON\s.\n");
+
+                temp = find (world, classname, "player");
+                while (temp != world) {
+			temp.captain = 0;
+                        temp = find (temp, classname, "player");
+                }
+
+
+} else {  // end captainmode1
+	captainmode = 0;
+	bprint(2, "\[\sCaptain Mode\s\]\s:\s \sdisabled\s.\n");
+
+		te = self;
+                temp = find (world, classname, "player");
+                while (temp != world) {
+			self = temp;
+                        temp.captain = 0;
+			ResetMenu();
+                        temp = find (temp, classname, "player");
+                }
+		self = te;
+}
+
+}
+
+} else if ((self.current_menu_type == 1 || self.current_menu_type == 2 ) && inp >= 1 && inp <= 7) { // Kick / Ban Actions
+	f_tmp = 1;
+	self.admin_use = find (world, classname, "player");
+	while (self.admin_use != world)  {
+		if (f_tmp < ((self.current_menu_page - 1) * 7) + inp ) {
+			f_tmp = f_tmp + 1;
+			self.admin_use = find (self.admin_use, classname, "player");
+		} else {
+			break;
+		}
+	}
+	if (f_tmp < ((self.current_menu_page - 1) * 7) + inp) {
+		self.admin_use = find (world, classname, "observer");
+		while (self.admin_use != world)  {
+			if (f_tmp < ((self.current_menu_page - 1) * 7) + inp && self.admin_use.netname != "") {
+				f_tmp = f_tmp + 1;
+			} else {
+				break;
+			}
+			self.admin_use = find (self.admin_use, classname, "observer");
+		}
+	}
+
+	if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp) {
+		self.admin_use.ip = infokey (self.admin_use, "ip");
+		if (self.current_menu_type == 2) {
+			localcmd("addip ");
+			localcmd(self.admin_use.ip);
+			localcmd("\n");
+		}
+		Admin_DoKick ();
+	}
+
+} else if ((self.current_menu_type == 3 || self.current_menu_type == 4 || self.current_menu_type == 5) && inp >= 1 && inp <= 7) { // Captain Actions
+	f_tmp = 1;
+	self.admin_use = find (world, classname, "player");
+	while (self.admin_use != world)  {
+		if ( (f_tmp < ((self.current_menu_page - 1) * 7) + inp ) && ( ( (self.current_menu_type == 5 || self.current_menu_type == 4) && !self.admin_use.captain) || (self.current_menu_type != 5 && self.current_menu_type != 4) ) ) {
+			f_tmp = f_tmp + 1;
+		} else if ( (f_tmp == ((self.current_menu_page - 1) * 7) + inp) && ( ( (self.current_menu_type == 5 || self.current_menu_type == 4) && !self.admin_use.captain) || (self.current_menu_type != 5 && self.current_menu_type != 4) ) ) {
+			break;
+		}
+		self.admin_use = find (self.admin_use, classname, "player");
+
+	}
+
+
+if (self.current_menu_type != 5) {
+	if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp) {
+		temp = self;
+		self.admin_use.captain = 1;
+		self = self.admin_use;
+		if (temp.current_menu_type == 3) {
+			temp.current_menu_type = 4;
+			TeamFortress_TeamSet(1);
+		} else if (temp.current_menu_type == 4) {
+			TeamFortress_TeamSet(2);
+			local entity te;
+			te = find (world, classname, "player");
+			while (te != world)
+			{
+				self = te;
+				if (!self.captain)
+				{
+					TeamFortress_TeamSet (-1);
+					self.current_menu = RANGE_MELEE;
+					Menu_StuffClassHelp ();
+					Menu_ClassHelp ();
+					self.impulse = RANGE_MELEE;
+				} else {
+					bprint(2, "\[\sCaptain Mode\s\]\s:\s ");
+					bprint(2, self.netname);
+					bprint(2, " \bIs the captain for team\b ");
+					bprint(2, Status_TeamNumToTeamString(self.team_no));
+					bprint(2, "\b.\b\n");
+				}
+				te = find (te, classname, "player");
+			}
+			self = temp;
+			bprint(2, "\[\sCaptain Mode\s\]\s:\s EVERYBODY OBSERVER!!!\n");
+			ResetMenu ();
+		}
+		self = temp;
+	}
+} else {
+	        if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp) {
+                temp = self;
+                self.admin_use.captain = 1;
+                self = self.admin_use;
+
+		TeamFortress_TeamSet (temp.team_no);
+
+		bprint(2, "\[\bCaptain Mode\b\]\b:\b ");
+		bprint(2, temp.netname);
+		bprint(2, " \bcalled\b ");
+		bprint(2, self.netname);
+		bprint(2, " \bfor team\b ");
+		bprint(2, Status_TeamNumToTeamString(self.team_no));
+		bprint(2, "\b.\b\n");
+
+		self = temp;
+	}
+}
+
+}
+
+
+
+	if ((inp == 9)) {
+		if (self.current_menu_page < 5) {
+			self.current_menu_page = self.current_menu_page + 1;
+		}
+	}
+
+	if ((inp == 8)) {
+		if (self.current_menu_page > 1) {
+			self.current_menu_page = self.current_menu_page - 1;
+		}
+	}
+
+	if ((inp == 10)) {
+
+		if (self.current_menu_type == 4 || self.current_menu_type == 5 ||  self.current_menu_type == 3) {
+			captainmode = 0;
+			bprint(2, "\[\sCaptain Mode\s\]\s:\s \scanceled by request of\s ");
+			bprint(2, self.netname);
+			bprint(2, ".\n");
+
+
+		te = self;
+                temp = find (world, classname, "player");
+                while (temp != world) {
+			self = temp;
+                        temp.captain = 0;
+			ResetMenu();
+                        temp = find (temp, classname, "player");
+                }
+		self = te;
+
+
+
+
+		}
+
+		if (self.current_menu_type == 0)
+			ResetMenu ();
+		else if (self.is_admin) {
+			self.current_menu_type = 0;
+			self.current_menu_page = 0;
+		}
+	}
+
+self.impulse = 0;
+};
+
 

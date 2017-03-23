@@ -29,7 +29,7 @@ void () TeamFortress_MOTD =
 		sprint (self, 2, "Hue Team Fortress v1.45\nhttp://github.com/gmtandi/huetf\n");
 		self.menu_displaytime = 0;
 		self.current_menu = 5;
-		self.menu_count = 25;
+		self.menu_count = 30;
 		self.motd = 22;
 		if (!self.get_aliases)
 		{

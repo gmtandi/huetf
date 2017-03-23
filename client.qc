@@ -14,7 +14,6 @@ float (float pc) IsLegalClass;
 void () CeaseFire_think;
 void () StartRound;
 void () RemoveVotes;
-void (entity eng) Engineer_RemoveBuildings;
 void (string halias, float himpulse1, float himpulse2) TeamFortress_Alias;
 void (entity p) CheckAutoKick;
 void (entity p) TeamFortress_ExecClassScript;
@@ -1305,7 +1304,7 @@ void () PutClientInServer =
 	self.gravity = 1;
 	self.camdist = 0;
 	DecodeLevelParms ();
-	if (self.team_no)
+	if (self.team_no && !captainmode)
 	{
 		if (!self.playerclass)
 		{
@@ -1446,7 +1445,7 @@ void () PutClientInServer =
 	modelindex_eyes = self.modelindex;
 	setmodel (self, "progs/player.mdl");
 	modelindex_player = self.modelindex;
-	if (!self.playerclass)
+	if (!self.playerclass && !captainmode)
 	{
 		self.modelindex = modelindex_null;
 		if ((round_active || (self.playerclass == -1)))
@@ -1758,6 +1757,9 @@ void () PlayerJump =
 	{
 		return;
 	}
+
+//stuffcmd(self, "cl_c2spps 0\n");
+
 	if (!self.playerclass)
 	{
 		if ((self.waterlevel >= 2))
@@ -2317,6 +2319,7 @@ void () Admin_Aliases =
 	TeamFortress_Alias ("soliddet", 235, 0);
 	TeamFortress_Alias ("flag_model", 236, 0);
 	TeamFortress_Alias ("frjump", 238, 0);
+	TeamFortress_Alias ("adminmenu", 239, 0);
 	TeamFortress_Alias ("rounds", _O, 0);
 	TeamFortress_Alias ("duel", _P, 0);
 	TeamFortress_Alias ("speedcap", _Q, 0);
@@ -2661,17 +2664,38 @@ void () ClientConnect =
 	{
 		sprint (self, 2, "CURRENTLY IN PREMATCH TIME\n");
 	}
+
 };
 
 void () ClientDisconnect =
 {
 	local entity te;
+	local entity temp;
 	local string st;
 	local float fr;
 
 	fr = rint (self.frags);
 	st = ftos (fr);
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
+
+if (self.captain) {
+	captainmode = 0;
+	bprint(2, "\[\sCaptain Mode\s\]\s:\s \bCaptain\b ");
+	bprint(2, self.netname);
+	bprint(2, " \bleft the game\b. Captain Mode Disabled!\n");
+
+                te = self;
+                temp = find (world, classname, "player");
+                while (temp != world) {
+                        self = temp;
+                        temp.captain = 0;
+                        ResetMenu();
+                        temp = find (temp, classname, "player");
+                }
+                self = te;
+
+}
+
 	sound (self, AS_MISSILE, "player/tornoff2.wav", 1, 0);
 	self.has_disconnected = 1;
 	TeamFortress_RemoveTimers ();

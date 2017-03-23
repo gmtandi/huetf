@@ -24,8 +24,10 @@ Some improvements already done to the code are:
 
  - Grenade timer on SBAR
  - Grenade timer sound  (client side: localinfo grensound 1);
- - 24 bits Skins support (server side: localinfo s24b/skins24b on);
- - Enable/disable flag return (server side: localinfo fnoreturn on);
- - Sentry build on level 2 (skip lvl 1) -> (server side: localinfo sgb2 _OR_ sgbuildlvl2 on);
- - Sentry upgrade lvl 1 to 3 (skip lvl 2) -> (server side: localinfo sgnl2 _OR_ sgnolvl2 on); // DO NOT USE sgb2 AND sgnl2, untested yet
- - Caltrop wil only release when -gren1;
+ - 24 bits Skins support (server side: localinfo skins24b on);
+ - Enable/disable flag return (server side: localinfo fnoreturn on); -- REMOVED, already exists on OzTF localinfo noreturn --
+ - Sentry build on level 2 (skip lvl 1) -> (server side: localinfo sgbuildlvl2 on);
+ - Sentry upgrade lvl 1 to 3 (skip lvl 2) -> (server side: localinfo sgnolvl2 on); // DO NOT USE sgb2 AND sgnl2, untested yet
+ - Caltrop Canister wil only release when -gren1 (no more caltrop explosions);
+ - Impact grenade replaces Caltrop for scout (localinfo impactgren 1);
+ - Added adminmenu that allows admin to choose between few functions: kick, ban, clanmode, timelimit, captain;

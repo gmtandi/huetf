@@ -207,7 +207,7 @@ void (float inp) TeamFortress_ChangeClass =
 		TeamFortress_PrintClassName (self, self.nextpc, (self.tfstate & 8));
 		return;
 	}
-	if ((teamplay && (self.team_no == 0)))
+	if ((teamplay && (self.team_no == 0) && !captainmode))
 	{
 		if ((toggleflags & 64))
 		{
@@ -3134,7 +3134,7 @@ void () TeamFortress_RemoveTimers =
 	CenterPrint (self, "\n");
 	if (!round_active)
 	{
-		self.menu_count = 25;
+		self.menu_count = 30;
 		self.current_menu = 1;
 	}
 	self.impulse = 0;

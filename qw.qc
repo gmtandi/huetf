@@ -47,6 +47,8 @@ void (entity Goal, entity AP, entity ActivatingGoal) AttemptToActivate;
 .float weaponmode;
 .float motd;
 .float current_menu;
+.float current_menu_type;
+.float current_menu_page;
 .float menu_count;
 .float menu_displaytime;
 .float tfkey;
@@ -300,7 +302,8 @@ float grentimers;
 float skins24b;
 float sglvl2to3;
 float sgbuildlvl2;
-
+float captainmode;
+.float captain;
 float impactgren;
 
 void (float psize, entity p) KickPlayer =

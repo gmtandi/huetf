@@ -226,8 +226,11 @@ float (float tno) TeamFortress_TeamSet =
 			}
 			ClientKill ();
 		}
+if (!captainmode)
+{
 		bprint (2, self.netname);
 		bprint (2, " has joined as an Observer.\n");
+}
 		self.team_no = 0;
 		self.playerclass = 0;
 		return (1);
@@ -242,7 +245,8 @@ float (float tno) TeamFortress_TeamSet =
 	}
 	if ((self.team_no == tno))
 	{
-		sprint (self, 2, "You are already in that team. Pick another.\n");
+		if (!captainmode)
+			sprint (self, 2, "You are already in that team. Pick another.\n");
 		return (0);
 	}
 	if (self.team_no)
@@ -313,11 +317,13 @@ float (float tno) TeamFortress_TeamSet =
 		SetTeamName (self);
 		return (1);
 	}
+if (!captainmode) {
 	bprint (2, self.netname);
 	bprint (2, " has joined Team No ");
 	st = ftos (tno);
 	bprint (2, st);
 	bprint (2, ".\n");
+}
 	self.playerclass = 0;
 	self.team_no = tno;
 	self.immune_to_check = (time + 5);

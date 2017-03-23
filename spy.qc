@@ -699,7 +699,7 @@ void () TeamFortress_SpyGoUndercover =
 	if ((self.is_undercover != 2))
 	{
 		self.current_menu = 12;
-		self.menu_count = 25;
+		self.menu_count = 30;
 	}
 	else
 	{

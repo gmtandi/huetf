@@ -45,15 +45,6 @@ void () TeamFortress_Scan;
 void (float timer) TeamFortress_SetDetpack;
 void (float all) TeamFortress_TeamShowScores;
 void (entity Player) TeamFortress_TeamShowMemberClasses;
-void () Admin_CountPlayers;
-void () Admin_CycleDeal;
-void () Admin_DoKick;
-void () Admin_CeaseFire;
-void () Admin_ListIPs;
-void () AbortElect;
-void () VoteAdmin;
-void () VoteYes;
-void () VoteNo;
 void (float t) TimeDown;
 void (float t) TimeUp;
 void (float t) PmTimeDown;
@@ -3561,6 +3552,27 @@ void () ImpulseCommands =
 			}
 		}
 	}
+
+	if (self.captain) {
+                self.current_menu = 24;
+                self.current_menu_type = 5;
+                self.current_menu_page = 1;
+                self.menu_count = 30;
+                self.menu_displaytime = RANGE_MELEE;
+                self.impulse = RANGE_MELEE;
+                return;
+	}
+
+	if ((self.impulse == 239))
+	{
+		self.current_menu = 24;
+		self.menu_count = 30;
+		self.menu_displaytime = RANGE_MELEE;
+		self.impulse = RANGE_MELEE;
+		return;
+	}
+
+
 	if (((cb_prematch || cease_fire) || round_over))
 	{
 		if (PreMatchImpulses ())
@@ -3580,6 +3592,7 @@ void () ImpulseCommands =
 		UseSpecialSkill ();
 		return;
 	}
+
 	if (tfvsdm)
 	{
 		if (((self.team_no == 1) || (self.team_no == AS_MELEE)))
@@ -3587,7 +3600,7 @@ void () ImpulseCommands =
 			if (((self.impulse == 8) && (self.current_menu != 6)))
 			{
 				self.current_menu = 6;
-				self.menu_count = 25;
+				self.menu_count = 30;
 				self.menu_displaytime = RANGE_MELEE;
 				self.impulse = RANGE_MELEE;
 				return;
@@ -3599,13 +3612,12 @@ void () ImpulseCommands =
 		if (((self.impulse == 8) && (self.current_menu != 6)))
 		{
 			self.current_menu = 6;
-			self.menu_count = 25;
-			self.menu_displaytime = RANGE_MELEE;
+			self.menu_count = 30;
 			self.impulse = RANGE_MELEE;
 			return;
 		}
 	}
-	if ((self.impulse == __))
+	if ((self.impulse == __) && !captainmode)
 	{
 		if ((clanbattle && !cb_prematch))
 		{
@@ -3614,7 +3626,7 @@ void () ImpulseCommands =
 			return;
 		}
 		self.current_menu = 2;
-		self.menu_count = 25;
+		self.menu_count = 30;
 		self.impulse = RANGE_MELEE;
 		return;
 	}
@@ -3743,7 +3755,7 @@ void () ImpulseCommands =
 														if ((self.impulse == 172))
 														{
 															self.current_menu = AS_MISSILE;
-															self.menu_count = 25;
+															self.menu_count = 30;
 															self.impulse = RANGE_MELEE;
 															return;
 														}
@@ -5209,7 +5221,7 @@ float () PreMatchImpulses =
 			if (((self.impulse == 8) && (self.current_menu != 6)))
 			{
 				self.current_menu = 6;
-				self.menu_count = 25;
+				self.menu_count = 30;
 				self.menu_displaytime = RANGE_MELEE;
 				self.impulse = RANGE_MELEE;
 				return (1);
@@ -5221,7 +5233,7 @@ float () PreMatchImpulses =
 		if (((self.impulse == 8) && (self.current_menu != 6)))
 		{
 			self.current_menu = 6;
-			self.menu_count = 25;
+			self.menu_count = 30;
 			self.menu_displaytime = RANGE_MELEE;
 			self.impulse = RANGE_MELEE;
 			return (1);
@@ -5338,10 +5350,10 @@ float () DeadImpulses =
 				}
 				else
 				{
-					if (((self.playerclass && (self.impulse == _c)) && !cb_prematch))
+					if (((self.playerclass && (self.impulse == _c)) && !cb_prematch && !captainmode))
 					{
 						self.current_menu = 20;
-						self.menu_count = 25;
+						self.menu_count = 30;
 						self.impulse = RANGE_MELEE;
 						return (1);
 					}
@@ -5647,7 +5659,7 @@ void () W_WeaponFrame =
 					{
 						if (!self.playerclass)
 						{
-							if (round_active)
+							if (round_active || !captainmode)
 							{
 								return;
 							}
@@ -5698,7 +5710,7 @@ void () W_WeaponFrame =
 		if (((self.current_menu == 6) || (self.current_menu == 7)))
 		{
 			self.current_menu = 8;
-			self.menu_count = 25;
+			self.menu_count = 30;
 			Attack_Finished (0.2);
 		}
 		else

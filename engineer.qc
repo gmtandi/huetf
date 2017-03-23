@@ -326,7 +326,7 @@ void () TeamFortress_EngineerBuild =
 			return;
 		}
 		self.current_menu = 15;
-		self.menu_count = 25;
+		self.menu_count = 30;
 	}
 	else
 	{
@@ -765,7 +765,7 @@ void () T_Dispenser =
 	if (((other.building == world) && (other.building_wait < time)))
 	{
 		other.current_menu = 19;
-		other.menu_count = 25;
+		other.menu_count = 30;
 		other.building = self;
 		dist_checker = spawn ();
 		dist_checker.classname = "timer";
@@ -834,7 +834,7 @@ void (entity disp) Engineer_UseDispenser =
 	sprint (self, 2, st);
 	sprint (self, 2, " armor\n");
 	self.current_menu = 16;
-	self.menu_count = 25;
+	self.menu_count = 30;
 	self.building = disp;
 	dist_checker = spawn ();
 	dist_checker.classname = "timer";
@@ -868,7 +868,7 @@ void (entity gun) Engineer_UseSentryGun =
 	}
 	sprint (self, 2, "\n");
 	self.current_menu = 17;
-	self.menu_count = 25;
+	self.menu_count = 30;
 	self.building = gun;
 	dist_checker = spawn ();
 	dist_checker.classname = "timer";
@@ -906,7 +906,7 @@ void () CheckDistance =
 	if ((vlen (dist) > 64))
 	{
 		CenterPrint (self.owner, "\n");
-		self.owner.menu_count = 25;
+		self.owner.menu_count = 30;
 		self.owner.current_menu = 1;
 		self.owner.building = world;
 		dremove (self);
@@ -946,7 +946,7 @@ void (entity eng, string bld) DestroyBuilding =
 				{
 					te.real_owner.StatusRefreshTime = (time + 0.1);
 				}
-				te.real_owner.menu_count = 25;
+				te.real_owner.menu_count = 30;
 				te.real_owner.current_menu = 1;
 				te.real_owner.building = world;
 			}
