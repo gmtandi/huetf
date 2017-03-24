@@ -3678,9 +3678,9 @@ if (self.current_menu_type != 5) {
 		self = temp;
 	}
 } else {
-	        if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp) {
+	        if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp && self.captain) {
                 temp = self;
-                self.admin_use.captain = 1;
+//                self.admin_use.captain = 1;
                 self = self.admin_use;
 
 		TeamFortress_TeamSet (temp.team_no);
