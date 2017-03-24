@@ -1152,6 +1152,10 @@ float(string text, float say_team) ChatMessage =
                 return 0;
 
 
+if (self.captain != 1 && captainmode) {
+	return 1;
+}
+
       if (argv(0) == "test")
       {
                 bprint(2.00,"whazzup\n");

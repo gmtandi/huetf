@@ -3553,7 +3553,7 @@ void () ImpulseCommands =
 		}
 	}
 
-	if (self.captain) {
+	if (self.captain == 1) {
                 self.current_menu = 24;
                 self.current_menu_type = 5;
                 self.current_menu_page = 1;

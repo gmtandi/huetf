@@ -874,7 +874,8 @@ void (entity gun) Engineer_UseSentryGun =
 	//Autospanner, first tries to upgrade if it has cells, then tries to repair if sentry gun is not repaired, then finally tries to put some ammo on it
 	if (autospanner) 
 	{
-		if (gun.weapon < 3 && self.ammo_cells >= 130) {
+	if (gun.weapon < 3 && self.ammo_cells >= 130) {
+	    sound (self, 3, "weapons/turrset.wav", 1, 1);
             Engineer_SentryGun_Upgrade(gun);
             return;
         } else if (gun.health < gun.max_health && self.ammo_cells > 0) {

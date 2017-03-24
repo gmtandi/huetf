@@ -3467,11 +3467,9 @@ if (f_tmp2 == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4
 		temp = self;
 		te = find (world, classname, "player");
 		while (te != world) {
-			if ( te.captain )  {
 				te.captain = 0;
 				self = te;
 				ResetMenu();
-			}
 			te = find (te, classname, "player");
 		}
 		self = temp;
@@ -3481,12 +3479,12 @@ if (f_tmp2 == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4
 
 		s_menu8 = "\b[\b8\b]\b \bPrevious Page\b         \n";
 		s_menu7 = "\n\b[\b9\b]\b \bNext Page\b             \n";
-if (self.is_admin || self.captain) {
+if (self.is_admin || self.captain == 1) {
 		s_menu9 = "\b[\b0\b]\b \bBack to Main Menu\b     \n";
 } else {
 		s_menu9 = "\n";
 }
-if ((self.is_admin || self.captain) && captainmode) {
+if ((self.is_admin || self.captain == 1) && captainmode) {
 		s_menu9 = strcat(s_menu9, "Option 0 results in canceling captain mode.\n");
 }
 
@@ -3641,28 +3639,29 @@ if (!captainmode)
 
 
 if (self.current_menu_type != 5) {
-	if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp) {
+	if (self.admin_use != world && f_tmp == ((self.current_menu_page - 1) * 7) + inp) {
 		temp = self;
 		self.admin_use.captain = 1;
 		self = self.admin_use;
 		if (temp.current_menu_type == 3) {
+			self.team_no = 1;
 			temp.current_menu_type = 4;
-			TeamFortress_TeamSet(1);
 		} else if (temp.current_menu_type == 4) {
-			TeamFortress_TeamSet(2);
+			self.team_no = 2;
 			local entity te;
 			te = find (world, classname, "player");
 			while (te != world)
 			{
 				self = te;
-				if (!self.captain)
+				if (self.captain != 1)
 				{
 					TeamFortress_TeamSet (-1);
 					self.current_menu = 0;
-					Menu_StuffClassHelp ();
-					Menu_ClassHelp ();
+//					Menu_StuffClassHelp ();
+//					Menu_ClassHelp ();
 					self.impulse = 0;
 				} else {
+					TeamFortress_TeamSet(self.team_no);
 					bprint(2, "\[\sCaptain Mode\s\]\s:\s ");
 					bprint(2, self.netname);
 					bprint(2, " \bIs the captain for team\b ");
@@ -3678,9 +3677,9 @@ if (self.current_menu_type != 5) {
 		self = temp;
 	}
 } else {
-	        if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp && self.captain) {
+	        if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp && self.captain == 1) {
                 temp = self;
-//                self.admin_use.captain = 1;
+                self.admin_use.captain = 2;
                 self = self.admin_use;
 
 		TeamFortress_TeamSet (temp.team_no);
