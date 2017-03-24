@@ -4,6 +4,8 @@ void () TeamFortress_SaveMe =
 {
 	local entity te;
 	local entity tl;
+	local float dist;
+	local string savememsg,locname,needvalue;	
 
 	if ((self.last_sound < time))
 	{
@@ -41,6 +43,42 @@ void () TeamFortress_SaveMe =
 					WriteCoord (1, self.origin_z);
 					dremove (tl);
 				}
+				if ((te.playerclass == 5) || (te.playerclass == 9)) {
+					dist = vlen(self.origin - te.origin);
+					if (dist < 2500) {
+						locname = locationname(self.origin);
+						if (te.playerclass == 5) {
+							savememsg = strcat(self.netname," needs health");
+							if (locname != "someplace") {
+								savememsg = strcat(savememsg, "\n");
+							} else {
+								savememsg = strcat(savememsg, " ");
+							}	
+							needvalue = strcat("h:", ftos(self.health));
+							savememsg = strcat(savememsg, needvalue);				
+						}
+						if (te.playerclass == 9) {
+							savememsg = strcat(self.netname," needs armor");
+							if (locname != "someplace") {
+								savememsg = strcat(savememsg, "\n");
+							} else {
+								savememsg = strcat(savememsg, " ");
+							}	
+							needvalue = strcat("a:", ftos(self.armorvalue));
+							savememsg = strcat(savememsg, needvalue);					
+						}
+						locname = locationname(self.origin);
+						if (locname != "someplace") {
+							savememsg = strcat(strcat(savememsg, " @"),locname);
+						}
+						CenterPrint2 (te,"\n",savememsg);
+					}
+				}
+				
+				//if (d) {
+					//CenterPrint2 (te,"\n\n\n", ftos(vlen(dist)));
+				//}
+
 			}
 		}
 		te = find (te, classname, "player");
