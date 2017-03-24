@@ -2679,7 +2679,7 @@ void () ClientDisconnect =
 	st = ftos (fr);
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
 
-if (self.captain) {
+if (self.captain == 1) {
 	captainmode = 0;
 	bprint(2, "\[\sCaptain Mode\s\]\s:\s \bCaptain\b ");
 	bprint(2, self.netname);
