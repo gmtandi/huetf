@@ -3462,7 +3462,7 @@ if (self.current_menu_type != 3 && self.current_menu_type != 4 && self.current_m
 		}
 }
 
-if (f_tmp2 == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4 ) ) {
+if (f_tmp == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4 ) ) {
         bprint(2, "\[\sCaptain Mode\s\]\s:\s \sDone! No player remaining. Let's start the game!\s.\n");
 		temp = self;
 		te = find (world, classname, "player");
