@@ -898,7 +898,7 @@ void (entity gun) Engineer_UseSentryGun =
 	dist_checker.owner = self;
 	dist_checker.enemy = gun;
 	dist_checker.think = CheckDistance;
-	dist_checker.nextthink = (time + 0.3);
+	dist_checker.nextthink = (time + 0.1);
 };
 
 void (entity gun) Engineer_SentryGun_Upgrade = {
@@ -1045,7 +1045,7 @@ void () CheckDistance =
 		return;
 	}
 	dist = (self.enemy.origin - self.owner.origin);
-	if ((vlen (dist) > 80))
+	if ((vlen (dist) > 64))
 	{
 		CenterPrint (self.owner, "\n");
 		self.owner.menu_count = 30;
@@ -1054,7 +1054,7 @@ void () CheckDistance =
 		dremove (self);
 		return;
 	}
-	self.nextthink = (time + 0.3);
+	self.nextthink = (time + 0.1);
 };
 
 void (entity eng, string bld) DestroyBuilding =
