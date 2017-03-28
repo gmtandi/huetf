@@ -306,6 +306,10 @@ float captainmode;
 .float captain;
 float autospanner;
 float impactgren;
+float sniperpower;
+.float power_full;
+.float power_time;
+.float reload_sniper_rifle;
 
 void (float psize, entity p) KickPlayer =
 {

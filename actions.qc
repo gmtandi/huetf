@@ -44,34 +44,42 @@ void () TeamFortress_SaveMe =
 					dremove (tl);
 				}
 				if ((te.playerclass == 5) || (te.playerclass == 9)) {
-					dist = vlen(self.origin - te.origin);
-					if (dist < 2500) {
-						locname = locationname(self.origin);
-						if (te.playerclass == 5) {
-							savememsg = strcat(self.netname," needs health");
+					local float send = 0;
+					if ((self.health < (self.max_health/1.25)) || (self.armorvalue < (self.maxarmor/1.25))) {
+						dist = vlen(self.origin - te.origin);
+						if (dist < 2500) {
+							locname = locationname(self.origin);
+							if ((te.playerclass == 5) && (self.health < (self.max_health/1.25))) {
+								send = 1;
+								savememsg = strcat(self.netname," needs health");
+								if (locname != "someplace") {
+									savememsg = strcat(savememsg, "\n");
+								} else {
+									savememsg = strcat(savememsg, " ");
+								}	
+								needvalue = strcat("h:", ftos(self.health));
+								savememsg = strcat(savememsg, needvalue);				
+							}
+							if ((te.playerclass == 9) && (self.armorvalue < (self.maxarmor/1.25))) {
+								send = 1;
+								savememsg = strcat(self.netname," needs armor");
+								if (locname != "someplace") {
+									savememsg = strcat(savememsg, "\n");
+								} else {
+									savememsg = strcat(savememsg, " ");
+								}	
+								needvalue = strcat("a:", ftos(self.armorvalue));
+								savememsg = strcat(savememsg, needvalue);					
+							}
+
 							if (locname != "someplace") {
-								savememsg = strcat(savememsg, "\n");
-							} else {
-								savememsg = strcat(savememsg, " ");
-							}	
-							needvalue = strcat("h:", ftos(self.health));
-							savememsg = strcat(savememsg, needvalue);				
+								savememsg = strcat(strcat(savememsg, " @"),locname);
+							}
+							if (send) {
+								savememsg = strcat(savememsg,"\n");
+								CenterPrint2 (te,"\n",savememsg);
+							}
 						}
-						if (te.playerclass == 9) {
-							savememsg = strcat(self.netname," needs armor");
-							if (locname != "someplace") {
-								savememsg = strcat(savememsg, "\n");
-							} else {
-								savememsg = strcat(savememsg, " ");
-							}	
-							needvalue = strcat("a:", ftos(self.armorvalue));
-							savememsg = strcat(savememsg, needvalue);					
-						}
-						locname = locationname(self.origin);
-						if (locname != "someplace") {
-							savememsg = strcat(strcat(savememsg, " @"),locname);
-						}
-						CenterPrint2 (te,"\n",savememsg);
 					}
 				}
 				

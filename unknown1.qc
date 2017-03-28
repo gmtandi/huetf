@@ -809,6 +809,13 @@ void (float f, float c) WriteIntXXXX;
 void (float f) WriteSIntXXXX;
 void (float i) WriteSpace;
 
+void (entity pl) Status_Refresh =
+{
+    if (pl.StatusRefreshTime == time)
+        return;
+    pl.StatusRefreshTime = time;
+};
+
 void () RefreshStatusBar =
 {
 	local float x;
@@ -1011,6 +1018,20 @@ void () RefreshStatusBar =
 					WriteStr ("Range: ");
 					WriteIntXXX (te.health, COLOR_WHITE);
 				}
+			}
+			else if ((sniperpower) && (self.playerclass == 2)) {
+				local string st = "";
+				x = 0;
+			    if (self.heat) {
+			        st = "Ποχες: ";
+			        st = strcat(st, ftos(self.heat));
+			        st = strcat(st, " dmg");
+			        if (self.power_full) {
+			            st = strcat(st, " (max)");
+			        }
+			    }
+			    WriteStr(st);
+			    x = x + 13;
 			}
 			else
 			{
@@ -1277,21 +1298,26 @@ void () RefreshStatusBar =
 					}
 					num = (6 - self.reload_grenade_launcher);
 				}
+				else if ((self.current_weapon == 8192))
+				{	
+					if (((4 - self.reload_rocket_launcher) > self.ammo_rockets))
+					{
+						self.reload_rocket_launcher = (4 - self.ammo_rockets);
+					}
+					num = (4 - self.reload_rocket_launcher);					
+				}
+				else if ((sniperpower) && (self.current_weapon == WEAP_SNIPER_RIFLE)) {
+					if (((1 - self.reload_sniper_rifle) > self.ammo_shells))
+					{
+						self.reload_sniper_rifle = (1 - self.ammo_shells);
+					}
+					num = (1 - self.reload_sniper_rifle);
+				}
 				else
 				{
-					if ((self.current_weapon == 8192))
-					{
-						if (((4 - self.reload_rocket_launcher) > self.ammo_rockets))
-						{
-							self.reload_rocket_launcher = (4 - self.ammo_rockets);
-						}
-						num = (4 - self.reload_rocket_launcher);
-					}
-					else
-					{
-						num = -1;
-					}
+					num = -1;
 				}
+			
 			}
 		}
 		if ((num >= 0))

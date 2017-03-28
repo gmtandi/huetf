@@ -146,52 +146,89 @@ void () TeamFortress_ReloadCurrentWeapon =
 				{
 					sprint (self, 2, "not enough ammo to reload\n");
 				}
-			}
-			else
+			}			
+			else if ((self.current_weapon == 8192))
 			{
-				if ((self.current_weapon == 8192))
+				if ((self.ammo_rockets == 0))
 				{
-					if ((self.ammo_rockets == 0))
+					sprint (self, 2, "out of rockets.\n");
+					return;
+				}
+				if ((self.reload_rocket_launcher == 0))
+				{
+					sprint (self, 2, "clip full.\n");
+					return;
+				}
+				if (((4 - self.reload_rocket_launcher) == self.ammo_rockets))
+				{
+					sprint (self, 2, "all rockets are in the clip.\n");
+					return;
+				}
+				if ((self.reload_rocket_launcher < self.ammo_rockets))
+				{
+					Attack_Finished (0.8);
+					rt = ((4 - self.reload_rocket_launcher) / 4);
+					rt = (5 - (5 * rt));
+					self.reload_rocket_launcher = 0;
+					if ((self.ammo_rockets < 4))
 					{
-						sprint (self, 2, "out of rockets.\n");
-						return;
+						self.reload_rocket_launcher = (4 - self.ammo_rockets);
 					}
-					if ((self.reload_rocket_launcher == 0))
-					{
-						sprint (self, 2, "clip full.\n");
-						return;
-					}
-					if (((4 - self.reload_rocket_launcher) == self.ammo_rockets))
-					{
-						sprint (self, 2, "all rockets are in the clip.\n");
-						return;
-					}
-					if ((self.reload_rocket_launcher < self.ammo_rockets))
-					{
-						Attack_Finished (0.8);
-						rt = ((4 - self.reload_rocket_launcher) / 4);
-						rt = (5 - (5 * rt));
-						self.reload_rocket_launcher = 0;
-						if ((self.ammo_rockets < 4))
-						{
-							self.reload_rocket_launcher = (4 - self.ammo_rockets);
-						}
-						sprint (self, 2, "reloading...\n");
-						self.tfstate = (self.tfstate | 2);
-						tWeapon = spawn ();
-						tWeapon.owner = self;
-						tWeapon.classname = "timer";
-						tWeapon.nextthink = (time + rt);
-						tWeapon.think = W_Reload_rocket_launcher;
-						self.weaponmodel = "";
-						self.weaponframe = 0;
-					}
-					else
-					{
-						sprint (self, 2, "not enough ammo to reload\n");
-					}
+					sprint (self, 2, "reloading...\n");
+					self.tfstate = (self.tfstate | 2);
+					tWeapon = spawn ();
+					tWeapon.owner = self;
+					tWeapon.classname = "timer";
+					tWeapon.nextthink = (time + rt);
+					tWeapon.think = W_Reload_rocket_launcher;
+					self.weaponmodel = "";
+					self.weaponframe = 0;
+				}
+				else
+				{
+					sprint (self, 2, "not enough ammo to reload\n");
 				}
 			}
+			
+			else if ((sniperpower) && (self.current_weapon == WEAP_SNIPER_RIFLE))
+			{
+				if ((self.ammo_shells == 0))
+				{
+					sprint (self, 2, "out of shells.\n");
+					return;
+				}
+				if ((self.reload_sniper_rifle == 0))
+				{
+					sprint (self, 2, "clip full.\n");
+					return;
+				}
+				if (((4 - self.reload_sniper_rifle) == self.ammo_shells))
+				{
+					sprint (self, 2, "all shells are in the clip.\n");
+					return;
+				}
+				if ((self.reload_sniper_rifle < self.ammo_shells))
+				{
+					Attack_Finished (0.8);
+					rt = ((1 - self.reload_sniper_rifle) / 1);
+					rt = (5 - (5 * rt));
+					self.reload_sniper_rifle = 0;
+					sprint (self, 2, "reloading...\n");
+					self.tfstate = (self.tfstate | 2);
+					tWeapon = spawn ();
+					tWeapon.owner = self;
+					tWeapon.classname = "timer";
+					tWeapon.nextthink = (time + rt);
+					tWeapon.think = W_Reload_sniper_rifle;
+					self.weaponmodel = "";
+					self.weaponframe = 0;
+				}
+				else
+				{
+					sprint (self, 2, "not enough ammo to reload\n");
+				}
+			}
+			
 		}
 	}
 };

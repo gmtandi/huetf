@@ -903,7 +903,7 @@ void () W_FireSniperRifle =
 		traceline (src, (src + (dir * 3072)), 0, self);
 	}
 	deathmsg = COLOR_GREEN;
-	dam_mult = 0.8;
+	dam_mult = 1;
 	if (trace_ent)
 	{
 		if ((trace_ent.classname == "player"))
@@ -922,7 +922,7 @@ void () W_FireSniperRifle =
 			trace_ent.head_shot_vector = '0 0 0';
 			if ((zdif < 0))
 			{
-				dam_mult = 0.4;
+				dam_mult = 0.5;
 				trace_ent.leg_damage = (trace_ent.leg_damage + 1);
 				TeamFortress_SetSpeed (trace_ent);
 				deathmsg = 28;
@@ -938,7 +938,7 @@ void () W_FireSniperRifle =
 			{
 				if ((zdif > 20))
 				{
-					dam_mult = 1.2;
+					dam_mult = 2;
 					stuffcmd (trace_ent, "bf\n");
 					trace_ent.head_shot_vector = (trace_ent.origin - self.origin);
 					deathmsg = 29;
@@ -2089,98 +2089,41 @@ void () W_SetCurrentAmmo =
 	}
 };
 
-float () W_BestWeapon =
-{
-	local float it;
+float () W_BestWeapon = {
+    local float it;
 
-	it = self.weapons_carried;
-	if ((((self.ammo_cells >= 1) && (it & WEAP_LIGHTNING)) && (self.waterlevel <= 1)))
-	{
-		return (WEAP_LIGHTNING);
-	}
-	else
-	{
-		if ((((self.ammo_cells >= 7) && (self.ammo_shells >= 1)) && (it & WEAP_ASSAULT_CANNON)))
-		{
-			return (WEAP_ASSAULT_CANNON);
-		}
-		else
-		{
-			if (((self.ammo_cells >= 1) && (it & WEAP_FLAMETHROWER)))
-			{
-				return (WEAP_FLAMETHROWER);
-			}
-			else
-			{
-				if (((self.ammo_nails >= 2) && (it & WEAP_GRENADE_LAUNCHER)))
-				{
-					return (WEAP_GRENADE_LAUNCHER);
-				}
-				else
-				{
-					if (((self.ammo_shells >= 2) && (it & WEAP_NAILGUN)))
-					{
-						return (WEAP_NAILGUN);
-					}
-					else
-					{
-						if (((self.ammo_nails >= 1) && (it & WEAP_RAILGUN)))
-						{
-							return (WEAP_RAILGUN);
-						}
-						else
-						{
-							if (((self.ammo_nails >= 1) && (it & WEAP_SUPER_NAILGUN)))
-							{
-								return (WEAP_SUPER_NAILGUN);
-							}
-							else
-							{
-								if (((self.ammo_shells >= 1) && (it & WEAP_SUPER_NAILGUN)))
-								{
-									return (128);
-								}
-								else
-								{
-									if (((self.ammo_shells >= 1) && (it & WEAP_TRANQ)))
-									{
-										return (WEAP_TRANQ);
-									}
-									else
-									{
-										if ((it & WEAP_SPANNER))
-										{
-											return (WEAP_SPANNER);
-										}
-										else
-										{
-											if ((it & WEAP_AXE))
-											{
-												return (WEAP_AXE);
-											}
-											else
-											{
-												if ((it & WEAP_SNIPER_RIFLE))
-												{
-													return (WEAP_SNIPER_RIFLE);
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	return (0);
+    it = self.weapons_carried;
+    if ((self.ammo_cells >= 1 && it & WEAP_LIGHTNING) && self.waterlevel <= 1)
+        return WEAP_LIGHTNING;
+    else if ((self.ammo_cells >= 7 && self.ammo_shells >= 1) && it & WEAP_ASSAULT_CANNON)
+        return WEAP_ASSAULT_CANNON;
+    else if (self.ammo_cells >= 1 && it & WEAP_FLAMETHROWER)
+        return WEAP_FLAMETHROWER;
+    else if (self.ammo_nails >= 2 && it & WEAP_SUPER_NAILGUN)
+        return WEAP_SUPER_NAILGUN;
+    else if (self.ammo_nails >= 1 && it & WEAP_RAILGUN)
+        return WEAP_RAILGUN;
+    else if (self.ammo_shells >= 2 && it & WEAP_SUPER_SHOTGUN)
+        return WEAP_SUPER_SHOTGUN;
+    else if (self.ammo_nails >= 1 && it & WEAP_NAILGUN)
+        return WEAP_NAILGUN;
+    else if (self.ammo_shells >= 1 && it & WEAP_SHOTGUN)
+        return WEAP_SHOTGUN;
+    else if (self.ammo_shells >= 1 && it & WEAP_TRANQ)
+        return WEAP_TRANQ;
+    else if (it & WEAP_MEDIKIT)
+        return WEAP_MEDIKIT;
+    else if (it & WEAP_SPANNER)
+        return WEAP_SPANNER;
+    else if (it & WEAP_AXE)
+        return WEAP_AXE;
+
+    return 0;
 };
 
 float () W_CheckNoAmmo = {
 
-         if ( (self.current_weapon == WEAP_MEDIKIT) ||  (self.current_weapon == WEAP_AXE) || (self.current_weapon == WEAP_HOOK) || (self.current_weapon == WEAP_SPANNER) || (self.current_weapon == WEAP_SNIPER_RIFLE) ) {
+         if ( (self.current_weapon == WEAP_MEDIKIT) ||  (self.current_weapon == WEAP_AXE) || (self.current_weapon == WEAP_HOOK) || (self.current_weapon == WEAP_SPANNER) ) {
 
             return ( 1.000 );
 
@@ -2253,6 +2196,15 @@ void () W_Reload_rocket_launcher =
 	self.owner.StatusRefreshTime = (time + 0.1);
 };
 
+void () W_Reload_sniper_rifle =
+{
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.weaponmodel = "progs/v_srifle.mdl";
+	sprint (self.owner, 2, "finished reloading\n");
+	dremove (self);
+	self.owner.StatusRefreshTime = (time + 0.1);
+};
+
 float () CheckForReload =
 {
 	local entity tWeapon;
@@ -2263,7 +2215,7 @@ float () CheckForReload =
 	}
 	if ((self.playerclass != 11))
 	{
-		if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
+		if ((self.current_weapon == WEAP_SHOTGUN ))
 		{
 			if (((self.reload_shotgun >= 8) && (self.ammo_shells > 0)))
 			{
@@ -2286,7 +2238,7 @@ float () CheckForReload =
 		}
 		else
 		{
-			if ((self.current_weapon == WEAP_NAILGUN))
+			if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
 			{
 				if ((self.reload_super_shotgun > 16))
 				{
@@ -2334,30 +2286,45 @@ float () CheckForReload =
 						return (1);
 					}
 				}
-				else
+				else if ((self.current_weapon == 8192))
 				{
-					if ((self.current_weapon == 8192))
+					if (((self.reload_rocket_launcher >= 4) && (self.ammo_rockets > 0)))
 					{
-						if (((self.reload_rocket_launcher >= 4) && (self.ammo_rockets > 0)))
+						self.reload_rocket_launcher = 0;
+						if ((self.ammo_rockets < 4))
 						{
-							self.reload_rocket_launcher = 0;
-							if ((self.ammo_rockets < 4))
-							{
-								self.reload_rocket_launcher = (4 - self.ammo_rockets);
-							}
-							sprint (self, 2, "reloading... \n");
-							self.tfstate = (self.tfstate | 2);
-							tWeapon = spawn ();
-							tWeapon.owner = self;
-							tWeapon.classname = "timer";
-							tWeapon.nextthink = (time + 5);
-							tWeapon.think = W_Reload_rocket_launcher;
-							self.weaponmodel = "";
-							self.weaponframe = 0;
-							return (1);
+							self.reload_rocket_launcher = (4 - self.ammo_rockets);
 						}
+						sprint (self, 2, "reloading... \n");
+						self.tfstate = (self.tfstate | 2);
+						tWeapon = spawn ();
+						tWeapon.owner = self;
+						tWeapon.classname = "timer";
+						tWeapon.nextthink = (time + 5);
+						tWeapon.think = W_Reload_rocket_launcher;
+						self.weaponmodel = "";
+						self.weaponframe = 0;
+						return (1);
+					}
+				}				
+				else if ((sniperpower) && (self.current_weapon == WEAP_SNIPER_RIFLE))
+				{
+					if (((self.reload_sniper_rifle >= 1) && (self.ammo_shells > 0)))
+					{
+						self.reload_sniper_rifle = 0;						
+						sprint (self, 2, "reloading... \n");
+						self.tfstate = (self.tfstate | 2);
+						tWeapon = spawn ();
+						tWeapon.owner = self;
+						tWeapon.classname = "timer";
+						tWeapon.nextthink = (time + 5);
+						tWeapon.think = W_Reload_sniper_rifle;
+						self.weaponmodel = "";
+						self.weaponframe = 0;
+						return (1);
 					}
 				}
+				
 			}
 		}
 	}
@@ -2395,6 +2362,7 @@ void () W_Attack =
 	local float tc;
 	local entity te;
 	local string st;
+	 
 
 	if (!W_CheckNoAmmo ())
 	{
@@ -2536,14 +2504,24 @@ void () W_Attack =
 										CheckForReload ();
 										Attack_Finished (0.8);
 									}
-									else
+									else if ((self.current_weapon == 65536))
 									{
-										if ((self.current_weapon == 65536))
+										player_light1 ();
+										Attack_Finished (0.1);
+										sound (self, 0, "weapons/lstart.wav", 1, 1);
+									}									 
+									else if (sniperpower && (self.current_weapon == WEAP_SNIPER_RIFLE))
+									{
+										if (CheckForReload ())
 										{
-											player_light1 ();
-											Attack_Finished (0.1);
-											sound (self, 0, "weapons/lstart.wav", 1, 1);
+											return;
 										}
+										player_shot1 ();
+										W_FireSniperRifle ();
+										self.reload_sniper_rifle = (self.reload_sniper_rifle + 1);
+										self.StatusRefreshTime = (time + 0.1);
+										CheckForReload ();
+										Attack_Finished (0.8);
 									}
 								}
 							}
@@ -5697,12 +5675,15 @@ void () W_WeaponFrame =
 	{
 		return;
 	}
-	if (((!self.button0 && self.fire_held_down) && (self.current_weapon == 32768)))
+	if (!self.button0 && self.fire_held_down)
 	{
-		self.fire_held_down = 0;
-		self.tfstate = (self.tfstate - (self.tfstate & 2048));
-		TeamFortress_SetSpeed (self);
-		player_run ();
+		if (self.current_weapon == WEAP_ASSAULT_CANNON ) {
+			self.fire_held_down = 0;
+			self.tfstate = (self.tfstate - (self.tfstate & 2048));
+			TeamFortress_SetSpeed (self);
+			player_run ();
+		}
+
 		return;
 	}
 	if ((self.button0 && !self.fire_held_down))
@@ -5715,34 +5696,35 @@ void () W_WeaponFrame =
 		}
 		else
 		{
-			if ((self.current_weapon == space))
-			{
-				if ((self.tfstate & 2048))
-				{
-					if ((self.heat < 400))
-					{
-						self.heat = (self.heat + 3);
-					}
-					if ((self.height > 30))
-					{
-						self.height = (self.height - 5);
-						TF_zoom (self.height);
-					}
-				}
-				else
-				{
-					tv = self.velocity;
-					tv_z = 0;
-					if ((vlen (tv) <= _2))
-					{
-						SniperSight_Create ();
-						self.heat = _2;
-						self.height = self.oldheight;
-						self.tfstate = (self.tfstate | 2048);
-						TeamFortress_SetSpeed (self);
-					}
-				}
-			}
+			if ( (self.current_weapon == WEAP_SNIPER_RIFLE)) {
+				if (!(self.tfstate & TFSTATE_RELOADING)) {
+	 	            if (self.tfstate & TFSTATE_AIMING) {
+		                if (self.heat < 400) {
+		                    self.heat = self.heat + 3;
+		                    if (self.heat > 400)
+		                    	self.heat = 400;
+		                    if ((sniperpower) && (self.power_time < (time - 0.3))) {
+		                        self.power_time = time;
+		                        Status_Refresh(self);
+		                    }
+		                } else if ((sniperpower) && (!self.power_full)) {
+		                    self.power_full = 1;
+		                    Status_Refresh(self);
+		                }
+		            } else {
+		                local vector tv = self.velocity;
+		                tv_z = 0;
+		                if (vlen(tv) <= 50) {
+		                    SniperSight_Create();
+		                    self.heat = 50;
+		                    self.tfstate = self.tfstate | 2048;
+		                    if (sniperpower)
+		                    	self.power_full = 0;
+		                    TeamFortress_SetSpeed(self);
+		                }
+		            }
+	        	}
+	        }
 			else
 			{
 				if ((self.current_weapon == 32768))
