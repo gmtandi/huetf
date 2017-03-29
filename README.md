@@ -6,7 +6,7 @@ As the creator of the mod don't have source code for the OzTF 1.45 version, we h
 
 For the next days probably we will gonna have many improvements mainly on clanmode, statistics, demo recording and parametrization on some features.
 
-To compile this source you'll gonna need to use fteqcc.
+To compile this source you'll need to use fteqcc.
 
 To run you must use MVDSV 0.30  with some modified built-in functions, or you can use the linux32 binary available in this repo.
 
@@ -32,4 +32,7 @@ Some improvements already done to the code are:
  - Caltrop Canister wil only release when -gren1 (no more caltrop explosions);
  - Impact grenade replaces Caltrop for scout (localinfo impactgren 1);
  - Added adminmenu that allows admin to choose between few functions: kick, ban, clanmode, timelimit, captain;
- - Added "autospanner", to make engineer's life easier by making a smart spanner to deal with his sentry gun
+ - Added "autospanner" (localinfo autospanner on), to make engineer's life easier by making a smart spanner to deal with his sentry gun;
+ - .Loc file support: you just need to put your .loc in "fortress/locs" and the server will be able to decode coordinates into location names. Used in the improved "saveme";
+ - Added "sniperpower" (localinfo sniperpower on), getting inspiration (...and some code) from Classic Fortress: Snipers have one shot per clip, added a meter to the SBAR to view the rifle power;
+
