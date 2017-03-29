@@ -2056,7 +2056,7 @@ void (float inp) Menu_Team_Input =
 	}
 	else
 	{
-		if ((inp == 5) && !captainmode)
+		if ((inp == 5))
 		{
 			TeamFortress_TeamPutPlayerInTeam ();
 		}
@@ -3392,6 +3392,7 @@ void () Menu_Admin =
 		s_menu1 = strcat(s_menu1, "ê3ë Kick                         \n");
 		s_menu1 = strcat(s_menu1, "ê4ë Ban                          \n");
 		s_menu1 = strcat(s_menu1, "ê5ë Captain                      \n");
+		s_menu1 = strcat(s_menu1, "ê6ë Randomize Teams              \n");
 		s_menu1 = strcat(s_menu1, "\n");
 		s_menu1 = strcat(s_menu1, "\n\n");
 		s_menu1 = strcat(s_menu1, "ê8ë Previous Page                \n");
@@ -3549,6 +3550,23 @@ if (self.current_menu_type == 0) {
 	if (inp == 4) {
 		self.current_menu_type = 2;
 		self.current_menu_page = 1;
+	}
+
+
+	if (inp == 6) {
+		captainmode = 1;
+
+                temp = self;
+		self = find (world, classname, "player");
+                while (self != world) {
+			TeamFortress_TeamPutPlayerInTeam();
+                        self = find (self, classname, "player");
+                }
+		self = temp;
+
+		captainmode = 0;
+
+
 	}
 
 
