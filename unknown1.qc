@@ -1020,8 +1020,7 @@ void () RefreshStatusBar =
 				}
 			}
 			else if ((sniperpower) && (self.playerclass == 2)) {
-				local string st = "";
-				x = 0;
+				local string st = "";				
 			    if (self.heat) {
 			        st = "Ποχες: ";
 			        st = strcat(st, ftos(self.heat));
@@ -1031,7 +1030,7 @@ void () RefreshStatusBar =
 			        }
 			    }
 			    WriteStr(st);
-			    x = x + 13;
+			    WriteSpace (18);
 			}
 			else
 			{
