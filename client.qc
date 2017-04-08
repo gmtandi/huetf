@@ -2595,8 +2595,6 @@ void () ClientConnect =
 	bprint (2, " entered the game\n");
 	stuffcmd (self, "say -d\n");
 
-//	updateMaxClients();
-
 	if ((0 == 0))
 	{
 		self.tfstate = (self.tfstate | 4096);

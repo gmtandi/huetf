@@ -8,8 +8,6 @@ void () SpectatorConnect =
 	local string st;
 	local float res;
 
-//	updateMaxClients();
-
 	self.playerclass = 0;
 	self.classname = "observer";
 	self.flags = 8;
@@ -44,6 +42,16 @@ void () SpectatorImpulseCommand =
 {
 	local vector cam;
 
+	if ((self.impulse == 239))
+        {
+                self.current_menu = 24;
+                self.menu_count = 30;
+                self.menu_displaytime = 0;
+                self.impulse = 0;
+                return;
+        }
+
+
 	if ((self.impulse == 1))
 	{
 		self.goalentity = find (self.goalentity, classname, "info_player_deathmatch");
@@ -77,16 +85,6 @@ void () SpectatorImpulseCommand =
 				self.impulse = 0;
 				return;
 			}
-
-       else if ((self.impulse == 239))
-        {
-                self.current_menu = 24;
-                self.menu_count = 30;
-                self.menu_displaytime = 0;
-                self.impulse = 0;
-                return;
-        }
-
 			else
 			{
 				if ((self.impulse == 185))
@@ -133,7 +131,16 @@ void () SpectatorThink =
 {
 	local vector cam;
 
+
+	if (self.current_menu == 24) {
+		Menu_Admin ();
+		if (self.impulse > 0 && self.impulse < 11) {
+			Menu_Admin_Input (self.impulse);
+		}
+	}
+
 	Check_Track ();
+
 	if (self.impulse)
 	{
 		SpectatorImpulseCommand ();

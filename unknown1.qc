@@ -1817,6 +1817,11 @@ void () Player_Menu =
 		self.menu_count = (self.menu_count + 1);
 		return;
 	}
+
+	if (self.current_menu == 24) {
+		Menu_Admin ();
+	}
+
 	if ((self.current_menu == 5))
 	{
 		Menu_Intro ();
@@ -1889,12 +1894,6 @@ void () Player_Menu =
 								{
 									Menu_Engineer ();
 								}
-
-else if (self.current_menu == 24) {
-	Menu_Admin ();
-}
-
-
 								else
 								{
 									if ((self.current_menu == 16))
@@ -3393,7 +3392,7 @@ void () Menu_Admin =
 		s_menu1 = strcat(s_menu1, "ê4ë Ban                          \n");
 		s_menu1 = strcat(s_menu1, "ê5ë Captain                      \n");
 		s_menu1 = strcat(s_menu1, "ê6ë Randomize Teams              \n");
-		s_menu1 = strcat(s_menu1, "\n");
+		s_menu1 = strcat(s_menu1, "ê7ë Restart current map          \n");
 		s_menu1 = strcat(s_menu1, "\n\n");
 		s_menu1 = strcat(s_menu1, "ê8ë Previous Page                \n");
 		s_menu1 = strcat(s_menu1, "ê9ë Next Page                    \n");
@@ -3552,6 +3551,15 @@ if (self.current_menu_type == 0) {
 		self.current_menu_page = 1;
 	}
 
+//
+// Restart current map
+//
+
+	if (inp == 7) {
+		localcmd ("map ");
+		localcmd (mapname);
+		localcmd ("\n");
+	}
 
 	if (inp == 6) {
 		captainmode = 1;
