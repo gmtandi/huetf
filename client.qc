@@ -32,6 +32,53 @@ string nextmap;
 float intermission_running;
 float intermission_exittime;
 
+float () PlayerCount = {
+	local entity te;
+	local float tmp = 0;
+
+	te = find (world, classname, "player");
+	while (te != world) {
+		tmp = tmp + 1;
+		te = find (te, classname, "player");
+	}
+
+	return tmp;
+};
+
+float () SpectatorCount = {
+	local entity te;
+        local float tmp = 0;
+
+	te = find (world, classname, "observer");
+	while (te != world) {
+		tmp = tmp + 1;
+		te = find (te, classname, "observer");
+	}
+
+	return tmp;
+};
+
+void () updateMaxClients = {
+	float playersCount = PlayerCount();
+	float spectatorsCount = SpectatorCount();
+
+	if (stof (infokey (world, "automaxclients"))) {
+		if (playersCount + spectatorsCount < 31) {
+			localcmd ("maxspectators ");
+			localcmd (ftos(spectatorsCount + 1));
+			localcmd ("\n");
+
+			localcmd ("maxclients ");
+			localcmd (ftos(31 - spectatorsCount));
+			localcmd ("\n");
+		} else {
+			localcmd ("maxspectators 0\n");
+
+			localcmd ("maxclients 32\n");
+		}
+	}
+};
+
 void () CheckAllRates =
 {
 	local float player_rate;
@@ -92,6 +139,8 @@ void () CheckConnectRate =
             stuffcmd (self,"name tang\n");
             stuffcmd (self,"\n");
          }*/
+
+	updateMaxClients();
 
 
 	if ((maxrate || minrate))
@@ -381,6 +430,7 @@ void () DecodeLevelParms =
       sgbuildlvl2 = CF_GetSetting("sgb2", "sgbuildlvl2", "off");
       sglvl2to3 = CF_GetSetting("sgnl2", "sglvl2to3", "off");
       autospanner = CF_GetSetting("autospanner", "autospanner", "on");
+      automaxclients = CF_GetSetting("automaxclients", "automaxclients", "on");
 
 
       // display grenade timer in status bar [on]
@@ -2544,6 +2594,9 @@ void () ClientConnect =
 	bprint (2, self.netname);
 	bprint (2, " entered the game\n");
 	stuffcmd (self, "say -d\n");
+
+//	updateMaxClients();
+
 	if ((0 == 0))
 	{
 		self.tfstate = (self.tfstate | 4096);
@@ -2678,6 +2731,8 @@ void () ClientDisconnect =
 	fr = rint (self.frags);
 	st = ftos (fr);
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
+
+	updateMaxClients();
 
 if (self.captain == 1) {
 	captainmode = 0;

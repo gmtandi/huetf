@@ -300,6 +300,7 @@ float speedcap;
 float grentimers;
 .float StatusGrenTime;
 float skins24b;
+float automaxclients;
 float sglvl2to3;
 float sgbuildlvl2;
 float captainmode;

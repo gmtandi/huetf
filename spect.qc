@@ -8,6 +8,8 @@ void () SpectatorConnect =
 	local string st;
 	local float res;
 
+//	updateMaxClients();
+
 	self.playerclass = 0;
 	self.classname = "observer";
 	self.flags = 8;
@@ -35,6 +37,7 @@ void () SpectatorConnect =
 
 void () SpectatorDisconnect =
 {
+	updateMaxClients();
 };
 
 void () SpectatorImpulseCommand =
@@ -74,6 +77,16 @@ void () SpectatorImpulseCommand =
 				self.impulse = 0;
 				return;
 			}
+
+       else if ((self.impulse == 239))
+        {
+                self.current_menu = 24;
+                self.menu_count = 30;
+                self.menu_displaytime = 0;
+                self.impulse = 0;
+                return;
+        }
+
 			else
 			{
 				if ((self.impulse == 185))
