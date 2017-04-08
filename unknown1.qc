@@ -1818,10 +1818,6 @@ void () Player_Menu =
 		return;
 	}
 
-	if (self.current_menu == 24) {
-		Menu_Admin ();
-	}
-
 	if ((self.current_menu == 5))
 	{
 		Menu_Intro ();
@@ -1894,6 +1890,11 @@ void () Player_Menu =
 								{
 									Menu_Engineer ();
 								}
+	else if (self.current_menu == 24) {
+		Menu_Admin ();
+	}
+
+
 								else
 								{
 									if ((self.current_menu == 16))
