@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () player_run;
 void () TeamFortress_DisplayDetectionItems;
 float (vector veca, vector vecb) crossproduct;

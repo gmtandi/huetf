@@ -1152,7 +1152,7 @@ float(string text, float say_team) ChatMessage =
                 return 0;
 
 
-if (self.captain != 1 && captainmode) {
+if (self.captain == 0 && captainmode) {
 	return 1;
 }
 

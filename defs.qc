@@ -339,3 +339,14 @@ float (string s) findmap = #104;
 float(entity client, float level, float range, float start, float style, float footer) listmaps = #105;
 string(float id) findmapname = #106;
 
+
+
+// functions.qc definitions
+
+void (float tno) playerSetTeam;
+float () PlayerCount;
+float () SpectatorCount;
+void () nextCaptain;
+void () randomizeCaptains;
+void () disableCaptain;
+void () randomizeTeams;

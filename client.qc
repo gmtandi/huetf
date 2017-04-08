@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () player_pain;
 void () player_stand1;
 void (vector org) spawn_tfog;
@@ -31,32 +30,6 @@ void () CTF_FlagCheck;
 string nextmap;
 float intermission_running;
 float intermission_exittime;
-
-float () PlayerCount = {
-	local entity te;
-	local float tmp = 0;
-
-	te = find (world, classname, "player");
-	while (te != world) {
-		tmp = tmp + 1;
-		te = find (te, classname, "player");
-	}
-
-	return tmp;
-};
-
-float () SpectatorCount = {
-	local entity te;
-        local float tmp = 0;
-
-	te = find (world, classname, "observer");
-	while (te != world) {
-		tmp = tmp + 1;
-		te = find (te, classname, "observer");
-	}
-
-	return tmp;
-};
 
 void () updateMaxClients = {
 	float playersCount = PlayerCount();
@@ -2722,7 +2695,6 @@ void () ClientConnect =
 void () ClientDisconnect =
 {
 	local entity te;
-	local entity temp;
 	local string st;
 	local float fr;
 
@@ -2732,22 +2704,8 @@ void () ClientDisconnect =
 
 	updateMaxClients();
 
-if (self.captain == 1) {
-	captainmode = 0;
-	bprint(2, "\[\sCaptain Mode\s\]\s:\s \bCaptain\b ");
-	bprint(2, self.netname);
-	bprint(2, " \bleft the game\b. Captain Mode Disabled!\n");
-
-                te = self;
-                temp = find (world, classname, "player");
-                while (temp != world) {
-                        self = temp;
-                        temp.captain = 0;
-                        ResetMenu();
-                        temp = find (temp, classname, "player");
-                }
-                self = te;
-
+if (self.captain > 0 && self.captain < 5) {
+	disableCaptain();
 }
 
 	sound (self, 4, "player/tornoff2.wav", 1, 0);
