@@ -1782,8 +1782,6 @@ void () PlayerJump =
 		return;
 	}
 
-//stuffcmd(self, "cl_c2spps 0\n");
-
 	if (!self.playerclass)
 	{
 		if ((self.waterlevel >= 2))
@@ -1886,7 +1884,11 @@ void () PlayerJump =
 		self.heat = 0;
 		player_assaultcannondown1 ();
 	}
-	return;
+        if (!self.ishuman)
+        {
+                self.velocity_z = (self.velocity_z + 270);
+        }
+	return;	return;
 };
 .float dmgtime;
 
@@ -2017,6 +2019,12 @@ void () CheckWaterJump =
 
 void () PlayerPreThink =
 {
+
+        if (BotPreFrame ())
+        {
+                return;
+        }
+
 	if ((self.is_feigning && (self.waterlevel == 1)))
 	{
 		self.watertype = -3;
@@ -2359,6 +2367,11 @@ void () PlayerPostThink =
 	local float speedneg;
 	local float fdmg;
 
+        if (BotPostFrame ())
+        {
+                return;
+        }
+
 	if ((self.motd <= _A))
 	{
 		TeamFortress_MOTD ();
@@ -2505,6 +2518,8 @@ void () ClientConnect =
 	local string st2;
 	local float res;
 
+ClientInRankings();
+
 	st = infokey (self, "*FuhQuake");
 	if ((st == string_null))
 	{
@@ -2526,6 +2541,7 @@ void () ClientConnect =
 	{
 		st = infokey (self, "*prov");
 	}
+
 	st2 = infokey (world, "ban_oldclient");
 	res = stof (st2);
 	if ((st != string_null))
@@ -2694,6 +2710,12 @@ void () ClientConnect =
 
 void () ClientDisconnect =
 {
+
+        if (self.ishuman)
+        {
+                clientSetFree (self.fClientNo);
+        }
+
 	local entity te;
 	local string st;
 	local float fr;

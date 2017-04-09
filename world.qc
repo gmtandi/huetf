@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () Sentry_Rotate;
 void () InitBodyQue;
 
@@ -111,6 +110,9 @@ void () worldspawn =
 	local string st;
 
 	lastspawn = world;
+
+	BotInit();
+
 	number_of_teams = 0;
 	InitBodyQue ();
 	if ((self.model == "maps/e1m8.bsp"))
@@ -275,6 +277,7 @@ void () worldspawn =
 
 void () StartFrame =
 {
+        BotFrame ();
 	teamplay = cvar ("teamplay");
 	timelimit = (cvar ("timelimit") * 60);
 	fraglimit = cvar ("fraglimit");

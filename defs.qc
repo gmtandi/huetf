@@ -221,7 +221,7 @@ void (entity e, string m) setmodel = #3;
 void (entity e, vector min, vector max) setsize = #4;
 void () break = #6;
 float () random = #7;
-void (entity e, float chan, string samp, float vol, float atten) sound = #8;
+
 vector (vector v) normalize = #9;
 void (string e) error = #10;
 void (string e) objerror = #11;
@@ -234,7 +234,7 @@ entity () checkclient = #17;
 entity (entity start, .string fld, string match) find = #18;
 string (string s) precache_sound = #19;
 string (string s) precache_model = #20;
-void (entity client, string s) stuffcmd = #21;
+
 entity (vector org, float rad) findradius = #22;
 void (...) bprint = #23;
 void (...) bprint2 = #23;
@@ -244,14 +244,7 @@ void (...) bprint5 = #23;
 void (...) bprint6 = #23;
 void (...) bprint7 = #23;
 void (...) bprint8 = #23;
-void (...) sprint = #24;
-void (...) sprint2 = #24;
-void (...) sprint3 = #24;
-void (...) sprint4 = #24;
-void (...) sprint5 = #24;
-void (...) sprint6 = #24;
-void (...) sprint7 = #24;
-void (...) sprint8 = #24;
+
 void (...) dprint = #25;
 
 string (float f) ftos = #26;
@@ -269,21 +262,21 @@ float (float v) ceil = #38;
 float (entity e) checkbottom = #40;
 float (vector v) pointcontents = #41;
 float (float f) fabs = #43;
-vector (entity e, float speed) aim = #44;
+
 float (string s) cvar = #45;
 void (string s) localcmd = #46;
 entity (entity e) nextent = #47;
 void (vector o, vector d, float color, float count) particle = #48;
 void () ChangeYaw = #49;
 vector (vector v) vectoangles = #51;
-void (float to, float f) WriteByte = #52;
-void (float to, float f) WriteChar = #53;
-void (float to, float f) WriteShort = #54;
-void (float to, float f) WriteLong = #55;
-void (float to, float f) WriteCoord = #56;
-void (float to, float f) WriteAngle = #57;
-void (float to, string s) WriteString = #58;
-void (float to, entity s) WriteEntity = #59;
+
+
+
+
+
+
+
+
 
 //merc added functions
 float(float f) sin = #60;
@@ -298,16 +291,16 @@ string (string s) precache_file = #68;
 void (entity e) makestatic = #69;
 void (string s) changelevel = #70;
 void (string var, string val) cvar_set = #72;
-void (entity client, string s, ...) centerprint = #73;
+
 
 
 void (vector pos, string samp, float vol, float atten) ambientsound = #74;
 string (string s) precache_model2 = #75;
 string (string s) precache_sound2 = #76;
 string (string s) precache_file2 = #77;
-void (entity e) setspawnparms = #78;
+
 void(entity killer, entity killee) logfrag = #79;
-string(entity e, string key) infokey = #80;
+
 float(string s) stof = #81;
 void (vector where, float set) multicast = #82;
 //void () executecmd = #83;

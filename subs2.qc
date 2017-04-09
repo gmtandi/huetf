@@ -48,6 +48,18 @@ void () InitTrigger =
 	self.model = "";
 };
 
+//bot
+void (entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt =
+{
+	local entity stemp;
+
+	stemp = self;
+	self = ent;
+	SUB_CalcMove (tdest, tspeed, func);
+	self = stemp;
+};
+//
+
 void (vector tdest, float tspeed, void() func) SUB_CalcMove =
 {
 	local vector vdestdelta;
@@ -88,6 +100,18 @@ void () SUB_CalcMoveDone =
 		self.think1 ();
 	}
 };
+
+//bot
+void (entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveEnt =
+{
+	local entity stemp;
+
+	stemp = self;
+	self = ent;
+	SUB_CalcAngleMove (destangle, tspeed, func);
+	self = stemp;
+};
+//
 
 void (vector destangle, float tspeed, void() func) SUB_CalcAngleMove =
 {

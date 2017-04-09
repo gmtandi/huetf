@@ -1657,24 +1657,6 @@ void (float res) StatusRes =
 	}
 };
 
-void (entity pl, string s1) CenterPrint =
-{
-	centerprint (pl, s1);
-	pl.StatusRefreshTime = (time + 1.5);
-};
-
-void (entity pl, string s1, string s2) CenterPrint2 =
-{
-	centerprint (pl, s1, s2);
-	pl.StatusRefreshTime = (time + 1.5);
-};
-
-void (entity pl, string s1, string s2, string s3) CenterPrint3 =
-{
-	centerprint (pl, s1, s2, s3);
-	pl.StatusRefreshTime = (time + 1.5);
-};
-
 string (float type) Status_GrenTypeToString =
 {
 	if ((type == 2))
@@ -1891,6 +1873,13 @@ void () Player_Menu =
 								}
 	else if (self.current_menu == 24) {
 		Menu_Admin ();
+	}
+	else if (self.current_menu == 25) {
+		self.current_menu = 25;
+	} else if (self.current_menu == 26) {
+		self.current_menu = 26;
+	} else if (self.current_menu == 27) {
+		self.current_menu = 27;
 	}
 
 
@@ -2217,10 +2206,16 @@ void (float inp) Menu_Drop_Input =
 
 void (float inp) Menu_Input =
 {
-	if ((self.current_menu == 24))
-	{
+	if ((self.current_menu == 24)) {
 		Menu_Admin_Input (inp);
+	} else if ((self.current_menu == 25)) {
+		BotMenu_Input (inp);
+	} else if ((self.current_menu == 26)) {
+		BotClassMenu_Input (inp);
+	} else if ((self.current_menu == 27)) {
+		BotTeamMenu_Input (inp);
 	}
+
 	else if ((self.current_menu == 2) && !captainmode)
 	{
 		Menu_Team_Input (inp);

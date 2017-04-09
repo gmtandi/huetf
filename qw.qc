@@ -1,11 +1,15 @@
-//=-=-=-=-=
-
-//void () calltimeofday;
 void () SUB_CalcMoveDone;
 void () SUB_CalcAngleMoveDone;
 void () SUB_Null;
 void () SUB_UseTargets;
 void () SUB_Remove;
+void (entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveEnt;
+void (vector destangle, float tspeed, void() func) SUB_CalcAngleMove;
+void (entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt;
+void (vector tdest, float tspeed, void() func) SUB_CalcMove;
+
+string (float tno) GetTeamName;
+
 void (entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 float (entity e, float healamount, float ignore) T_Heal;
 float (entity targ, entity inflictor) CanDamage;
@@ -307,24 +311,3 @@ float captainmode;
 .float captain;
 float autospanner;
 float impactgren;
-
-void (float psize, entity p) KickPlayer =
-{
-	msg_entity = p;
-	if ((psize > -3))
-	{
-		WriteByte (1, 34);
-	}
-	else
-	{
-		WriteByte (1, 35);
-	}
-};
-
-void () muzzleflash =
-{
-	WriteByte (4, 39);
-	WriteEntity (4, self);
-	multicast (self.origin, 2);
-};
-

@@ -1,5 +1,3 @@
-//=-=-=-=-=
-
 void () PrintMaps =
 {
 	local string str;
