@@ -117,6 +117,17 @@ string () PickAName;
 float (float y1, float y2) angcomp;
 
 void (entity client, ...) hue_sprint = #24;
+void (...) bprint = #23;
+void (...) bprint2 = #23;
+void (...) bprint3 = #23;
+void (...) bprint4 = #23;
+void (...) bprint5 = #23;
+void (...) bprint6 = #23;
+void (...) bprint7 = #23;
+void (...) bprint8 = #23;
+
+void (...) dprint = #25;
+
 void (entity client, string s, ...) hue_centerprint = #73;
 
 void (entity e) hue_setspawnparms = #78;

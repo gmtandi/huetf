@@ -178,14 +178,14 @@ void () BotAI =
 		if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
 		{
 			eGren = world;
-			eTemp = find (world, classname, "grenade");
+			eTemp = find (world, classname, "timer");
 			while (eTemp)
 			{
 				if ((eTemp.owner == self))
 				{
 					eGren = eTemp;
 				}
-				eTemp = find (eTemp, classname, "grenade");
+				eTemp = find (eTemp, classname, "timer");
 			}
 			if ((eGren != world))
 			{
