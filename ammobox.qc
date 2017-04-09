@@ -1,4 +1,3 @@
-//=-=-=-=-=
 float (float tno) num_team_ammoboxes =
 {
 	if ((tno == 1))
@@ -593,6 +592,7 @@ void () TeamFortress_Discard =
 	local string st;
 
 	newmis = spawn ();
+	newmis.classname = "item_backpack";
 	if ((self.playerclass == 1))
 	{
 		newmis.ammo_rockets = self.ammo_rockets;

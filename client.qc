@@ -946,6 +946,10 @@ void () ClientKill =
 {
 	local entity te;
 
+        if ((self.classname == "botcam"))
+        {
+                return;
+        }
 	if ((self.has_disconnected == 1))
 	{
 		return;

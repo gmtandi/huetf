@@ -92,12 +92,12 @@ float () UserCmd =
 							bprint (3, "\n");
 							sprint (self, 2, "Type гпннбоду for admin commands.\n");
 						}
-						else
-						{
-							sprint (self, 2, "incorrect admin password\n");
-                                stuffcmd (self, "disconnect\n");
-
-						}
+// REMOVED
+//						else
+//						{
+//							sprint (self, 2, "incorrect admin password\n");
+//                                stuffcmd (self, "disconnect\n");
+//						}
 						return (1);
 					}
 					if ((arg_num == 1))

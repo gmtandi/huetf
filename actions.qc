@@ -1,5 +1,3 @@
-//=-=-=-=-=
-
 void () TeamFortress_SaveMe =
 {
 	local entity te;

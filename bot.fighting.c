@@ -155,14 +155,14 @@ void () PickBestWeapon =
 	local entity eTemp;
 
 	eGren = world;
-	eTemp = find (world, classname, "GrenadeTimer");
+	eTemp = find (world, classname, "grenade");
 	while (eTemp)
 	{
 		if ((eTemp.owner == self))
 		{
 			eGren = eTemp;
 		}
-		eTemp = find (eTemp, classname, "GrenadeTimer");
+		eTemp = find (eTemp, classname, "grenade");
 	}
 	if (((eGren != world) && (eGren.heat < 0.5)))
 	{
@@ -698,14 +698,14 @@ void () HandleGrens =
 	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
 	{
 		eGren = world;
-		eTemp = find (world, classname, "GrenadeTimer");
+		eTemp = find (world, classname, "grenade");
 		while (eTemp)
 		{
 			if (((eTemp.owner == self) && (eTemp != world)))
 			{
 				eGren = eTemp;
 			}
-			eTemp = find (eTemp, classname, "GrenadeTimer");
+			eTemp = find (eTemp, classname, "grenade");
 		}
 		if ((eGren == world))
 		{
@@ -786,14 +786,14 @@ void () UseGren =
 	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
 	{
 		eGren = world;
-		eTemp = find (world, classname, "GrenadeTimer");
+		eTemp = find (world, classname, "grenade");
 		while (eTemp)
 		{
 			if ((eTemp.owner == self))
 			{
 				eGren = eTemp;
 			}
-			eTemp = find (eTemp, classname, "GrenadeTimer");
+			eTemp = find (eTemp, classname, "grenade");
 		}
 		if ((eGren == world))
 		{
