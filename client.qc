@@ -2728,8 +2728,6 @@ void () ClientDisconnect =
 	st = ftos (fr);
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
 
-	updateMaxClients();
-
 if (self.captain > 0 && self.captain < 5) {
 	disableCaptain();
 }
@@ -2885,6 +2883,8 @@ if (self.captain > 0 && self.captain < 5) {
 	setsize (self, '0 0 0', '0 0 0');
 	self.nextthink = 0;
 	self.think = SUB_Null;
+
+	updateMaxClients();
 };
 
 void (entity targ, entity attacker) ClientObituary =
