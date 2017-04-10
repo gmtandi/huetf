@@ -1,109 +1,9 @@
-float (float tno) num_team_ammoboxes =
-{
-	if ((tno == 1))
-	{
-		return (num_team_ammoboxes_1);
-	}
-	else
-	{
-		if ((tno == 2))
-		{
-			return (num_team_ammoboxes_2);
-		}
-		else
-		{
-			if ((tno == 3))
-			{
-				return (num_team_ammoboxes_3);
-			}
-			else
-			{
-				if ((tno == 4))
-				{
-					return (num_team_ammoboxes_4);
-				}
-				else
-				{
-					return (num_world_ammoboxes);
-				}
-			}
-		}
-	}
+void () TeamFortress_AmmoboxThink = {
+	store_obs.num_ammoboxes = store_obs.num_ammoboxes - 1.000;
+	dremove(self);
 };
 
-void (float tno) increment_num_ammoboxes =
-{
-	if ((tno == 1))
-	{
-		num_team_ammoboxes_1 = (num_team_ammoboxes_1 + 1);
-	}
-	else
-	{
-		if ((tno == 2))
-		{
-			num_team_ammoboxes_2 = (num_team_ammoboxes_2 + 1);
-		}
-		else
-		{
-			if ((tno == 3))
-			{
-				num_team_ammoboxes_3 = (num_team_ammoboxes_3 + 1);
-			}
-			else
-			{
-				if ((tno == 4))
-				{
-					num_team_ammoboxes_4 = (num_team_ammoboxes_4 + 1);
-				}
-				else
-				{
-					num_world_ammoboxes = (num_world_ammoboxes + 1);
-				}
-			}
-		}
-	}
-};
-
-void (float tno) decrement_num_ammoboxes =
-{
-	if ((tno == 1))
-	{
-		num_team_ammoboxes_1 = (num_team_ammoboxes_1 - 1);
-	}
-	else
-	{
-		if ((tno == 2))
-		{
-			num_team_ammoboxes_2 = (num_team_ammoboxes_2 - 1);
-		}
-		else
-		{
-			if ((tno == 3))
-			{
-				num_team_ammoboxes_3 = (num_team_ammoboxes_3 - 1);
-			}
-			else
-			{
-				if ((tno == 4))
-				{
-					num_team_ammoboxes_4 = (num_team_ammoboxes_4 - 1);
-				}
-				else
-				{
-					num_world_ammoboxes = (num_world_ammoboxes - 1);
-				}
-			}
-		}
-	}
-};
-
-void () TeamFortress_AmmoboxThink =
-{
-	decrement_num_ammoboxes (self.team_no);
-	dremove (self);
-};
-
-void (float tno) RemoveOldAmmobox =
+void () RemoveOldAmmobox =
 {
 	local entity box;
 	local entity eold;
@@ -113,18 +13,17 @@ void (float tno) RemoveOldAmmobox =
 	box = find (world, classname, "ammobox");
 	while ((box != world))
 	{
-		if (((box.nextthink < rt) && ((box.team_no == tno) || (tno == 0))))
+		if (box.nextthink < rt)
 		{
 			eold = box;
 			rt = box.nextthink;
 		}
 		box = find (box, classname, "ammobox");
 	}
-	if ((eold == world))
-	{
+	if (eold == world)
 		return;
-	}
-	decrement_num_ammoboxes (eold.team_no);
+
+	store_obs.num_ammoboxes = store_obs.num_ammoboxes - 1.000;
 	dremove (eold);
 };
 
@@ -320,8 +219,9 @@ void () TeamFortress_AmmoboxTouch =
 	stuffcmd (other, "bf\n");
 	if (took)
 	{
-		decrement_num_ammoboxes (self.team_no);
-		dremove (self);
+//		decrement_num_ammoboxes (self.team_no);
+//		dremove (self);
+		TeamFortress_AmmoboxThink();
 	}
 	self = other;
 	W_SetCurrentAmmo ();
@@ -438,11 +338,11 @@ void (float type) TeamFortress_DropAmmo =
 		}
 	}
 	W_SetCurrentAmmo ();
-	increment_num_ammoboxes (self.team_no);
-	if ((num_team_ammoboxes (self.team_no) > (num_max_ammoboxes / number_of_teams)))
-	{
-		RemoveOldAmmobox (self.team_no);
-	}
+
+	store_obs.num_ammoboxes = store_obs.num_ammoboxes + 1.000;
+	if (store_obs.num_ammoboxes > store_obs.max_ammoboxes )
+		RemoveOldAmmobox ();
+
 	newmis = spawn ();
 	newmis.aflag = ammo;
 	newmis.weapon = type;
@@ -492,7 +392,7 @@ void (float type) TeamFortress_DropAmmo =
 	newmis.movetype = 6;
 	newmis.solid = 1;
 	newmis.classname = "ammobox";
-	newmis.team_no = self.team_no;
+	newmis.pteam = self.pteam;
 	makevectors (self.v_angle);
 	if (self.v_angle_x)
 	{
@@ -535,10 +435,10 @@ void () Drop_detpack =
 	self.ammo_detpack = (self.ammo_detpack - 1);
 	if (tfstrike)
 	{
-		if ((self.team_no == 2))
+		if (self.pteam == pteam2)
 		{
 			stuffcmd (self, "topcolor ");
-			tc = (TeamFortress_TeamGetColor (self.team_no) - 1);
+			stuffcmd (self, ftos(self.pteam.colormap));
 			st = ftos (tc);
 			stuffcmd (self, st);
 			stuffcmd (self, "\n");
@@ -549,7 +449,7 @@ void () Drop_detpack =
 	newmis.health = time;
 	newmis.ammo_detpack = 1;
 	newmis.weapon = enter;
-	newmis.team_no = self.team_no;
+	newmis.pteam = self.pteam;
 	newmis.angles = '90 0 0';
 	newmis.solid = 1;
 	newmis.movetype = 6;
@@ -670,18 +570,19 @@ void () TeamFortress_Discard =
 	self.ammo_cells = (self.ammo_cells - newmis.ammo_cells);
 	W_SetCurrentAmmo ();
 	sound (self, 3, "weapons/lock4.wav", 1, 1);
-	increment_num_ammoboxes (self.team_no);
-	if ((num_team_ammoboxes (self.team_no) > (num_max_ammoboxes / number_of_teams)))
-	{
-		RemoveOldAmmobox (self.team_no);
-	}
+
+
+	store_obs.num_ammoboxes = store_obs.num_ammoboxes + 1.000;
+	if (store_obs.num_ammoboxes > store_obs.max_ammoboxes)
+		RemoveOldAmmobox ();
+
 	newmis.enemy = self;
 	newmis.health = time;
 	newmis.weapon = 0;
 	newmis.movetype = 6;
 	newmis.solid = 1;
 	newmis.classname = "ammobox";
-	newmis.team_no = self.team_no;
+	newmis.pteam = self.pteam;
 	makevectors (self.v_angle);
 	if (self.v_angle_x)
 	{

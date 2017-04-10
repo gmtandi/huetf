@@ -2301,7 +2301,7 @@ void () Menu_Intro =
 	if ((st1 != string_null))
 	{
 		st2 = infokey (world, "motd2");
-		centerprint (self, st1, "\n", st2);
+		CenterPrint3 (self, st1, "\n", st2);
 	}
 	else
 	{
@@ -2804,7 +2804,10 @@ void () Menu_Engineer =
 			s_sentry = "\n";
 		}
 	}
-	centerprint (self, s_action, s_disp, s_sentry, s_nothing);
+	s_action = strcat(s_action, s_disp);
+	s_action = strcat(s_action, s_sentry);
+	s_action = strcat(s_action, s_nothing);
+	centerprint (self, s_action);
 };
 
 void (float inp) Menu_Engineer_Input =
@@ -3483,8 +3486,13 @@ if ((self.is_admin || self.captain == 1) && captainmode) {
 		s_menu9 = strcat(s_menu9, "Option 0 results in canceling captain mode.\n");
 }
 
+		s_menu1 = strcat(s_menu1, s_menu2);
+		s_menu1 = strcat(s_menu1, s_menu7);
+		s_menu1 = strcat(s_menu1, s_menu8);
+		s_menu1 = strcat(s_menu1, s_menu9);
 
-		centerprint (self, s_menu1, s_menu2, s_menu7, s_menu8, s_menu9);
+
+		centerprint (self, s_menu1);
 	}
 
 

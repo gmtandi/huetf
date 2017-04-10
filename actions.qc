@@ -107,7 +107,7 @@ void () TeamFortress_ID =
 				if ((self.playerclass == 5))
 				{
 					st = ftos (rint (trace_ent.health));
-					centerprint (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls, "\n", st, " health\n");
+					centerprint7 (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls, "\n", st, " health\n");
 					return;
 				}
 				else
@@ -115,11 +115,11 @@ void () TeamFortress_ID =
 					if ((self.playerclass == 9))
 					{
 						st = ftos (rint (trace_ent.armorvalue));
-						centerprint (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls, "\n", st, " armor\n");
+						centerprint7 (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls, "\n", st, " armor\n");
 						return;
 					}
 				}
-				centerprint (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls);
+				centerprint4 (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls);
 				return;
 			}
 			if ((trace_ent.playerclass == 8))
@@ -132,11 +132,11 @@ void () TeamFortress_ID =
 						st = ftos (rint (trace_ent.health));
 						if ((trace_ent.undercover_skin != 0))
 						{
-							centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly ", cls, "\n", st, " health\n");
+							centerprint7 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly ", cls, "\n", st, " health\n");
 						}
 						else
 						{
-							centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n", st, " health\n");
+							centerprint5 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n", st, " health\n");
 						}
 						return;
 					}
@@ -147,11 +147,11 @@ void () TeamFortress_ID =
 							st = ftos (rint (trace_ent.armorvalue));
 							if ((trace_ent.undercover_skin != 0))
 							{
-								centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly ", cls, "\n", st, " armor\n");
+								centerprint7 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly ", cls, "\n", st, " armor\n");
 							}
 							else
 							{
-								centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n", st, " armor\n");
+								centerprint5 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n", st, " armor\n");
 							}
 							return;
 						}
@@ -160,11 +160,11 @@ void () TeamFortress_ID =
 							st = ftos (rint (trace_ent.armorvalue));
 							if ((trace_ent.undercover_skin != 0))
 							{
-								centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly ", cls);
+								centerprint4 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly ", cls);
 							}
 							else
 							{
-								centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n");
+								centerprint4 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n");
 							}
 							return;
 						}
@@ -174,29 +174,29 @@ void () TeamFortress_ID =
 				{
 					if ((trace_ent.undercover_skin != 0))
 					{
-						centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nEnemy ", cls);
+						centerprint4 (self, "\n\n\n\n", trace_ent.undercover_name, "\nEnemy ", cls);
 					}
 					else
 					{
-						centerprint (self, "\n\n\n\n", trace_ent.undercover_name, "\nEnemy Spy");
+						centerprint4 (self, "\n\n\n\n", trace_ent.undercover_name, "\nEnemy Spy");
 					}
 				}
 				else
 				{
 					if ((trace_ent.undercover_skin != 0))
 					{
-						centerprint (self, "\n\n\n\n", trace_ent.netname, "\nEnemy ", cls);
+						centerprint4 (self, "\n\n\n\n", trace_ent.netname, "\nEnemy ", cls);
 					}
 					else
 					{
-						centerprint (self, "\n\n\n\n", trace_ent.netname, "\nEnemy Spy");
+						centerprint4 (self, "\n\n\n\n", trace_ent.netname, "\nEnemy Spy");
 					}
 				}
 			}
 			else
 			{
 				cls = TeamFortress_GetClassName (trace_ent.playerclass);
-				centerprint (self, "\n\n\n\n", trace_ent.netname, "\nEnemy ", cls);
+				centerprint4 (self, "\n\n\n\n", trace_ent.netname, "\nEnemy ", cls);
 			}
 		}
 		else
@@ -210,7 +210,7 @@ void () TeamFortress_ID =
 				}
 				else
 				{
-					centerprint (self, "\n\n\n\nDispenser made by ", trace_ent.real_owner.netname);
+					centerprint2 (self, "\n\n\n\nDispenser made by ", trace_ent.real_owner.netname);
 				}
 			}
 			else
@@ -226,17 +226,17 @@ void () TeamFortress_ID =
 					{
 						if (!teamplay)
 						{
-							centerprint (self, "\n\n\n\nSentrygun made by\n", trace_ent.real_owner.netname);
+							centerprint2 (self, "\n\n\n\nSentrygun made by\n", trace_ent.real_owner.netname);
 						}
 						else
 						{
 							if ((((self.team_no != 0) && (self.team_no == trace_ent.team_no)) || !self.playerclass))
 							{
-								centerprint (self, "\n\n\n\nFriendly Sentrygun made by\n", trace_ent.real_owner.netname);
+								centerprint2 (self, "\n\n\n\nFriendly Sentrygun made by\n", trace_ent.real_owner.netname);
 							}
 							else
 							{
-								centerprint (self, "\n\n\n\nEnemy Sentrygun made by\n", trace_ent.real_owner.netname);
+								centerprint2 (self, "\n\n\n\nEnemy Sentrygun made by\n", trace_ent.real_owner.netname);
 							}
 						}
 					}

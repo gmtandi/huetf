@@ -258,7 +258,7 @@ void () DecodeLevelParms =
 			SetNewParms ();
 		}
 	}
-	localcmd ("serverinfo huetf 1.45\n");
+
 	self.items = parm1;
 	self.health = parm2;
 	self.armorvalue = parm3;
@@ -268,8 +268,13 @@ void () DecodeLevelParms =
 	self.ammo_cells = parm7;
 	self.current_weapon = parm8;
 	self.armortype = (parm9 * 0.01);
+
 	if (!(toggleflags & 256))
 	{
+
+		localcmd ("serverinfo huetf 1.45\n");
+		Initialise_Teams();
+
 		flagem_checked = 0;
 		if ((coop || !deathmatch))
 		{
@@ -2522,7 +2527,7 @@ void () ClientConnect =
 	local string st2;
 	local float res;
 
-ClientInRankings();
+	ClientInRankings();
 
 	st = infokey (self, "*FuhQuake");
 	if ((st == string_null))

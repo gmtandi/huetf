@@ -392,7 +392,7 @@ void (entity e, float chan, string samp, float vol, float atten) sound =
 
 void (float to, float f) WriteByte =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}
@@ -401,7 +401,7 @@ void (float to, float f) WriteByte =
 
 void (float to, float f) WriteChar =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}
@@ -410,7 +410,7 @@ void (float to, float f) WriteChar =
 
 void (float to, float f) WriteShort =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}
@@ -419,7 +419,7 @@ void (float to, float f) WriteShort =
 
 void (float to, float f) WriteLong =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}
@@ -428,7 +428,7 @@ void (float to, float f) WriteLong =
 
 void (float to, float f) WriteCoord =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}
@@ -437,7 +437,7 @@ void (float to, float f) WriteCoord =
 
 void (float to, float f) WriteAngle =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}
@@ -446,7 +446,7 @@ void (float to, float f) WriteAngle =
 
 void (float to, string s) WriteString =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}
@@ -455,7 +455,7 @@ void (float to, string s) WriteString =
 
 void (float to, entity s) WriteEntity =
 {
-	if (((to == MSG_ONE) && (msg_entity.ishuman != TRUE)))
+	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
 	{
 		return;
 	}

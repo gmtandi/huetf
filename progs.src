@@ -11,6 +11,7 @@ combat.qc
 items.qc
 infocheck.qc
 track.qc
+stored.qc
 weapons.qc
 world.qc
 client.qc

@@ -14,6 +14,23 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 float (entity e, float healamount, float ignore) T_Heal;
 float (entity targ, entity inflictor) CanDamage;
 void (entity Goal, entity AP, entity ActivatingGoal) AttemptToActivate;
+
+//added for optimization
+entity store_obs;
+entity pteam1;
+entity pteam2;
+entity pteam3;
+entity pteam4;
+
+
+.entity pteam;  //added ent and .variables to reduce old variables see below
+.float maxplayers;
+.float max_pipebombs;
+.float num_pipebombs;
+.float max_ammoboxes;
+.float num_ammoboxes;
+
+
 .float forward;
 .float right;
 .float up;
@@ -235,12 +252,7 @@ float num_team_flares_2;
 float num_team_flares_3;
 float num_team_flares_4;
 float num_max_flares;
-float num_world_ammoboxes;
-float num_team_ammoboxes_1;
-float num_team_ammoboxes_2;
-float num_team_ammoboxes_3;
-float num_team_ammoboxes_4;
-float num_max_ammoboxes;
+
 .float undercover_team;
 .float undercover_skin;
 .string undercover_name;
