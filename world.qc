@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () Sentry_Rotate;
 void () InitBodyQue;
 
@@ -40,15 +39,6 @@ void () Deluminate =
 
 void () main =
 {
-	precache_file ("progs.dat");
-	precache_file ("gfx.wad");
-	precache_file ("quake.rc");
-	precache_file ("default.cfg");
-	precache_file ("end1.bin");
-	precache_file2 ("end2.bin");
-	precache_file ("demo1.dem");
-	precache_file ("demo2.dem");
-	precache_file ("demo3.dem");
 	precache_file ("gfx/palette.lmp");
 	precache_file ("gfx/colormap.lmp");
 	precache_file2 ("gfx/pop.lmp");
@@ -120,6 +110,9 @@ void () worldspawn =
 	local string st;
 
 	lastspawn = world;
+
+	BotInit();
+
 	number_of_teams = 0;
 	InitBodyQue ();
 	if ((self.model == "maps/e1m8.bsp"))
@@ -284,6 +277,7 @@ void () worldspawn =
 
 void () StartFrame =
 {
+        BotFrame ();
 	teamplay = cvar ("teamplay");
 	timelimit = (cvar ("timelimit") * 60);
 	fraglimit = cvar ("fraglimit");

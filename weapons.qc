@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () player_run;
 void () TeamFortress_DisplayDetectionItems;
 float (vector veca, vector vecb) crossproduct;
@@ -5582,6 +5581,7 @@ void () W_WeaponFrame =
 			TF_zoom (self.height);
 		}
 	}
+
 	if (round_active)
 	{
 		st = GetTeamName (self.team_no);
@@ -5624,7 +5624,7 @@ void () W_WeaponFrame =
 		}
 		else
 		{
-			if (((self.impulse > 0) && (self.impulse < 11)))
+			if (((self.impulse > 0) && (self.impulse < 10)))
 			{
 				Menu_Input (self.impulse);
 				if ((self.impulse != 0))

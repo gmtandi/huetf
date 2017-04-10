@@ -1,4 +1,3 @@
-//=-=-=-=-=
 .float fAverageFrameTime;
 .float fFrameCount;
 .float fFrameReset;
@@ -37,6 +36,7 @@ void () CheckFps =
 void () Calibrate_Level =
 {
 	local string st;
+	local float fl;
 	local float autoteam_time;
 	local entity ent;
 
@@ -60,11 +60,12 @@ void () Calibrate_Level =
 		num_max_flares = 9;
 	}
 	st = infokey (world, "max_ammoboxes");
-	num_max_ammoboxes = (stof (st) + 1);
-	if (((num_max_ammoboxes < 13) || (num_max_ammoboxes > 29)))
-	{
-		num_max_ammoboxes = 21;
+
+	fl = (stof (st)) + 1.000;
+	if (fl < 13 || fl > 29) {
+		store_obs.max_ammoboxes = 21.000;
 	}
+
 	st = infokey (world, "grapple");
 	if (((st == "on") || (toggleflags & 1024)))
 	{

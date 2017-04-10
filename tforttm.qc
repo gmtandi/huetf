@@ -1,4 +1,3 @@
-//=-=-=-=-=
 float () TeamFortress_TeamGetWinner;
 float () TeamFortress_TeamGetSecond;
 float (float tno) TeamFortress_TeamGetScore;
@@ -55,7 +54,7 @@ float () TeamFortress_TeamPutPlayerInTeam =
 
 float (float tno) TeamFortress_TeamGetColor =
 {
-	if (!self.playerclass)
+	if (!self.playerclass && !captainmode)
 	{
 		return (1);
 	}
@@ -129,7 +128,7 @@ string (float tno) GetTeamName =
 
 	if ((self.classname == "player"))
 	{
-		if (!self.playerclass)
+		if (!self.playerclass && !captainmode)
 		{
 			return ("observe");
 		}
@@ -226,13 +225,14 @@ float (float tno) TeamFortress_TeamSet =
 			}
 			ClientKill ();
 		}
-if (!captainmode)
-{
-		bprint (2, self.netname);
-		bprint (2, " has joined as an Observer.\n");
-}
-		self.team_no = 0;
-		self.playerclass = 0;
+
+		if (!captainmode) {
+			bprint (2, self.netname);
+			bprint (2, " has joined as an Observer.\n");
+			self.team_no = 0;
+			self.playerclass = 0;
+		}
+
 		return (1);
 	}
 	if (((tno > number_of_teams) && (number_of_teams != 0)))
@@ -273,7 +273,10 @@ if (!captainmode)
 			te = find (te, classname, "detpack");
 		}
 		self.playerclass = 0;
-		ClientKill ();
+
+		if (!captainmode)
+			ClientKill ();
+
 		if (TeamFortress_TeamIsCivilian (tno))
 		{
 			self.nextpc = 11;

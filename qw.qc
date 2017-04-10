@@ -1,15 +1,36 @@
-//=-=-=-=-=
-
-//void () calltimeofday;
 void () SUB_CalcMoveDone;
 void () SUB_CalcAngleMoveDone;
 void () SUB_Null;
 void () SUB_UseTargets;
 void () SUB_Remove;
+void (entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveEnt;
+void (vector destangle, float tspeed, void() func) SUB_CalcAngleMove;
+void (entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt;
+void (vector tdest, float tspeed, void() func) SUB_CalcMove;
+
+string (float tno) GetTeamName;
+
 void (entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 float (entity e, float healamount, float ignore) T_Heal;
 float (entity targ, entity inflictor) CanDamage;
 void (entity Goal, entity AP, entity ActivatingGoal) AttemptToActivate;
+
+//added for optimization
+entity store_obs;
+entity pteam1;
+entity pteam2;
+entity pteam3;
+entity pteam4;
+
+
+.entity pteam;  //added ent and .variables to reduce old variables see below
+.float maxplayers;
+.float max_pipebombs;
+.float num_pipebombs;
+.float max_ammoboxes;
+.float num_ammoboxes;
+
+
 .float forward;
 .float right;
 .float up;
@@ -231,12 +252,7 @@ float num_team_flares_2;
 float num_team_flares_3;
 float num_team_flares_4;
 float num_max_flares;
-float num_world_ammoboxes;
-float num_team_ammoboxes_1;
-float num_team_ammoboxes_2;
-float num_team_ammoboxes_3;
-float num_team_ammoboxes_4;
-float num_max_ammoboxes;
+
 .float undercover_team;
 .float undercover_skin;
 .string undercover_name;
@@ -300,6 +316,7 @@ float speedcap;
 float grentimers;
 .float StatusGrenTime;
 float skins24b;
+float automaxclients;
 float sglvl2to3;
 float sgbuildlvl2;
 float captainmode;
@@ -310,24 +327,3 @@ float sniperpower;
 .float power_full;
 .float power_time;
 .float reload_sniper_rifle;
-
-void (float psize, entity p) KickPlayer =
-{
-	msg_entity = p;
-	if ((psize > -3))
-	{
-		WriteByte (1, 34);
-	}
-	else
-	{
-		WriteByte (1, 35);
-	}
-};
-
-void () muzzleflash =
-{
-	WriteByte (4, 39);
-	WriteEntity (4, self);
-	multicast (self.origin, 2);
-};
-

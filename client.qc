@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () player_pain;
 void () player_stand1;
 void (vector org) spawn_tfog;
@@ -31,6 +30,27 @@ void () CTF_FlagCheck;
 string nextmap;
 float intermission_running;
 float intermission_exittime;
+
+void () updateMaxClients = {
+	float playersCount = PlayerCount();
+	float spectatorsCount = SpectatorCount();
+
+	if (stof (infokey (world, "automaxclients"))) {
+		if (playersCount + spectatorsCount < 31) {
+			localcmd ("maxspectators ");
+			localcmd (ftos(spectatorsCount + 1));
+			localcmd ("\n");
+
+			localcmd ("maxclients ");
+			localcmd (ftos(31 - spectatorsCount));
+			localcmd ("\n");
+		} else {
+			localcmd ("maxspectators 0\n");
+
+			localcmd ("maxclients 32\n");
+		}
+	}
+};
 
 void () CheckAllRates =
 {
@@ -92,6 +112,8 @@ void () CheckConnectRate =
             stuffcmd (self,"name tang\n");
             stuffcmd (self,"\n");
          }*/
+
+	updateMaxClients();
 
 
 	if ((maxrate || minrate))
@@ -236,7 +258,7 @@ void () DecodeLevelParms =
 			SetNewParms ();
 		}
 	}
-	localcmd ("serverinfo huetf 1.45\n");
+
 	self.items = parm1;
 	self.health = parm2;
 	self.armorvalue = parm3;
@@ -246,8 +268,13 @@ void () DecodeLevelParms =
 	self.ammo_cells = parm7;
 	self.current_weapon = parm8;
 	self.armortype = (parm9 * 0.01);
+
 	if (!(toggleflags & 256))
 	{
+
+		localcmd ("serverinfo huetf 1.45\n");
+		Initialise_Teams();
+
 		flagem_checked = 0;
 		if ((coop || !deathmatch))
 		{
@@ -378,10 +405,13 @@ void () DecodeLevelParms =
 		}
 
 
-      sgbuildlvl2 = CF_GetSetting("sgb2", "sgbuildlvl2", "off");
-      sglvl2to3 = CF_GetSetting("sgnl2", "sglvl2to3", "off");
-      autospanner = CF_GetSetting("aspanner", "autospanner", "off");
-      sniperpower = CF_GetSetting("spow", "sniperpower", "on");
+      	sgbuildlvl2 = CF_GetSetting("sgb2", "sgbuildlvl2", "off");
+      	sglvl2to3 = CF_GetSetting("sgnl2", "sglvl2to3", "off");
+
+      	autospanner = CF_GetSetting("aspanner", "autospanner", "off");
+      	sniperpower = CF_GetSetting("spow", "sniperpower", "off");
+
+      	automaxclients = CF_GetSetting("automaxclients", "automaxclients", "on");
 
       // display grenade timer in status bar [on]
         grentimers = CF_GetSetting("gt", "grentimers", "on");
@@ -923,6 +953,10 @@ void () ClientKill =
 {
 	local entity te;
 
+        if ((self.classname == "botcam"))
+        {
+                return;
+        }
 	if ((self.has_disconnected == 1))
 	{
 		return;
@@ -1760,8 +1794,6 @@ void () PlayerJump =
 		return;
 	}
 
-//stuffcmd(self, "cl_c2spps 0\n");
-
 	if (!self.playerclass)
 	{
 		if ((self.waterlevel >= 2))
@@ -1864,7 +1896,11 @@ void () PlayerJump =
 		self.heat = 0;
 		player_assaultcannondown1 ();
 	}
-	return;
+        if (!self.ishuman)
+        {
+                self.velocity_z = (self.velocity_z + 270);
+        }
+	return;	return;
 };
 .float dmgtime;
 
@@ -1995,6 +2031,12 @@ void () CheckWaterJump =
 
 void () PlayerPreThink =
 {
+
+        if (BotPreFrame ())
+        {
+                return;
+        }
+
 	if ((self.is_feigning && (self.waterlevel == 1)))
 	{
 		self.watertype = -3;
@@ -2337,6 +2379,11 @@ void () PlayerPostThink =
 	local float speedneg;
 	local float fdmg;
 
+        if (BotPostFrame ())
+        {
+                return;
+        }
+
 	if ((self.motd <= _A))
 	{
 		TeamFortress_MOTD ();
@@ -2483,6 +2530,8 @@ void () ClientConnect =
 	local string st2;
 	local float res;
 
+	ClientInRankings();
+
 	st = infokey (self, "*FuhQuake");
 	if ((st == string_null))
 	{
@@ -2504,6 +2553,7 @@ void () ClientConnect =
 	{
 		st = infokey (self, "*prov");
 	}
+
 	st2 = infokey (world, "ban_oldclient");
 	res = stof (st2);
 	if ((st != string_null))
@@ -2545,6 +2595,7 @@ void () ClientConnect =
 	bprint (2, self.netname);
 	bprint (2, " entered the game\n");
 	stuffcmd (self, "say -d\n");
+
 	if ((0 == 0))
 	{
 		self.tfstate = (self.tfstate | 4096);
@@ -2671,8 +2722,13 @@ void () ClientConnect =
 
 void () ClientDisconnect =
 {
+
+        if (self.ishuman)
+        {
+                clientSetFree (self.fClientNo);
+        }
+
 	local entity te;
-	local entity temp;
 	local string st;
 	local float fr;
 
@@ -2680,22 +2736,8 @@ void () ClientDisconnect =
 	st = ftos (fr);
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
 
-if (self.captain == 1) {
-	captainmode = 0;
-	bprint(2, "\[\sCaptain Mode\s\]\s:\s \bCaptain\b ");
-	bprint(2, self.netname);
-	bprint(2, " \bleft the game\b. Captain Mode Disabled!\n");
-
-                te = self;
-                temp = find (world, classname, "player");
-                while (temp != world) {
-                        self = temp;
-                        temp.captain = 0;
-                        ResetMenu();
-                        temp = find (temp, classname, "player");
-                }
-                self = te;
-
+if (self.captain > 0 && self.captain < 5) {
+	disableCaptain();
 }
 
 	sound (self, 4, "player/tornoff2.wav", 1, 0);
@@ -2850,6 +2892,8 @@ if (self.captain == 1) {
 	setsize (self, '0 0 0', '0 0 0');
 	self.nextthink = 0;
 	self.think = SUB_Null;
+
+	updateMaxClients();
 };
 
 void (entity targ, entity attacker) ClientObituary =

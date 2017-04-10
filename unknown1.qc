@@ -1,4 +1,3 @@
-//=-=-=-=-=
 float RANGE_MELEE    = 0;
 float RANGE_NEAR    = 1;
 float RANGE_MID    = 2;
@@ -1683,24 +1682,6 @@ void (float res) StatusRes =
 	}
 };
 
-void (entity pl, string s1) CenterPrint =
-{
-	centerprint (pl, s1);
-	pl.StatusRefreshTime = (time + 1.5);
-};
-
-void (entity pl, string s1, string s2) CenterPrint2 =
-{
-	centerprint (pl, s1, s2);
-	pl.StatusRefreshTime = (time + 1.5);
-};
-
-void (entity pl, string s1, string s2, string s3) CenterPrint3 =
-{
-	centerprint (pl, s1, s2, s3);
-	pl.StatusRefreshTime = (time + 1.5);
-};
-
 string (float type) Status_GrenTypeToString =
 {
 	if ((type == 2))
@@ -1842,6 +1823,7 @@ void () Player_Menu =
 		self.menu_count = (self.menu_count + 1);
 		return;
 	}
+
 	if ((self.current_menu == 5))
 	{
 		Menu_Intro ();
@@ -1914,10 +1896,16 @@ void () Player_Menu =
 								{
 									Menu_Engineer ();
 								}
-
-else if (self.current_menu == 24) {
-	Menu_Admin ();
-}
+	else if (self.current_menu == 24) {
+		Menu_Admin ();
+	}
+	else if (self.current_menu == 25) {
+		self.current_menu = 25;
+	} else if (self.current_menu == 26) {
+		self.current_menu = 26;
+	} else if (self.current_menu == 27) {
+		self.current_menu = 27;
+	}
 
 
 								else
@@ -2081,7 +2069,7 @@ void (float inp) Menu_Team_Input =
 	}
 	else
 	{
-		if ((inp == 5) && !captainmode)
+		if ((inp == 5))
 		{
 			TeamFortress_TeamPutPlayerInTeam ();
 		}
@@ -2243,10 +2231,16 @@ void (float inp) Menu_Drop_Input =
 
 void (float inp) Menu_Input =
 {
-	if ((self.current_menu == 24))
-	{
+	if ((self.current_menu == 24)) {
 		Menu_Admin_Input (inp);
+	} else if ((self.current_menu == 25)) {
+		BotMenu_Input (inp);
+	} else if ((self.current_menu == 26)) {
+		BotClassMenu_Input (inp);
+	} else if ((self.current_menu == 27)) {
+		BotTeamMenu_Input (inp);
 	}
+
 	else if ((self.current_menu == 2) && !captainmode)
 	{
 		Menu_Team_Input (inp);
@@ -2332,7 +2326,7 @@ void () Menu_Intro =
 	if ((st1 != string_null))
 	{
 		st2 = infokey (world, "motd2");
-		centerprint (self, st1, "\n", st2);
+		CenterPrint3 (self, st1, "\n", st2);
 	}
 	else
 	{
@@ -2835,7 +2829,10 @@ void () Menu_Engineer =
 			s_sentry = "\n";
 		}
 	}
-	centerprint (self, s_action, s_disp, s_sentry, s_nothing);
+	s_action = strcat(s_action, s_disp);
+	s_action = strcat(s_action, s_sentry);
+	s_action = strcat(s_action, s_nothing);
+	centerprint (self, s_action);
 };
 
 void (float inp) Menu_Engineer_Input =
@@ -3417,7 +3414,8 @@ void () Menu_Admin =
 		s_menu1 = strcat(s_menu1, "3‘ Kick                         \n");
 		s_menu1 = strcat(s_menu1, "4‘ Ban                          \n");
 		s_menu1 = strcat(s_menu1, "5‘ Captain                      \n");
-		s_menu1 = strcat(s_menu1, "\n");
+		s_menu1 = strcat(s_menu1, "6‘ Randomize Teams              \n");
+		s_menu1 = strcat(s_menu1, "7‘ Restart current map          \n");
 		s_menu1 = strcat(s_menu1, "\n\n");
 		s_menu1 = strcat(s_menu1, "8‘ Previous Page                \n");
 		s_menu1 = strcat(s_menu1, "9‘ Next Page                    \n");
@@ -3513,8 +3511,13 @@ if ((self.is_admin || self.captain == 1) && captainmode) {
 		s_menu9 = strcat(s_menu9, "Option 0 results in canceling captain mode.\n");
 }
 
+		s_menu1 = strcat(s_menu1, s_menu2);
+		s_menu1 = strcat(s_menu1, s_menu7);
+		s_menu1 = strcat(s_menu1, s_menu8);
+		s_menu1 = strcat(s_menu1, s_menu9);
 
-		centerprint (self, s_menu1, s_menu2, s_menu7, s_menu8, s_menu9);
+
+		centerprint (self, s_menu1);
 	}
 
 
@@ -3576,9 +3579,31 @@ if (self.current_menu_type == 0) {
 		self.current_menu_page = 1;
 	}
 
+//
+// Restart current map
+//
+
+	if (inp == 7) {
+		localcmd ("map ");
+		localcmd (mapname);
+		localcmd ("\n");
+	}
 
 //
-// captain
+// Randomize Teams
+//
+
+	if (inp == 6) {
+
+		randomizeTeams();
+
+
+
+	}
+
+
+//
+// Captain
 //
 
 	if (inp == 5) {
@@ -3591,6 +3616,7 @@ if (!captainmode)
 		self.current_menu_page = 1;
 
 		bprint(2, "\[\sCaptain Mode\s\]\s:\s is now \sON\s.\n");
+		bprint(2, "\[\sCaptain Mode\s\]\s:\s Everybody except captains are now \sMUTED\s.\n");
 
                 temp = find (world, classname, "player");
                 while (temp != world) {
@@ -3600,18 +3626,9 @@ if (!captainmode)
 
 
 } else {  // end captainmode1
-	captainmode = 0;
-	bprint(2, "\[\sCaptain Mode\s\]\s:\s \sdisabled\s.\n");
 
-		te = self;
-                temp = find (world, classname, "player");
-                while (temp != world) {
-			self = temp;
-                        temp.captain = 0;
-			ResetMenu();
-                        temp = find (temp, classname, "player");
-                }
-		self = te;
+	disableCaptain();
+
 }
 
 }
@@ -3666,26 +3683,29 @@ if (!captainmode)
 if (self.current_menu_type != 5) {
 	if (self.admin_use != world && f_tmp == ((self.current_menu_page - 1) * 7) + inp) {
 		temp = self;
-		self.admin_use.captain = 1;
 		self = self.admin_use;
+		self.captain = 9;
 		if (temp.current_menu_type == 3) {
+// Captain for Team 1
 			self.team_no = 1;
 			temp.current_menu_type = 4;
 		} else if (temp.current_menu_type == 4) {
+// Captain for Team 2
 			self.team_no = 2;
+
+			randomizeCaptains();
+
 			local entity te;
 			te = find (world, classname, "player");
 			while (te != world)
 			{
 				self = te;
-				if (self.captain != 1)
+				if (!self.captain)
 				{
-					TeamFortress_TeamSet (-1);
+					playerSetTeam (-1);
 					self.current_menu = 0;
-//					Menu_StuffClassHelp ();
-//					Menu_ClassHelp ();
 					self.impulse = 0;
-				} else {
+				} else if (self.captain > 0 && self.captain < 5) {
 					TeamFortress_TeamSet(self.team_no);
 					bprint(2, "\[\sCaptain Mode\s\]\s:\s ");
 					bprint(2, self.netname);
@@ -3702,24 +3722,26 @@ if (self.current_menu_type != 5) {
 		self = temp;
 	}
 } else {
-	        if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp && self.captain == 1) {
-                temp = self;
-                self.admin_use.captain = 2;
-                self = self.admin_use;
+	if (self.admin_use && f_tmp == ((self.current_menu_page - 1) * 7) + inp && self.captain == 1) {
+			temp = self;
+			self = self.admin_use;
+			self.captain = 10;
 
-		TeamFortress_TeamSet (temp.team_no);
+			playerSetTeam (temp.team_no);
 
-		bprint(2, "\[\bCaptain Mode\b\]\b:\b ");
-		bprint(2, temp.netname);
-		bprint(2, " \bcalled\b ");
-		bprint(2, self.netname);
-		bprint(2, " \bfor team\b ");
-		bprint(2, Status_TeamNumToTeamString(self.team_no));
-		bprint(2, "\b.\b\n");
+			bprint(2, "\[\bCaptain Mode\b\]\b:\b ");
+			bprint(2, temp.netname);
+			bprint(2, " \bcalled\b ");
+			bprint(2, self.netname);
+			bprint(2, " \bfor team\b ");
+			bprint(2, Status_TeamNumToTeamString(self.team_no));
+			bprint(2, "\b.\b\n");
+			self = temp;
 
-		self = temp;
+			nextCaptain();
+			ResetMenu();
+		}
 	}
-}
 
 }
 

@@ -194,6 +194,9 @@ void () MatchThink =
 
 void () StartMatch =
 {
+
+	Initialise_Teams();
+
 	local string st;
 	local float f1;
 	local float f2;

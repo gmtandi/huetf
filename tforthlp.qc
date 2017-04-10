@@ -129,6 +129,8 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("sbar_480", _G, 7);
 		TeamFortress_Alias ("sbar_600", _G, 8);
 		TeamFortress_Alias ("sbar_768", _G, 9);
+
+		TeamFortress_Alias ("bot", BOT_IMPULSE, 0);
 		return;
 	}
 	if ((self.motd == 60))

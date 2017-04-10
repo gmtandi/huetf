@@ -1,5 +1,3 @@
-//=-=-=-=-=
-
 void () PrintMaps =
 {
 	local string str;
@@ -94,12 +92,12 @@ float () UserCmd =
 							bprint (3, "\n");
 							sprint (self, 2, "Type гпннбоду for admin commands.\n");
 						}
-						else
-						{
-							sprint (self, 2, "incorrect admin password\n");
-                                stuffcmd (self, "disconnect\n");
-
-						}
+// REMOVED
+//						else
+//						{
+//							sprint (self, 2, "incorrect admin password\n");
+//                                stuffcmd (self, "disconnect\n");
+//						}
 						return (1);
 					}
 					if ((arg_num == 1))
@@ -1152,7 +1150,7 @@ float(string text, float say_team) ChatMessage =
                 return 0;
 
 
-if (self.captain != 1 && captainmode) {
+if (self.captain == 0 && captainmode) {
 	return 1;
 }
 
