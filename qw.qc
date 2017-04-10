@@ -327,3 +327,4 @@ float sniperpower;
 .float power_full;
 .float power_time;
 .float reload_sniper_rifle;
+float headshots;

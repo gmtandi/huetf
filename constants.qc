@@ -64,3 +64,7 @@
 #define TFSTATE_TRANQUILISED 		32768  // set when player is tranquilised
 #define TFSTATE_CANT_MOVE		65536  // set when player is setting a detpack
 
+
+#define HUETF_HEADSHOT_DISTANCE   25
+#define HUETF_HEADSHOT_MULTIPLIER 1.5
+

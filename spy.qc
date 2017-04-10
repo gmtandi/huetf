@@ -1353,7 +1353,7 @@ void () T_TranqDartTouch =
 		}
 		spawn_touchblood (9);
 		deathmsg = 25;
-		TF_T_Damage (other, self, self.owner, 20, 2, 2);
+		TF_T_Damage (other, self, self.owner, headshot_calc(other, self, 20), 2, 2);
 	}
 	else
 	{

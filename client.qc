@@ -423,6 +423,8 @@ void () DecodeLevelParms =
       // Toggle 24 bits skins
         skins24b = CF_GetSetting("s24b", "skins24b", "off");
 
+        headshots = CF_GetSetting("hs", "headshots", "on");
+
 
 		st = infokey (world, "rounds");
 		if ((st == "on"))

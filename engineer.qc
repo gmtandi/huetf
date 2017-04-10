@@ -45,7 +45,7 @@ void () Rail_Touch =
 	{
 		SpawnBlood (org, 15);
 		deathmsg = 26;
-		TF_T_Damage (other, self, self.enemy, 25, 2, 8);
+		TF_T_Damage (other, self, self.enemy, headshot_calc(other, self,25), 2, 8);
 		self.velocity = self.oldorigin;
 		self.owner = other;
 		setmodel (self, string_null);

@@ -95,6 +95,7 @@ void () TeamFortress_MOTD;
 void () TeamFortress_HelpMap;
 void () BioInfection_Decay;
 void () BioInfection_MonsterDecay;
+float (entity other, entity projectile, float damage) headshot_calc;
 void () W_FireFlame;
 void () W_FireIncendiaryCannon;
 void () W_FireTranq;
@@ -357,9 +358,10 @@ void () W_FireMedikit =
 	local float healam;
 	local entity te;
 	local entity BioInfection;
+	local vector dist;
 
 	source = (self.origin + '0 0 16');
-	traceline (source, (source + (v_forward * 64)), 0, self);
+	traceline (source, (source + (v_forward * 80)), 0, self);
 	if ((trace_fraction == 1))
 	{
 		return;
@@ -369,6 +371,7 @@ void () W_FireMedikit =
 	{
 		if ((trace_ent.classname == "player"))
 		{
+			dist = self.origin - trace_ent.origin;			
 			if ((((trace_ent.team_no == self.team_no) && (self.team_no != 0)) || coop))
 			{
 				healam = 200;
@@ -509,7 +512,7 @@ void () W_FireMedikit =
 					}
 				}
 			}
-			else
+			else if (vlen(dist) <= 64)
 			{
 				trace_ent.axhitme = 1;
 				SpawnBlood (org, 20);
@@ -978,7 +981,7 @@ void () W_FireAutoRifle =
 	makevectors (self.v_angle);
 	dir = v_forward;
 	deathmsg = 19;
-	FireSniperBullet (dir, 8);
+	FireSniperBullet (dir, headshot_calc(other, self,8));
 };
 
 void () W_FireAssaultCannon =
@@ -1057,6 +1060,23 @@ void () MissileRadius =
 	multicast (self.origin, 1);
 	dremove (self);
 };
+
+float (entity other, entity projectile, float damage) headshot_calc = 
+{
+	if (headshots) {
+		local vector dist;
+		dist = projectile.origin - other.origin;
+		if (vlen(dist) >=  HUETF_HEADSHOT_DISTANCE) {
+			return HUETF_HEADSHOT_MULTIPLIER * damage;
+		} 
+		else {
+			return damage;
+		}
+	} 
+	else {
+		return damage;
+	}
+}
 
 void () T_MissileTouch =
 {
@@ -1721,7 +1741,7 @@ void () spike_touch =
 		}
 		else
 		{
-			TF_T_Damage (other, self, self.owner, COLOR_GREEN, 2, 2);
+			TF_T_Damage (other, self, self.owner, headshot_calc(other, self, COLOR_GREEN), 2, 2);
 		}
 	}
 	else
@@ -1753,6 +1773,8 @@ void () spike_touch =
 void () superspike_touch =
 {
 	local float ndmg;
+	local vector dist;
+	local float mult;
 
 	if (self.voided)
 	{
@@ -1790,7 +1812,7 @@ void () superspike_touch =
 		}
 		else
 		{
-			TF_T_Damage (other, self, self.owner, ndmg, 2, 2);
+			TF_T_Damage (other, self, self.owner, headshot_calc(other, self,ndmg), 2, 2);
 		}
 	}
 	else
