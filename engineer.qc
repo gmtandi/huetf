@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () Rail_Touch;
 void () EMPExplode;
 void () EMPGrenadeTouch;

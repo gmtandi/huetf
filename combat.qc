@@ -239,7 +239,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		targ.health = damage;
 		return;
 	}
-	if (cease_fire)
+	if ((cease_fire) && ((targ.classname != "building_dispenser") && (targ.classname != "building_sentrygun")) )
 	{
 		return;
 	}

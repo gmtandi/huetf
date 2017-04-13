@@ -3510,8 +3510,8 @@ if (f_tmp == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4 
 		return;
 }
 
-		s_menu7 = "\b[\b8\b]\b \bPrevious Page\b         \n";
-		s_menu8 = "\n\b[\b9\b]\b \bNext Page\b             \n";
+		s_menu7 = "\n\b[\b8\b]\b \bPrevious Page\b         \n";
+		s_menu8 = "\b[\b9\b]\b \bNext Page\b             \n";
 if (self.is_admin || self.captain == 1) {
 		s_menu9 = "\b[\b0\b]\b \bBack to Main Menu\b     \n";
 } else {

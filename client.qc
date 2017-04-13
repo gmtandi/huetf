@@ -2738,15 +2738,17 @@ void () ClientDisconnect =
 	st = ftos (fr);
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
 
-if (self.captain > 0 && self.captain < 5) {
-	disableCaptain();
-}
+	if (self.captain > 0 && self.captain < 5) {
+		disableCaptain();
+	}
 
 	sound (self, 4, "player/tornoff2.wav", 1, 0);
+
 	self.has_disconnected = 1;
 	TeamFortress_RemoveTimers ();
 	RemoveVotes ();
 	Engineer_RemoveBuildings (self);
+
 	if (!tfstrike)
 	{
 		te = find (world, classname, "detpack");
