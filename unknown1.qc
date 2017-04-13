@@ -3510,8 +3510,8 @@ if (f_tmp == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4 
 		return;
 }
 
-		s_menu8 = "\b[\b8\b]\b \bPrevious Page\b         \n";
-		s_menu7 = "\n\b[\b9\b]\b \bNext Page\b             \n";
+		s_menu7 = "\b[\b8\b]\b \bPrevious Page\b         \n";
+		s_menu8 = "\n\b[\b9\b]\b \bNext Page\b             \n";
 if (self.is_admin || self.captain == 1) {
 		s_menu9 = "\b[\b0\b]\b \bBack to Main Menu\b     \n";
 } else {
@@ -3567,7 +3567,9 @@ if (self.current_menu_type == 0 && self.current_menu_page == 1) {
 		localcmd(s_temp);
 		localcmd("\n");
 
-		bprint ( 2, "\stimelimit\s is now: ");
+		bprint ( 2, self.netname);
+		bprint ( 2, " sets ");
+		bprint ( 2, "\stimelimit\s to: ");
 		bprint ( 2, s_temp);
 		bprint ( 2, "\n");
 	}
@@ -3647,25 +3649,25 @@ if (self.current_menu_type == 0 && self.current_menu_page == 1) {
 // Actions for AdminMenu Page 1
 } else if (self.current_menu_type == 0 && self.current_menu_page == 2) {
 	if (inp == 1) {
-		bprint(2, "AdminMenu Page 2 Action 1\n");
+		sprint(self, 2, "AdminMenu Page 2 Action 1\n");
 	}
-	if (inp == 2) {
-		bprint(2, "AdminMenu Page 2 Action 2\n");
+	else if (inp == 2) {
+		sprint(self, 2, "AdminMenu Page 2 Action 2\n");
 	}
-	if (inp == 3) {
-		bprint(2, "AdminMenu Page 2 Action 3\n");
+	else if (inp == 3) {
+		sprint(self, 2, "AdminMenu Page 2 Action 3\n");
 	}
-	if (inp == 4) {
-		bprint(2, "AdminMenu Page 2 Action 4\n");
+	else if (inp == 4) {
+		sprint(self, 2, "AdminMenu Page 2 Action 4\n");
 	}
-	if (inp == 5) {
-		bprint(2, "AdminMenu Page 2 Action 5\n");
+	else if (inp == 5) {
+		sprint(self, 2, "AdminMenu Page 2 Action 5\n");
 	}
-	if (inp == 6) {
-		bprint(2, "AdminMenu Page 2 Action 6\n");
+	else if (inp == 6) {
+		sprint(self, 2, "AdminMenu Page 2 Action 6\n");
 	}
-	if (inp == 7) {
-		bprint(2, "AdminMenu Page 2 Action 7\n");
+	else if (inp == 7) {
+		sprint(self, 2, "AdminMenu Page 2 Action 7\n");
 	}
 
 
@@ -3783,17 +3785,18 @@ if (self.current_menu_type != 5) {
 
 
 
+	if ((inp == 8)) {
+		if (self.current_menu_page > 1) {
+			self.current_menu_page = self.current_menu_page - 1;
+		}
+	}
+
 	if ((inp == 9)) {
 		if (self.current_menu_page < 5) {
 			self.current_menu_page = self.current_menu_page + 1;
 		}
 	}
 
-	if ((inp == 8)) {
-		if (self.current_menu_page > 0) {
-			self.current_menu_page = self.current_menu_page - 1;
-		}
-	}
 
 	if ((inp == 10)) {
 
