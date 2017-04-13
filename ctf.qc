@@ -233,7 +233,7 @@ float () DoorShouldOpen =
 			if ((plyrcount == 2))
 			{
 				bprint (2, plyr1.netname);
-				bprint (2, " && ");
+				bprint (2, " and ");
 				bprint (2, plyr2.netname);
 				bprint (2, " need");
 			}

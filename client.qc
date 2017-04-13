@@ -740,7 +740,7 @@ void () ExitIntermission =
 				WriteByte (2, 2);
 				WriteByte (2, 3);
 				WriteByte (2, 31);
-				WriteString (2, "The Rune of Black Magic throbs evilly in\nyour hand && whispers dark thoughts\ninto your brain. You learn the inmost\nlore of the Hell-Mother; Shub-Niggurath!\nYou now know that she is behind all the\nterrible plotting which has led to so\nmuch death...");
+				WriteString (2, "The Rune of Black Magic throbs evilly in\nyour hand and whispers dark thoughts\ninto your brain. You learn the inmost\nlore of the Hell-Mother; Shub-Niggurath!\nYou now know that she is behind all the\nterrible plotting which has led to so\nmuch death...");
 				return;
 			}
 			else
@@ -751,7 +751,7 @@ void () ExitIntermission =
 					WriteByte (2, 2);
 					WriteByte (2, 3);
 					WriteByte (2, 31);
-					WriteString (2, "The charred viscera of diabolic horrors\nbubble viscously as you seize the Rune\nof Hell Magic. Its heat scorches your\nhand, && its terrible secrets blight\nyour mind. Gathering the shreds of your\ncourage, you shake the devil's shackles\nfrom your ...");
+					WriteString (2, "The charred viscera of diabolic horrors\nbubble viscously as you seize the Rune\nof Hell Magic. Its heat scorches your\nhand, and its terrible secrets blight\nyour mind. Gathering the shreds of your\ncourage, you shake the devil's shackles\nfrom your ...");
 					return;
 				}
 				else
@@ -762,7 +762,7 @@ void () ExitIntermission =
 						WriteByte (2, 2);
 						WriteByte (2, 3);
 						WriteByte (2, 31);
-						WriteString (2, "Despite the awful might of the Elder\nWorld, you have achieved the Rune of\nElder Magic, capstone of all types of\narcane wisdom. Beyond good && evil,\nbeyond life && death, the Rune\npulsates, heavy with import. Patient and\npotent, the Elder Being...");
+						WriteString (2, "Despite the awful might of the Elder\nWorld, you have achieved the Rune of\nElder Magic, capstone of all types of\narcane wisdom. Beyond good and evil,\nbeyond life and death, the Rune\npulsates, heavy with import. Patient and\npotent, the Elder Being...");
 						return;
 					}
 				}
@@ -3481,7 +3481,7 @@ void (entity targ, entity attacker) ClientObituary =
 																									{
 																										if ((attacker.playerclass == 3))
 																										{
-																											deathstring = " was sliced && diced by ";
+																											deathstring = " was sliced and diced by ";
 																											deathstring2 = "'s blade\n";
 																										}
 																										else

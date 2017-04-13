@@ -831,7 +831,7 @@ void (entity disp) Engineer_UseDispenser =
 	sprint (self, 2, " rockets\n");
 	st = ftos (disp.ammo_cells);
 	sprint (self, 2, st);
-	sprint (self, 2, " cells, && ");
+	sprint (self, 2, " cells, and ");
 	st = ftos (disp.armorvalue);
 	sprint (self, 2, st);
 	sprint (self, 2, " armor\n");

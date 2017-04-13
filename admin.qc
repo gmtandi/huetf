@@ -225,7 +225,7 @@ void (entity p) CheckAutoKick =
 		{
 			if ((p.teamkills == (autokick_kills - 1)))
 			{
-				sprint (p, 2, "Kill one more teammate, && you're outta here.\n");
+				sprint (p, 2, "Kill one more teammate, and you're outta here.\n");
 			}
 			rnum = 0;
 			te = find (world, classname, "ak_timer");

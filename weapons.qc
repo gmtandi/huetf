@@ -5503,7 +5503,7 @@ float () DeadImpulses =
 													self.tf_items_flags = (self.tf_items_flags | 1);
 													if ((self.tf_items_flags & 2))
 													{
-														sprint (self, 2, "Friendlies && Enemies\n");
+														sprint (self, 2, "Friendlies and Enemies\n");
 													}
 													else
 													{
@@ -5535,7 +5535,7 @@ float () DeadImpulses =
 														self.tf_items_flags = (self.tf_items_flags | 2);
 														if ((self.tf_items_flags & 1))
 														{
-															sprint (self, 2, "Friendlies && Enemies\n");
+															sprint (self, 2, "Friendlies and Enemies\n");
 														}
 														else
 														{
