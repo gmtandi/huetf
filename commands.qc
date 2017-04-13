@@ -272,7 +272,7 @@ void () ModStatus =
 		sprint (self, 2, "Full Team Score off\n");
 	}
 	tmp = ftos (gspeed);
-	sprint (self, 2, "Ground speed    ", tmp, "\n");
+	sprint3 (self, 2, "Ground speed    ", tmp, "\n");
 	if (tfvsdm)
 	{
 		sprint (self, 2, "ÔÆöóÄÍ:         on\n");

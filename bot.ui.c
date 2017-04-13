@@ -24,6 +24,7 @@ void () UserInterface =
 			CenterPrint (self, self.sBotMessageLine1);
 		}
 	}
+if (mapname == "1on1r") {
 	if ((self.impulse == BOT_IMPULSE))
 	{
 		if (fResupplyBetweenKills)
@@ -49,6 +50,7 @@ void () UserInterface =
 			self.impulse = 0;
 		}
 	}
+}
 
 };
 

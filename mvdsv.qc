@@ -438,6 +438,11 @@ float () UserCmd =
 																			}
 																			if ((arg_num == 2))
 																			{
+																				bprint(2, self.netname);
+																				bprint(2, " Has changed the map to ");
+																				bprint(2, argv(1));
+																				bprint(2, "\n");
+
 																				localcmd ("map ");
 																				localcmd (argv (1));
 																				localcmd ("\n");

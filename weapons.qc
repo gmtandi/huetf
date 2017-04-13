@@ -3565,6 +3565,7 @@ void () ImpulseCommands =
 	if ((self.impulse == 239))
 	{
 		self.current_menu = 24;
+		self.current_menu_page = 1;
 		self.menu_count = 30;
 		self.menu_displaytime = 0;
 		self.impulse = 0;
@@ -5646,7 +5647,7 @@ void () W_WeaponFrame =
 		}
 		else
 		{
-			if (((self.impulse > 0) && (self.impulse < 10)))
+			if (((self.impulse > 0) && (self.impulse < 11)))
 			{
 				Menu_Input (self.impulse);
 				if ((self.impulse != 0))

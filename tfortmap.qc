@@ -2833,12 +2833,11 @@ void (entity Item, entity AP, entity Goal) tfgoalitem_GiveToPlayer =
 void () ReturnItem =
 {
 
-	local string st;
-	st = infokey (world, "fnoreturn");
-	if ((st == "on"))
-        {
-		return;
-	}
+//	local string st;
+//	st = infokey (world, "fnoreturn");
+//	if ((st == "on")) {
+//		return;
+//	}
 
 	local entity te;
 

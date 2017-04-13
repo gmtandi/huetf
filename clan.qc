@@ -1,5 +1,3 @@
-//=-=-=-=-=
-
 void () AutoRecord =
 {
 	local float i;
@@ -288,7 +286,7 @@ void () StartMatch =
 void () PreMatch_Think =
 {
 	local entity p;
-	local string num;
+	local string num, tmp;
 	local float fl;
 
 	self.cnt2 = (self.cnt2 - 1);
@@ -357,11 +355,77 @@ void () PreMatch_Think =
 		}
 		num = ftos (self.cnt2);
 		p = find (world, classname, "player");
+
+		tmp = strcat(num ,"\n\n\b:[\b");
+		tmp = strcat(tmp, mapname);
+		tmp = strcat(tmp, "\b]:\b");
+
+		tmp = strcat(tmp, "\n\bTeam1 :\b ");
+		tmp = strcat(tmp, infokey(world, "team1"));
+
+		tmp = strcat(tmp, " \bTeam2 :\b ");
+		tmp = strcat(tmp, infokey(world, "team2"));
+
+		tmp = strcat(tmp, "\n\bTL:\b ");
+		tmp = strcat(tmp, infokey (world, "timelimit"));
+
+		tmp = strcat(tmp, " \bFL:\b ");
+		tmp = strcat(tmp, infokey (world, "fraglimit"));
+
+		tmp = strcat(tmp, " \bTP:\b ");
+		tmp = strcat(tmp, infokey (world, "teamplay"));
+
+
+		tmp = strcat(tmp, "\n\bRJ:\b ");
+		tmp = strcat(tmp, infokey (world, "rj"));
+
+		tmp = strcat(tmp, " \bHook:\b ");
+		if (infokey (world, "grapple") == "on")
+			tmp = strcat(tmp, "on");
+		else
+			tmp = strcat(tmp, "off");
+
+		tmp = strcat(tmp, "\n\bcr_sni:\b ");
+		tmp = strcat(tmp, infokey(world, "cr_sniper"));
+
+		tmp = strcat(tmp, " \bcr_sol:\b ");
+		tmp = strcat(tmp, infokey(world, "cr_soldier"));
+
+		tmp = strcat(tmp, " \bcr_spy:\b ");
+		tmp = strcat(tmp, infokey(world, "cr_spy"));
+
+		tmp = strcat(tmp, "\n\bIG:\b ");
+		if (infokey (world, "ig") == "on")
+			tmp = strcat(tmp, "on");
+		else
+			tmp = strcat(tmp, "off");
+
+		tmp = strcat(tmp, " \bSGB2:\b ");
+		if (infokey (world, "sgbuildlvl2") == "on")
+			tmp = strcat(tmp, "on");
+		else
+			tmp = strcat(tmp, "off");
+
+		tmp = strcat(tmp, " \bSG2T3:\b ");
+		if (infokey (world, "sglvl2to3") == "on")
+			tmp = strcat(tmp, "on");
+		else
+			tmp = strcat(tmp, "off");
+
+		tmp = strcat(tmp, " \bautospanner:\b ");
+		if (infokey (world, "autospanner") == "on")
+			tmp = strcat(tmp, "on");
+		else
+			tmp = strcat(tmp, "off");
+
+		strcat(tmp, "\n");
+
+
 		while ((p != world))
 		{
 			if ((p.netname != ""))
 			{
-				CenterPrint3 (p, "Countdown ", num, "\n");
+				CenterPrint3 (p, "Countdown ", tmp, "\n");
 				if ((self.cnt2 < 6))
 				{
 					cease_fire = 0;

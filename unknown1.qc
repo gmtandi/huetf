@@ -3409,13 +3409,23 @@ void () Menu_Admin =
 
 	if (self.current_menu_type == 0) {
 		s_menu1 =		  "HueTF Admin Menu:                \n\n";
-		s_menu1 = strcat(s_menu1, "1‘ Clan Mode                    \n");
-		s_menu1 = strcat(s_menu1, "2‘ Timelimit                    \n");
-		s_menu1 = strcat(s_menu1, "3‘ Kick                         \n");
-		s_menu1 = strcat(s_menu1, "4‘ Ban                          \n");
-		s_menu1 = strcat(s_menu1, "5‘ Captain                      \n");
-		s_menu1 = strcat(s_menu1, "6‘ Randomize Teams              \n");
-		s_menu1 = strcat(s_menu1, "7‘ Restart current map          \n");
+		if (self.current_menu_page == 1) {
+			s_menu1 = strcat(s_menu1, "1‘ Clan Mode                    \n");
+			s_menu1 = strcat(s_menu1, "2‘ Timelimit                    \n");
+			s_menu1 = strcat(s_menu1, "3‘ Kick                         \n");
+			s_menu1 = strcat(s_menu1, "4‘ Ban                          \n");
+			s_menu1 = strcat(s_menu1, "5‘ Captain                      \n");
+			s_menu1 = strcat(s_menu1, "6‘ Randomize Teams              \n");
+			s_menu1 = strcat(s_menu1, "7‘ Restart current map          \n");
+		} else if (self.current_menu_page == 2) {
+			s_menu1 = strcat(s_menu1, "1‘                              \n");
+			s_menu1 = strcat(s_menu1, "2‘                              \n");
+			s_menu1 = strcat(s_menu1, "3‘                              \n");
+			s_menu1 = strcat(s_menu1, "4‘                              \n");
+			s_menu1 = strcat(s_menu1, "5‘                              \n");
+			s_menu1 = strcat(s_menu1, "6‘                              \n");
+			s_menu1 = strcat(s_menu1, "7‘                              \n");
+		}
 		s_menu1 = strcat(s_menu1, "\n\n");
 		s_menu1 = strcat(s_menu1, "8‘ Previous Page                \n");
 		s_menu1 = strcat(s_menu1, "9‘ Next Page                    \n");
@@ -3531,7 +3541,8 @@ void (float inp) Menu_Admin_Input =
 	local string s_temp;
         local float f_tmp;
 
-if (self.current_menu_type == 0) {
+// Actions for AdminMenu Page 0
+if (self.current_menu_type == 0 && self.current_menu_page == 1) {
 
 //
 // clanmode
@@ -3584,6 +3595,10 @@ if (self.current_menu_type == 0) {
 //
 
 	if (inp == 7) {
+
+		bprint(2, self.netname);
+		bprint(2, " Has restarted the map.\n");
+
 		localcmd ("map ");
 		localcmd (mapname);
 		localcmd ("\n");
@@ -3607,31 +3622,52 @@ if (self.current_menu_type == 0) {
 //
 
 	if (inp == 5) {
+		if (!captainmode) {
+			captainmode = 1;
+			self.current_menu_type = 3;
+			self.current_menu_page = 1;
 
+			bprint(2, "\[\sCaptain Mode\s\]\s:\s is now \sON\s.\n");
+			bprint(2, "\[\sCaptain Mode\s\]\s:\s ONLY CAPTAINS CAN TALK! YOU ARE ALL \sMUTED\s.\n");
+			bprint(2, "\[\sCaptain Mode\s\]\s:\s ONLY CAPTAINS CAN TALK! YOU ARE ALL \sMUTED\s.\n");
+			bprint(2, "\[\sCaptain Mode\s\]\s:\s ONLY CAPTAINS CAN TALK! YOU ARE ALL \sMUTED\s.\n");
 
-if (!captainmode)
-{
-		captainmode = 1;
-		self.current_menu_type = 3;
-		self.current_menu_page = 1;
+			temp = find (world, classname, "player");
+			while (temp != world) {
+				temp.captain = 0;
+				temp = find (temp, classname, "player");
+			}
 
-		bprint(2, "\[\sCaptain Mode\s\]\s:\s is now \sON\s.\n");
-		bprint(2, "\[\sCaptain Mode\s\]\s:\s Everybody except captains are now \sMUTED\s.\n");
+		} else {  // end captainmode1
+			disableCaptain();
+		}
 
-                temp = find (world, classname, "player");
-                while (temp != world) {
-			temp.captain = 0;
-                        temp = find (temp, classname, "player");
-                }
+	}
 
+// Actions for AdminMenu Page 1
+} else if (self.current_menu_type == 0 && self.current_menu_page == 2) {
+	if (inp == 1) {
+		bprint(2, "AdminMenu Page 2 Action 1\n");
+	}
+	if (inp == 2) {
+		bprint(2, "AdminMenu Page 2 Action 2\n");
+	}
+	if (inp == 3) {
+		bprint(2, "AdminMenu Page 2 Action 3\n");
+	}
+	if (inp == 4) {
+		bprint(2, "AdminMenu Page 2 Action 4\n");
+	}
+	if (inp == 5) {
+		bprint(2, "AdminMenu Page 2 Action 5\n");
+	}
+	if (inp == 6) {
+		bprint(2, "AdminMenu Page 2 Action 6\n");
+	}
+	if (inp == 7) {
+		bprint(2, "AdminMenu Page 2 Action 7\n");
+	}
 
-} else {  // end captainmode1
-
-	disableCaptain();
-
-}
-
-}
 
 } else if ((self.current_menu_type == 1 || self.current_menu_type == 2 ) && inp >= 1 && inp <= 7) { // Kick / Ban Actions
 	f_tmp = 1;
@@ -3754,7 +3790,7 @@ if (self.current_menu_type != 5) {
 	}
 
 	if ((inp == 8)) {
-		if (self.current_menu_page > 1) {
+		if (self.current_menu_page > 0) {
 			self.current_menu_page = self.current_menu_page - 1;
 		}
 	}
