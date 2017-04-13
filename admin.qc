@@ -143,22 +143,6 @@ void () CeaseFire_think =
 	if (!cease_fire)
 	{
 		dremove (self);
-/*
-		te = find(world, classname, "building_sentrygun");
-		while (te != world) {
-			if (te.real_owner.has_disconnected == 1) {
-				Engineer_RemoveBuildings (self);
-			}
-			te = find (te, classname, "building_sentrygun");
-		}
-
-		te = find(world, classname, "building_dispenser");
-		while (te != world) {
-			if (te.real_owner.has_disconnected == 1) {
-				Engineer_RemoveBuildings (self);
-			}
-			te = find (te, classname, "building_dispenser");
-		}*/
 
 		return;
 	}
