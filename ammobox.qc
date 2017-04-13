@@ -56,27 +56,27 @@ void () TeamFortress_AmmoboxTouch =
 		{
 			other.ammo_shells = (other.ammo_shells + self.ammo_shells);
 			quantity = ftos (self.ammo_shells);
-			sprint2 (other, 2, quantity, " shells  ");
+			sprint2 (other, 2, quantity, " shells ");
 		}
 		if ((self.ammo_nails > 0))
 		{
 			other.ammo_nails = (other.ammo_nails + self.ammo_nails);
 			quantity = ftos (self.ammo_nails);
-			sprint2 (other, 2, quantity, " nails  ");
+			sprint2 (other, 2, quantity, " nails ");
 		}
 		if ((self.ammo_rockets > 0))
 		{
 			other.ammo_rockets = (other.ammo_rockets + self.ammo_rockets);
 			quantity = ftos (self.ammo_rockets);
-			sprint2 (other, 2, quantity, " rockets  ");
+			sprint2 (other, 2, quantity, " rockets ");
 		}
 		if ((self.ammo_cells > 0))
 		{
 			other.ammo_cells = (other.ammo_cells + self.ammo_cells);
 			quantity = ftos (self.ammo_cells);
-			sprint2 (other, 2, quantity, " cells  ");
+			sprint2 (other, 2, quantity, " cells ");
 		}
-		sprint3 (other, 2, " from ", self.enemy.netname, "'s discarded pack.\n");
+		sprint3 (other, 2, "from ", self.enemy.netname, "'s discarded pack.\n");
 	}
 	else
 	{

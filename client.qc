@@ -3067,7 +3067,7 @@ void (entity targ, entity attacker) ClientObituary =
 									{
 										if ((deathmsg == 30))
 										{
-											deathstring = " explodes his ammo && body\n";
+											deathstring = " explodes his ammo and body\n";
 										}
 										else
 										{
@@ -3091,7 +3091,7 @@ void (entity targ, entity attacker) ClientObituary =
 													{
 														if ((deathmsg == 12))
 														{
-															deathstring = " set the detpack && forgot to run\n";
+															deathstring = " set the detpack and forgot to run\n";
 														}
 														else
 														{
@@ -3229,7 +3229,7 @@ void (entity targ, entity attacker) ClientObituary =
 					{
 						if ((attacker.playerclass == 2))
 						{
-							deathstring = " got up-close && personal with ";
+							deathstring = " got up-close and personal with ";
 							deathstring2 = "'s grenade\n";
 						}
 						else
