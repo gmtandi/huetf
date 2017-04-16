@@ -476,7 +476,7 @@ void (entity inflictor, entity attacker, float bounce, entity ignore) T_RadiusBo
 						{
 							te = find (te, classname, "timer");
 						}
-						if (practice || inflictor.weapon == 11) // in practice mode or impact grenade do not conc.
+						if (practice)
 						{
 							return;
 						}
@@ -485,7 +485,7 @@ void (entity inflictor, entity attacker, float bounce, entity ignore) T_RadiusBo
 							te.health = 800;
 							te.nextthink = (time + 0.25);
 						}
-						else
+						else if ( inflictor.weapon != 11 ) // Makes impact grenade do not conc
 						{
 							te = spawn ();
 							te.nextthink = (time + 0.25);
