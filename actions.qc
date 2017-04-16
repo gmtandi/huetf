@@ -172,7 +172,7 @@ void () TeamFortress_ID =
 							}
 							else
 							{
-								centerprint4 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n");
+								centerprint3 (self, "\n\n\n\n", trace_ent.undercover_name, "\nFriendly Spy\n");
 							}
 							return;
 						}
@@ -186,7 +186,7 @@ void () TeamFortress_ID =
 					}
 					else
 					{
-						centerprint4 (self, "\n\n\n\n", trace_ent.undercover_name, "\nEnemy Spy");
+						centerprint3 (self, "\n\n\n\n", trace_ent.undercover_name, "\nEnemy Spy");
 					}
 				}
 				else
@@ -197,7 +197,7 @@ void () TeamFortress_ID =
 					}
 					else
 					{
-						centerprint4 (self, "\n\n\n\n", trace_ent.netname, "\nEnemy Spy");
+						centerprint3 (self, "\n\n\n\n", trace_ent.netname, "\nEnemy Spy");
 					}
 				}
 			}
