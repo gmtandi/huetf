@@ -328,3 +328,4 @@ float sniperpower;
 .float power_time;
 .float reload_sniper_rifle;
 float headshots;
+float antigren2spam;

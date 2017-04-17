@@ -907,6 +907,14 @@ void () GasGrenadeMakeGas =
 {
 	local entity te;
 	local entity timer;
+	local float total_heat;
+
+	if (antigren2spam) {
+		total_heat = 10;
+	} 
+	else {
+		total_heat = 20;
+	}
 
 	if ((self.heat == 0))
 	{
@@ -977,7 +985,7 @@ void () GasGrenadeMakeGas =
 		multicast (self.origin, 2);
 		return;
 	}
-	if ((self.heat <= 20))
+	if ((self.heat <= total_heat))
 	{
 		self.weapon = (self.weapon + 1);
 		if ((self.weapon == 1))
