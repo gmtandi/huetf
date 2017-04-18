@@ -153,17 +153,14 @@ void () NapalmGrenadeNetThink =
 {
 	local entity head;
 	local entity te;
-	local float max_heat;
 	local float dam_mult;
 	local float explosion_interval;
 
-	if (shortergrens) {
-		max_heat = 4;
-		dam_mult = 1.75;
-		explosion_interval = 0.6;
+	if (shortergrens) {		
+		dam_mult = 1.33;
+		explosion_interval = 0.5;
 	} 
 	else {
-		max_heat = 7;
 		dam_mult = 1;
 		explosion_interval = 1;
 	}
@@ -221,7 +218,7 @@ void () NapalmGrenadeNetThink =
 	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	self.heat = (self.heat + 1);
-	if ((self.heat > max_heat))
+	if ((self.heat > 7))
 	{
 		RemoveGrenade ();
 	}

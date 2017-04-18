@@ -908,9 +908,10 @@ void () GasGrenadeMakeGas =
 	local entity te;
 	local entity timer;
 	local float max_heat;
+	local float dam_mult;
 
 	if (shortergrens) {
-		max_heat = 10;
+		max_heat = 15;
 	} 
 	else {
 		max_heat = 20;
@@ -919,7 +920,7 @@ void () GasGrenadeMakeGas =
 	if ((self.heat == 0))
 	{
 		self.owner.no_active_gas_grens = (self.owner.no_active_gas_grens + 1);
-		if ((self.owner.no_active_gas_grens > 2))
+		if ((self.owner.no_active_gas_grens > 1))
 		{
 			te = find (world, classname, "grentimer");
 			while ((te != world))
@@ -942,7 +943,11 @@ void () GasGrenadeMakeGas =
 		if ((((te.classname == "player") && (te.deadflag == 0)) && (te.has_disconnected != 1)))
 		{
 			deathmsg = 24;
-			TF_T_Damage (te, world, self.owner, enter, (1 | 2), 0);
+			dam_mult = 1;
+			if (shortergrens)
+				dam_mult = 1.33;
+
+			TF_T_Damage (te, world, self.owner, enter * dam_mult, (1 | 2), 0);
 			if ((te.tfstate & 16384))
 			{
 				timer = find (world, classname, "timer");

@@ -59,7 +59,6 @@ void () NailGrenadeLaunchNail =
 	local float i;
 	local float j;
 	local float cur_yaw;
-	local float total_nails;
 
 	i = 0;
 	while ((i < 3))
@@ -81,10 +80,8 @@ void () NailGrenadeLaunchNail =
 		self.nextthink = (time + 0.05);
 	else
 		self.nextthink = (time + 0.1);
-	total_nails = _2;
-	//if (shortergrens)
-	//	total_nails = space;
-	if ((self.playerclass > total_nails))
+
+	if ((self.playerclass > _2))
 	{
 		self.weapon = 9;
 		self.think = GrenadeExplode;
