@@ -1813,8 +1813,6 @@ void () superspike_touch =
 		}
 		if ((self.owner.classname == "grenade"))
 		{
-			if (shortergrens)
-				ndmg = ndmg * 1.33;
 			TF_T_Damage (other, self, self.owner.owner, ndmg, 2, 2);
 		}
 		else
