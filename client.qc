@@ -425,7 +425,7 @@ void () DecodeLevelParms =
 
         headshots = CF_GetSetting("hs", "headshots", "on");
 
-        antigren2spam = CF_GetSetting("ag2s", "antigren2spam", "on");
+        shortergrens = CF_GetSetting("shgrens", "shortergrens", "on");
 
 
 		st = infokey (world, "rounds");

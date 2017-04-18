@@ -153,6 +153,20 @@ void () NapalmGrenadeNetThink =
 {
 	local entity head;
 	local entity te;
+	local float max_heat;
+	local float dam_mult;
+	local float explosion_interval;
+
+	if (shortergrens) {
+		max_heat = 4;
+		dam_mult = 1.75;
+		explosion_interval = 0.6;
+	} 
+	else {
+		max_heat = 7;
+		dam_mult = 1;
+		explosion_interval = 1;
+	}
 
 	if ((self.heat == 0))
 	{
@@ -173,7 +187,7 @@ void () NapalmGrenadeNetThink =
 		}
 		self.no_active_napalm_grens = self.owner.no_active_napalm_grens;
 	}
-	self.nextthink = (time + 1);
+	self.nextthink = (time + explosion_interval);
 	self.origin = self.enemy.origin;
 	makevectors (self.v_angle);
 	traceline (self.origin, self.origin, 1, self);
@@ -189,7 +203,8 @@ void () NapalmGrenadeNetThink =
 		if (head.takedamage)
 		{
 			deathmsg = 15;
-			TF_T_Damage (head, self, self.owner, 20, 2, 16);
+
+			TF_T_Damage (head, self, self.owner, 20 * dam_mult, 2, 16);
 			other = head;
 			Napalm_touch ();
 			if ((other.classname == "player"))
@@ -206,7 +221,7 @@ void () NapalmGrenadeNetThink =
 	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	self.heat = (self.heat + 1);
-	if ((self.heat > 7))
+	if ((self.heat > max_heat))
 	{
 		RemoveGrenade ();
 	}
