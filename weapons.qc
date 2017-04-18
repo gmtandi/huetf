@@ -1644,7 +1644,7 @@ void (vector org, vector dir) launch_spike =
 	newmis.movetype = 9;
 	newmis.solid = 2;
 	if (headshots)
-		newmis.velocity = (dir * 1500);
+		newmis.velocity = (dir * 1333);
 	else
 		newmis.velocity = (dir * 1000);
 	
@@ -1722,7 +1722,6 @@ void (float ox) W_FireSpikes =
 
 void () spike_touch =
 {
-	local float basedamage;
 	if (self.voided)
 	{
 		return;
@@ -1747,13 +1746,7 @@ void () spike_touch =
 		}
 		else
 		{
-			if (headshots) {
-				basedamage = 14;
-			} 
-			else {
-				basedamage = COLOR_GREEN;
-			}
-			TF_T_Damage (other, self, self.owner, headshot_calc(other, self, basedamage), 2, 2);
+			TF_T_Damage (other, self, self.owner, headshot_calc(other, self, COLOR_GREEN), 2, 2);
 		}
 	}
 	else
@@ -1826,8 +1819,6 @@ void () superspike_touch =
 		}
 		else
 		{
-			if (headshots)
-				ndmg = 26;
 			TF_T_Damage (other, self, self.owner, headshot_calc(other, self,ndmg), 2, 2);
 		}
 	}

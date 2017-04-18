@@ -1312,11 +1312,7 @@ void () W_FireTranq =
 	newmis.solid = 2;
 	makevectors (self.v_angle);
 	newmis.velocity = v_forward;
-	if (headshots) {
-		newmis.velocity = (newmis.velocity * 2000);
-	} else {
-		newmis.velocity = (newmis.velocity * 1500);
-	}	
+	newmis.velocity = (newmis.velocity * 1500);
 	newmis.angles = vectoangles (newmis.velocity);
 	newmis.touch = T_TranqDartTouch;
 	newmis.think = SUB_Remove;
