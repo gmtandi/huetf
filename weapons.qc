@@ -1643,6 +1643,11 @@ void (vector org, vector dir) launch_spike =
 	newmis.owner = self;
 	newmis.movetype = 9;
 	newmis.solid = 2;
+	if (headshots)
+		newmis.velocity = (dir * 1500);
+	else
+		newmis.velocity = (dir * 1000);
+	
 	newmis.angles = vectoangles (dir);
 	newmis.touch = spike_touch;
 	newmis.weapon = 3;
@@ -1652,7 +1657,7 @@ void (vector org, vector dir) launch_spike =
 	setmodel (newmis, "progs/spike.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, org);
-	newmis.velocity = (dir * 1000);
+	
 };
 
 void () W_FireSuperSpikes =
@@ -1717,6 +1722,7 @@ void (float ox) W_FireSpikes =
 
 void () spike_touch =
 {
+	local float basedamage;
 	if (self.voided)
 	{
 		return;
@@ -1741,7 +1747,13 @@ void () spike_touch =
 		}
 		else
 		{
-			TF_T_Damage (other, self, self.owner, headshot_calc(other, self, COLOR_GREEN), 2, 2);
+			if (headshots) {
+				basedamage = 14;
+			} 
+			else {
+				basedamage = COLOR_GREEN;
+			}
+			TF_T_Damage (other, self, self.owner, headshot_calc(other, self, basedamage), 2, 2);
 		}
 	}
 	else
@@ -1814,6 +1826,8 @@ void () superspike_touch =
 		}
 		else
 		{
+			if (headshots)
+				ndmg = 26;
 			TF_T_Damage (other, self, self.owner, headshot_calc(other, self,ndmg), 2, 2);
 		}
 	}

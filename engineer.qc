@@ -87,7 +87,11 @@ void () W_FireRail =
 	setmodel (newmis, "progs/e_spike1.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, (org + '0 0 16'));
-	newmis.velocity = (vec * 1500);
+	if (headshots) {
+		newmis.velocity = (vec * 2000);
+	} else {
+		newmis.velocity = (vec * 1500);
+	}
 	newmis.angles = vectoangles (newmis.velocity);
 	newmis.oldorigin = newmis.velocity;
 	newmis.nextthink = (time + 5);
