@@ -47,7 +47,7 @@ void () NailGrenadeNailEm =
 {
 	self.velocity = '0 0 0';
 	if (shortergrens)
-		self.nextthink = (time + 0.05);
+		self.nextthink = (time + 0.07);
 	else
 		self.nextthink = (time + 0.1);
 	self.think = NailGrenadeLaunchNail;
@@ -77,7 +77,7 @@ void () NailGrenadeLaunchNail =
 	}
 	self.playerclass = (self.playerclass + 1);
 	if (shortergrens)
-		self.nextthink = (time + 0.05);
+		self.nextthink = (time + 0.07);
 	else
 		self.nextthink = (time + 0.1);
 

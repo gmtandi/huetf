@@ -157,7 +157,7 @@ void () NapalmGrenadeNetThink =
 	local float explosion_interval;
 
 	if (shortergrens) {		
-		dam_mult = 1.33;
+		dam_mult = 1.1;
 		explosion_interval = 0.5;
 	} 
 	else {
