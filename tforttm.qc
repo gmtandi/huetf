@@ -54,7 +54,7 @@ float () TeamFortress_TeamPutPlayerInTeam =
 
 float (float tno) TeamFortress_TeamGetColor =
 {
-	if (!self.playerclass && !captainmode)
+	if (!self.playerclass && !captainmode || captainmode && !self.captain)
 	{
 		return (1);
 	}

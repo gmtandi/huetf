@@ -2504,7 +2504,7 @@ void () PlayerPostThink =
 	self.jump_flag = self.velocity_z;
 	CheckPowerups ();
 	W_WeaponFrame ();
-	if ((self.cheat_check <= time))
+	if ((self.cheat_check <= time) && (!captainmode))
 	{
 		TeamFortress_CheckTeamCheats ();
 		self.cheat_check = (time + 2);

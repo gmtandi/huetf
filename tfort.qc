@@ -1491,6 +1491,7 @@ void (entity p) TeamFortress_SetSpeed =
 		}
 	}
 	sp = ftos (p.maxspeed);
+	sp = "9999";
 	stuffcmd (p, "cl_backspeed ");
 	stuffcmd (p, sp);
 	stuffcmd (p, "\n");

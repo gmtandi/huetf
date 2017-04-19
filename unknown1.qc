@@ -3740,11 +3740,14 @@ if (self.current_menu_type != 5) {
 				self = te;
 				if (!self.captain)
 				{
+					self.playerclass = 0;
 					playerSetTeam (-1);
 					self.current_menu = 0;
 					self.impulse = 0;
 				} else if (self.captain > 0 && self.captain < 5) {
-					TeamFortress_TeamSet(self.team_no);
+					//TeamFortress_TeamSet(self.team_no);
+					self.playerclass = 0;
+					playerSetTeam(self.team_no);
 					bprint(2, "\[\sCaptain Mode\s\]\s:\s ");
 					bprint(2, self.netname);
 					bprint(2, " \bIs the captain for team\b ");
