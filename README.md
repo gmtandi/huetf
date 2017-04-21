@@ -42,7 +42,9 @@ Some improvements already done to the code are:
  	2 - Medic's Super Nailgun (projectile speed increased by 33%)
 
  	3 - Spy's Tranquilizer (no speed increase)
- 	
+
  	4 - Engineer's Railgun (projectile speed increased by 33%)
+
+ 	Toggle headshots: localinfo headshots on/off
 
 
