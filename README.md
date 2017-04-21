@@ -35,4 +35,10 @@ Some improvements already done to the code are:
  - Added "autospanner" (localinfo autospanner on), to make engineer's life easier by making a smart spanner to deal with his sentry gun;
  - .Loc file support: you just need to put your .loc in "fortress/locs" and the server will be able to decode coordinates into location names. Used in the improved "saveme";
  - Added "sniperpower" (localinfo sniperpower on), getting inspiration (...and some code) from Classic Fortress: Snipers have one shot per clip, added a meter to the SBAR to view the rifle power;
+ - Headshot mechanics: We felt it was fair to increase the damage done by these weapons as the damage-per-projectile was fairly low. As all of them have travel time, making it harder to hit properly, so we thought we could reward the headshots. A headshot does 50% more damage than a bodyshot (which remains the same!). Currently it works for:
+ 	1 - Scout's NailGun (projectile speed increased by 33%)
+ 	2 - Medic's Super Nailgun (projectile speed increased by 33%)
+ 	3 - Spy's Tranquilizer (no speed increase)
+ 	4 - Engineer's Railgun (projectile speed increased by 33%)
+
 
