@@ -1,4 +1,3 @@
-//=-=-=-=-=
 void () SpectatorDisconnect;
 void () SpectatorImpulseCommand;
 void () SpectatorThink;
@@ -11,6 +10,7 @@ void () SpectatorConnect =
 	self.playerclass = 0;
 	self.classname = "observer";
 	self.flags = 8;
+	self.ishuman = 1;
 	st = infokey (self, "adminpwd");
 	Admin_Check (st);
 	st = infokey (self, "em");

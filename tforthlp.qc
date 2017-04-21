@@ -173,7 +173,6 @@ void () TeamFortress_MOTD =
 		}
 		self.get_aliases = 0;
 	}
-	TeamFortress_Alias ("id", 185, 0);
 };
 
 void () TeamFortress_HelpMap =
