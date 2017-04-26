@@ -1783,7 +1783,7 @@ void () BackpackTouch =
 	local float best;
 	local entity stemp;
 
-	if ((other.classname != "player"))
+	if (other.classname != "player" || other.is_feigning)
 	{
 		return;
 	}
@@ -1883,6 +1883,6 @@ void () DropBackpack =
 	setmodel (newmis, "progs/backpack.mdl");
 	setsize (newmis, '-16 -16 0', '16 16 56');
 	newmis.touch = BackpackTouch;
-	newmis.nextthink = (time + _Z);
+	newmis.nextthink = (time + space);
 	newmis.think = SUB_Remove;
 };

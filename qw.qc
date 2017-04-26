@@ -329,3 +329,9 @@ float sniperpower;
 .float reload_sniper_rifle;
 float headshots;
 float shortergrens;
+.entity attacked_by;            // Used by spy feign death to produce a fake death message
+.float feignmsg;                // Stores the death message to be used when feigning
+.float last_skin;               // The last skin the spy disguised as
+.float last_team;               // last team the spy disguised to
+.float queue_team;              // The team the spy will change to after skin disguise is finished
+.float queue_skin;              // The team the spy will change to after skin disguise is finished

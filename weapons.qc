@@ -105,7 +105,7 @@ void () TranquiliserTimer;
 void () TeamFortress_CTF_FlagInfo;
 void () TF_MovePlayer;
 string (float tno) GetTeamName;
-
+void () HueTF_Spy_DisguiseLast;
 void () W_Precache =
 {
 	precache_sound ("weapons/r_exp3.wav");
@@ -3853,6 +3853,11 @@ void () ImpulseCommands =
 									if (((self.impulse == 177) && (self.playerclass == 8)))
 									{
 										TeamFortress_SpyGoUndercover ();
+										self.impulse = 0;
+										return;
+									} else if (((self.impulse == 240) && (self.playerclass == 8)))
+									{
+										HueTF_Spy_DisguiseLast ();
 										self.impulse = 0;
 										return;
 									}

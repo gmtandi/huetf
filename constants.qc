@@ -65,6 +65,101 @@
 #define TFSTATE_CANT_MOVE		65536  // set when player is setting a detpack
 
 
+
+// Defines for the playerclass
+#define PC_UNDEFINED		0
+
+#define PC_SCOUT		1
+#define PC_SNIPER		2
+#define PC_SOLDIER		3
+#define PC_DEMOMAN		4
+#define PC_MEDIC		5
+#define PC_HVYWEAP		6
+#define PC_PYRO			7
+#define PC_SPY			8
+#define PC_ENGINEER		9
+
 #define HUETF_HEADSHOT_DISTANCE   25
 #define HUETF_HEADSHOT_MULTIPLIER 1.5
 
+/*======================================================*/
+/* Death Message defines				*/
+/*======================================================*/
+
+#define DMSG_SHOTGUN			1
+#define DMSG_SSHOTGUN			2
+#define DMSG_NAILGUN			3
+#define DMSG_SNAILGUN			4
+#define DMSG_GRENADEL			5
+#define DMSG_ROCKETL			6
+#define DMSG_LIGHTNING			7
+#define DMSG_GREN_HAND			8
+#define DMSG_GREN_NAIL			9
+#define DMSG_GREN_MIRV			10
+#define DMSG_GREN_PIPE			11
+#define DMSG_DETPACK			12
+#define DMSG_BIOWEAPON          13
+#define DMSG_BIOWEAPON_ATT      14
+#define DMSG_FLAME			15
+#define DMSG_DETPACK_DIS		16
+#define DMSG_AXE			17
+#define DMSG_SNIPERRIFLE		18
+#define DMSG_AUTORIFLE			19
+#define DMSG_ASSAULTCANNON		20
+#define DMSG_HOOK			21
+#define DMSG_BACKSTAB			22
+#define DMSG_MEDIKIT			23
+#define DMSG_GREN_GAS			24
+#define DMSG_TRANQ			25
+#define DMSG_LASERBOLT			26
+#define DMSG_SENTRYGUN_BULLET		27
+#define DMSG_SNIPERLEGSHOT		28
+#define DMSG_SNIPERHEADSHOT		29
+#define DMSG_GREN_EMP			30
+#define DMSG_GREN_EMP_AMMO		31
+#define DMSG_SPANNER			32
+#define DMSG_INCENDIARY			33
+#define DMSG_SENTRYGUN_ROCKET		34
+#define DMSG_GREN_FLASH			35
+#define DMSG_TRIGGER			36
+
+// message levels
+#define	PRINT_LOW	0		// pickup messages
+#define	PRINT_MEDIUM	1		// death messages
+#define	PRINT_HIGH	2		// critical messages
+#define PRINT_CHAT	3		// also goes to chat console
+
+// edict.movetype values
+#define MOVETYPE_NONE			0 	// never moves
+//#define MOVETYPE_ANGLENOCLIP	1
+//#define MOVETYPE_ANGLECLIP	2
+#define MOVETYPE_WALK			3 	// players only
+#define MOVETYPE_STEP			4 	// discrete, not real time unless fall
+#define MOVETYPE_FLY			5
+#define MOVETYPE_TOSS			6 	// gravity
+#define MOVETYPE_PUSH			7 	// no clip to world, push and crush
+#define MOVETYPE_NOCLIP			8
+#define MOVETYPE_FLYMISSILE		9 	// fly with extra size against monsters
+#define MOVETYPE_BOUNCE			10
+#define MOVETYPE_BOUNCEMISSILE		11 	// bounce with extra size
+
+// edict.solid values
+#define SOLID_NOT	0 	// no interaction with other objects
+#define SOLID_TRIGGER	1 	// touch on edge, but not blocking
+#define SOLID_BBOX	2 	// touch on edge, block
+#define SOLID_SLIDEBOX	3 	// touch on edge, but not an onground
+#define SOLID_BSP	4 	// bsp clip, touch on edge, block
+
+// edict.flags
+#define FL_FLY		1
+#define FL_SWIM		2
+#define FL_CLIENT	8 	// set for all client edicts
+#define FL_INWATER	16 	// for enter / leave water splash
+#define FL_MONSTER	32
+#define FL_GODMODE	64 	// player cheat
+#define FL_NOTARGET	128 	// player cheat
+#define FL_ITEM		256 	// extra wide size for bonus items
+#define FL_ONGROUND	512 	// standing on something
+#define FL_PARTIALGROUND	1024 	// not all corners are valid
+#define FL_WATERJUMP	2048 	// player jumping out of water
+#define FL_JUMPRELEASED	4096 	// for jump debouncing

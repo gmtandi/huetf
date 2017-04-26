@@ -451,6 +451,10 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			}
 		}
 	}
+	if (targ.playerclass == PC_SPY) {
+        targ.attacked_by = attacker;
+        targ.feignmsg = deathmsg;
+    }
 	if ((T_flags & 4))
 	{
 		if ((targ == attacker))

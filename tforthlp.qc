@@ -163,7 +163,7 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("build", 179, 0);
 		TeamFortress_Alias ("detsentry", 188, 0);
 		TeamFortress_Alias ("detdispenser", 187, 0);
-		TeamFortress_Alias ("detdispenser", 187, 0);
+		TeamFortress_Alias ("dlast", 240, 0);
 		if (self.is_admin)
 		{
 			if (self.get_admin_aliases)

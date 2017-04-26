@@ -4,6 +4,7 @@ void (entity spy) TeamFortress_SpyCalcName;
 void () TeamFortress_SpyUndercoverThink;
 void () GasGrenadeMakeGas;
 void () T_TranqDartTouch;
+void () Spy_DropBackpack;
 
 void () spy_diea1 = [ 50, spy_diea2 ]
 {
@@ -472,6 +473,7 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 	local float j;
 	local entity at_spot;
 	local entity te;
+	local string deathstring;
 
 	if (self.is_feigning)
 	{
@@ -615,6 +617,12 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 		{
 			DeathSound ();
 		}
+
+		Spy_DropBackpack();
+		deathstring = GetDeathMessage(self, self.attacked_by, self.feignmsg);
+        bprint(PRINT_MEDIUM, deathstring);
+
+
 		if ((self.weapon <= 16))
 		{
 			spy_die_ax1 ();
@@ -764,7 +772,13 @@ void () TeamFortress_SpyUndercoverThink =
 			sprint (self.owner, 2, "Skin set to ");
 			TeamFortress_PrintClassName (self.owner, self.skin, 0);
 			self.owner.undercover_skin = self.skin;
+			self.queue_skin = 0;
 			TeamFortress_SetSkin (self.owner);
+			self.owner.is_undercover = 1;
+			if (self.owner.queue_team) {
+				sprint (self.owner, 2, "queue detected\n ");
+                TeamFortress_SpyChangeColor(self.owner.queue_team);
+            }
 		}
 		if ((self.team != 0))
 		{
@@ -778,7 +792,12 @@ void () TeamFortress_SpyUndercoverThink =
 			st = ftos (tc);
 			stuffcmd (self.owner, st);
 			stuffcmd (self.owner, "\n");
+			self.queue_team = 0;
 			TeamFortress_SetSkin (self.owner);
+			self.owner.is_undercover = 1;
+			if (self.owner.queue_skin) {
+                TeamFortress_SpyChangeSkin(self.owner.queue_skin);
+            }
 		}
 		TeamFortress_SpyCalcName (self.owner);
 		if ((self.owner.StatusBarSize == 0))
@@ -806,6 +825,10 @@ void (float class) TeamFortress_SpyChangeSkin =
 		}
 		return;
 	}
+	if (self.is_undercover == 2) {
+	    self.queue_skin = class;
+	    return;
+	}
 	sprint (self, 2, "Going undercover...\n");
 	self.is_undercover = 2;
 	te = spawn ();
@@ -814,6 +837,7 @@ void (float class) TeamFortress_SpyChangeSkin =
 	te.think = TeamFortress_SpyUndercoverThink;
 	te.nextthink = (time + 4);
 	te.skin = class;
+	self.last_skin = class;
 	TeamFortress_SetSkin (self);
 };
 
@@ -823,6 +847,7 @@ void (float teamno) TeamFortress_SpyChangeColor =
 	local string st;
 	local float tc;
 
+	
 	if ((teamno == self.team_no))
 	{
 		sprint (self, 2, "Colors reset.\n");
@@ -840,6 +865,13 @@ void (float teamno) TeamFortress_SpyChangeColor =
 		TeamFortress_SetSkin (self);
 		return;
 	}
+sprint (self.owner, 2, "queue entered\n ");
+	if (self.is_undercover == 2) {
+		sprint (self.owner, 2, "queuING\n ");
+	    self.queue_team = teamno;
+	    return;
+	}
+	sprint (self.owner, 2, "queue detected 3333\n ");
 	sprint (self, 2, "Going undercover...\n");
 	self.is_undercover = 2;
 	te = spawn ();
@@ -848,6 +880,7 @@ void (float teamno) TeamFortress_SpyChangeColor =
 	te.think = TeamFortress_SpyUndercoverThink;
 	te.nextthink = (time + 4);
 	te.team = teamno;
+	self.last_team = teamno;
 };
 
 void () GasGrenadeTouch =
@@ -1431,4 +1464,43 @@ void (entity spy) Spy_RemoveDisguise =
 		TeamFortress_SetSkin (spy);
 		TeamFortress_SpyCalcName (spy);
 	}
+};
+
+void () HueTF_Spy_DisguiseLast = {
+    if (self.last_skin) {
+        TeamFortress_SpyChangeSkin(self.last_skin);
+    }
+    if (self.last_team) {
+        TeamFortress_SpyChangeColor(self.last_team);
+    }
+};
+
+void () Spy_DropBackpack = {
+    if (cb_prematch) {
+		return;
+	}
+
+    newmis = spawn();
+    newmis.origin = self.origin - '0 0 24';
+
+    newmis.ammo_shells = 0;
+    newmis.ammo_nails = 0;
+    newmis.ammo_rockets = 0;
+    newmis.ammo_cells = 0;
+
+    newmis.armorvalue = 0;
+
+    newmis.velocity_z = 300;
+    newmis.velocity_x = -100 + random() * 200;
+    newmis.velocity_y = -100 + random() * 200;
+
+    newmis.flags = FL_ITEM;
+    newmis.solid = SOLID_TRIGGER;
+    newmis.movetype = MOVETYPE_TOSS;
+    setmodel(newmis, "progs/backpack.mdl");
+    setsize(newmis, '-16 -16 0', '16 16 56');
+    newmis.touch = BackpackTouch;
+
+    newmis.nextthink = time + space;
+    newmis.think = SUB_Remove;
 };
