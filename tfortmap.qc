@@ -2130,6 +2130,9 @@ void (entity Goal, entity AP, float addb) DoResults =
 	local string st;
 	local float winners;
 	local float gotone;
+	local string locname;
+	local string goalname;
+	local string flagmessage;
 
 	if (cb_prematch)
 	{
@@ -2156,6 +2159,13 @@ void (entity Goal, entity AP, float addb) DoResults =
 	}
 	UpdateAbbreviations (Goal);
 	Goal.goal_state = 2;
+	if (flagloc) {
+		if (Goal.netname != string_null)
+			goalname = Goal.netname;
+		else
+			goalname = "Enemy Flag";
+		locname = strcat(locationname(Goal.origin),"\n");
+	}
 	if (((Goal.classname == "info_tfgoal") && (Goal.mdl != string_null)))
 	{
 		setmodel (Goal, string_null);
@@ -2432,14 +2442,23 @@ void (entity Goal, entity AP, float addb) DoResults =
 			if ((AP.team_no == te.team_no))
 			{
 				if (((Goal.owners_team_broadcast != string_null) && (te.team_no == Goal.owned_by)))
-				{
+				{	
 					CenterPrint2 (te, "\n\n\n", Goal.owners_team_broadcast);
 				}
 				else
 				{
 					if ((Goal.team_broadcast != string_null))
 					{
-						CenterPrint2 (te, "\n\n\n", Goal.team_broadcast);
+						flagmessage = Goal.team_broadcast;	
+						if (flagloc) {						
+							flagmessage = strcat(flagmessage, "\n"); 
+							flagmessage = strcat(flagmessage, AP.netname);
+							flagmessage = strcat(flagmessage, " took the ");
+							flagmessage = strcat(flagmessage, goalname);
+							flagmessage = strcat(flagmessage, " at ");
+							flagmessage = strcat(flagmessage, locname);
+						}
+						CenterPrint2 (te, "\n\n\n", flagmessage);
 					}
 				}
 				if (((Goal.netname_owners_team_broadcast != string_null) && (te.team_no == Goal.owned_by)))

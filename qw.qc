@@ -329,3 +329,4 @@ float sniperpower;
 .float reload_sniper_rifle;
 float headshots;
 float shortergrens;
+float flagloc;

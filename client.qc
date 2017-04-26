@@ -427,6 +427,8 @@ void () DecodeLevelParms =
 
         shortergrens = CF_GetSetting("shgrens", "shortergrens", "on");
 
+        flagloc = CF_GetSetting("floc", "flagloc", "on");
+
 
 		st = infokey (world, "rounds");
 		if ((st == "on"))
