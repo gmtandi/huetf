@@ -2882,24 +2882,45 @@ void (float inp) Menu_Engineer_Input =
 	}
 };
 
+string (string text, float maxlength) Menu_Ident_line = 
+{
+	local float spaces;	
+	local float i;
+	
+	spaces = maxlength - (strlen(text) % (maxlength+1));
+	for (i = 0; i < spaces; i = i + 1)
+    {
+      text = strcat(text," ");
+    }
+    text = strcat(text,"\n");
+    return text;
+}
+
 void () Menu_EngineerFix_Dispenser =
 {
 	local entity disp = self.building;
 	local string status;
+	local float spaces;
+	local float i;
 
 	status = strcat(status,"Dispenser has ");
 	status = strcat(status,ftos (disp.health));
-	status = strcat(status," health\n");
+	status = strcat(status," health");
+	status = Menu_Ident_line(status,35);
+	
 	status = strcat(status,ftos (disp.ammo_shells));
 	status = strcat(status," shells, ");
 	status = strcat(status,ftos (disp.ammo_nails));
 	status = strcat(status," nails,");
 	status = strcat(status,ftos (disp.ammo_rockets));
-	status = strcat(status," rockets\n");
+	status = strcat(status," rockets");
+	status = Menu_Ident_line(status,35);
 	status = strcat(status,ftos (disp.ammo_cells));
 	status = strcat(status," cells, and ");
 	status = strcat(status,ftos (disp.armorvalue));
-	status = strcat(status," armor\n");
+	status = strcat(status," armor");
+	status = Menu_Ident_line(status,35);
+	status = strcat(status,"\n");
 	CenterPrint2(self,status,"Action:                            \n“‘ Put Ammo into Dispenser     \n”‘ Put Armor into Dispenser    \n•‘ Repair Dispenser            \n–‘ Dismantle Dispenser         \n—‘ Nothing                     \n\n");	
 };
 
@@ -3474,7 +3495,8 @@ void () Menu_Admin =
 		f_tmp2 = 0;
 		s_menu2 = "\sPage\s ";
 		s_menu2 = strcat (s_menu2, ftos(self.current_menu_page));
-		s_menu2 = strcat (s_menu2, " \bPlayers:\b                      \n\n");
+		s_menu2 = strcat (s_menu2, " \bPlayers:\b                      \n");
+		s_menu2 = Menu_Ident_line(s_menu2, 30);
 
 		te = find (world, classname, "player");
 		while (te != world) {
@@ -3483,9 +3505,14 @@ void () Menu_Admin =
 				f_tmp = f_tmp + 1;
 				s_menu2 = strcat( s_menu2, "\s[\s" );
 				s_menu2 = strcat( s_menu2, ftos(f_tmp2));
-				s_menu2 = strcat( s_menu2, "\s]\s " );
-				s_menu2 = strcat( s_menu2, te.netname );
-				s_menu2 = strcat( s_menu2, "\n" );
+				s_menu2 = strcat( s_menu2, "\s]\s " );				
+				if (strlen(te.netname) <= 26) {
+					s_menu2 = strcat( s_menu2, te.netname );					
+				} 
+				else {
+					s_menu2 = strcat( s_menu2, substr(te.netname,0,25));
+				}
+				s_menu2 = Menu_Ident_line(s_menu2, 30);
 			}
 
 			if (( f_tmp < (self.current_menu_page - 1) * 7) &&  ( ( ( self.current_menu_type == 5 || self.current_menu_type == 4 )  && !te.captain) || ( self.current_menu_type != 5 && self.current_menu_type != 4 ) ) ) {
@@ -3504,7 +3531,13 @@ if (self.current_menu_type != 3 && self.current_menu_type != 4 && self.current_m
 				s_menu2 = strcat( s_menu2, ftos(f_tmp2));
 				s_menu2 = strcat( s_menu2, "\s]\s " );
 				s_menu2 = strcat( s_menu2, te.netname );
-				s_menu2 = strcat( s_menu2, "\n" );
+				if (strlen(te.netname) <= 26) {
+					s_menu2 = strcat( s_menu2, te.netname );					
+				} 
+				else {
+					s_menu2 = strcat( s_menu2, substr(te.netname,0,25));
+				}
+				s_menu2 = Menu_Ident_line(s_menu2, 30);
 			}
 			f_tmp = f_tmp + 1;
 			te = find (te, classname, "observer");
@@ -3525,11 +3558,14 @@ if (f_tmp == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4 
 		captainmode = 0;
 		return;
 }
-
-		s_menu7 = "\n\b[\b8\b]\b \bPrevious Page\b         \n";
-		s_menu8 = "\b[\b9\b]\b \bNext Page\b             \n";
+		s_menu2 = strcat( s_menu2, "\n");
+		s_menu7 = "\b[\b8\b]\b \bPrevious Page\b         ";
+		s_menu7 = Menu_Ident_line(s_menu7, 30);
+		s_menu8 = "\b[\b9\b]\b \bNext Page\b             ";
+		s_menu8 = Menu_Ident_line(s_menu8, 30);
 if (self.is_admin || self.captain == 1) {
-		s_menu9 = "\b[\b0\b]\b \bBack to Main Menu\b     \n";
+		s_menu9 = "\b[\b0\b]\b \bBack to Main Menu\b     ";
+		s_menu9 = Menu_Ident_line(s_menu9, 30);
 } else {
 		s_menu9 = "\n";
 }
