@@ -2884,7 +2884,23 @@ void (float inp) Menu_Engineer_Input =
 
 void () Menu_EngineerFix_Dispenser =
 {
-	CenterPrint (self, "Action:                            \n“‘ Put Ammo into Dispenser     \n”‘ Put Armor into Dispenser    \n•‘ Repair Dispenser            \n–‘ Dismantle Dispenser         \n—‘ Nothing                     \n\n");
+	local entity disp = self.building;
+	local string status;
+
+	status = strcat(status,"Dispenser has ");
+	status = strcat(status,ftos (disp.health));
+	status = strcat(status," health\n");
+	status = strcat(status,ftos (disp.ammo_shells));
+	status = strcat(status," shells, ");
+	status = strcat(status,ftos (disp.ammo_nails));
+	status = strcat(status," nails,");
+	status = strcat(status,ftos (disp.ammo_rockets));
+	status = strcat(status," rockets\n");
+	status = strcat(status,ftos (disp.ammo_cells));
+	status = strcat(status," cells, and ");
+	status = strcat(status,ftos (disp.armorvalue));
+	status = strcat(status," armor\n");
+	CenterPrint2(self,status,"Action:                            \n“‘ Put Ammo into Dispenser     \n”‘ Put Armor into Dispenser    \n•‘ Repair Dispenser            \n–‘ Dismantle Dispenser         \n—‘ Nothing                     \n\n");	
 };
 
 void (float inp) Menu_EngineerFix_Dispenser_Input =

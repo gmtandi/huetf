@@ -820,7 +820,7 @@ void (entity disp) Engineer_UseDispenser =
 	local entity dist_checker;
 	local string st;
 
-	sprint (self, 2, "Dispenser has ");
+	/*sprint (self, 2, "Dispenser has ");
 	st = ftos (disp.health);
 	sprint (self, 2, st);
 	sprint (self, 2, " health\n");
@@ -838,7 +838,7 @@ void (entity disp) Engineer_UseDispenser =
 	sprint (self, 2, " cells, and ");
 	st = ftos (disp.armorvalue);
 	sprint (self, 2, st);
-	sprint (self, 2, " armor\n");
+	sprint (self, 2, " armor\n");*/
 	self.current_menu = 16;
 	self.menu_count = 30;
 	self.building = disp;
