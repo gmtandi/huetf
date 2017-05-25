@@ -2882,7 +2882,7 @@ void (float inp) Menu_Engineer_Input =
 	}
 };
 
-string (string text, float maxlength) Menu_Ident_line = 
+string (string text, float maxlength) Menu_Indent_line = 
 {
 	local float spaces;	
 	local float i;
@@ -2906,7 +2906,7 @@ void () Menu_EngineerFix_Dispenser =
 	status = strcat(status,"Dispenser has ");
 	status = strcat(status,ftos (disp.health));
 	status = strcat(status," health");
-	status = Menu_Ident_line(status,35);
+	status = Menu_Indent_line(status,35);
 	
 	status = strcat(status,ftos (disp.ammo_shells));
 	status = strcat(status," shells, ");
@@ -2914,12 +2914,12 @@ void () Menu_EngineerFix_Dispenser =
 	status = strcat(status," nails,");
 	status = strcat(status,ftos (disp.ammo_rockets));
 	status = strcat(status," rockets");
-	status = Menu_Ident_line(status,35);
+	status = Menu_Indent_line(status,35);
 	status = strcat(status,ftos (disp.ammo_cells));
 	status = strcat(status," cells, and ");
 	status = strcat(status,ftos (disp.armorvalue));
 	status = strcat(status," armor");
-	status = Menu_Ident_line(status,35);
+	status = Menu_Indent_line(status,35);
 	status = strcat(status,"\n");
 	CenterPrint2(self,status,"Action:                            \n“‘ Put Ammo into Dispenser     \n”‘ Put Armor into Dispenser    \n•‘ Repair Dispenser            \n–‘ Dismantle Dispenser         \n—‘ Nothing                     \n\n");	
 };
@@ -3067,6 +3067,31 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 
 void () Menu_EngineerFix_SentryGun =
 {
+	local entity gun = self.building;
+	local string status;
+	local float spaces;
+	local float i;
+
+	status = strcat(status,"Level ");
+    status = strcat(status,ftos (gun.weapon));
+	status = strcat(status," Sentry Gun has ");
+	status = strcat(status,ftos (gun.health));
+	status = strcat(status," health");
+	status = Menu_Indent_line(status,35);
+	status = strcat(status,ftos (gun.ammo_shells));
+	status = strcat(status," shells");
+	if ((gun.weapon == 3))
+	{
+		status = strcat(status,", ");
+		status = strcat(status,ftos (gun.ammo_rockets));
+		status = strcat(status," rockets");
+	}
+
+	status = Menu_Indent_line(status,35);
+	status = strcat(status,"\n");
+
+
+
 	// only show this menu if autospanner is enabled, else show the original menu
     if (autospanner) {    	
         Menu_EngineerFix_SentryGun_Rotate();
@@ -3075,11 +3100,11 @@ void () Menu_EngineerFix_SentryGun =
 //	if (  ( (self.building.weapon < 3) && (self.ammo_cells >= 130) && !sglvl2to3 )  || ( (self.building.weapon < 2) && (self.ammo_cells >= 130) && sglvl2to3 ) )
 	if ( (self.building.weapon < 3) && (self.ammo_cells >= 130) )
 	{
-		CenterPrint (self, "Action:                            \n“‘ Put Ammo into Sentry Gun    \n”‘ Upgrade Sentry Gun          \n•‘ Repair Sentry Gun           \n–‘ Dismantle Sentry Gun        \n—‘ Nothing                     \n\n˜‘ Rotate SentryGun            \n");
+		CenterPrint2 (self, status, "Action:                            \n“‘ Put Ammo into Sentry Gun    \n”‘ Upgrade Sentry Gun          \n•‘ Repair Sentry Gun           \n–‘ Dismantle Sentry Gun        \n—‘ Nothing                     \n\n˜‘ Rotate SentryGun            \n");
 	}
 	else
 	{
-		CenterPrint (self, "Action:                            \n“‘ Put Ammo into Sentry Gun    \n\n•‘ Repair Sentry Gun           \n–‘ Dismantle Sentry Gun        \n—‘ Nothing                     \n\n˜‘ Rotate SentryGun            \n");
+		CenterPrint2 (self, status, "Action:                            \n“‘ Put Ammo into Sentry Gun    \n\n•‘ Repair Sentry Gun           \n–‘ Dismantle Sentry Gun        \n—‘ Nothing                     \n\n˜‘ Rotate SentryGun            \n");
 	}
 };
 
@@ -3496,7 +3521,7 @@ void () Menu_Admin =
 		s_menu2 = "\sPage\s ";
 		s_menu2 = strcat (s_menu2, ftos(self.current_menu_page));
 		s_menu2 = strcat (s_menu2, " \bPlayers:\b                      \n");
-		s_menu2 = Menu_Ident_line(s_menu2, 30);
+		s_menu2 = Menu_Indent_line(s_menu2, 30);
 
 		te = find (world, classname, "player");
 		while (te != world) {
@@ -3512,7 +3537,7 @@ void () Menu_Admin =
 				else {
 					s_menu2 = strcat( s_menu2, substr(te.netname,0,25));
 				}
-				s_menu2 = Menu_Ident_line(s_menu2, 30);
+				s_menu2 = Menu_Indent_line(s_menu2, 30);
 			}
 
 			if (( f_tmp < (self.current_menu_page - 1) * 7) &&  ( ( ( self.current_menu_type == 5 || self.current_menu_type == 4 )  && !te.captain) || ( self.current_menu_type != 5 && self.current_menu_type != 4 ) ) ) {
@@ -3537,7 +3562,7 @@ if (self.current_menu_type != 3 && self.current_menu_type != 4 && self.current_m
 				else {
 					s_menu2 = strcat( s_menu2, substr(te.netname,0,25));
 				}
-				s_menu2 = Menu_Ident_line(s_menu2, 30);
+				s_menu2 = Menu_Indent_line(s_menu2, 30);
 			}
 			f_tmp = f_tmp + 1;
 			te = find (te, classname, "observer");
@@ -3560,12 +3585,12 @@ if (f_tmp == 0 &&  ( self.current_menu_type == 5 || self.current_menu_type == 4 
 }
 		s_menu2 = strcat( s_menu2, "\n");
 		s_menu7 = "\b[\b8\b]\b \bPrevious Page\b         ";
-		s_menu7 = Menu_Ident_line(s_menu7, 30);
+		s_menu7 = Menu_Indent_line(s_menu7, 30);
 		s_menu8 = "\b[\b9\b]\b \bNext Page\b             ";
-		s_menu8 = Menu_Ident_line(s_menu8, 30);
+		s_menu8 = Menu_Indent_line(s_menu8, 30);
 if (self.is_admin || self.captain == 1) {
 		s_menu9 = "\b[\b0\b]\b \bBack to Main Menu\b     ";
-		s_menu9 = Menu_Ident_line(s_menu9, 30);
+		s_menu9 = Menu_Indent_line(s_menu9, 30);
 } else {
 		s_menu9 = "\n";
 }

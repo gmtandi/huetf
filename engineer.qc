@@ -853,8 +853,7 @@ void (entity disp) Engineer_UseDispenser =
 void (entity gun) Engineer_UseSentryGun =
 {
 	local entity dist_checker;
-	local string st;
-
+/*	local string st;
 	sprint (self, 2, "Level ");
 	st = ftos (gun.weapon);
 	sprint (self, 2, st);
@@ -873,6 +872,7 @@ void (entity gun) Engineer_UseSentryGun =
 		sprint (self, 2, " rockets");
 	}
 	sprint (self, 2, "\n");
+*/
 
 	//Autospanner, first tries to upgrade if it has cells, then tries to repair if sentry gun is not repaired, then finally tries to put some ammo on it
 	if (autospanner) 
