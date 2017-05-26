@@ -1786,7 +1786,7 @@ void (float inp) Menu_Spy_Color_Input;
 void () Menu_Engineer;
 void () Menu_EngineerFix_Dispenser;
 void () Menu_EngineerFix_SentryGun;
-void () Menu_EngineerFix_SentryGun_Rotate;
+void (string status) Menu_EngineerFix_SentryGun_Rotate;
 void (float inp) Menu_Engineer_Input;
 void (float inp) Menu_EngineerFix_Dispenser_Input;
 void (float inp) Menu_EngineerFix_SentryGun_Input;
@@ -3094,7 +3094,7 @@ void () Menu_EngineerFix_SentryGun =
 
 	// only show this menu if autospanner is enabled, else show the original menu
     if (autospanner) {    	
-        Menu_EngineerFix_SentryGun_Rotate();
+        Menu_EngineerFix_SentryGun_Rotate(status);
         return;
     }
 //	if (  ( (self.building.weapon < 3) && (self.ammo_cells >= 130) && !sglvl2to3 )  || ( (self.building.weapon < 2) && (self.ammo_cells >= 130) && sglvl2to3 ) )
@@ -3108,8 +3108,8 @@ void () Menu_EngineerFix_SentryGun =
 	}
 };
 
-void () Menu_EngineerFix_SentryGun_Rotate = {
-	CenterPrint (self, "Rotate sentry gun:\n\n“‘ 45 degrees left     \n”‘ 180 degrees         \n•‘ 45 degrees right    \n\n–‘ Dismantle Sentry Gun\n—‘ Nothing             \n");
+void (string status) Menu_EngineerFix_SentryGun_Rotate = {
+	CenterPrint2 (self, status, "Rotate sentry gun:\n\n“‘ 45 degrees left     \n”‘ 180 degrees         \n•‘ 45 degrees right    \n\n–‘ Dismantle Sentry Gun\n—‘ Nothing             \n");
     if (!self.building.real_owner.has_sentry || self.building.real_owner != self
                 || self.classname != "player" || self.building == world)
         return;
