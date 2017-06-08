@@ -143,6 +143,20 @@ void () UseSpecialSkill =
 	}
 };
 
+void (float inp) TeamFortress_ChangeRole =
+{
+	if (inp == 1) {
+		self.nextrole = "attacker";
+		if (self.role)
+			sprint (self, 2, "After dying, you will play as Attacker\n");
+		else self.role = self.nextrole;
+	} else if (inp == 2) {
+		self.nextrole = "defender";
+		if (self.role)
+			sprint (self, 2, "After dying, you will play as Defender\n");
+		else self.role = self.nextrole;
+	}
+}
 void (float inp) TeamFortress_ChangeClass =
 {
 	local entity spot;

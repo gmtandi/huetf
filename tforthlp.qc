@@ -41,6 +41,7 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("autozoom", 174, 0);
 		TeamFortress_Alias ("changeclass", _c, 0);
 		TeamFortress_Alias ("changeteam", __, 0);
+		TeamFortress_Alias ("changerole", 240, 0);
 		TeamFortress_Alias ("scout", (_d + 1), 0);
 		TeamFortress_Alias ("sniper", (_d + 2), 0);
 		TeamFortress_Alias ("soldier", (_d + 3), 0);

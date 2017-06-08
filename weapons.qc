@@ -5328,7 +5328,7 @@ float () DeadImpulses =
 		TeamFortress_ShowTF ();
 		self.impulse = 0;
 		return (1);
-	}
+	} 
 	else
 	{
 		if ((self.impulse == 174))
@@ -5358,6 +5358,13 @@ float () DeadImpulses =
 					if (((self.playerclass && (self.impulse == _c)) && !cb_prematch && !captainmode))
 					{
 						self.current_menu = 20;
+						self.menu_count = 30;
+						self.impulse = 0;
+						return (1);
+					}
+					if (((self.role && (self.impulse == 240)) && !cb_prematch && !captainmode))
+					{
+						self.current_menu = 28;
 						self.menu_count = 30;
 						self.impulse = 0;
 						return (1);

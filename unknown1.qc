@@ -1760,6 +1760,7 @@ float () TeamFortress_TeamPutPlayerInTeam;
 float (float tno) TeamFortress_TeamIsCivilian;
 float (float tno) TeamFortress_TeamGetNoPlayers;
 float () TeamFortress_GetNoPlayers;
+void (float inp) TeamFortress_ChangeRole;
 void (float inp) TeamFortress_ChangeClass;
 void (entity p) TeamFortress_SetSkin;
 void (float type) TeamFortress_DropAmmo;
@@ -1769,6 +1770,7 @@ void (entity p) bound_other_ammo;
 void (float tno, entity ignore, string st) teamsprint;
 void (float menu_no) DisplayMenu;
 void () Menu_Team;
+void () Menu_Role;
 void () Menu_Class;
 void () Menu_Drop;
 void () Menu_Intro;
@@ -1945,6 +1947,9 @@ void () Player_Menu =
 														{
 															Menu_Team ();
 														}
+														else if (self.current_menu == 28 && !captainmode) {
+															Menu_Role ();
+														}
 														else
 														{
 															if (((self.team_no == 0) && teamplay && !captainmode))
@@ -1956,27 +1961,35 @@ void () Player_Menu =
 																self.current_menu = 2;
 																Menu_Team ();
 															}
+															else if (!self.nextrole)
+															{
+																bprint(2,"ROLE CHECK\n");
+																if (round_active && !captainmode)
+																{
+																	return;
+																}
+																self.current_menu = 28;																	
+																Menu_Role ();
+															}
+															else if ((self.playerclass == 0))
+															{
+																if (round_active && !captainmode)
+																{
+																	return;
+																}
+																if (TeamFortress_TeamIsCivilian (self.team_no))
+																{
+																	PutClientInServer ();
+																	return;
+																}
+																self.current_menu = 3;																	
+																Menu_Class ();
+															}
 															else
 															{
-																if ((self.playerclass == 0))
-																{
-																	if (round_active && !captainmode)
-																	{
-																		return;
-																	}
-																	if (TeamFortress_TeamIsCivilian (self.team_no))
-																	{
-																		PutClientInServer ();
-																		return;
-																	}
-																	self.current_menu = 3;
-																	Menu_Class ();
-																}
-																else
-																{
-																	self.current_menu = 0;
-																}
+																self.current_menu = 0;
 															}
+															
 														}
 													}
 												}
@@ -2051,6 +2064,21 @@ void () Menu_Team =
 		}
 	}
 };
+
+void () Menu_Role =
+{
+	CenterPrint (self, "ûûû Choose Your Role ûûû\n\nêìë Attacker   \nêîë Defender   \n\n\n");
+};
+
+void (float inp) Menu_Role_Input =
+{	
+	if (inp == 1 || inp == 2) {
+		TeamFortress_ChangeRole (inp);
+		ResetMenu ();
+		self.impulse = 0;
+		self.menu_displaytime = 0;
+	}	
+}
 
 void (float inp) Menu_Team_Input =
 {
@@ -2239,6 +2267,8 @@ void (float inp) Menu_Input =
 		BotClassMenu_Input (inp);
 	} else if ((self.current_menu == 27)) {
 		BotTeamMenu_Input (inp);
+	} else if ((self.current_menu == 28)) {
+		Menu_Role_Input (inp);
 	}
 
 	else if ((self.current_menu == 2) && !captainmode)

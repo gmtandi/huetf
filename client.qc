@@ -1309,6 +1309,7 @@ void () player_touch;
 
 void () PutClientInServer =
 {
+	bprint(2,"BLERGH11111\n");
 	local string st;
 	local float iszoom;
 	local entity spot;
@@ -1378,6 +1379,10 @@ void () PutClientInServer =
 				self.tfstate = (self.tfstate - (self.tfstate & 8));
 				TeamFortress_ExecClassScript (self);
 			}
+		}
+		if ((self.role != self.nextrole)) {
+			self.role = self.nextrole;
+			sprint(self, 2, strcat(strcat("You are now playing as ", self.role),"\n"));
 		}
 	}
 	if ((self.tfstate & 8))
