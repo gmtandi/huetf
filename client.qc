@@ -427,6 +427,8 @@ void () DecodeLevelParms =
 
         shortergrens = CF_GetSetting("shgrens", "shortergrens", "on");
 
+        nutella = CF_GetSetting("nutella", "nutella", "on");
+
 
 		st = infokey (world, "rounds");
 		if ((st == "on"))
@@ -1309,7 +1311,6 @@ void () player_touch;
 
 void () PutClientInServer =
 {
-	bprint(2,"BLERGH11111\n");
 	local string st;
 	local float iszoom;
 	local entity spot;
@@ -1425,6 +1426,7 @@ void () PutClientInServer =
 		Engineer_RemoveBuildings (self);
 	}
 	self.takedamage = 2;
+	bprint(2,strcat(self.role,": "));
 	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & 8));
 	TeamFortress_SetEquipment ();
 	TeamFortress_SetHealth ();

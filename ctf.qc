@@ -1,4 +1,17 @@
 //=-=-=-=-=
+float () HueTF_isThereFlagOutOfBase = {
+	local entity te;
+
+	te = Finditem (1);
+	if ((te.origin != te.oldorigin) || (te.goal_state == 1)) {
+		return 1;
+	}
+	te = Finditem (2);
+	if ((te.origin != te.oldorigin) || (te.goal_state == 1)) {
+		return 1;
+	}
+	return 0;
+}
 
 void () TeamFortress_CTF_FlagInfo =
 {

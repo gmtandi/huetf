@@ -2626,7 +2626,14 @@ void () item_tfgoal_touch =
 {
 	local string st;
 	local entity te;
-
+	if (nutella) 
+	{
+		if (!HueTF_isThereFlagOutOfBase()) {
+			if (other.role == "defender") {
+				return;
+			}
+		}
+	}
 	if ((other.classname != "player"))
 	{
 		return;

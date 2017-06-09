@@ -329,5 +329,6 @@ float sniperpower;
 .float reload_sniper_rifle;
 float headshots;
 float shortergrens;
+float nutella;
 .string role;
 .string nextrole;

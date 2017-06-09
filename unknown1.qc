@@ -1952,6 +1952,7 @@ void () Player_Menu =
 														}
 														else
 														{
+															//called when player joins game
 															if (((self.team_no == 0) && teamplay && !captainmode))
 															{
 																if ((round_over >= 2))
@@ -1961,9 +1962,8 @@ void () Player_Menu =
 																self.current_menu = 2;
 																Menu_Team ();
 															}
-															else if (!self.nextrole)
-															{
-																bprint(2,"ROLE CHECK\n");
+															else if (!self.nextrole && nutella)
+															{																
 																if (round_active && !captainmode)
 																{
 																	return;

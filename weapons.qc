@@ -5363,7 +5363,7 @@ float () DeadImpulses =
 						return (1);
 					}
 					if (((self.role && (self.impulse == 240)) && !cb_prematch && !captainmode))
-					{
+					{						
 						self.current_menu = 28;
 						self.menu_count = 30;
 						self.impulse = 0;

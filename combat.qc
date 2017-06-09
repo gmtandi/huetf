@@ -6,6 +6,7 @@ void (entity targ, entity attacker) ClientObituary;
 void (entity Goal, entity AP, float addb) DoResults;
 float (entity Goal, entity AP) Activated;
 void () monster_death_use;
+float () HueTF_isThereFlagOutOfBase;
 
 float (entity targ, entity inflictor) CanDamage =
 {
@@ -221,6 +222,14 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 
 void (entity targ, entity inflictor, entity attacker, float damage, float T_flags, float T_AttackType) TF_T_Damage =
 {
+
+	if (nutella) {
+		if (!HueTF_isThereFlagOutOfBase()) {
+			if ((targ.team_no != attacker.team_no) && (targ.role == attacker.role))  {
+				return;
+			} 
+		}
+	}
 	local vector dir;
 	local entity oldself;
 	local entity te;
