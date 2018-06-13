@@ -417,17 +417,17 @@ void () DecodeLevelParms =
         grentimers = CF_GetSetting("gt", "grentimers", "on");
 
       // Replaces caltrop with impact grenade
-        impactgren = CF_GetSetting("ig", "impactgren", "on");
+        impactgren = CF_GetSetting("ig", "impactgren", "off");
 
 
       // Toggle 24 bits skins
         skins24b = CF_GetSetting("s24b", "skins24b", "off");
 
-        headshots = CF_GetSetting("hs", "headshots", "on");
+        headshots = CF_GetSetting("hs", "headshots", "off");
 
-        shortergrens = CF_GetSetting("shgrens", "shortergrens", "on");
+        shortergrens = CF_GetSetting("shgrens", "shortergrens", "off");
 
-        nutella = CF_GetSetting("nutella", "nutella", "on");
+        nutella = CF_GetSetting("nutella", "nutella", "off");
 
 
 		st = infokey (world, "rounds");
