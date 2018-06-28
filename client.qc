@@ -414,18 +414,18 @@ void () DecodeLevelParms =
       	automaxclients = CF_GetSetting("automaxclients", "automaxclients", "on");
 
       // display grenade timer in status bar [on]
-        grentimers = CF_GetSetting("gt", "grentimers", "on");
+        grentimers = CF_GetSetting("gt", "grentimers", "off");
 
       // Replaces caltrop with impact grenade
-        impactgren = CF_GetSetting("ig", "impactgren", "on");
+        impactgren = CF_GetSetting("ig", "impactgren", "off");
 
 
       // Toggle 24 bits skins
         skins24b = CF_GetSetting("s24b", "skins24b", "off");
 
-        headshots = CF_GetSetting("hs", "headshots", "on");
+        headshots = CF_GetSetting("hs", "headshots", "off");
 
-        shortergrens = CF_GetSetting("shgrens", "shortergrens", "on");
+        shortergrens = CF_GetSetting("shgrens", "shortergrens", "off");
 
 
 		st = infokey (world, "rounds");
