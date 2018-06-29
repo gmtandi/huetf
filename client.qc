@@ -411,7 +411,7 @@ void () DecodeLevelParms =
       	autospanner = CF_GetSetting("aspanner", "autospanner", "off");
       	sniperpower = CF_GetSetting("spow", "sniperpower", "off");
 
-      	automaxclients = CF_GetSetting("automaxclients", "automaxclients", "on");
+      	automaxclients = CF_GetSetting("automaxclients", "automaxclients", "off");
 
       // display grenade timer in status bar [on]
         grentimers = CF_GetSetting("gt", "grentimers", "off");
