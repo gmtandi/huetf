@@ -2553,12 +2553,26 @@ else
 					{
 						if ((self.playerclass == 6))
 						{
-							self.weapons_carried = ((((self.weapons_carried | 32768) | 16) | 128) | 256);
-							self.ammo_rockets = 0;
+							if (!classrework) {
+								self.weapons_carried = ((((self.weapons_carried | 32768) | 16) | 128) | 256);
+								self.ammo_rockets = 0;
+								self.armorvalue = 150;
+								self.maxarmor = 300;
+								self.current_weapon = 32768;
+								self.items_allowed = (((32768 | 16) | 128) | 256);							
+							}
+							else {
+								self.weapons_carried = ((((self.weapons_carried | 1048576) | 16) | 128) | 256);
+								self.ammo_rockets = 20;
+								self.armorvalue = 100;
+								self.maxarmor = 200;
+								self.current_weapon = 1048576;
+								self.items_allowed = (((1048576 | 16) | 128) | 256);
+							}
 							self.ammo_nails = 0;
 							self.ammo_shells = 200;
 							self.ammo_cells = 30;
-							self.maxammo_rockets = 25;
+							self.maxammo_rockets = 50;
 							self.maxammo_nails = 200;
 							self.maxammo_shells = 200;
 							self.maxammo_cells = _8;
@@ -2569,11 +2583,7 @@ else
 							self.tf_items = 0;
 							self.armorclass = (self.armorclass | 0);
 							self.armortype = 0.8;
-							self.armorvalue = 150;
 							self.armor_allowed = 0.8;
-							self.maxarmor = 300;
-							self.current_weapon = 32768;
-							self.items_allowed = (((32768 | 16) | 128) | 256);
 							self.items = (((self.items | 1) | 2) | space);
 						}
 						else

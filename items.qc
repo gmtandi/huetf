@@ -863,7 +863,24 @@ void () weapon_touch =
 						}
 						else
 						{
-							objerror ("weapon_touch: unknown classname");
+							if ((self.classname == "weapon_tribolt"))
+							{
+								if ((leave && (other.weapons_carried & 1048576)))
+								{
+									return;
+								}
+								if (!TeamFortress_CanGetWeapon (other, 1048576))
+								{
+									return;
+								}
+								hadammo = other.ammo_rockets;
+								new = 1048576;
+								other.ammo_rockets = (other.ammo_rockets + 5);
+							}
+							else
+							{
+								objerror ("weapon_touch: unknown classname");
+							}
 						}
 					}
 				}
@@ -949,6 +966,22 @@ void () weapon_grenadelauncher =
 	setmodel (self, "progs/g_rock.mdl");
 	self.weapon = 3;
 	self.netname = "Grenade Launcher";
+	self.touch = weapon_touch;
+	setsize (self, '-16 -16 0', '16 16 56');
+	StartItem ();
+};
+
+void () weapon_tribolt =
+{
+	if ((CheckExistence () == 0))
+	{
+		dremove (self);
+		return;
+	}
+	precache_model ("progs/g_rock.mdl");
+	setmodel (self, "progs/g_rock.mdl");
+	self.weapon = 3;
+	self.netname = "Tribolt";
 	self.touch = weapon_touch;
 	setsize (self, '-16 -16 0', '16 16 56');
 	StartItem ();

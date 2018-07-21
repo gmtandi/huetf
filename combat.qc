@@ -380,10 +380,15 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			dir = normalize (dir);
 			if ((targ.playerclass == 6))
 			{
-				moment = (damage / 4);
-				if ((damage <= _2))
-				{
-					moment = 0;
+				if (!classrework) {
+					moment = (damage / 4);
+					if ((damage <= _2))
+					{
+						moment = 0;
+					}
+				}
+				else {
+					moment = (damage / 2);
 				}
 			}
 			else

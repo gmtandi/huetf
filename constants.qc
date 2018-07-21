@@ -27,7 +27,9 @@
 #define WEAP_PLASMAGUN                  131072
 #define WEAP_TRANQ                      262144
 #define WEAP_RAILGUN                    524288
-#define WEAP_LAST                       1048576
+#define WEAP_TRIBOLT                    1048576
+#define WEAP_LAST                       2097152
+
 
 
 

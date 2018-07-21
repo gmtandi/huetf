@@ -146,6 +146,48 @@ void () TeamFortress_ReloadCurrentWeapon =
 				{
 					sprint (self, 2, "not enough ammo to reload\n");
 				}
+			}
+			else if ((self.current_weapon == 1048576))
+			{
+				if ((self.ammo_rockets == 0))
+				{
+					sprint (self, 2, "out of grenades.\n");
+					return;
+				}
+				if ((self.reload_tribolt == 0))
+				{
+					sprint (self, 2, "clip full.\n");
+					return;
+				}
+				if (((12 - self.reload_tribolt) == self.ammo_rockets))
+				{
+					sprint (self, 2, "all grenades are in the clip.\n");
+					return;
+				}
+				if ((self.reload_tribolt < self.ammo_rockets))
+				{
+					Attack_Finished (1.5);
+					rt = ((12 - self.reload_tribolt) / 12);
+					rt = (5 - (5 * rt));
+					self.reload_tribolt = 0;
+					if ((self.ammo_rockets < 6))
+					{
+						self.reload_tribolt = (12 - self.ammo_rockets);
+					}
+					sprint (self, 2, "reloading...\n");
+					self.tfstate = (self.tfstate | 2);
+					tWeapon = spawn ();
+					tWeapon.owner = self;
+					tWeapon.classname = "timer";
+					tWeapon.nextthink = (time + rt);
+					tWeapon.think = W_Reload_tribolt;
+					self.weaponmodel = "";
+					self.weaponframe = 0;
+				}
+				else
+				{
+					sprint (self, 2, "not enough ammo to reload\n");
+				}
 			}			
 			else if ((self.current_weapon == 8192))
 			{

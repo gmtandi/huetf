@@ -315,6 +315,7 @@ void () RoundBegin =
 				self.reload_shotgun = 0;
 				self.reload_super_shotgun = 0;
 				self.reload_grenade_launcher = 0;
+				self.reload_tribolt = 0;
 				self.reload_rocket_launcher = 0;
 				if (sniperpower)
 					self.reload_sniper_rifle = 0;

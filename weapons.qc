@@ -100,10 +100,13 @@ void () W_FireFlame;
 void () W_FireIncendiaryCannon;
 void () W_FireTranq;
 void () W_FireRail;
+void () W_Attack;
+void () W_FireTriBolt;
 void () HallucinationTimer;
 void () TranquiliserTimer;
 void () TeamFortress_CTF_FlagInfo;
 void () TF_MovePlayer;
+void () player_rocket1;
 string (float tno) GetTeamName;
 
 void () W_Precache =
@@ -1491,8 +1494,7 @@ void (float tno) decrement_team_flares =
 	}
 };
 
-void () GrenadeExplode =
-{
+void (float damage) GrenadeProjectileExplode = {
 	local entity te;
 
 	if (self.voided)
@@ -1512,7 +1514,7 @@ void () GrenadeExplode =
 	if ((self.owner.has_disconnected != 1))
 	{
 		deathmsg = self.weapon;
-		T_RadiusDamage (self, self.owner, _x, world);
+		T_RadiusDamage (self, self.owner, damage, world);
 	}
 	if ((self.no_active_nail_grens != 0))
 	{
@@ -1535,6 +1537,16 @@ void () GrenadeExplode =
 	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
+}
+
+void () GrenadeExplode =
+{
+	GrenadeProjectileExplode(_x);
+};
+
+void () TriBoltExplode =
+{
+	GrenadeProjectileExplode(25);
 };
 
 void () PipebombTouch =
@@ -1633,6 +1645,78 @@ void () W_FireGrenade =
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, self.origin);
 };
+
+void () W_TriboltBullet = {	
+	if (self.ammo_rockets < 1)
+		return;
+	if (!practice)
+	{
+		self.ammo_rockets = (self.ammo_rockets - 1);
+		self.currentammo = self.ammo_rockets;
+	}
+	player_rocket1 ();
+	sound (self, 1, "weapons/grenade.wav", 1, 1);
+	KickPlayer (-2, self);
+	newmis = spawn ();
+	newmis.voided = 0;
+	newmis.owner = self;
+	newmis.movetype = enter;
+	newmis.solid = 2;
+	newmis.weapon = 5;
+	newmis.classname = "grenade";
+	newmis.skin = 1;
+	newmis.touch = T_MissileTouch;
+	newmis.nextthink = (time + 2.5);
+	
+
+	makevectors (self.v_angle);
+	if (self.v_angle_x)
+	{
+		newmis.velocity = ((((v_forward * 1000) + (v_up * 200)) + ((crandom () * v_right) * enter)) + ((crandom () * v_up) * enter));
+	}
+	else
+	{
+		newmis.velocity = aim (self, 10000);
+		newmis.velocity = (newmis.velocity * 1000);
+		newmis.velocity_z = 200;
+	}
+	newmis.avelocity = '300 300 300';
+	newmis.angles = vectoangles (newmis.velocity);
+	newmis.think = GrenadeExplode;
+	setmodel (newmis, "progs/grenade2.mdl");
+	setsize (newmis, '0 0 0', '0 0 0');
+	setorigin (newmis, self.origin);
+}
+
+void () TriBolt_Think =
+{
+   
+   self.cnt = self.cnt + 1;
+   if (self.cnt < 3 && self.owner.health > 0) {
+   	self.nextthink = time + 0.15;
+   }
+   else {
+   	dremove (self);
+   	return;
+   }
+   self = self.owner;
+   W_TriboltBullet();
+
+};
+
+void () W_FireTriBolt =
+{
+	local entity work;
+
+	W_TriboltBullet();
+	work = spawn();
+   	work.think = TriBolt_Think;
+   	work.owner = self;
+   	work.cnt = 0;
+   	work.nextthink = time +0.15;
+};
+
+
 void () spike_touch;
 void () superspike_touch;
 
@@ -2089,6 +2173,17 @@ void () W_SetCurrentAmmo =
 																				self.items = (self.items | 512);
 																				self.weapon = 1;
 																			}
+																			else if ((self.current_weapon == 1048576))
+																			{
+																				self.currentammo = self.ammo_rockets;
+																				if (!(self.tfstate & 2))
+																				{
+																					self.weaponmodel = "progs/v_rock.mdl";
+																					self.weaponframe = 0;
+																				}
+																				self.weapon = 16;
+																				self.items = (self.items | 1024);
+																			}
 																			else
 																			{
 																				self.currentammo = 0;
@@ -2213,6 +2308,16 @@ void () W_Reload_grenade_launcher =
 	self.owner.StatusRefreshTime = (time + 0.1);
 };
 
+void () W_Reload_tribolt =
+{
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.weaponmodel = "progs/v_rock.mdl";
+	sprint (self.owner, 2, "finished reloading\n");
+	dremove (self);
+	self.owner.StatusRefreshTime = (time + 0.1);
+	
+};
+
 void () W_Reload_rocket_launcher =
 {
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
@@ -2307,6 +2412,27 @@ float () CheckForReload =
 						tWeapon.classname = "timer";
 						tWeapon.nextthink = (time + 4);
 						tWeapon.think = W_Reload_grenade_launcher;
+						self.weaponmodel = "";
+						self.weaponframe = 0;
+						return (1);
+					}
+				}
+				else if ((self.current_weapon == 1048576))
+				{
+					if (((self.reload_tribolt >= 12) && (self.ammo_rockets > 0)))
+					{
+						self.reload_tribolt = 0;
+						if ((self.ammo_rockets < 12))
+						{
+							self.reload_tribolt = (12 - self.ammo_rockets);
+						}
+						sprint (self, 2, "reloading...\n");
+						self.tfstate = (self.tfstate | 2);
+						tWeapon = spawn ();
+						tWeapon.owner = self;
+						tWeapon.classname = "timer";
+						tWeapon.nextthink = (time + 5);
+						tWeapon.think = W_Reload_tribolt;
 						self.weaponmodel = "";
 						self.weaponframe = 0;
 						return (1);
@@ -2700,6 +2826,19 @@ void () W_Attack =
 										W_FireRail ();
 										Attack_Finished (0.4);
 									}
+									else if ((self.current_weapon == 1048576))
+									{
+										if (CheckForReload ())
+										{
+											return;
+										}
+										W_FireTriBolt ();
+										self.reload_tribolt = (self.reload_tribolt + 3);
+										self.StatusRefreshTime = (time + 0.1);
+										CheckForReload ();
+										Attack_Finished (1.5);
+									}
+
 								}
 							}
 						}
@@ -3129,9 +3268,20 @@ void () W_ChangeWeapon =
 															am = 1;
 														}
 													}
-													else
-													{
-														have_weapon = 0;
+													else {
+														if ((it & 1048576))
+														{
+															fl = 1048576;		
+															if ((self.ammo_rockets < 1))
+															{
+																am = 1;
+															}
+															wm = 0;
+														}
+														else
+														{
+															have_weapon = 0;
+														}
 													}
 												}
 											}

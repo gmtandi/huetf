@@ -1296,6 +1296,14 @@ void () RefreshStatusBar =
 					}
 					num = (6 - self.reload_grenade_launcher);
 				}
+				else if ((self.current_weapon == 1048576))
+				{
+					if (((12 - self.reload_tribolt) > self.ammo_rockets))
+					{
+						self.reload_tribolt = (12 - self.ammo_rockets);
+					}
+					num = (12 - self.reload_tribolt);
+				}
 				else if ((self.current_weapon == 8192))
 				{	
 					if (((4 - self.reload_rocket_launcher) > self.ammo_rockets))

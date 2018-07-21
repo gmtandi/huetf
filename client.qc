@@ -411,6 +411,8 @@ void () DecodeLevelParms =
       	autospanner = CF_GetSetting("aspanner", "autospanner", "off");
       	sniperpower = CF_GetSetting("spow", "sniperpower", "off");
 
+      	classrework = CF_GetSetting("clarew", "classrework", "off");
+
       	automaxclients = CF_GetSetting("automaxclients", "automaxclients", "off");
 
       // display grenade timer in status bar [on]
@@ -1337,6 +1339,7 @@ void () PutClientInServer =
 	self.reload_grenade_launcher = 0;
 	self.reload_rocket_launcher = 0;
 	self.reload_sniper_rifle = 0;
+	self.reload_tribolt = 1;
 	self.on_hook = 0;
 	self.hook_out = 0;
 	self.fire_held_down = 0;
@@ -2838,6 +2841,7 @@ void () ClientDisconnect =
 	self.reload_grenade_launcher = 0;
 	self.reload_rocket_launcher = 0;
     self.reload_sniper_rifle = 0;
+    self.reload_tribolt = 0;
 	self.on_hook = 0;
 	self.hook_out = 0;
 	self.fire_held_down = 0;
