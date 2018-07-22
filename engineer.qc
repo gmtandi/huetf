@@ -1,3 +1,5 @@
+//=-=-=-=-=
+void () TeamFortress_Engineer;
 void () Rail_Touch;
 void () EMPExplode;
 void () EMPGrenadeTouch;
@@ -10,6 +12,32 @@ void (entity Gren) TeamFortress_ExplodePerson;
 void () Dispenser_Die;
 void () CheckDistance;
 float (entity obj, entity builder) CheckArea;
+
+void () TeamFortress_Engineer = 
+{
+	self.weapons_carried 	= PC_ENGINEER_WEAPONS;
+	self.ammo_rockets 		= 0;
+	self.ammo_nails 		= 25;
+	self.ammo_shells 		= 20;
+	self.ammo_cells 		= 100;
+	self.maxammo_rockets	= 30;
+	self.maxammo_nails 		= 50;
+	self.maxammo_shells 	= 50;
+	self.maxammo_cells 		= 200;
+	self.no_grenades_1 		= 2;
+	self.no_grenades_2 		= 2;
+	self.tp_grenades_1 		= 1;
+	self.tp_grenades_2 		= 8;
+	self.tf_items 			= 0;
+	self.armorclass 		= (self.armorclass | 0);
+	self.armortype 			= 0.3;
+	self.armorvalue 		= 25;
+	self.armor_allowed 		= 0.6;
+	self.maxarmor 			= 50;
+	self.current_weapon 	= WEAP_RAILGUN;
+	self.items_allowed 		= PC_ENGINEER_WEAPONS;
+	self.items 				= (self.items | 1 | 2);	
+};
 
 void () Rail_Think =
 {

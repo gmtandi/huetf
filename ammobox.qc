@@ -187,7 +187,7 @@ void () TeamFortress_AmmoboxTouch =
 										self.netname = "Bomb";
 										bprint2 (2, other.netname, " picked up the bomb.\n");
 										stuffcmd (other, "topcolor 0\n");
-										if ((other.playerclass == 8))
+										if ((other.playerclass == PC_SPY))
 										{
 											other.is_unabletospy = 1;
 										}
@@ -237,7 +237,7 @@ void (float type) TeamFortress_DropAmmo =
 		ammo = 20;
 		if ((self.ammo_shells < ammo))
 		{
-			if ((self.playerclass == 9))
+			if ((self.playerclass == PC_ENGINEER))
 			{
 				if (((self.ammo_cells / 3) > (ammo - self.ammo_shells)))
 				{
@@ -260,7 +260,7 @@ void (float type) TeamFortress_DropAmmo =
 			ammo = 20;
 			if ((self.ammo_nails < ammo))
 			{
-				if ((self.playerclass == 9))
+				if ((self.playerclass == PC_ENGINEER))
 				{
 					if (((self.ammo_cells / 2) > (ammo - self.ammo_nails)))
 					{
@@ -283,7 +283,7 @@ void (float type) TeamFortress_DropAmmo =
 				ammo = enter;
 				if ((self.ammo_rockets < ammo))
 				{
-					if ((self.playerclass == 9))
+					if ((self.playerclass == PC_ENGINEER))
 					{
 						if (((self.ammo_cells / 5) > (ammo - self.ammo_rockets)))
 						{
@@ -493,61 +493,61 @@ void () TeamFortress_Discard =
 
 	newmis = spawn ();
 	newmis.classname = "item_backpack";
-	if ((self.playerclass == 1))
+	if ((self.playerclass == PC_SCOUT))
 	{
 		newmis.ammo_rockets = self.ammo_rockets;
 	}
 	else
 	{
-		if ((self.playerclass == 2))
+		if ((self.playerclass == PC_SNIPER))
 		{
 			newmis.ammo_rockets = self.ammo_rockets;
 			newmis.ammo_cells = self.ammo_cells;
 		}
 		else
 		{
-			if ((self.playerclass == 3))
+			if ((self.playerclass == PC_SOLDIER))
 			{
 				newmis.ammo_cells = self.ammo_cells;
 				newmis.ammo_nails = self.ammo_nails;
 			}
 			else
 			{
-				if ((self.playerclass == 4))
+				if ((self.playerclass == PC_DEMOMAN))
 				{
 					newmis.ammo_cells = self.ammo_cells;
 					newmis.ammo_nails = self.ammo_nails;
 				}
 				else
 				{
-					if ((self.playerclass == 5))
+					if ((self.playerclass == PC_MEDIC))
 					{
 						newmis.ammo_rockets = self.ammo_rockets;
 						newmis.ammo_cells = self.ammo_cells;
 					}
 					else
 					{
-						if ((self.playerclass == 6))
+						if ((self.playerclass == PC_HWGUY))
 						{
 							newmis.ammo_rockets = self.ammo_rockets;
 							newmis.ammo_nails = self.ammo_nails;
 						}
 						else
 						{
-							if ((self.playerclass == 7))
+							if ((self.playerclass == PC_PYRO))
 							{
 								newmis.ammo_nails = self.ammo_nails;
 							}
 							else
 							{
-								if ((self.playerclass == 8))
+								if ((self.playerclass == PC_SPY))
 								{
 									newmis.ammo_rockets = self.ammo_rockets;
 									newmis.ammo_cells = self.ammo_cells;
 								}
 								else
 								{
-									if ((self.playerclass == 9))
+									if ((self.playerclass == PC_ENGINEER))
 									{
 										newmis.ammo_rockets = self.ammo_rockets;
 									}

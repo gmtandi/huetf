@@ -9,7 +9,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 	{
 		return;
 	}
-	if ((self.playerclass == 11))
+	if ((self.playerclass == PC_CIVILIAN))
 	{
 		return;
 	}

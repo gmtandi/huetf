@@ -1202,7 +1202,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 		W_SetCurrentAmmo ();
 		self = oldself;
 	}
-	if (((Player.playerclass == 8) && (Goal.goal_result & 16)))
+	if (((Player.playerclass == PC_SPY) && (Goal.goal_result & 16)))
 	{
 		self.immune_to_check = (time + 5);
 		Spy_RemoveDisguise (Player);
@@ -2822,7 +2822,7 @@ void (entity Item, entity AP, entity Goal) tfgoalitem_GiveToPlayer =
 			return;
 		}
 	}
-	if (((AP.playerclass == 8) && (Item.goal_result & 16)))
+	if (((AP.playerclass == PC_SPY) && (Item.goal_result & 16)))
 	{
 		AP.is_unabletospy = 1;
 	}

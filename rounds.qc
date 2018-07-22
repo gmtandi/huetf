@@ -343,7 +343,7 @@ void () RoundBegin =
 						self.ammo_detpack = 1;
 						stuffcmd (self, "topcolor 0\n");
 						CenterPrint (self, "You have the bomb!\n");
-						if ((self.playerclass == 8))
+						if ((self.playerclass == PC_SPY))
 						{
 							self.is_unabletospy = 1;
 						}
@@ -527,7 +527,7 @@ void () StartRound =
 			self.current_menu = 1;
 			TeamFortress_ThrowGrenade ();
 			TeamFortress_RemoveTimers ();
-			if ((self.playerclass == 9))
+			if ((self.playerclass == PC_ENGINEER))
 			{
 				Engineer_RemoveBuildings (self);
 			}

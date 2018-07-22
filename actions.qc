@@ -20,9 +20,9 @@ void () TeamFortress_SaveMe =
 	te = find (world, classname, "player");
 	while (te)
 	{
-		if (((((self == te) || (te.playerclass == 5)) || (te.playerclass == 9)) || (te.playerclass == 8)))
+		if (((((self == te) || (te.playerclass == PC_MEDIC)) || (te.playerclass == PC_ENGINEER)) || (te.playerclass == PC_SPY)))
 		{
-			if ((((te.team_no == self.team_no) && (self.team_no != 0)) || (te.playerclass == 8)))
+			if ((((te.team_no == self.team_no) && (self.team_no != 0)) || (te.playerclass == PC_SPY)))
 			{
 				if (visible (te))
 				{
@@ -41,13 +41,13 @@ void () TeamFortress_SaveMe =
 					WriteCoord (1, self.origin_z);
 					dremove (tl);
 				}
-				if ((te.playerclass == 5) || (te.playerclass == 9)) {
+				if ((te.playerclass == PC_MEDIC) || (te.playerclass == PC_ENGINEER)) {
 					local float send = 0;
 					if ((self.health < (self.max_health/1.25)) || (self.armorvalue < (self.maxarmor/1.25))) {
 						dist = vlen(self.origin - te.origin);
 						if (dist < 2500) {
 							locname = locationname(self.origin);
-							if ((te.playerclass == 5) && (self.health < (self.max_health/1.25))) {
+							if ((te.playerclass == PC_MEDIC) && (self.health < (self.max_health/1.25))) {
 								send = 1;
 								savememsg = strcat(self.netname," needs health");
 								if (locname != "someplace") {
@@ -58,7 +58,7 @@ void () TeamFortress_SaveMe =
 								needvalue = strcat("h:", ftos(self.health));
 								savememsg = strcat(savememsg, needvalue);				
 							}
-							if ((te.playerclass == 9) && (self.armorvalue < (self.maxarmor/1.25))) {
+							if ((te.playerclass == PC_ENGINEER) && (self.armorvalue < (self.maxarmor/1.25))) {
 								send = 1;
 								savememsg = strcat(self.netname," needs armor");
 								if (locname != "someplace") {
@@ -112,7 +112,7 @@ void () TeamFortress_ID =
 			if ((((self.team_no != 0) && (self.team_no == trace_ent.team_no)) || (self.classname == "observer")))
 			{
 				cls = TeamFortress_GetClassName (trace_ent.playerclass);
-				if ((self.playerclass == 5))
+				if ((self.playerclass == PC_MEDIC))
 				{
 					st = ftos (rint (trace_ent.health));
 					centerprint7 (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls, "\n", st, " health\n");
@@ -120,7 +120,7 @@ void () TeamFortress_ID =
 				}
 				else
 				{
-					if ((self.playerclass == 9))
+					if ((self.playerclass == PC_ENGINEER))
 					{
 						st = ftos (rint (trace_ent.armorvalue));
 						centerprint7 (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls, "\n", st, " armor\n");
@@ -130,12 +130,12 @@ void () TeamFortress_ID =
 				centerprint4 (self, "\n\n\n\n", trace_ent.netname, "\nFriendly ", cls);
 				return;
 			}
-			if ((trace_ent.playerclass == 8))
+			if ((trace_ent.playerclass == PC_SPY))
 			{
 				cls = TeamFortress_GetClassName (trace_ent.undercover_skin);
 				if (((self.team_no != 0) && (self.team_no == trace_ent.undercover_team)))
 				{
-					if ((self.playerclass == 5))
+					if ((self.playerclass == PC_MEDIC))
 					{
 						st = ftos (rint (trace_ent.health));
 						if ((trace_ent.undercover_skin != 0))
@@ -150,7 +150,7 @@ void () TeamFortress_ID =
 					}
 					else
 					{
-						if ((self.playerclass == 9))
+						if ((self.playerclass == PC_ENGINEER))
 						{
 							st = ftos (rint (trace_ent.armorvalue));
 							if ((trace_ent.undercover_skin != 0))

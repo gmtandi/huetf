@@ -378,7 +378,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			targ.immune_to_check = (time + (damage / 20));
 			dir = (targ.origin - ((inflictor.absmin + inflictor.absmax) * 0.5));
 			dir = normalize (dir);
-			if ((targ.playerclass == 6))
+			if ((targ.playerclass == PC_HWGUY))
 			{
 				if (!classrework) {
 					moment = (damage / 4);
@@ -397,7 +397,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			}
 			if (inflictor.classname == "bolt") {
 				moment = moment*2;
-				if ((targ.playerclass == 6))
+				if ((targ.playerclass == PC_HWGUY))
 					moment = moment*3.5;
 			}
 			if ((((moment < 60) && ((attacker.classname == "player") && (targ.classname == "player"))) && (attacker.netname != targ.netname)))

@@ -32,8 +32,11 @@ spy.qc
 demoman.qc
 scout.qc
 engineer.qc
-tsoldier.qc
+soldier.qc
 sniper.qc
+medic.qc
+hwguy.qc
+civilian.qc
 clan.qc
 rounds.qc
 ammobox.qc

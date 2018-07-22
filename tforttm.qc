@@ -424,7 +424,7 @@ void () TeamFortress_CheckTeamCheats =
 			{
 				if ((self.team_no == 2))
 				{
-					if (((self.playerclass == 8) && (self.undercover_team != 0)))
+					if (((self.playerclass == PC_SPY) && (self.undercover_team != 0)))
 					{
 						return;
 					}
@@ -455,7 +455,7 @@ void () TeamFortress_CheckTeamCheats =
 	{
 		st = infokey (self, "bottomcolor");
 		tc = stof (st);
-		if (((self.playerclass == 8) && (self.undercover_team != 0)))
+		if (((self.playerclass == PC_SPY) && (self.undercover_team != 0)))
 		{
 			if (((TeamFortress_GetColor (self.undercover_team) - 1) != tc))
 			{

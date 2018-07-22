@@ -1,5 +1,38 @@
 //=-=-=-=-=
+void () TeamFortress_Sniper;
 void () SniperSight_Update;
+
+void () TeamFortress_Sniper = {
+	if (!classrework) {
+		self.weapons_carried 	= PC_SNIPER_WEAPONS;
+		self.current_weapon 	= WEAP_SNIPER_RIFLE;
+		self.items_allowed 		= PC_SNIPER_WEAPONS;
+	}
+	else {
+		self.current_weapon 	= WEAP_SNIPERRAIL;
+		self.items_allowed 		= PC_SNIPER_REWORK_WEAPONS;
+		self.weapons_carried 	= PC_SNIPER_REWORK_WEAPONS;
+	}
+	self.ammo_rockets 			= 0;
+	self.ammo_nails 			= 50;
+	self.ammo_shells 			= 60;
+	self.ammo_cells 			= 0;
+	self.maxammo_rockets 		= 25;
+	self.maxammo_nails 			= 100;
+	self.maxammo_shells 		= 75;
+	self.maxammo_cells 			= 50;
+	self.no_grenades_1 			= 2;
+	self.no_grenades_2 			= 2;
+	self.tp_grenades_1 			= GR_TYPE_NORMAL;
+	self.tp_grenades_2 			= GR_TYPE_FLARE;
+	self.tf_items 				= 0;
+	self.armorclass 			= (self.armorclass | 0);
+	self.armortype 				= 0.3;
+	self.armorvalue 			= 0;
+	self.armor_allowed 			= 0.3;
+	self.maxarmor 				= 50;
+	self.items 					= ( 1 | 2 | 4);
+}
 
 void () TeamFortress_SniperWeapon =
 {

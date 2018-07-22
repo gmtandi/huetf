@@ -1,4 +1,5 @@
 //=-=-=-=-=
+void () TeamFortress_Scout;
 void () CaltropTouch;
 void () CaltropScatterThink;
 void () ScatterCaltrops;
@@ -6,6 +7,40 @@ void () ConcussionGrenadeTouch;
 void () ConcussionGrenadeExplode;
 void (entity inflictor, entity attacker, float bounce, entity ignore) T_RadiusBounce;
 entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusScan;
+
+void () TeamFortress_Scout =
+{
+	self.weapons_carried 	= PC_SCOUT_WEAPONS;
+	self.ammo_rockets    	= 0;
+	self.ammo_nails      	= 100;
+	self.ammo_shells     	= 25;
+	self.ammo_cells      	= 50;
+	self.maxammo_rockets 	= 25;
+	self.maxammo_nails   	= 200;
+	self.maxammo_shells  	= 50;
+	self.maxammo_cells 	 	= 100;
+	self.no_grenades_1   	= 2;
+	self.no_grenades_2		= 3;
+	if (!impactgren)
+		self.tp_grenades_1 	= GR_TYPE_CALTROP;
+	else
+		self.tp_grenades_1 	= GR_TYPE_IMPACT;
+	self.tp_grenades_2 		= GR_TYPE_CONCUSSION;
+	self.tf_items 			= ITEM_SCANNER;
+	self.ScannerOn 			= 0;
+	if ((self.tf_items_flags <= 0))
+	{
+		self.tf_items_flags = (self.tf_items_flags | 1);
+	}
+	self.armorclass 		= (self.armorclass | 0);
+	self.armortype 			= 0.3;
+	self.armorvalue 		= 25;
+	self.armor_allowed 		= 0.3;
+	self.maxarmor 			= 50;
+	self.current_weapon 	= WEAP_NAILGUN;
+	self.items_allowed 		= PC_SCOUT_WEAPONS;
+	self.items 				= (self.items | ITEM_SCANNER | 4);	
+}
 
 void () CanisterTouch =
 {
@@ -176,7 +211,7 @@ void () ConcussionGrenadeTimer =
 		setsize (newmis, '-8 -8 -8', '8 8 8');
 	}
 	self.health = (self.health - enter);
-	if ((self.owner.playerclass == 5))
+	if ((self.owner.playerclass == PC_MEDIC))
 	{
 		self.health = (self.health - enter);
 	}
@@ -208,7 +243,7 @@ void () ConcussionGrenadeTimer =
 		{
 			makevectors (self.owner.v_angle);
 			stumble = (crandom () * self.health);
-			if ((self.owner.playerclass == 6))
+			if ((self.owner.playerclass == PC_HWGUY))
 			{
 				stumble = (stumble / 3);
 			}
@@ -387,7 +422,7 @@ void () TeamFortress_Scan =
 			self.health = num;
 			if ((list.classname == "player"))
 			{
-				if (((list.playerclass == 8) && (list.team_no != self.owner.team_no)))
+				if (((list.playerclass == PC_SPY) && (list.team_no != self.owner.team_no)))
 				{
 					if ((list.undercover_skin != 0))
 					{
@@ -529,7 +564,7 @@ entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusS
 						{
 							if ((((friends != 0) && (head.team_no > 0)) && (scanner.team_no > 0)))
 							{
-								if (((head.playerclass == 8) && (head.team_no != scanner.team_no)))
+								if (((head.playerclass == PC_SPY) && (head.team_no != scanner.team_no)))
 								{
 									if ((head.is_feigning != 1))
 									{
@@ -549,7 +584,7 @@ entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusS
 							}
 							if ((((enemies != 0) && (head.team_no > 0)) && (scanner.team_no > 0)))
 							{
-								if (((head.playerclass == 8) && (head.team_no != scanner.team_no)))
+								if (((head.playerclass == PC_SPY) && (head.team_no != scanner.team_no)))
 								{
 									if ((head.is_feigning != 1))
 									{

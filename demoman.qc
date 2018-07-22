@@ -1,4 +1,5 @@
 //=-=-=-=-=
+void () TeamFortress_Demoman;
 void () NormalGrenadeTouch;
 void () NormalGrenadeExplode;
 void () MirvGrenadeTouch;
@@ -8,6 +9,33 @@ void () TeamFortress_DetpackSet;
 void () TeamFortress_DetpackTouch;
 void () TeamFortress_DetpackDisarm;
 void () TeamFortress_DetpackCountDown;
+
+void () TeamFortress_Demoman = {
+	self.weapons_carried 	= (PC_DEMOMAN_WEAPONS | 131072);
+	self.ammo_rockets 		= 20;
+	self.ammo_nails 		= 0;
+	self.ammo_shells		= 30;
+	self.ammo_cells 		= 0;
+	self.maxammo_rockets 	= 50;
+	self.maxammo_nails 		= 50;
+	self.maxammo_shells 	= 70;
+	self.maxammo_cells 		= 50;
+	self.no_grenades_1 		= 4;
+	self.no_grenades_2 		= 4;
+	self.tp_grenades_1 		= 1;
+	self.tp_grenades_2 		= 4;
+	self.tf_items 			= 0;
+	self.ammo_detpack 		= 1;
+	self.maxammo_detpack 	= 1;
+	self.armorclass 		= (self.armorclass | 2);
+	self.armortype 			= 0.6;
+	self.armorvalue 		= 50;
+	self.armor_allowed 		= 0.6;
+	self.maxarmor 			= 120;
+	self.current_weapon 	= WEAP_GRENADE_LAUNCHER;
+	self.items_allowed 		= (PC_DEMOMAN_WEAPONS | 131072);
+	self.items 				= (self.items | 1 | 16);
+};
 
 void () TeamFortress_DetonatePipebombs =
 {

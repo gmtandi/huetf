@@ -16,13 +16,13 @@ void () player_touch =
 	{
 		return;
 	}
-	if ((self.playerclass == 8))
+	if ((self.playerclass == PC_SPY))
 	{
 		if ((other.classname == "player"))
 		{
 			if (((self.undercover_team != 0) || (self.undercover_skin != 0)))
 			{
-				if ((((other.playerclass == 8) || (other.playerclass == 1)) && (other.team_no != self.team_no)))
+				if ((((other.playerclass == PC_SPY) || (other.playerclass == PC_SCOUT)) && (other.team_no != self.team_no)))
 				{
 					TF_AddFrags (other, 1, 0);
 					bprint (1, other.netname);
@@ -32,7 +32,7 @@ void () player_touch =
 			}
 			if (((other.undercover_team != 0) || (other.undercover_skin != 0)))
 			{
-				if ((((self.playerclass == 8) || (self.playerclass == 1)) && (self.team_no != other.team_no)))
+				if ((((self.playerclass == PC_SPY) || (self.playerclass == PC_SCOUT)) && (self.team_no != other.team_no)))
 				{
 					TF_AddFrags (self, 1, 0);
 					bprint (1, self.netname);

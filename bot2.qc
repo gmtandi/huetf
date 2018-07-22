@@ -12,7 +12,7 @@ void () SetDPosition =
 	local entity botSentry;
 	local entity eTemp;
 
-	if ((self.playerclass == 1))
+	if ((self.playerclass == PC_SCOUT))
 	{
 		self.position = 0;
 	}
@@ -436,7 +436,7 @@ void () DefendAction =
 		}
 		else
 		{
-			if ((self.playerclass == 1))
+			if ((self.playerclass == PC_SCOUT))
 			{
 				ScoutDefend ();
 			}

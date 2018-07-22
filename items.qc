@@ -455,7 +455,7 @@ void () armor_touch =
 	}
 	if (((other.armortype * other.armorvalue) >= (type * value)))
 	{
-		if ((other.playerclass == 9))
+		if ((other.playerclass == PC_ENGINEER))
 		{
 			if ((other.ammo_cells >= other.maxammo_cells))
 			{
@@ -473,7 +473,7 @@ void () armor_touch =
 		{
 			if ((other.maxarmor == other.armorvalue))
 			{
-				if ((other.playerclass == 9))
+				if ((other.playerclass == PC_ENGINEER))
 				{
 					if ((other.ammo_cells >= other.maxammo_cells))
 					{
@@ -512,7 +512,7 @@ void () armor_touch =
 	sprint (other, 0, "You got armor\n");
 	if ((value > other.maxarmor))
 	{
-		if (((other.playerclass == 9) && (other.ammo_cells < other.maxammo_cells)))
+		if (((other.playerclass == PC_ENGINEER) && (other.ammo_cells < other.maxammo_cells)))
 		{
 			s = ftos ((value - other.maxarmor));
 			sprint (other, 0, s);
@@ -1861,7 +1861,7 @@ void () BackpackTouch =
 		sprint (other, 0, s);
 		sprint (other, 0, " cells  ");
 	}
-	if (((self.armorvalue && (other.playerclass == 9)) && (other.ammo_cells < other.maxammo_cells)))
+	if (((self.armorvalue && (other.playerclass == PC_ENGINEER)) && (other.ammo_cells < other.maxammo_cells)))
 	{
 		s = ftos (self.armorvalue);
 		sprint (other, 0, s);

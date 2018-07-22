@@ -524,7 +524,7 @@ void () W_FireMedikit =
 				SpawnBlood (org, 20);
 				deathmsg = 14;
 				T_Damage (trace_ent, self, self, enter);
-				if ((trace_ent.playerclass == 5))
+				if ((trace_ent.playerclass == PC_MEDIC))
 				{
 					return;
 				}
@@ -584,7 +584,7 @@ void () W_FireBioweapon =
 				SpawnBlood (org, 20);
 				deathmsg = 14;
 				T_Damage (trace_ent, self, self, enter);
-				if ((trace_ent.playerclass == 5))
+				if ((trace_ent.playerclass == PC_MEDIC))
 				{
 					return;
 				}
@@ -1046,7 +1046,7 @@ void () MissileRadius =
 	}
 	else
 	{
-		if ((self.playerclass == 11))
+		if ((self.playerclass == PC_CIVILIAN))
 		{
 			damg = _x;
 		}
@@ -1098,7 +1098,7 @@ void () T_MissileTouch =
 		dremove (self);
 		return;
 	}
-	if ((self.playerclass == 11))
+	if ((self.playerclass == PC_CIVILIAN))
 	{
 		damg = (_d + (random () * 20));
 	}
@@ -1129,7 +1129,7 @@ void () W_FireRocket =
 	newmis.solid = 2;
 	makevectors (self.v_angle);
 	newmis.velocity = v_forward;
-	if ((self.playerclass == 11))
+	if ((self.playerclass == PC_CIVILIAN))
 	{
 		newmis.velocity = (newmis.velocity * 1000);
 	}
@@ -2052,7 +2052,7 @@ void () W_SetCurrentAmmo =
 	if ((self.current_weapon == 16))
 	{
 		self.currentammo = 0;
-		if ((self.playerclass == 8))
+		if ((self.playerclass == PC_SPY))
 		{
 			if ((self.weaponmode == 0))
 			{
@@ -4128,7 +4128,7 @@ void () ImpulseCommands =
 						}
 						else
 						{
-							if (((self.impulse == 188) && (self.playerclass == 9)))
+							if (((self.impulse == 188) && (self.playerclass == PC_ENGINEER)))
 							{
 								DestroyBuilding (self, "building_sentrygun");
 								self.impulse = 0;
@@ -4136,7 +4136,7 @@ void () ImpulseCommands =
 							}
 							else
 							{
-								if (((self.impulse == 187) && (self.playerclass == 9)))
+								if (((self.impulse == 187) && (self.playerclass == PC_ENGINEER)))
 								{
 									DestroyBuilding (self, "building_dispenser");
 									self.impulse = 0;
@@ -4144,7 +4144,7 @@ void () ImpulseCommands =
 								}
 								else
 								{
-									if (((self.impulse == 177) && (self.playerclass == 8)))
+									if (((self.impulse == 177) && (self.playerclass == PC_SPY)))
 									{
 										TeamFortress_SpyGoUndercover ();
 										self.impulse = 0;
@@ -4152,7 +4152,7 @@ void () ImpulseCommands =
 									}
 									else
 									{
-										if (((self.impulse == 178) && (self.playerclass == 8)))
+										if (((self.impulse == 178) && (self.playerclass == PC_SPY)))
 										{
 											TeamFortress_SpyFeignDeath (0);
 											self.impulse = 0;
@@ -4160,7 +4160,7 @@ void () ImpulseCommands =
 										}
 										else
 										{
-											if (((self.impulse == 199) && (self.playerclass == 8)))
+											if (((self.impulse == 199) && (self.playerclass == PC_SPY)))
 											{
 												TeamFortress_SpyFeignDeath (1);
 												self.impulse = 0;
@@ -4168,7 +4168,7 @@ void () ImpulseCommands =
 											}
 											else
 											{
-												if (((self.impulse == 179) && (self.playerclass == 9)))
+												if (((self.impulse == 179) && (self.playerclass == PC_ENGINEER)))
 												{
 													TeamFortress_EngineerBuild ();
 													self.impulse = 0;
@@ -5756,7 +5756,7 @@ float () DeadImpulses =
 								}
 								else
 								{
-									if (((self.playerclass == 1) && (self.impulse == 159)))
+									if (((self.playerclass == PC_SCOUT) && (self.impulse == 159)))
 									{
 										ScannerSwitch ();
 										self.impulse = 0;
@@ -5764,7 +5764,7 @@ float () DeadImpulses =
 									}
 									else
 									{
-										if (((self.playerclass == 1) && (self.impulse == 162)))
+										if (((self.playerclass == PC_SCOUT) && (self.impulse == 162)))
 										{
 											sprint (self, 2, "Scanner sound: ");
 											if ((self.tf_items_flags & 4))
@@ -5782,7 +5782,7 @@ float () DeadImpulses =
 										}
 										else
 										{
-											if (((self.playerclass == 1) && (self.impulse == 160)))
+											if (((self.playerclass == PC_SCOUT) && (self.impulse == 160)))
 											{
 												sprint (self, 2, "Scanning for: ");
 												if ((self.tf_items_flags & 1))
@@ -5814,7 +5814,7 @@ float () DeadImpulses =
 											}
 											else
 											{
-												if (((self.playerclass == 1) && (self.impulse == 161)))
+												if (((self.playerclass == PC_SCOUT) && (self.impulse == 161)))
 												{
 													sprint (self, 2, "Scanning for: ");
 													if ((self.tf_items_flags & 2))

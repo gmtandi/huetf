@@ -168,7 +168,7 @@ void () PickBestWeapon =
 	{
 		return;
 	}
-	if ((self.playerclass == 1))
+	if ((self.playerclass == PC_SCOUT))
 	{
 		if ((self.ammo_nails > 0))
 		{

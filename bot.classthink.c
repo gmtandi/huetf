@@ -95,7 +95,7 @@ void () ClassThink =
 		}
 		else
 		{
-			if ((self.playerclass == 1))
+			if ((self.playerclass == PC_SCOUT))
 			{
 				ScoutThink ();
 			}

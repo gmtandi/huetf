@@ -2,42 +2,41 @@
 void (entity Goal, entity Player, entity Item) DisplayItemStatus;
 void () TeamFortress_CheckClassStats;
 void (entity Player, float Armorclass) TeamFortress_DescribeArmor;
-void () TeamFortress_Regenerate;
 
 void () UseSpecialSkill =
 {
 	local vector src;
 
 	self.impulse = 0;
-	if ((self.playerclass == 1))
+	if ((self.playerclass == PC_SCOUT))
 	{
 		self.impulse = 159;
 		return;
 	}
 	else
 	{
-		if ((self.playerclass == 2))
+		if ((self.playerclass == PC_SNIPER))
 		{
 			self.impulse = 174;
 			return;
 		}
 		else
 		{
-			if ((self.playerclass == 3))
+			if ((self.playerclass == PC_SOLDIER))
 			{
 				self.impulse = 173;
 				return;
 			}
 			else
 			{
-				if ((self.playerclass == 4))
+				if ((self.playerclass == PC_DEMOMAN))
 				{
 					self.impulse = 170;
 					return;
 				}
 				else
 				{
-					if ((self.playerclass == 5))
+					if ((self.playerclass == PC_MEDIC))
 					{
 						if ((self.current_weapon == 1024))
 						{
@@ -52,7 +51,7 @@ void () UseSpecialSkill =
 					}
 					else
 					{
-						if ((self.playerclass == 6))
+						if ((self.playerclass == PC_HWGUY))
 						{
 							if ((self.current_weapon == 32768))
 							{
@@ -75,7 +74,7 @@ void () UseSpecialSkill =
 						}
 						else
 						{
-							if ((self.playerclass == 7))
+							if ((self.playerclass == PC_PYRO))
 							{
 								if ((self.current_weapon == 4096))
 								{
@@ -90,14 +89,14 @@ void () UseSpecialSkill =
 							}
 							else
 							{
-								if ((self.playerclass == 8))
+								if ((self.playerclass == PC_SPY))
 								{
 									self.impulse = 177;
 									return;
 								}
 								else
 								{
-									if ((self.playerclass == 9))
+									if ((self.playerclass == PC_ENGINEER))
 									{
 										self.impulse = 179;
 										return;
@@ -671,7 +670,7 @@ else
 	{
 		TeamFortress_DescribeArmor (self, self.armorclass);
 	}
-	if ((self.playerclass == 8))
+	if ((self.playerclass == PC_SPY))
 	{
 		sprint (self, 2, "Skin : ");
 		if ((self.undercover_skin != 0))
@@ -793,7 +792,7 @@ void () TeamFortress_PrimeGrenade =
 	local entity timer;
 
 
-	if ((self.playerclass == 11))
+	if ((self.playerclass == PC_CIVILIAN))
 	{
 		return;
 	}
@@ -1357,49 +1356,49 @@ void (entity p) TeamFortress_SetSpeed =
 			stuffcmd (p, "m_side 0.8\n");
 		}
 	}
-	if ((p.playerclass == 1))
+	if ((p.playerclass == PC_SCOUT))
 	{
 		p.maxspeed = 450;
 	}
 	else
 	{
-		if ((p.playerclass == 2))
+		if ((p.playerclass == PC_SNIPER))
 		{
 			p.maxspeed = 300;
 		}
 		else
 		{
-			if ((p.playerclass == 3))
+			if ((p.playerclass == PC_SOLDIER))
 			{
 				p.maxspeed = 240;
 			}
 			else
 			{
-				if ((p.playerclass == 4))
+				if ((p.playerclass == PC_DEMOMAN))
 				{
 					p.maxspeed = 280;
 				}
 				else
 				{
-					if ((p.playerclass == 5))
+					if ((p.playerclass == PC_MEDIC))
 					{
 						p.maxspeed = 320;
 					}
 					else
 					{
-						if ((p.playerclass == 6))
+						if ((p.playerclass == PC_HWGUY))
 						{
 							p.maxspeed = 230;
 						}
 						else
 						{
-							if ((p.playerclass == 7))
+							if ((p.playerclass == PC_PYRO))
 							{
 								p.maxspeed = 300;
 							}
 							else
 							{
-								if ((p.playerclass == 11))
+								if ((p.playerclass == PC_CIVILIAN))
 								{
 									if ((tfvsdm == 1))
 									{
@@ -1412,13 +1411,13 @@ void (entity p) TeamFortress_SetSpeed =
 								}
 								else
 								{
-									if ((p.playerclass == 8))
+									if ((p.playerclass == PC_SPY))
 									{
 										p.maxspeed = 300;
 									}
 									else
 									{
-										if ((p.playerclass == 9))
+										if ((p.playerclass == PC_ENGINEER))
 										{
 											p.maxspeed = 300;
 										}
@@ -1505,61 +1504,61 @@ void (entity p) TeamFortress_SetSpeed =
 
 void () TeamFortress_SetHealth =
 {
-	if ((self.playerclass == 1))
+	if ((self.playerclass == PC_SCOUT))
 	{
 		self.max_health = _K;
 	}
 	else
 	{
-		if ((self.playerclass == 2))
+		if ((self.playerclass == PC_SNIPER))
 		{
 			self.max_health = _Z;
 		}
 		else
 		{
-			if ((self.playerclass == 3))
+			if ((self.playerclass == PC_SOLDIER))
 			{
 				self.max_health = _d;
 			}
 			else
 			{
-				if ((self.playerclass == 4))
+				if ((self.playerclass == PC_DEMOMAN))
 				{
 					self.max_health = _Z;
 				}
 				else
 				{
-					if ((self.playerclass == 5))
+					if ((self.playerclass == PC_MEDIC))
 					{
 						self.max_health = _Z;
 					}
 					else
 					{
-						if ((self.playerclass == 6))
+						if ((self.playerclass == PC_HWGUY))
 						{
 							self.max_health = _d;
 						}
 						else
 						{
-							if ((self.playerclass == 7))
+							if ((self.playerclass == PC_PYRO))
 							{
 								self.max_health = _d;
 							}
 							else
 							{
-								if ((self.playerclass == 11))
+								if ((self.playerclass == PC_CIVILIAN))
 								{
 									self.max_health = _d;
 								}
 								else
 								{
-									if ((self.playerclass == 8))
+									if ((self.playerclass == PC_SPY))
 									{
 										self.max_health = _Z;
 									}
 									else
 									{
-										if ((self.playerclass == 9))
+										if ((self.playerclass == PC_ENGINEER))
 										{
 											self.max_health = _P;
 										}
@@ -1593,7 +1592,7 @@ string(entity p) TeamFortress_GetSkin =
 
     tn = p.team_no;
     pc = p.playerclass;
-    if (p.playerclass == 8) {
+    if (p.playerclass == PC_SPY) {
         if (p.undercover_team != 0) {
             tn = p.undercover_team;
         }
@@ -2326,7 +2325,7 @@ void (entity p) TeamFortress_SetSkin =
 	local string st;
 	local float tn;
 
-	if (((p.playerclass == 8) && (p.undercover_skin != 0)))
+	if (((p.playerclass == PC_SPY) && (p.undercover_skin != 0)))
 	{
 		p.skin = p.undercover_skin;
 	}
@@ -2349,7 +2348,7 @@ void (entity p) TeamFortress_SetSkin =
 
 void () TeamFortress_SetEquipment =
 {
-	local entity te;
+	
 	local string st;
 	local float kept_items;
 	local float noitems;
@@ -2398,371 +2397,66 @@ void () TeamFortress_SetEquipment =
 	self.heat = 0;
 	self.tfstate = (self.tfstate - (self.tfstate & 2));
 	self.items = (self.items | kept_items);
-	if ((self.playerclass == 1))
-	{
-		self.weapons_carried = (((self.weapons_carried | 16) | 128) | 512);
-		self.ammo_rockets = 0;
-		self.ammo_nails = _d;
-		self.ammo_shells = 25;
-		self.ammo_cells = _2;
-		self.maxammo_rockets = 25;
-		self.maxammo_nails = 200;
-		self.maxammo_shells = _2;
-		self.maxammo_cells = _d;
-		self.no_grenades_1 = 2;
-		self.no_grenades_2 = 3;
-if (!impactgren)
-		self.tp_grenades_1 = enter;
-else
-		self.tp_grenades_1 = 11;
-
-		self.tp_grenades_2 = 2;
-		self.tf_items = 1;
-		self.ScannerOn = 0;
-		if ((self.tf_items_flags <= 0))
-		{
-			self.tf_items_flags = (self.tf_items_flags | 1);
-		}
-		self.armorclass = (self.armorclass | 0);
-		self.armortype = 0.3;
-		self.armorvalue = 25;
-		self.armor_allowed = 0.3;
-		self.maxarmor = _2;
-		self.current_weapon = 512;
-		self.items_allowed = ((16 | 128) | 512);
-		self.items = ((self.items | 1) | 4);
-	}
-	else
-	{
-		if ((self.playerclass == 2))
-		{
-			if (!classrework) {
-				self.weapons_carried = ((((self.weapons_carried | space) | 64) | 16) | 512);
-				self.current_weapon = space;
-				self.items_allowed = (((space | 64) | 16) | 512);
-			}
-			else {
-				self.current_weapon = 2097152;
-				self.items_allowed = (((2097152 | 64) | 16) | 512);
-				self.weapons_carried = ((((self.weapons_carried | 2097152) | 64) | 16) | 512);
-			}
+	switch (self.playerclass) {
+		case PC_SCOUT:
+			TeamFortress_Scout();
+			break;
+		case PC_SNIPER:
+			TeamFortress_Sniper();
+			break;
+		case PC_SOLDIER:		
+			TeamFortress_Soldier();
+			break;
+		case PC_DEMOMAN:			
+			TeamFortress_Demoman();
+			break;	
+		case PC_MEDIC:
+			TeamFortress_Medic();
+			break;
+ 		case PC_HWGUY:			
+			TeamFortress_Hwguy();
+			break;
+		case PC_PYRO:			
+			TeamFortress_Pyro();
+			break;		
+		case PC_SPY:			
+			TeamFortress_Spy();
+			break;
+		case PC_ENGINEER:			
+			TeamFortress_Engineer();
+			break;
+		case PC_CIVILIAN:			
+			TeamFortress_Civilian();
+			break;
+		default:
+			self.items = 0;
 			self.ammo_rockets = 0;
-			self.ammo_nails = _2;
-			self.ammo_shells = 60;
+			self.ammo_nails = 0;
+			self.ammo_shells = 0;
 			self.ammo_cells = 0;
-			self.maxammo_rockets = 25;
-			self.maxammo_nails = _d;
-			self.maxammo_shells = _K;
-			self.maxammo_cells = _2;
-			self.no_grenades_1 = 2;
-			self.no_grenades_2 = 2;
-			self.tp_grenades_1 = 1;
-			self.tp_grenades_2 = 6;
-			self.tf_items = 0;
-			self.armorclass = (self.armorclass | 0);
-			self.armortype = 0.3;
+			self.no_grenades_1 = 0;
+			self.no_grenades_2 = 0;
+			self.tp_grenades_1 = 0;
+			self.tp_grenades_2 = 0;
+			self.armorclass = 0;
+			self.armortype = 0;
 			self.armorvalue = 0;
-			self.armor_allowed = 0.3;
-			self.maxarmor = _2;
-			self.items = (((self.items | 1) | 2) | 4);
-		}
-		else
-		{
-			if ((self.playerclass == 3))
-			{
-				self.weapons_carried = ((((self.weapons_carried | 16) | 128) | 256) | 8192);
-				self.ammo_rockets = enter;
-				self.ammo_nails = 0;
-				self.ammo_shells = _2;
-				self.ammo_cells = 0;
-				self.maxammo_rockets = _2;
-				self.maxammo_nails = _2;
-				self.maxammo_shells = _d;
-				self.maxammo_cells = _2;
-				self.no_grenades_1 = 4;
-				self.no_grenades_2 = 1;
-				self.tp_grenades_1 = 1;
-				self.tp_grenades_2 = 3;
-				self.tf_items = 0;
-				self.armorclass = (self.armorclass | 0);
-				self.armortype = 0.8;
-				self.armorvalue = _d;
-				self.armor_allowed = 0.8;
-				self.maxarmor = 200;
-				self.current_weapon = 8192;
-				self.items_allowed = (((16 | 128) | 256) | 8192);
-				self.items = (((self.items | 1) | 2) | space);
-			}
-			else
-			{
-				if ((self.playerclass == 4))
-				{
-					self.weapons_carried = ((((self.weapons_carried | 16) | 128) | 2048) | 131072);
-					self.ammo_rockets = 20;
-					self.ammo_nails = 0;
-					self.ammo_shells = 30;
-					self.ammo_cells = 0;
-					self.maxammo_rockets = _2;
-					self.maxammo_nails = _2;
-					self.maxammo_shells = _F;
-					self.maxammo_cells = _2;
-					self.no_grenades_1 = 4;
-					self.no_grenades_2 = 4;
-					self.tp_grenades_1 = 1;
-					self.tp_grenades_2 = 4;
-					self.tf_items = 0;
-					self.ammo_detpack = 1;
-					self.maxammo_detpack = 1;
-					self.armorclass = (self.armorclass | 2);
-					self.armortype = 0.6;
-					self.armorvalue = _2;
-					self.armor_allowed = 0.6;
-					self.maxarmor = _x;
-					self.current_weapon = 2048;
-					self.items_allowed = (((16 | 128) | 2048) | 131072);
-					self.items = ((self.items | 1) | 16);
-				}
-				else
-				{
-					if ((self.playerclass == 5))
-					{
-						self.weapons_carried = (((((self.weapons_carried | 2) | 4) | 128) | 256) | 1024);
-						self.ammo_rockets = 0;
-						self.ammo_nails = _2;
-						self.ammo_shells = _2;
-						self.ammo_cells = 0;
-						self.maxammo_rockets = 25;
-						self.maxammo_nails = 150;
-						self.maxammo_shells = _P;
-						self.maxammo_cells = _2;
-						self.no_grenades_1 = 3;
-						self.no_grenades_2 = 3;
-						self.tp_grenades_1 = 1;
-						self.tp_grenades_2 = 2;
-						self.tf_items = 0;
-						self.armorclass = (self.armorclass | 0);
-						self.armortype = 0.3;
-						self.armorvalue = _2;
-						self.armor_allowed = 0.6;
-						self.maxarmor = _d;
-						self.current_weapon = 1024;
-						self.ammo_medikit = _2;
-						self.maxammo_medikit = _d;
-						te = spawn ();
-						te.nextthink = (time + 3);
-						te.think = TeamFortress_Regenerate;
-						te.owner = self;
-						te.classname = "timer";
-						self.items_allowed = ((((2 | 4) | 128) | 256) | 1024);
-						self.items = (((self.items | 1) | 2) | 8);
-					}
-					else
-					{
-						if ((self.playerclass == 6))
-						{
-							if (!classrework) {
-								self.weapons_carried = ((((self.weapons_carried | 32768) | 16) | 128) | 256);
-								self.ammo_rockets = 0;
-								self.armorvalue = 150;
-								self.maxarmor = 300;
-								self.current_weapon = 32768;
-								self.items_allowed = (((32768 | 16) | 128) | 256);							
-							}
-							else {
-								self.weapons_carried = ((((self.weapons_carried | 1048576) | 16) | 128) | 256);
-								self.ammo_rockets = 20;
-								self.armorvalue = 100;
-								self.maxarmor = 200;
-								self.current_weapon = 1048576;
-								self.items_allowed = (((1048576 | 16) | 128) | 256);
-							}
-							self.ammo_nails = 0;
-							self.ammo_shells = 200;
-							self.ammo_cells = 30;
-							self.maxammo_rockets = 50;
-							self.maxammo_nails = 200;
-							self.maxammo_shells = 200;
-							self.maxammo_cells = _8;
-							self.no_grenades_1 = 4;
-							self.no_grenades_2 = 1;
-							self.tp_grenades_1 = 1;
-							self.tp_grenades_2 = 4;
-							self.tf_items = 0;
-							self.armorclass = (self.armorclass | 0);
-							self.armortype = 0.8;
-							self.armor_allowed = 0.8;
-							self.items = (((self.items | 1) | 2) | space);
-						}
-						else
-						{
-							if ((self.playerclass == 7))
-							{
-								self.weapons_carried = ((((self.weapons_carried | 16384) | 4096) | 16) | 128);
-								self.ammo_rockets = 20;
-								self.ammo_nails = 0;
-								self.ammo_shells = 20;
-								self.ammo_cells = _x;
-								self.maxammo_rockets = 60;
-								self.maxammo_nails = _2;
-								self.maxammo_shells = 40;
-								self.maxammo_cells = 200;
-								self.no_grenades_1 = 2;
-								self.no_grenades_2 = 3;
-								self.tp_grenades_1 = 1;
-								self.tp_grenades_2 = 5;
-								self.tf_items = 0;
-								self.armorclass = (self.armorclass | 16);
-								self.armortype = 0.6;
-								self.armorvalue = _2;
-								self.armor_allowed = 0.6;
-								self.maxarmor = 150;
-								self.current_weapon = 4096;
-								self.items_allowed = (((16384 | 4096) | 16) | 128);
-								self.items = (((self.items | 1) | 8) | 16);
-							}
-							else
-							{
-								if ((self.playerclass == 11))
-								{
-									if ((tfvsdm == 1))
-									{
-										self.weapons_carried = ((((((((self.weapons_carried | 16) | 128) | 256) | 512) | 1024) | 2048) | 65536) | 8192);
-										self.ammo_rockets = enter;
-										self.ammo_nails = 60;
-										self.ammo_shells = 40;
-										self.ammo_cells = 8;
-										self.maxammo_rockets = 25;
-										self.maxammo_nails = 200;
-										self.maxammo_shells = _d;
-										self.maxammo_cells = 20;
-										self.armortype = 0.6;
-										self.armor_allowed = 0.6;
-										self.maxarmor = 140;
-										self.current_weapon = 8192;
-										self.items_allowed = ((((((((self.weapons_carried | 16) | 128) | 256) | 512) | 1024) | 2048) | 65536) | 8192);
-										self.items = (((((((self.items | 1) | 2) | 4) | 8) | 16) | space) | 64);
-									}
-									else
-									{
-										self.weapons_carried = (self.weapons_carried | 16);
-										self.ammo_rockets = 0;
-										self.ammo_nails = 0;
-										self.ammo_shells = 0;
-										self.ammo_cells = 0;
-										self.maxammo_rockets = 0;
-										self.maxammo_nails = 0;
-										self.maxammo_shells = 0;
-										self.maxammo_cells = 0;
-										self.armortype = 0;
-										self.armor_allowed = 0;
-										self.maxarmor = 0;
-										self.current_weapon = 16;
-										self.items_allowed = 16;
-										self.items = 0;
-									}
-									self.no_grenades_1 = 0;
-									self.no_grenades_2 = 0;
-									self.tp_grenades_1 = 0;
-									self.tp_grenades_2 = 0;
-									self.tf_items = 0;
-									self.armorvalue = 0;
-									self.armorclass = (self.armorclass | 0);
-								}
-								else
-								{
-									if ((self.playerclass == 8))
-									{
-										self.weapons_carried = ((((self.weapons_carried | 16) | 262144) | 256) | 512);
-										self.ammo_rockets = 0;
-										self.ammo_nails = _2;
-										self.ammo_shells = 40;
-										self.ammo_cells = enter;
-										self.maxammo_rockets = 15;
-										self.maxammo_nails = _d;
-										self.maxammo_shells = 40;
-										self.maxammo_cells = 30;
-										self.no_grenades_1 = 3;
-										self.no_grenades_2 = 3;
-										self.tp_grenades_1 = 1;
-										self.tp_grenades_2 = 7;
-										self.tf_items = 0;
-										self.armorclass = (self.armorclass | 0);
-										self.armortype = 0.6;
-										self.armorvalue = 25;
-										self.armor_allowed = 0.6;
-										self.maxarmor = _d;
-										self.current_weapon = 262144;
-										self.items_allowed = (((16 | 262144) | 256) | 512);
-										self.items = (((self.items | 1) | 2) | 4);
-									}
-									else
-									{
-										if ((self.playerclass == 9))
-										{
-											self.weapons_carried = (((self.weapons_carried | 8) | 524288) | 256);
-											self.ammo_rockets = 0;
-											self.ammo_nails = 25;
-											self.ammo_shells = 20;
-											self.ammo_cells = _d;
-											self.maxammo_rockets = 30;
-											self.maxammo_nails = _2;
-											self.maxammo_shells = _2;
-											self.maxammo_cells = 200;
-											self.no_grenades_1 = 2;
-											self.no_grenades_2 = 2;
-											self.tp_grenades_1 = 1;
-											self.tp_grenades_2 = 8;
-											self.tf_items = 0;
-											self.armorclass = (self.armorclass | 0);
-											self.armortype = 0.3;
-											self.armorvalue = 25;
-											self.armor_allowed = 0.6;
-											self.maxarmor = _2;
-											self.current_weapon = 524288;
-											self.items_allowed = ((8 | 524288) | 256);
-											self.items = ((self.items | 1) | 2);
-										}
-										else
-										{
-											if (!self.playerclass)
-											{
-												self.items = 0;
-												self.ammo_rockets = 0;
-												self.ammo_nails = 0;
-												self.ammo_shells = 0;
-												self.ammo_cells = 0;
-												self.no_grenades_1 = 0;
-												self.no_grenades_2 = 0;
-												self.tp_grenades_1 = 0;
-												self.tp_grenades_2 = 0;
-												self.armorclass = 0;
-												self.armortype = 0;
-												self.armorvalue = 0;
-												self.weapon = 0;
-												self.current_weapon = 0;
-												self.weapons_carried = 0;
-												self.flags = 8;
-												self.gravity = 1;
-												self.waterlevel = -1;
-												self.takedamage = 0;
-												self.solid = 0;
-												self.model = string_null;
-												self.mdl = string_null;
-												self.modelindex = 0;
-												self.weaponmodel = string_null;
-												modelindex_player = 0;
-												self.tfstate = (self.tfstate | 2);
-												setmodel (self, string_null);
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+			self.weapon = 0;
+			self.current_weapon = 0;
+			self.weapons_carried = 0;
+			self.flags = 8;
+			self.gravity = 1;
+			self.waterlevel = -1;
+			self.takedamage = 0;
+			self.solid = 0;
+			self.model = string_null;
+			self.mdl = string_null;
+			self.modelindex = 0;
+			self.weaponmodel = string_null;
+			modelindex_player = 0;
+			self.tfstate = (self.tfstate | 2);
+			setmodel (self, string_null);
+			break;
 	}
 	if (self.playerclass)
 	{
@@ -2772,7 +2466,7 @@ else
 			self.ammo_detpack = self.maxammo_detpack;
 			self.no_grenades_1 = 4;
 			self.ammo_rockets = ceil ((self.maxammo_rockets / 2));
-			if ((self.playerclass == 5))
+			if ((self.playerclass == PC_MEDIC))
 			{
 				self.ammo_nails = _d;
 			}
@@ -3455,55 +3149,55 @@ else  if ((Gren.weapon == 11)) // impact grenade
 	}
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, Gren.owner.origin);
-	if (((Gren.owner.playerclass == 1) && (Gren.weapon != enter)))
+	if (((Gren.owner.playerclass == PC_SCOUT) && (Gren.weapon != enter)))
 	{
 		bprint3 (1, "No ", Gren.owner.netname, ", swallowing the grenade isn't very effective!\n");
 	}
 	else
 	{
-		if ((Gren.owner.playerclass == 2))
+		if ((Gren.owner.playerclass == PC_SNIPER))
 		{
 			bprint3 (1, "Well ", Gren.owner.netname, ", don't quit your day job!\n");
 		}
 		else
 		{
-			if ((Gren.owner.playerclass == 3))
+			if ((Gren.owner.playerclass == PC_SOLDIER))
 			{
 				bprint3 (1, "Ummm, ", Gren.owner.netname, ", you're supposed to THROW the grenade!\n");
 			}
 			else
 			{
-				if ((Gren.owner.playerclass == 4))
+				if ((Gren.owner.playerclass == PC_DEMOMAN))
 				{
 					bprint3 (1, "Ack! ", Gren.owner.netname, "! The grenade is your friend for another reason!\n");
 				}
 				else
 				{
-					if ((Gren.owner.playerclass == 5))
+					if ((Gren.owner.playerclass == PC_MEDIC))
 					{
 						bprint3 (1, "No ", Gren.owner.netname, "! Assist your own suicide some other time!\n");
 					}
 					else
 					{
-						if ((Gren.owner.playerclass == 6))
+						if ((Gren.owner.playerclass == PC_HWGUY))
 						{
 							bprint3 (1, "Hey ", Gren.owner.netname, ", you're not THAT heavy!\n");
 						}
 						else
 						{
-							if ((Gren.owner.playerclass == 7))
+							if ((Gren.owner.playerclass == PC_PYRO))
 							{
 								bprint3 (1, "Yes ", Gren.owner.netname, ", the grenade does explode on '3'!\n");
 							}
 							else
 							{
-								if ((Gren.owner.playerclass == 8))
+								if ((Gren.owner.playerclass == PC_SPY))
 								{
 									bprint3 (1, "You do realize ", Gren.owner.netname, ", you can blow your cover in easier ways!\n");
 								}
 								else
 								{
-									if ((Gren.owner.playerclass == 9))
+									if ((Gren.owner.playerclass == PC_ENGINEER))
 									{
 										bprint3 (1, "Hey ", Gren.owner.netname, ", study grenade dynamics on your own time!\n");
 									}
@@ -3640,7 +3334,7 @@ void () BioInfection_Decay =
 			return;
 		}
 	}
-	if ((!(self.owner.tfstate & 16) || (self.owner.playerclass == 5)))
+	if ((!(self.owner.tfstate & 16) || (self.owner.playerclass == PC_MEDIC)))
 	{
 		dremove (self);
 		return;
@@ -3709,41 +3403,6 @@ void (string halias, float himpulse1, float himpulse2) TeamFortress_Alias =
 		stuffcmd (self, imp);
 	}
 	stuffcmd (self, "\"\n");
-};
-
-void () TeamFortress_Regenerate =
-{
-	if ((self.owner.playerclass == 5))
-	{
-		self.nextthink = (time + 3);
-		if ((self.owner.has_disconnected == 1))
-		{
-			dremove (self);
-			return;
-		}
-		if ((self.owner.health >= self.owner.max_health))
-		{
-			return;
-		}
-		if ((self.owner.ammo_medikit == 0))
-		{
-			return;
-		}
-		if ((self.owner.ammo_medikit < 2))
-		{
-			self.owner.health = (self.owner.health + self.owner.ammo_medikit);
-			self.owner.ammo_medikit = 0;
-		}
-		else
-		{
-			self.owner.health = (self.owner.health + 2);
-			self.owner.ammo_medikit = (self.owner.ammo_medikit - 2);
-		}
-		if ((self.owner.health > self.owner.max_health))
-		{
-			self.owner.health = self.owner.max_health;
-		}
-	}
 };
 
 float (vector veca, vector vecb) crossproduct =
@@ -3855,61 +3514,61 @@ void (entity p) TeamFortress_ExecClassScript =
 	}
 	if (((st == "on") || (self.tfkey & 2)))
 	{
-		if ((p.playerclass == 1))
+		if ((p.playerclass == PC_SCOUT))
 		{
 			stuffcmd (p, "exec scout.cfg\n");
 		}
 		else
 		{
-			if ((p.playerclass == 2))
+			if ((p.playerclass == PC_SNIPER))
 			{
 				stuffcmd (p, "exec sniper.cfg\n");
 			}
 			else
 			{
-				if ((p.playerclass == 3))
+				if ((p.playerclass == PC_SOLDIER))
 				{
 					stuffcmd (p, "exec soldier.cfg\n");
 				}
 				else
 				{
-					if ((p.playerclass == 4))
+					if ((p.playerclass == PC_DEMOMAN))
 					{
 						stuffcmd (p, "exec demoman.cfg\n");
 					}
 					else
 					{
-						if ((p.playerclass == 5))
+						if ((p.playerclass == PC_MEDIC))
 						{
 							stuffcmd (p, "exec medic.cfg\n");
 						}
 						else
 						{
-							if ((p.playerclass == 6))
+							if ((p.playerclass == PC_HWGUY))
 							{
 								stuffcmd (p, "exec hwguy.cfg\n");
 							}
 							else
 							{
-								if ((p.playerclass == 7))
+								if ((p.playerclass == PC_PYRO))
 								{
 									stuffcmd (p, "exec pyro.cfg\n");
 								}
 								else
 								{
-									if ((p.playerclass == 8))
+									if ((p.playerclass == PC_SPY))
 									{
 										stuffcmd (p, "exec spy.cfg\n");
 									}
 									else
 									{
-										if ((p.playerclass == 9))
+										if ((p.playerclass == PC_ENGINEER))
 										{
 											stuffcmd (p, "exec engineer.cfg\n");
 										}
 										else
 										{
-											if ((p.playerclass == 11))
+											if ((p.playerclass == PC_CIVILIAN))
 											{
 												stuffcmd (p, "exec dm.cfg\n");
 											}

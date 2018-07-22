@@ -869,7 +869,7 @@ void () RefreshStatusBar =
 		}
 		else
 		{
-			if ((self.playerclass == 1))
+			if ((self.playerclass == PC_SCOUT))
 			{
 				te = find (world, netname, "scanner");
 				while (((te != world) && (te.owner != self)))
@@ -911,70 +911,70 @@ void () RefreshStatusBar =
 								}
 							}
 						}
-						if ((te.playerclass == 1))
+						if ((te.playerclass == PC_SCOUT))
 						{
 							WriteStr ("Scout");
 							x = (x + 5);
 						}
 						else
 						{
-							if ((te.playerclass == 2))
+							if ((te.playerclass == PC_SNIPER))
 							{
 								WriteStr ("Sniper");
 								x = (x + 6);
 							}
 							else
 							{
-								if ((te.playerclass == 3))
+								if ((te.playerclass == PC_SOLDIER))
 								{
 									WriteStr ("Soldier");
 									x = (x + 7);
 								}
 								else
 								{
-									if ((te.playerclass == 4))
+									if ((te.playerclass == PC_DEMOMAN))
 									{
 										WriteStr ("Demoman");
 										x = (x + 7);
 									}
 									else
 									{
-										if ((te.playerclass == 5))
+										if ((te.playerclass == PC_MEDIC))
 										{
 											WriteStr ("Medic");
 											x = (x + 5);
 										}
 										else
 										{
-											if ((te.playerclass == 6))
+											if ((te.playerclass == PC_HWGUY))
 											{
 												WriteStr ("HWGuy");
 												x = (x + 5);
 											}
 											else
 											{
-												if ((te.playerclass == 7))
+												if ((te.playerclass == PC_PYRO))
 												{
 													WriteStr ("Pyro");
 													x = (x + 4);
 												}
 												else
 												{
-													if ((te.playerclass == 8))
+													if ((te.playerclass == PC_SPY))
 													{
 														WriteStr ("Spy");
 														x = (x + 3);
 													}
 													else
 													{
-														if ((te.playerclass == 9))
+														if ((te.playerclass == PC_ENGINEER))
 														{
 															WriteStr ("Engineer");
 															x = (x + 8);
 														}
 														else
 														{
-															if ((te.playerclass == 11))
+															if ((te.playerclass == PC_CIVILIAN))
 															{
 																WriteStr ("Civilian");
 																x = (x + 8);
@@ -1018,7 +1018,7 @@ void () RefreshStatusBar =
 					WriteIntXXX (te.health, COLOR_WHITE);
 				}
 			}
-			else if ((sniperpower) && (self.playerclass == 2)) {
+			else if ((sniperpower) && (self.playerclass == PC_SNIPER)) {
 				local string st = "";				
 			    if (self.heat) {
 			        st = "–Ô˜ÂÚ: ";
@@ -1033,7 +1033,7 @@ void () RefreshStatusBar =
 			}
 			else
 			{
-				if ((self.playerclass == 4))
+				if ((self.playerclass == PC_DEMOMAN))
 				{
 					if (self.is_detpacking)
 					{
@@ -1043,7 +1043,7 @@ void () RefreshStatusBar =
 				}
 				else
 				{
-					if ((self.playerclass == 8))
+					if ((self.playerclass == PC_SPY))
 					{
 						if (self.is_undercover)
 						{
@@ -1154,7 +1154,7 @@ void () RefreshStatusBar =
 					}
 					else
 					{
-						if ((self.playerclass == 9))
+						if ((self.playerclass == PC_ENGINEER))
 						{
 							x = 0;
 							if (self.has_sentry)
@@ -1230,7 +1230,7 @@ void () RefreshStatusBar =
 						}
 						else
 						{
-							if ((self.playerclass == 5))
+							if ((self.playerclass == PC_MEDIC))
 							{
 								WriteStr("Medikit:");
 								WriteIntXXX (self.ammo_medikit, COLOR_WHITE);
@@ -1261,7 +1261,7 @@ void () RefreshStatusBar =
 		WriteByte (1, slash);
 		WriteSIntXXXX (team4frags);
 	}
-	if ((self.playerclass == 11))
+	if ((self.playerclass == PC_CIVILIAN))
 	{
 		Status_EndWrite ();
 		return;
@@ -2209,7 +2209,7 @@ void (float inp) Menu_Class_Input =
 
 void () Menu_Drop =
 {
-	if ((self.playerclass == 9))
+	if ((self.playerclass == PC_ENGINEER))
 	{
 		CenterPrint (self, "Drop || Make:                   \nêìë Shells                      \nêîë Nails                       \nêïë Rockets                     \nêñë Cells                       \nêóë Nothing                     \n\n");
 	}
@@ -2346,13 +2346,13 @@ void () Menu_ClassHelp =
 {
 	if ((self.menu_displaytime < 5))
 	{
-		if ((self.playerclass == 1))
+		if ((self.playerclass == PC_SCOUT))
 		{
 			CenterPrint (self, "”√œ’‘ Details:               \n\n◊≈¡–œŒ”:                     \nêîë Shotgun                  \nêñë Nailgun                  \n\nPress ö for alias help\n");
 		}
 		else
 		{
-			if ((self.playerclass == 2))
+			if ((self.playerclass == PC_SNIPER))
 			{
 				if (!classrework)
 					CenterPrint (self, "”Œ…–≈“ Details:              \n\n◊≈¡–œŒ”:                     \nêîë Sniper Rifle/Auto Rifle  \nêñë Nailgun                  \n\nPress ö for alias help\n");
@@ -2361,25 +2361,25 @@ void () Menu_ClassHelp =
 			}
 			else
 			{
-				if ((self.playerclass == 3))
+				if ((self.playerclass == PC_SOLDIER))
 				{
 					CenterPrint (self, "”œÃƒ…≈“ Details:             \n\n◊≈¡–œŒ”:                     \nêîë Shotgun                  \nêïë Super Shotgun            \nêôë Rocket Launcher          \n\nPress ö for alias help\n");
 				}
 				else
 				{
-					if ((self.playerclass == 4))
+					if ((self.playerclass == PC_DEMOMAN))
 					{
 						CenterPrint (self, "ƒ≈ÕœÃ…‘…œŒ” Õ¡Œ Details:     \n\n◊≈¡–œŒ”:                     \nêîë Shotgun                  \nêòë Grenade Launcher         \nêôë Pipebomb Launcher        \n\nPress ö for alias help\n");
 					}
 					else
 					{
-						if ((self.playerclass == 5))
+						if ((self.playerclass == PC_MEDIC))
 						{
 							CenterPrint (self, "Õ≈ƒ…√ Details:               \n\n◊≈¡–œŒ”:                     \nêìë Medikit/BioWeapon        \nêîë Shotgun                  \nêïë Super Shotgun            \nêóë Super Nailgun            \n\nPress ö for alias help\n");
 						}
 						else
 						{
-							if ((self.playerclass == 6))
+							if ((self.playerclass == PC_HWGUY))
 							{
 								if (!classrework)
 									CenterPrint (self, "»≈¡÷Ÿ ◊≈¡–œŒ” «’Ÿ Details:   \n\n◊≈¡–œŒ”:                     \nêîë Shotgun                  \nêïë Super Shotgun            \nêôë Assault Cannon           \n\nPress ö for alias help\n");
@@ -2388,19 +2388,19 @@ void () Menu_ClassHelp =
 							}
 							else
 							{
-								if ((self.playerclass == 7))
+								if ((self.playerclass == PC_PYRO))
 								{
 									CenterPrint (self, "–Ÿ“œ Details:                \n\n◊≈¡–œŒ”:                     \nêîë Shotgun                  \nêïë Flamethrower             \nêòë Light Incendiary Cannon  \nêôë Heavy Incendiary Cannon  \n\nPress ö for alias help\n");
 								}
 								else
 								{
-									if ((self.playerclass == 8))
+									if ((self.playerclass == PC_SPY))
 									{
 										CenterPrint (self, "”–Ÿ Details:                 \n\n◊≈¡–œŒ”:                     \nêîë Tranquiliser Gun         \nêïë Super Shotgun            \nêñë Nailgun                  \n\nPress ö for alias help\n");
 									}
 									else
 									{
-										if ((self.playerclass == 9))
+										if ((self.playerclass == PC_ENGINEER))
 										{
 											CenterPrint (self, "≈Œ«…Œ≈≈“ Details:            \n\n◊≈¡–œŒ”:                     \nêìë Spanner                  \nêîë RailGun                  \nêïë Super Shotgun            \n\nPress ö for alias help\n");
 										}
@@ -2422,55 +2422,55 @@ void () Menu_ClassHelp =
 	}
 	else
 	{
-		if ((self.playerclass == 1))
+		if ((self.playerclass == PC_SCOUT))
 		{
 			CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nFlash Grenade       \nConcussion Grenade  \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nScanner: autoscan,scansound,scane,scanf\n\n\nPress ö for alias help\n");
 		}
 		else
 		{
-			if ((self.playerclass == 2))
+			if ((self.playerclass == PC_SNIPER))
 			{
 				CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nFlare               \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nautozoom : Toggle Rifle Autozooming\n\n\nPress ö for alias help\n");
 			}
 			else
 			{
-				if ((self.playerclass == 3))
+				if ((self.playerclass == PC_SOLDIER))
 				{
 					CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nNail Grenade        \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nNone\n\n\nPress ö for alias help\n");
 				}
 				else
 				{
-					if ((self.playerclass == 4))
+					if ((self.playerclass == PC_DEMOMAN))
 					{
 						CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nMirv Grenade        \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nThe Detpack : +det5,+det20,+det50,+det255\nDetonate Pipebombs : detpipe  \n\n\nPress ö for alias help\n");
 					}
 					else
 					{
-						if ((self.playerclass == 5))
+						if ((self.playerclass == PC_MEDIC))
 						{
 							CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nConcussion Grenade  \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nNone\n\n\nPress ö for alias help\n");
 						}
 						else
 						{
-							if ((self.playerclass == 6))
+							if ((self.playerclass == PC_HWGUY))
 							{
 								CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nMirv Grenade        \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nNone\n\n\nPress ö for alias help\n");
 							}
 							else
 							{
-								if ((self.playerclass == 7))
+								if ((self.playerclass == PC_PYRO))
 								{
 									CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nNapalm Grenade      \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nNone\n\n\nPress ö for alias help\n");
 								}
 								else
 								{
-									if ((self.playerclass == 8))
+									if ((self.playerclass == PC_SPY))
 									{
 										CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nHallucinogen Grenade\n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nGo Undercover : disguise\nFeign Death : feign, sfeign\n\n\nPress ö for alias help\n");
 									}
 									else
 									{
-										if ((self.playerclass == 9))
+										if ((self.playerclass == PC_ENGINEER))
 										{
 											CenterPrint (self, "«“≈Œ¡ƒ≈”:            \nHand Grenade        \nEMP Grenade         \n\n”–≈√…¡Ã √œÕÕ¡Œƒ”:   \nStart Building : build  \n\n\nPress ö for alias help\n");
 										}
@@ -2487,7 +2487,7 @@ void () Menu_ClassHelp =
 
 void () Menu_StuffClassHelp =
 {
-	if ((self.playerclass == 1))
+	if ((self.playerclass == PC_SCOUT))
 	{
 		sprint (self, 2, "”√œ’‘ Details:\n◊≈¡–œŒ”:\n   êîë Shotgun\n   êñë Nailgun\n");
 		sprint (self, 2, "«“≈Œ¡ƒ≈”:\n   Concussion Grenade\n   Flare\n”–≈√…¡Ã √œÕÕ¡Œƒ”:\n");
@@ -2495,7 +2495,7 @@ void () Menu_StuffClassHelp =
 	}
 	else
 	{
-		if ((self.playerclass == 2))
+		if ((self.playerclass == PC_SNIPER))
 		{
 			if (!classrework)
 				sprint (self, 2, "”Œ…–≈“ Details:\n\n◊≈¡–œŒ”:\n   êîë Sniper Rifle/Auto Rifle\n");
@@ -2506,7 +2506,7 @@ void () Menu_StuffClassHelp =
 		}
 		else
 		{
-			if ((self.playerclass == 3))
+			if ((self.playerclass == PC_SOLDIER))
 			{
 				sprint (self, 2, "”œÃƒ…≈“ Details:\n\n◊≈¡–œŒ”:\n   êîë Shotgun\n   êïë Super Shotgun\n");
 				sprint (self, 2, "   êôë Rocket Launcher\n«“≈Œ¡ƒ≈”:\n   Hand Grenade\n   Nail Grenade\n");
@@ -2514,7 +2514,7 @@ void () Menu_StuffClassHelp =
 			}
 			else
 			{
-				if ((self.playerclass == 4))
+				if ((self.playerclass == PC_DEMOMAN))
 				{
 					sprint (self, 2, "ƒ≈ÕœÃ…‘…œŒ” Õ¡Œ Details:\n\n◊≈¡–œŒ”:\n   êîë Shotgun\n   êòë Grenade/Pipebomb Launcher\n");
 					sprint (self, 2, "«“≈Œ¡ƒ≈”:\n   Hand Grenade\n   Mirv Grenade\n");
@@ -2522,7 +2522,7 @@ void () Menu_StuffClassHelp =
 				}
 				else
 				{
-					if ((self.playerclass == 5))
+					if ((self.playerclass == PC_MEDIC))
 					{
 						sprint (self, 2, "Õ≈ƒ…√ Details:\n\n◊≈¡–œŒ”:\n   êìë Medikit/BioWeapon\n   êîë Shotgun\n   êïë Super Shotgun\n");
 						sprint (self, 2, "   êóë Super Nailgun\n«“≈Œ¡ƒ≈”:\n   Hand Grenade\n   Concussion Grenade\n");
@@ -2530,7 +2530,7 @@ void () Menu_StuffClassHelp =
 					}
 					else
 					{
-						if ((self.playerclass == 6))
+						if ((self.playerclass == PC_HWGUY))
 						{
 							sprint (self, 2, "»≈¡÷Ÿ ◊≈¡–œŒ” «’Ÿ Details:\n\n◊≈¡–œŒ”:\n   êîë Shotgun\n   êïë Super Shotgun\n");
 							if (!classrework)
@@ -2541,7 +2541,7 @@ void () Menu_StuffClassHelp =
 						}
 						else
 						{
-							if ((self.playerclass == 7))
+							if ((self.playerclass == PC_PYRO))
 							{
 								sprint (self, 2, "–Ÿ“œ Details:\n\n◊≈¡–œŒ”:\n   êîë Shotgun\n   êòë Flamethrower\n   êôë Incendiary Cannon\n");
 								sprint (self, 2, "«“≈Œ¡ƒ≈”:\n   Hand Grenade\n   Napalm Grenade\n");
@@ -2549,7 +2549,7 @@ void () Menu_StuffClassHelp =
 							}
 							else
 							{
-								if ((self.playerclass == 8))
+								if ((self.playerclass == PC_SPY))
 								{
 									sprint (self, 2, "”–Ÿ Details:\n\n◊≈¡–œŒ”:\n   êîë Tranquiliser Gun\n   êïë Super Shotgun\n   êñë Nailgun\n");
 									sprint (self, 2, "«“≈Œ¡ƒ≈”:\n   Hand Grenade\n   Hallucinogenic Grenade\n");
@@ -2557,7 +2557,7 @@ void () Menu_StuffClassHelp =
 								}
 								else
 								{
-									if ((self.playerclass == 9))
+									if ((self.playerclass == PC_ENGINEER))
 									{
 										sprint (self, 2, "≈Œ«…Œ≈≈“ Details:\n\n◊≈¡–œŒ”:\n   êìë Spanner\n   êîë RailGun\n   êïë Super Shotgun\n");
 										sprint (self, 2, "«“≈Œ¡ƒ≈”:\n   Hand Grenade\n   EMP Grenade\n");

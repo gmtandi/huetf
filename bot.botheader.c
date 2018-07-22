@@ -158,7 +158,7 @@ string (entity e, string s) infokey =
 		}
 		if ((s == "skin"))
 		{
-			if ((self.playerclass == 1))
+			if ((self.playerclass == PC_SCOUT))
 			{
 				return ("tf_scout");
 			}

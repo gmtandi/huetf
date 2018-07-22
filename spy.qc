@@ -1,9 +1,36 @@
 //=-=-=-=-=
+void () TeamFortress_Spy;
 void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer;
 void (entity spy) TeamFortress_SpyCalcName;
 void () TeamFortress_SpyUndercoverThink;
 void () GasGrenadeMakeGas;
 void () T_TranqDartTouch;
+
+void () TeamFortress_Spy = 
+{
+	self.weapons_carried 	= PC_SPY_WEAPONS;
+	self.ammo_rockets 		= 0;
+	self.ammo_nails 		= 50;
+	self.ammo_shells 		= 40;
+	self.ammo_cells 		= 10;
+	self.maxammo_rockets 	= 15;
+	self.maxammo_nails 		= 100;
+	self.maxammo_shells 	= 40;
+	self.maxammo_cells 		= 30;
+	self.no_grenades_1 		= 3;
+	self.no_grenades_2 		= 3;
+	self.tp_grenades_1 		= 1;
+	self.tp_grenades_2		= 7;
+	self.tf_items 			= 0;
+	self.armorclass 		= (self.armorclass | 0);
+	self.armortype 			= 0.6;
+	self.armorvalue 		= 25;
+	self.armor_allowed 		= 0.6;
+	self.maxarmor 			= 100;
+	self.current_weapon 	= WEAP_TRANQ;
+	self.items_allowed 		= PC_SPY_WEAPONS;
+	self.items 				= (self.items | 1 | 2 | 4);
+};
 
 void () spy_diea1 = [ 50, spy_diea2 ]
 {
@@ -1024,7 +1051,7 @@ void () HallucinationTimer =
 	local string st;
 
 	self.health = (self.health - 3);
-	if ((self.owner.playerclass == 5))
+	if ((self.owner.playerclass == PC_MEDIC))
 	{
 		self.health = (self.health - 2);
 	}
@@ -1408,7 +1435,7 @@ void (entity spy) Spy_RemoveDisguise =
 	local float tc;
 	local float reset;
 
-	if ((spy.playerclass == 8))
+	if ((spy.playerclass == PC_SPY))
 	{
 		if ((spy.undercover_team != 0))
 		{

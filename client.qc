@@ -2471,13 +2471,13 @@ void () PlayerPostThink =
 						{
 							fdmg = 5;
 							fdmg = ((fdmg * (self.jump_flag / 300)) * -1);
-							if ((self.playerclass == 1))
+							if ((self.playerclass == PC_SCOUT))
 							{
 								fdmg = (fdmg / 2);
 							}
 							else
 							{
-								if ((self.playerclass == 6))
+								if ((self.playerclass == PC_HWGUY))
 								{
 									fdmg = (fdmg * 1.5);
 								}
@@ -2971,49 +2971,49 @@ void (entity targ, entity attacker) ClientObituary =
 				bprint (1, targ.netname);
 				if ((deathmsg == 8))
 				{
-					if ((targ.playerclass == 2))
+					if ((targ.playerclass == PC_SNIPER))
 					{
 						deathstring = " got splattered by his own grenade\n";
 					}
 					else
 					{
-						if ((targ.playerclass == 3))
+						if ((targ.playerclass == PC_SOLDIER))
 						{
 							deathstring = " sat on his own grenade\n";
 						}
 						else
 						{
-							if ((targ.playerclass == 4))
+							if ((targ.playerclass == PC_DEMOMAN))
 							{
 								deathstring = " got to know his grenade too well\n";
 							}
 							else
 							{
-								if ((targ.playerclass == 5))
+								if ((targ.playerclass == PC_MEDIC))
 								{
 									deathstring = " caught the end of his own grenade\n";
 								}
 								else
 								{
-									if ((targ.playerclass == 6))
+									if ((targ.playerclass == PC_HWGUY))
 									{
 										deathstring = " got too close to his own grenade\n";
 									}
 									else
 									{
-										if ((targ.playerclass == 7))
+										if ((targ.playerclass == PC_PYRO))
 										{
 											deathstring = " let his own grenade get the best of him\n";
 										}
 										else
 										{
-											if ((targ.playerclass == 8))
+											if ((targ.playerclass == PC_SPY))
 											{
 												deathstring = " tiptoed over his own grenade\n";
 											}
 											else
 											{
-												if ((targ.playerclass == 9))
+												if ((targ.playerclass == PC_ENGINEER))
 												{
 													deathstring = " stared at his grenade too long\n";
 												}
@@ -3039,13 +3039,13 @@ void (entity targ, entity attacker) ClientObituary =
 					{
 						if ((deathmsg == enter))
 						{
-							if ((targ.playerclass == 4))
+							if ((targ.playerclass == PC_DEMOMAN))
 							{
 								deathstring = " practiced his own Mirv dance\n";
 							}
 							else
 							{
-								if ((targ.playerclass == 6))
+								if ((targ.playerclass == PC_HWGUY))
 								{
 									deathstring = " allowed his Mirv to turn against him\n";
 								}
@@ -3237,56 +3237,56 @@ void (entity targ, entity attacker) ClientObituary =
 					logfrag (attacker, targ);
 					if ((deathmsg == 8))
 					{
-						if ((attacker.playerclass == 2))
+						if ((attacker.playerclass == PC_SNIPER))
 						{
 							deathstring = " got up-close and personal with ";
 							deathstring2 = "'s grenade\n";
 						}
 						else
 						{
-							if ((attacker.playerclass == 3))
+							if ((attacker.playerclass == PC_SOLDIER))
 							{
 								deathstring = " played catch with ";
 								deathstring2 = "'s grenade\n";
 							}
 							else
 							{
-								if ((attacker.playerclass == 4))
+								if ((attacker.playerclass == PC_DEMOMAN))
 								{
 									deathstring = " received a pineapple enema from ";
 									deathstring2 = "\n";
 								}
 								else
 								{
-									if ((attacker.playerclass == 5))
+									if ((attacker.playerclass == PC_MEDIC))
 									{
 										deathstring = " fetched ";
 										deathstring2 = "'s pineapple\n";
 									}
 									else
 									{
-										if ((attacker.playerclass == 6))
+										if ((attacker.playerclass == PC_HWGUY))
 										{
 											deathstring = " caught too much shrapnel from ";
 											deathstring2 = "'s grenade\n";
 										}
 										else
 										{
-											if ((attacker.playerclass == 7))
+											if ((attacker.playerclass == PC_PYRO))
 											{
 												deathstring = " tried to pick up ";
 												deathstring2 = "'s hot potato\n";
 											}
 											else
 											{
-												if ((attacker.playerclass == 8))
+												if ((attacker.playerclass == PC_SPY))
 												{
 													deathstring = " thought ";
 													deathstring2 = " was tossing him a spare grenade\n";
 												}
 												else
 												{
-													if ((attacker.playerclass == 9))
+													if ((attacker.playerclass == PC_ENGINEER))
 													{
 														deathstring = " stops to ponder the technical details of ";
 														deathstring2 = "'s grenade\n";
@@ -3315,7 +3315,7 @@ void (entity targ, entity attacker) ClientObituary =
 						{
 							if ((deathmsg == enter))
 							{
-								if ((attacker.playerclass == 4))
+								if ((attacker.playerclass == PC_DEMOMAN))
 								{
 									deathstring = " does a dance on ";
 									deathstring2 = "'s Mirv grenade\n";
@@ -3471,45 +3471,45 @@ void (entity targ, entity attacker) ClientObituary =
 																						if ((deathmsg == 17))
 																						{
 																							deathstring2 = "\n";
-																							if ((attacker.playerclass == 8))
+																							if ((attacker.playerclass == PC_SPY))
 																							{
 																								deathstring = " was knife-murdered by ";
 																							}
 																							else
 																							{
-																								if ((attacker.playerclass == 1))
+																								if ((attacker.playerclass == PC_SCOUT))
 																								{
 																									deathstring = "'s mellon was split by ";
 																								}
 																								else
 																								{
-																									if ((attacker.playerclass == 2))
+																									if ((attacker.playerclass == PC_SNIPER))
 																									{
 																										deathstring = " was put on the chop block by ";
 																									}
 																									else
 																									{
-																										if ((attacker.playerclass == 3))
+																										if ((attacker.playerclass == PC_SOLDIER))
 																										{
 																											deathstring = " was sliced and diced by ";
 																											deathstring2 = "'s blade\n";
 																										}
 																										else
 																										{
-																											if ((attacker.playerclass == 4))
+																											if ((attacker.playerclass == PC_DEMOMAN))
 																											{
 																												deathstring = " is split from crotch to sternum by ";
 																												deathstring2 = "'s axe swing\n";
 																											}
 																											else
 																											{
-																												if ((attacker.playerclass == 6))
+																												if ((attacker.playerclass == PC_HWGUY))
 																												{
 																													deathstring = " is split in two with a powerful axe blow from ";
 																												}
 																												else
 																												{
-																													if ((attacker.playerclass == 7))
+																													if ((attacker.playerclass == PC_PYRO))
 																													{
 																														deathstring = "'s death put another notch on ";
 																														deathstring2 = "'s axe\n";
@@ -3536,42 +3536,42 @@ void (entity targ, entity attacker) ClientObituary =
 																							{
 																								if ((deathmsg == 1))
 																								{
-																									if ((attacker.playerclass == 1))
+																									if ((attacker.playerclass == PC_SCOUT))
 																									{
 																										deathstring = " got too close to ";
 																										deathstring2 = "'s muzzleflash\n";
 																									}
 																									else
 																									{
-																										if ((attacker.playerclass == 3))
+																										if ((attacker.playerclass == PC_SOLDIER))
 																										{
 																											deathstring = " practices being ";
 																											deathstring2 = "'s clay pigeon\n";
 																										}
 																										else
 																										{
-																											if ((attacker.playerclass == 4))
+																											if ((attacker.playerclass == PC_DEMOMAN))
 																											{
 																												deathstring = " was on the receiving end of ";
 																												deathstring2 = "'s shotgun barrel\n";
 																											}
 																											else
 																											{
-																												if ((attacker.playerclass == 5))
+																												if ((attacker.playerclass == PC_MEDIC))
 																												{
 																													deathstring = " was fed a lead diet by ";
 																													deathstring2 = "\n";
 																												}
 																												else
 																												{
-																													if ((attacker.playerclass == 6))
+																													if ((attacker.playerclass == PC_HWGUY))
 																													{
 																														deathstring = " got blasted by ";
 																														deathstring2 = "'s last resort\n";
 																													}
 																													else
 																													{
-																														if ((attacker.playerclass == 7))
+																														if ((attacker.playerclass == PC_PYRO))
 																														{
 																															deathstring = " got more than a powderburn from ";
 																															deathstring2 = "'s shotgun blast\n";
@@ -3591,35 +3591,35 @@ void (entity targ, entity attacker) ClientObituary =
 																								{
 																									if ((deathmsg == 2))
 																									{
-																										if ((attacker.playerclass == 3))
+																										if ((attacker.playerclass == PC_SOLDIER))
 																										{
 																											deathstring = " was turned into swiss cheese by ";
 																											deathstring2 = "'s buckshot\n";
 																										}
 																										else
 																										{
-																											if ((attacker.playerclass == 5))
+																											if ((attacker.playerclass == PC_MEDIC))
 																											{
 																												deathstring = " got a double-dose of ";
 																												deathstring2 = "'s buckshot\n";
 																											}
 																											else
 																											{
-																												if ((attacker.playerclass == 6))
+																												if ((attacker.playerclass == PC_HWGUY))
 																												{
 																													deathstring = " unfortunately forgot ";
 																													deathstring2 = " carried a super-shotgun\n";
 																												}
 																												else
 																												{
-																													if ((attacker.playerclass == 8))
+																													if ((attacker.playerclass == PC_SPY))
 																													{
 																														deathstring = " gets ventilated by ";
 																														deathstring2 = "'s super-shotgun blast\n";
 																													}
 																													else
 																													{
-																														if ((attacker.playerclass == 9))
+																														if ((attacker.playerclass == PC_ENGINEER))
 																														{
 																															deathstring = "'s body got chuck full of ";
 																															deathstring2 = "'s lead pellets\n";
@@ -3638,21 +3638,21 @@ void (entity targ, entity attacker) ClientObituary =
 																									{
 																										if ((deathmsg == 3))
 																										{
-																											if ((attacker.playerclass == 1))
+																											if ((attacker.playerclass == PC_SCOUT))
 																											{
 																												deathstring = " caught one too many nails from ";
 																												deathstring2 = "\n";
 																											}
 																											else
 																											{
-																												if ((attacker.playerclass == 2))
+																												if ((attacker.playerclass == PC_SNIPER))
 																												{
 																													deathstring = " ran into ";
 																													deathstring2 = "'s nails\n";
 																												}
 																												else
 																												{
-																													if ((attacker.playerclass == 8))
+																													if ((attacker.playerclass == PC_SPY))
 																													{
 																														deathstring = " was turned into ";
 																														deathstring2 = "'s pin-cushion\n";
