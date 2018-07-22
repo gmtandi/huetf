@@ -1546,7 +1546,7 @@ void () GrenadeExplode =
 
 void () TriBoltExplode =
 {
-	GrenadeProjectileExplode(25);
+	GrenadeProjectileExplode(40);
 };
 
 void () PipebombTouch =
@@ -1578,6 +1578,26 @@ void () GrenadeTouch =
 	{
 		self.avelocity = '0 0 0';
 	}
+};
+
+void () TriboltTouch =
+{
+	if ((other == self.owner))
+	{
+		return;
+	}
+	if ((other == world) || (other.takedamage != 2))
+	{
+		self.movetype = 0;
+		self.velocity = '0 0 0';
+		//self.nextthink = time + 0.6;
+		self.think = TriBoltExplode;
+	}
+	else {
+		TriBoltExplode();
+	}
+	
+	return;
 };
 
 void () W_FireGrenade =
@@ -1663,10 +1683,10 @@ void () W_TriboltBullet = {
 	newmis.movetype = enter;
 	newmis.solid = 2;
 	newmis.weapon = 5;
-	newmis.classname = "grenade";
+	newmis.classname = "bolt";
 	newmis.skin = 1;
-	newmis.touch = T_MissileTouch;
-	newmis.nextthink = (time + 2.5);
+	newmis.touch = TriboltTouch;
+	newmis.nextthink = (time + 0.6);
 	
 
 	makevectors (self.v_angle);
@@ -1682,8 +1702,8 @@ void () W_TriboltBullet = {
 	}
 	newmis.avelocity = '300 300 300';
 	newmis.angles = vectoangles (newmis.velocity);
-	newmis.think = GrenadeExplode;
-	setmodel (newmis, "progs/grenade2.mdl");
+	newmis.think = TriBoltExplode;
+	setmodel (newmis, "progs/hook.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, self.origin);
 }
@@ -2815,7 +2835,7 @@ void () W_Attack =
 									sound (self, 1, "weapons/dartgun.wav", 1, 1);
 									player_shot1 ();
 									W_FireTranq ();
-									Attack_Finished (1.5);
+									Attack_Finished (1.7);
 								}
 								else
 								{
@@ -2836,7 +2856,7 @@ void () W_Attack =
 										self.reload_tribolt = (self.reload_tribolt + 3);
 										self.StatusRefreshTime = (time + 0.1);
 										CheckForReload ();
-										Attack_Finished (1.5);
+										Attack_Finished (1.7);
 									}
 
 								}

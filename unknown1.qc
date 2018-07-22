@@ -2378,7 +2378,10 @@ void () Menu_ClassHelp =
 						{
 							if ((self.playerclass == 6))
 							{
-								CenterPrint (self, "хеажы веапонс гуы Details:   \n\nвеапонс:                     \n░■▒ Shotgun                  \n░∙▒ Super Shotgun            \n░≥▒ Assault Cannon           \n\nPress   for alias help\n");
+								if (!classrework)
+									CenterPrint (self, "хеажы веапонс гуы Details:   \n\nвеапонс:                     \n░■▒ Shotgun                  \n░∙▒ Super Shotgun            \n░≥▒ Assault Cannon           \n\nPress   for alias help\n");
+								else
+									CenterPrint (self, "хеажы веапонс гуы Details:   \n\nвеапонс:                     \n░■▒ Shotgun                  \n░∙▒ Super Shotgun            \n░≥▒ Tribolt           \n\nPress   for alias help\n");
 							}
 							else
 							{
@@ -2524,7 +2527,10 @@ void () Menu_StuffClassHelp =
 						if ((self.playerclass == 6))
 						{
 							sprint (self, 2, "хеажы веапонс гуы Details:\n\nвеапонс:\n   ░■▒ Shotgun\n   ░∙▒ Super Shotgun\n");
-							sprint (self, 2, "   ░≥▒ Assault Cannon\nгренадес:\n   Hand Grenade\n");
+							if (!classrework)
+								sprint (self, 2, "   ░≥▒ Assault Cannon\nгренадес:\n   Hand Grenade\n");
+							else
+								sprint (self, 2, "   ░≥▒ Tribolt\nгренадес:\n   Hand Grenade\n");
 							sprint (self, 2, "   Mirv Grenade\nспециал цоммандс:\n   None\n\n\n");
 						}
 						else

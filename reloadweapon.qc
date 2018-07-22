@@ -166,7 +166,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 				}
 				if ((self.reload_tribolt < self.ammo_rockets))
 				{
-					Attack_Finished (1.5);
+					Attack_Finished (1.7);
 					rt = ((12 - self.reload_tribolt) / 12);
 					rt = (5 - (5 * rt));
 					self.reload_tribolt = 0;
