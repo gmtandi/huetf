@@ -396,7 +396,9 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 				moment = damage;
 			}
 			if (inflictor.classname == "bolt") {
-				moment = moment*7.5;
+				moment = moment*2;
+				if ((targ.playerclass == 6))
+					moment = moment*3.5;
 			}
 			if ((((moment < 60) && ((attacker.classname == "player") && (targ.classname == "player"))) && (attacker.netname != targ.netname)))
 			{

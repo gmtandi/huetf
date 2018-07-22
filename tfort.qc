@@ -2436,7 +2436,16 @@ else
 	{
 		if ((self.playerclass == 2))
 		{
-			self.weapons_carried = ((((self.weapons_carried | space) | 64) | 16) | 512);
+			if (!classrework) {
+				self.weapons_carried = ((((self.weapons_carried | space) | 64) | 16) | 512);
+				self.current_weapon = space;
+				self.items_allowed = (((space | 64) | 16) | 512);
+			}
+			else {
+				self.current_weapon = 2097152;
+				self.items_allowed = (((2097152 | 64) | 16) | 512);
+				self.weapons_carried = ((((self.weapons_carried | 2097152) | 64) | 16) | 512);
+			}
 			self.ammo_rockets = 0;
 			self.ammo_nails = _2;
 			self.ammo_shells = 60;
@@ -2455,8 +2464,6 @@ else
 			self.armorvalue = 0;
 			self.armor_allowed = 0.3;
 			self.maxarmor = _2;
-			self.current_weapon = space;
-			self.items_allowed = (((space | 64) | 16) | 512);
 			self.items = (((self.items | 1) | 2) | 4);
 		}
 		else

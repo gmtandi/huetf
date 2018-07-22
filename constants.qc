@@ -28,7 +28,8 @@
 #define WEAP_TRANQ                      262144
 #define WEAP_RAILGUN                    524288
 #define WEAP_TRIBOLT                    1048576
-#define WEAP_LAST                       2097152
+#define WEAP_SNIPERRAIL                 2097152
+#define WEAP_LAST                       4194304
 
 
 

@@ -143,6 +143,10 @@ void () worldspawn =
 		localcmd (mapname);
 		localcmd (".cfg\n");
 	}
+	if (classrework) 
+		cvar_set ("sv_maxvelocity", "15000");
+	else
+		cvar_set ("sv_maxvelocity", "2000");
 	W_Precache ();
 	precache_sound ("demon/dland2.wav");
 	precache_sound ("misc/h2ohit1.wav");

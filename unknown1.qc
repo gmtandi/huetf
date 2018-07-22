@@ -2354,7 +2354,10 @@ void () Menu_ClassHelp =
 		{
 			if ((self.playerclass == 2))
 			{
-				CenterPrint (self, "снипер Details:              \n\nвеапонс:                     \n░■▒ Sniper Rifle/Auto Rifle  \n░√▒ Nailgun                  \n\nPress   for alias help\n");
+				if (!classrework)
+					CenterPrint (self, "снипер Details:              \n\nвеапонс:                     \n░■▒ Sniper Rifle/Auto Rifle  \n░√▒ Nailgun                  \n\nPress   for alias help\n");
+				else
+					CenterPrint (self, "снипер Details:              \n\nвеапонс:                     \n░■▒ Super Railgun/Auto Rifle  \n░√▒ Nailgun                  \n\nPress   for alias help\n");
 			}
 			else
 			{
@@ -2494,7 +2497,10 @@ void () Menu_StuffClassHelp =
 	{
 		if ((self.playerclass == 2))
 		{
-			sprint (self, 2, "снипер Details:\n\nвеапонс:\n   ░■▒ Sniper Rifle/Auto Rifle\n");
+			if (!classrework)
+				sprint (self, 2, "снипер Details:\n\nвеапонс:\n   ░■▒ Sniper Rifle/Auto Rifle\n");
+			else
+				sprint (self, 2, "снипер Details:\n\nвеапонс:\n   ░■▒ Super Railgun/Auto Rifle\n");
 			sprint (self, 2, "░√▒ Nailgun\nгренадес:\n   Hand Grenade\n\n\nспециал цоммандс:\n");
 			sprint (self, 2, "  autozoom : Toggle Rifle Autozooming\n\n\n");
 		}

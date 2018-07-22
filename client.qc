@@ -412,6 +412,10 @@ void () DecodeLevelParms =
       	sniperpower = CF_GetSetting("spow", "sniperpower", "off");
 
       	classrework = CF_GetSetting("clarew", "classrework", "off");
+      	if (classrework) 
+			cvar_set ("sv_maxvelocity", "15000");
+		else
+			cvar_set ("sv_maxvelocity", "2000");
 
       	automaxclients = CF_GetSetting("automaxclients", "automaxclients", "off");
 
