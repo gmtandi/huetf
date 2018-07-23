@@ -45,5 +45,6 @@ void () TeamFortress_Civilian =
 	self.tp_grenades_2 	= 0;
 	self.tf_items 		= 0;
 	self.armorvalue 	= 0;
+	self.max_health		= 100;
 	self.armorclass 	= (self.armorclass | 0);
 }

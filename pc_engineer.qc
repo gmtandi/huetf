@@ -34,6 +34,7 @@ void () TeamFortress_Engineer =
 	self.armorvalue 		= 25;
 	self.armor_allowed 		= 0.6;
 	self.maxarmor 			= 50;
+	self.max_health			= 80;
 	self.current_weapon 	= WEAP_RAILGUN;
 	self.items_allowed 		= PC_ENGINEER_WEAPONS;
 	self.items 				= (self.items | 1 | 2);	

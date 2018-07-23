@@ -1309,7 +1309,6 @@ entity () SelectSpawnPoint =
 	return (spot);
 };
 void () PlayerDie;
-void () TeamFortress_SetHealth;
 void () TeamFortress_SetEquipment;
 void () player_touch;
 
@@ -1429,7 +1428,6 @@ void () PutClientInServer =
 	self.takedamage = 2;
 	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & 8));
 	TeamFortress_SetEquipment ();
-	TeamFortress_SetHealth ();
 	TeamFortress_SetSpeed (self);
 	TeamFortress_SetSkin (self);
 	stuffcmd (self, "v_cshift; wait; bf\n");

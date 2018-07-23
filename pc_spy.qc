@@ -27,6 +27,7 @@ void () TeamFortress_Spy =
 	self.armorvalue 		= 25;
 	self.armor_allowed 		= 0.6;
 	self.maxarmor 			= 100;
+	self.max_health			= 90;
 	self.current_weapon 	= WEAP_TRANQ;
 	self.items_allowed 		= PC_SPY_WEAPONS;
 	self.items 				= (self.items | 1 | 2 | 4);

@@ -34,5 +34,6 @@ void () TeamFortress_Hwguy =
 	self.armorclass 		= (self.armorclass | 0);
 	self.armortype 			= 0.8;
 	self.armor_allowed 		= 0.8;
+	self.max_health			= 100;
 	self.items 				= ( 1 | 2 | 32);
 }

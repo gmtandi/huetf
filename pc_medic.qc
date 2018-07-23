@@ -24,6 +24,7 @@ void () TeamFortress_Medic =
 	self.armorvalue 		= 50;
 	self.armor_allowed 		= 0.6;
 	self.maxarmor 			= 100;
+	self.max_health			= 90;
 	self.current_weapon 	= WEAP_SUPER_NAILGUN;
 	self.ammo_medikit 		= 50;
 	self.maxammo_medikit 	= 100;

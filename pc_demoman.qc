@@ -32,6 +32,7 @@ void () TeamFortress_Demoman = {
 	self.armorvalue 		= 50;
 	self.armor_allowed 		= 0.6;
 	self.maxarmor 			= 120;
+	self.max_health			= 90;
 	self.current_weapon 	= WEAP_GRENADE_LAUNCHER;
 	self.items_allowed 		= (PC_DEMOMAN_WEAPONS | 131072);
 	self.items 				= (self.items | 1 | 16);

@@ -31,19 +31,7 @@
 #define WEAP_SNIPERRAIL                 2097152
 #define WEAP_LAST                       4194304
 
-// Grenades
-#define GR_PRIMETIME            3
-#define GR_TYPE_NONE            0
-#define GR_TYPE_NORMAL          1
-#define GR_TYPE_CONCUSSION      2
-#define GR_TYPE_NAIL            3
-#define GR_TYPE_MIRV            4
-#define GR_TYPE_NAPALM          5
-#define GR_TYPE_FLARE           6
-#define GR_TYPE_GAS             7
-#define GR_TYPE_EMP             8
-#define GR_TYPE_FLASH           9
-#define GR_TYPE_CALTROP         10
+
 
 // TeamFortress State Flags
 #define TFSTATE_GRENPRIMED		1   // Whether the player has a primed grenade
@@ -69,6 +57,7 @@
 #define HUETF_HEADSHOT_MULTIPLIER 1.5
 
 
+#define PC_OBSERVER     0
 #define PC_SCOUT		1
 #define PC_SNIPER		2
 #define PC_SOLDIER		3
@@ -98,6 +87,17 @@
 #define GR_TYPE_IMPACT		11
 
 #define ITEM_SCANNER		1
+#define ITEM_MEDKIT			4
+#define ITEM_SHELLS			256
+#define ITEM_NAILS			512
+#define ITEM_ROCKETS		1024
+#define ITEM_CELLS			2048
+#define ITEM_ARMOR1			8192
+#define ITEM_ARMOR2			16384
+#define ITEM_ARMOR3			32768
+#define ITEM_SUPERHEALTH	65536
+#define ITEM_DETPACK		131072
+
 
 /*======================================================================*/
 /* TEAMFORTRESS CLASS DETAILS						*/
@@ -203,3 +203,52 @@
 #define PC_CIVILIAN_DM_MAXSTRAFESPEED 230
 #define PC_CIVILIAN_WEAPONS			WEAP_AXE
 #define PC_CIVILIAN_DM_WEAPONS		WEAP_AXE | WEAP_SHOTGUN | WEAP_SUPER_SHOTGUN | WEAP_NAILGUN | WEAP_SUPER_NAILGUN | WEAP_GRENADE_LAUNCHER | WEAP_LIGHTNING | WEAP_ROCKET_LAUNCHER
+
+// TeamFortress State Flags
+#define TFSTATE_GRENPRIMED		1   // Whether the player has a primed grenade
+#define TFSTATE_RELOADING		2   // Whether the player is reloading
+#define TFSTATE_ALTKILL			4   // TRUE if killed with a weapon not in self.weapon: NOT USED ANYMORE
+#define TFSTATE_RANDOMPC		8   // Whether Playerclass is random, new one each respawn
+#define TFSTATE_INFECTED		16  // set when player is infected by the bioweapon
+#define TFSTATE_INVINCIBLE		32  // Player has permanent Invincibility (Usually by GoalItem)
+#define TFSTATE_INVISIBLE		64  // Player has permanent Invisibility (Usually by GoalItem)
+#define TFSTATE_QUAD			128 // Player has permanent Quad Damage (Usually by GoalItem)
+#define TFSTATE_RADSUIT			256 // Player has permanent Radsuit (Usually by GoalItem)
+#define TFSTATE_BURNING			512 // Is on fire
+#define TFSTATE_GRENTHROWING	1024  // is throwing a grenade
+#define TFSTATE_AIMING			2048  // is using the laser sight
+#define TFSTATE_ZOOMOFF         4096  // doesn't want the FOV changed when zooming
+#define TFSTATE_RESPAWN_READY	8192  // is waiting for respawn, and has pressed fire
+#define TFSTATE_HALLUCINATING	16384  // set when player is hallucinating
+#define TFSTATE_TRANQUILISED 	32768  // set when player is tranquilised
+#define TFSTATE_CANT_MOVE		65536  // set when player is setting a detpack
+
+/*======================================================*/
+/* Toggleable Game Settings				*/
+/*======================================================*/
+
+// Some of the toggleflags aren't used anymore, but the bits are still
+// there to provide compatability with old maps
+#define TFLAG_CLASS_PERSIST	1  	// Persistent Classes Bit
+#define TFLAG_CHEATCHECK	2 	// Cheatchecking Bit
+#define TFLAG_RESPAWNDELAY	4 	// RespawnDelay bit
+#define TFLAG_UN		8	// NOT USED ANYMORE
+#define TFLAG_UN2		16	// NOT USED ANYMORE
+#define TFLAG_UN3		32	// NOT USED ANYMORE
+#define TFLAG_AUTOTEAM		64	// sets whether players are automatically placed in teams
+#define TFLAG_TEAMFRAGS		128	// Individual Frags, or Frags = TeamScore
+#define TFLAG_FIRSTENTRY	256	// Used to determine the first time toggleflags is set
+					// in a map. Cannot be toggled by players.
+#define TFLAG_SPYINVIS		512	// Spy invisible only
+#define TFLAG_GRAPPLE		1024	// Grapple on/off
+#define TFLAG_FULLTEAMSCORE	2048
+#define TFLAG_FLAGEMU		4096
+#define TFLAG_WARSTANDARD	8192
+
+#define TEAMPLAY_NORMAL		 1
+#define TEAMPLAY_HALFDIRECT	 2
+#define TEAMPLAY_NODIRECT	 4
+#define TEAMPLAY_HALFEXPLOSIVE	 8
+#define TEAMPLAY_NOEXPLOSIVE	 16
+#define TEAMPLAY_LESSPLAYERSHELP 32
+#define TEAMPLAY_LESSSCOREHELP	 64

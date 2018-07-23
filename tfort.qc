@@ -14,11 +14,33 @@ void () TeamFortress_GrenadePrimed;
 void () TeamFortress_ThrowGrenade;
 float (float pc) IsLegalClass;
 void (entity p) TeamFortress_SetSpeed;
-
+string(entity p) TeamFortress_GetSkin;
+void (entity p) TeamFortress_SetSkin;
+void () TeamFortress_SetEquipment;
+float (entity Retriever, float AmmoType) TeamFortress_GetMaxAmmo;
+float (entity Retriever, float WeaponType) TeamFortress_CanGetWeapon;
+void (entity Player, float Armorclass) TeamFortress_DescribeArmor;
+void (entity Retriever, entity Items) TeamFortress_AddBackpackItems;
+string (float pc) TeamFortress_GetClassName;
+void (entity Viewer, float pc, float rpc) TeamFortress_PrintClassName;
+void () TeamFortress_RemoveTimers;
+void () TeamFortress_SetupRespawn;
+void () TeamFortress_CheckClassStats;
+void () TeamFortress_AssaultWeapon;
+void (entity Gren) TeamFortress_ExplodePerson;
+void () NormalGrenadeTouch;
+void () NormalGrenadeExplode;
+void () TeamFortress_DisplayDetectionItems;
+void () BioInfection_Decay;
+void () BioInfection_MonsterDecay;
+void (string halias, float himpulse1, float himpulse2) TeamFortress_Alias;
+float (vector veca, vector vecb) crossproduct;
+void (entity pl, float fr, float type) TF_AddFrags;
+void (entity p) TeamFortress_ExecClassScript;
+void (entity p) TeamFortress_ExecMapScript;
 
 void (entity Goal, entity Player, entity Item) DisplayItemStatus;
-void () TeamFortress_CheckClassStats;
-void (entity Player, float Armorclass) TeamFortress_DescribeArmor;
+
 
 void () UseSpecialSkill =
 {
@@ -305,7 +327,6 @@ void (float inp) TeamFortress_ChangeClass =
 	}
 	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & 8));
 	TeamFortress_SetEquipment ();
-	TeamFortress_SetHealth ();
 	TeamFortress_SetSpeed (self);
 	TeamFortress_SetSkin (self);
 	TeamFortress_ExecClassScript (self);
@@ -629,8 +650,6 @@ void () TeamFortress_ShowTF =
 		sprint (self, 2, "Full TeamScore Off.\n");
 	}
 };
-void () TeamFortress_GrenadePrimed;
-
 
 void () GrenadeTimer = {
     self.heat = self.heat - 1;
@@ -641,7 +660,6 @@ void () GrenadeTimer = {
         dremove(self);
     }
 };
-
 
 void () RemoveGrenadeTimers = {
     local entity te = find(world, classname, "gtimer");
@@ -695,7 +713,6 @@ string (float grenade) TeamFortress_GetGrenadeName =
 	}
 	return gs;
 };
-
 
 void () TeamFortress_PrimeGrenade =
 {
@@ -1186,87 +1203,6 @@ void (entity p) TeamFortress_SetSpeed =
 	stuffcmd (p, "\n");
 };
 
-void () TeamFortress_SetHealth =
-{
-	if ((self.playerclass == PC_SCOUT))
-	{
-		self.max_health = _K;
-	}
-	else
-	{
-		if ((self.playerclass == PC_SNIPER))
-		{
-			self.max_health = _Z;
-		}
-		else
-		{
-			if ((self.playerclass == PC_SOLDIER))
-			{
-				self.max_health = _d;
-			}
-			else
-			{
-				if ((self.playerclass == PC_DEMOMAN))
-				{
-					self.max_health = _Z;
-				}
-				else
-				{
-					if ((self.playerclass == PC_MEDIC))
-					{
-						self.max_health = _Z;
-					}
-					else
-					{
-						if ((self.playerclass == PC_HWGUY))
-						{
-							self.max_health = _d;
-						}
-						else
-						{
-							if ((self.playerclass == PC_PYRO))
-							{
-								self.max_health = _d;
-							}
-							else
-							{
-								if ((self.playerclass == PC_CIVILIAN))
-								{
-									self.max_health = _d;
-								}
-								else
-								{
-									if ((self.playerclass == PC_SPY))
-									{
-										self.max_health = _Z;
-									}
-									else
-									{
-										if ((self.playerclass == PC_ENGINEER))
-										{
-											self.max_health = _P;
-										}
-										else
-										{
-											if (!self.playerclass)
-											{
-												self.max_health = 1;
-												self.takedamage = 0;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	self.health = self.max_health;
-};
-
-
 string(entity p) TeamFortress_GetSkin =
 {
     local float tn;
@@ -1285,722 +1221,624 @@ string(entity p) TeamFortress_GetSkin =
         }
     }
 
-if (skins24b) {
-    if (tn == 4) {
-        if (pc == 1) {
-            st = infokey(world, "sk_t4_scout");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_sco";
-        } else if (pc == 2) {
-            st = infokey(world, "sk_t4_sniper");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_sni";
-        } else if (pc == 3) {
-            st = infokey(world, "sk_t4_soldier");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_sol";
-        } else if (pc == 4) {
-            st = infokey(world, "sk_t4_demoman");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_dem";
-        } else if (pc == 5) {
-            st = infokey(world, "sk_t4_medic");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_med";
-        } else if (pc == 6) {
-            st = infokey(world, "sk_t4_hwguy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_hwg";
-        } else if (pc == 7) {
-            st = infokey(world, "sk_t4_pyro");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_pyr";
-        } else if (pc == 8) {
-            st = infokey(world, "sk_t4_spy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_spy";
-        } else if (pc == 9) {
-            st = infokey(world,
-                         "sk_t4_engineer");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "gren_eng";
-        } else if (pc == 11) {
-            skin = "gren_civ";
-        }
-    } else if (tn == 3) {
-        if (pc == 1) {
-            st = infokey(world, "sk_t3_scout");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_sco";
-        } else if (pc == 2) {
-            st = infokey(world, "sk_t3_sniper");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_sni";
-        } else if (pc == 3) {
-            st = infokey(world, "sk_t3_soldier");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_sol";
-        } else if (pc == 4) {
-            st = infokey(world, "sk_t3_demoman");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_dem";
-        } else if (pc == 5) {
-            st = infokey(world, "sk_t3_medic");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_med";
-        } else if (pc == 6) {
-            st = infokey(world, "sk_t3_hwguy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_hwg";
-        } else if (pc == 7) {
-            st = infokey(world, "sk_t3_pyro");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_pyr";
-        } else if (pc == 8) {
-            st = infokey(world,
-                         "sk_t3_spy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_spy";
-        } else if (pc == 9) {
-            st = infokey(world,
-                         "sk_t3_engineer");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "yell_eng";
-        } else if (pc == 11) {
-            skin = "yell_civ";
-        }
-    } else if (tn == 2) {
-        if (pc == 1) {
-            st = infokey(world, "sk_t2_scout");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_sco";
-        } else if (pc == 2) {
-            st = infokey(world, "sk_t2_sniper");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_sni";
-        } else if (pc == 3) {
-            st = infokey(world, "sk_t2_soldier");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_sol";
-        } else if (pc == 4) {
-            st = infokey(world, "sk_t2_demoman");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_dem";
-        } else if (pc == 5) {
-            st = infokey(world, "sk_t2_medic");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_med";
-        } else if (pc == 6) {
-            st = infokey(world, "sk_t2_hwguy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_hwg";
-        } else if (pc == 7) {
-            st = infokey(world,
-                         "sk_t2_pyro");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_pyr";
-        } else if (pc == 8) {
-            st = infokey(world,
-                         "sk_t2_spy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_spy";
-        } else if (pc == 9) {
-            st = infokey(world,
-                         "sk_t2_engineer");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "red_eng";
-        } else if (pc == 11) {
-            skin = "red_civ";
-        }
-    } else if (tn == 1) {
-        if (pc == 1) {
-            st = infokey(world, "sk_t1_scout");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_sco";
-        } else if (pc == 2) {
-            st = infokey(world, "sk_t1_sniper");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_sni";
-        } else if (pc == 3) {
-            st = infokey(world, "sk_t1_soldier");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_sol";
-        } else if (pc == 4) {
-            st = infokey(world, "sk_t1_demoman");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_dem";
-        } else if (pc == 5) {
-            st = infokey(world, "sk_t1_medic");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_med";
-        } else if (pc == 6) {
-            st = infokey(world, "sk_t1_hwguy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_hwg";
-        } else if (pc == 7) {
-            st = infokey(world,
-                         "sk_t1_pyro");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_pyr";
-        } else if (pc == 8) {
-            st = infokey(world,
-                         "sk_t1_spy");
-            if (st != string_null) {
-                skin = st;
-            }
-            skin = "blue_spy";
-        } else if (pc == 9) {
-            st = infokey(world,
-                         "sk_t1_engineer");
-            if (st != string_null) {
-                skin = st;
-            }
-           skin = "blue_eng";
-        } else if (pc == 11) {
-            skin = "blue_civ";
-        }
-    }
+	if (skins24b) {
+	    if (tn == 4) {
+	    	switch(pc) {
+	    		case PC_SCOUT:
+		    		st = infokey(world, "sk_t4_scout");
+		            if (st != string_null) 
+		                skin = st;
+		            else	            
+		            	skin = "gren_sco";
+	    			break;
+				case PC_SNIPER:
+					st = infokey(world, "sk_t4_sniper");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "gren_sni";
+	    			break;
+				case PC_SOLDIER:
+					st = infokey(world, "sk_t4_soldier");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "gren_sol";
+	    			break;
+				case PC_DEMOMAN:
+					st = infokey(world, "sk_t4_demoman");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "gren_dem";
+	    			break;
+				case PC_MEDIC:
+					st = infokey(world, "sk_t4_medic");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "gren_med";
+	    			break;
+				case PC_HWGUY:
+					st = infokey(world, "sk_t4_hwguy");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "gren_hwg";
+	    			break;
+				case PC_PYRO:
+					st = infokey(world, "sk_t4_pyro");
+		            if (st != string_null) 
+		                skin = st;
+		            else	            
+		            	skin = "gren_pyr";
+	    			break;
+				case PC_SPY:
+					st = infokey(world, "sk_t4_spy");
+		            if (st != string_null) 
+		                skin = st;
+		            else	            
+		            	skin = "gren_spy";
+	    			break;
+				case PC_ENGINEER:
+					st = infokey(world, "sk_t4_engineer");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "gren_eng";
+	    			break;
+				case PC_CIVILIAN:
+		            	skin = "gren_civ";
+	    			break;
+	    		default:
+	    			break;
+	    	}
+	    } else if (tn == 3) {
+	    	switch(pc) {
+	    		case PC_SCOUT:
+		    		st = infokey(world, "sk_t3_scout");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "yell_sco";
+	    			break;
+				case PC_SNIPER:
+					st = infokey(world, "sk_t3_sniper");
+		            if (st != string_null) 
+		                skin = st;
+		            else	            
+		            	skin = "yell_sni";
+	            	break;
+				case PC_SOLDIER:
+					st = infokey(world, "sk_t3_soldier");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "yell_sol";
+	    			break;
+				case PC_DEMOMAN:
+					st = infokey(world, "sk_t3_demoman");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "yell_dem";
+	    			break;
+				case PC_MEDIC:
+					st = infokey(world, "sk_t3_medic");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "yell_med";
+	    			break;
+				case PC_HWGUY:
+					st = infokey(world, "sk_t3_hwguy");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "yell_hwg";
+	    			break;
+				case PC_PYRO:
+					st = infokey(world, "sk_t3_pyro");
+		            if (st != string_null) {
+		                skin = st;
+		            }
+		            else	            
+		            	skin = "yell_pyr";
+	    			break;
+				case PC_SPY:
+					st = infokey(world, "sk_t3_spy");
+		            if (st != string_null) 
+		                skin = st;
+		            else	            
+		            	skin = "yell_spy";
+	    			break;
+				case PC_ENGINEER:
+					st = infokey(world, "sk_t3_engineer");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "yell_eng";
+	    			break;
+				case PC_CIVILIAN:
+		            	skin = "yell_civ";
+	    			break;
+	    		default:
+	    			break;
+	    	}
+	    } else if (tn == 2) {
+	    	switch(pc) {
+	    		case PC_SCOUT:
+		    		st = infokey(world, "sk_t2_scout");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "red_sco";
+	    			break;
+				case PC_SNIPER:
+					st = infokey(world, "sk_t2_sniper");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "red_sni";
+	    			break;
+				case PC_SOLDIER:
+					st = infokey(world, "sk_t2_soldier");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "red_sol";
+	    			break;
+				case PC_DEMOMAN:
+					st = infokey(world, "sk_t2_demoman");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "red_dem";
+	    			break;
+				case PC_MEDIC:
+					st = infokey(world, "sk_t2_medic");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "red_med";
+	    			break;
+				case PC_HWGUY:
+					st = infokey(world, "sk_t2_hwguy");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "red_hwg";
+	    			break;
+				case PC_PYRO:
+					st = infokey(world, "sk_t2_pyro");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "red_pyr";
+	    			break;
+				case PC_SPY:
+					st = infokey(world, "sk_t2_spy");
+		            if (st != string_null) 
+		                skin = st;
+		            else	            
+		            	skin = "red_spy";
+	    			break;
+				case PC_ENGINEER:
+					st = infokey(world, "sk_t2_engineer");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "red_eng";
+	    			break;
+				case PC_CIVILIAN:
+		            	skin = "red_civ";
+	    			break;
+	    		default:
+	    			break;
+	    	}
+	    } else if (tn == 1) {
+	    	switch(pc) {
+	    		case PC_SCOUT:
+		    		st = infokey(world, "sk_t1_scout");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_sco";
+	    			break;
+				case PC_SNIPER:
+					st = infokey(world, "sk_t1_sniper");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_sni";
+	    			break;
+				case PC_SOLDIER:
+					st = infokey(world, "sk_t1_soldier");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_sol";
+	    			break;
+				case PC_DEMOMAN:
+					st = infokey(world, "sk_t1_demoman");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_dem";
+	    			break;
+				case PC_MEDIC:
+					st = infokey(world, "sk_t1_medic");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_med";
+	    			break;
+				case PC_HWGUY:
+					st = infokey(world, "sk_t1_hwguy");
+		            if (st != string_null) 
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_hwg";
+	    			break;
+				case PC_PYRO:
+					st = infokey(world, "sk_t1_pyro");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_pyr";
+	    			break;
+				case PC_SPY:
+					st = infokey(world, "sk_t1_spy");
+		            if (st != string_null) 
+		                skin = st;
+		            else	            
+		            	skin = "blue_spy";
+	    			break;
+				case PC_ENGINEER:
+					st = infokey(world, "sk_t1_engineer");
+		            if (st != string_null)
+		                skin = st;	            
+		            else	            
+		            	skin = "blue_eng";
+	    			break;
+				case PC_CIVILIAN:
+					skin = "blue_civ";
+	    			break;
+	    		default:
+	    			break;
+	    	}
+	    }
 
-} else {
-	if ((tn == 4))
-	{
-		if ((tfvsdm == 1))
+	} else {
+		if ((tn == 4))
 		{
-			if ((pc == 1))
-			{
-				st = infokey (world, "sk_t4_civilian");
-				if ((st != string_null))
-				{
-					return (st);
-				}
-				return ("base");
-			}
-		}
-		else
-		{
-			if ((pc == 1))
-			{
-				st = infokey (world, "sk_t4_scout");
-				if ((st != string_null))
-				{
-					return (st);
-				}
-				return ("tf_scout");
-			}
-			else
-			{
-				if ((pc == 2))
-				{
-					st = infokey (world, "sk_t4_sniper");
-					if ((st != string_null))
-					{
-						return (st);
-					}
-					return ("tf_snipe");
-				}
-				else
-				{
-					if ((pc == 3))
-					{
-						st = infokey (world, "sk_t4_soldier");
-						if ((st != string_null))
-						{
-							return (st);
-						}
-						return ("tf_sold");
-					}
-					else
-					{
-						if ((pc == 4))
-						{
-							st = infokey (world, "sk_t4_demoman");
-							if ((st != string_null))
-							{
-								return (st);
-							}
-							return ("tf_demo");
-						}
-						else
-						{
-							if ((pc == 5))
-							{
-								st = infokey (world, "sk_t4_medic");
-								if ((st != string_null))
-								{
-									return (st);
-								}
-								return ("tf_medic");
-							}
-							else
-							{
-								if ((pc == 6))
-								{
-									st = infokey (world, "sk_t4_hwguy");
-									if ((st != string_null))
-									{
-										return (st);
-									}
-									return ("tf_hwguy");
-								}
-								else
-								{
-									if ((pc == 7))
-									{
-										st = infokey (world, "sk_t4_pyro");
-										if ((st != string_null))
-										{
-											return (st);
-										}
-										return ("tf_pyro");
-									}
-									else
-									{
-										if ((pc == 8))
-										{
-											st = infokey (world, "sk_t4_spy");
-											if ((st != string_null))
-											{
-												return (st);
-											}
-											return ("tf_spy");
-										}
-										else
-										{
-											if ((pc == 9))
-											{
-												st = infokey (world, "sk_t4_engineer");
-												if ((st != string_null))
-												{
-													return (st);
-												}
-												return ("tf_eng");
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		if ((tn == 3))
-		{
-			if ((pc == 1))
-			{
-				st = infokey (world, "sk_t3_scout");
-				if ((st != string_null))
-				{
-					return (st);
-				}
-				return ("tf_scout");
-			}
-			else
-			{
-				if ((pc == 2))
-				{
-					st = infokey (world, "sk_t3_sniper");
-					if ((st != string_null))
-					{
-						return (st);
-					}
-					return ("tf_snipe");
-				}
-				else
-				{
-					if ((pc == 3))
-					{
-						st = infokey (world, "sk_t3_soldier");
-						if ((st != string_null))
-						{
-							return (st);
-						}
-						return ("tf_sold");
-					}
-					else
-					{
-						if ((pc == 4))
-						{
-							st = infokey (world, "sk_t3_demoman");
-							if ((st != string_null))
-							{
-								return (st);
-							}
-							return ("tf_demo");
-						}
-						else
-						{
-							if ((pc == 5))
-							{
-								st = infokey (world, "sk_t3_medic");
-								if ((st != string_null))
-								{
-									return (st);
-								}
-								return ("tf_medic");
-							}
-							else
-							{
-								if ((pc == 6))
-								{
-									st = infokey (world, "sk_t3_hwguy");
-									if ((st != string_null))
-									{
-										return (st);
-									}
-									return ("tf_hwguy");
-								}
-								else
-								{
-									if ((pc == 7))
-									{
-										st = infokey (world, "sk_t3_pyro");
-										if ((st != string_null))
-										{
-											return (st);
-										}
-										return ("tf_pyro");
-									}
-									else
-									{
-										if ((pc == 8))
-										{
-											st = infokey (world, "sk_t3_spy");
-											if ((st != string_null))
-											{
-												return (st);
-											}
-											return ("tf_spy");
-										}
-										else
-										{
-											if ((pc == 9))
-											{
-												st = infokey (world, "sk_t3_engineer");
-												if ((st != string_null))
-												{
-													return (st);
-												}
-												return ("tf_eng");
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			if ((tn == 2))
-			{
-				if ((tfvsdm == 1))
-				{
-					if ((pc == 1))
-					{
-						st = infokey (world, "sk_t2_base");
-						if ((st != string_null))
-						{
-							return (st);
-						}
-						return ("base");
-					}
-				}
-				else
-				{
-					if ((pc == 1))
-					{
-						st = infokey (world, "sk_t2_scout");
-						if ((st != string_null))
-						{
-							return (st);
-						}
-						return ("tf_scout");
-					}
-					else
-					{
-						if ((pc == 2))
-						{
-							st = infokey (world, "sk_t2_sniper");
-							if ((st != string_null))
-							{
-								return (st);
-							}
-							return ("tf_snipe");
-						}
-						else
-						{
-							if ((pc == 3))
-							{
-								st = infokey (world, "sk_t2_soldier");
-								if ((st != string_null))
-								{
-									return (st);
-								}
-								return ("tf_sold");
-							}
-							else
-							{
-								if ((pc == 4))
-								{
-									st = infokey (world, "sk_t2_demoman");
-									if ((st != string_null))
-									{
-										return (st);
-									}
-									return ("tf_demo");
-								}
-								else
-								{
-									if ((pc == 5))
-									{
-										st = infokey (world, "sk_t2_medic");
-										if ((st != string_null))
-										{
-											return (st);
-										}
-										return ("tf_medic");
-									}
-									else
-									{
-										if ((pc == 6))
-										{
-											st = infokey (world, "sk_t2_hwguy");
-											if ((st != string_null))
-											{
-												return (st);
-											}
-											return ("tf_hwguy");
-										}
-										else
-										{
-											if ((pc == 7))
-											{
-												st = infokey (world, "sk_t2_pyro");
-												if ((st != string_null))
-												{
-													return (st);
-												}
-												return ("tf_pyro");
-											}
-											else
-											{
-												if ((pc == 8))
-												{
-													st = infokey (world, "sk_t2_spy");
-													if ((st != string_null))
-													{
-														return (st);
-													}
-													return ("tf_spy");
-												}
-												else
-												{
-													if ((pc == 9))
-													{
-														st = infokey (world, "sk_t2_engineer");
-														if ((st != string_null))
-														{
-															return (st);
-														}
-														return ("tf_eng");
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			else
+			if ((tfvsdm == 1))
 			{
 				if ((pc == 1))
 				{
-					st = infokey (world, "sk_t1_scout");
+					st = infokey (world, "sk_t4_civilian");
 					if ((st != string_null))
-					{
-						return (st);
-					}
-					return ("tf_scout");
-				}
-				else
-				{
-					if ((pc == 2))
-					{
-						st = infokey (world, "sk_t1_sniper");
-						if ((st != string_null))
-						{
-							return (st);
-						}
-						return ("tf_snipe");
-					}
+						skin = st;
 					else
-					{
-						if ((pc == 3))
-						{
-							st = infokey (world, "sk_t1_soldier");
-							if ((st != string_null))
-							{
-								return (st);
-							}
-							return ("tf_sold");
-						}
-						else
-						{
-							if ((pc == 4))
-							{
-								st = infokey (world, "sk_t1_demoman");
-								if ((st != string_null))
-								{
-									return (st);
-								}
-								return ("tf_demo");
-							}
-							else
-							{
-								if ((pc == 5))
-								{
-									st = infokey (world, "sk_t1_medic");
-									if ((st != string_null))
-									{
-										return (st);
-									}
-									return ("tf_medic");
-								}
-								else
-								{
-									if ((pc == 6))
-									{
-										st = infokey (world, "sk_t1_hwguy");
-										if ((st != string_null))
-										{
-											return (st);
-										}
-										return ("tf_hwguy");
-									}
-									else
-									{
-										if ((pc == 7))
-										{
-											st = infokey (world, "sk_t1_pyro");
-											if ((st != string_null))
-											{
-												return (st);
-											}
-											return ("tf_pyro");
-										}
-										else
-										{
-											if ((pc == 8))
-											{
-												st = infokey (world, "sk_t1_spy");
-												if ((st != string_null))
-												{
-													return (st);
-												}
-												return ("tf_spy");
-											}
-											else
-											{
-												if ((pc == 9))
-												{
-													st = infokey (world, "sk_t1_engineer");
-													if ((st != string_null))
-													{
-														return (st);
-													}
-													return ("tf_eng");
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+						skin = "base";
 				}
+			}
+			else
+			{
+				switch(pc) {
+					case PC_SCOUT:
+						st = infokey (world, "sk_t4_scout");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_scout";
+						break;
+					case PC_SNIPER:
+						st = infokey (world, "sk_t4_sniper");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_snipe";
+						break;
+					case PC_SOLDIER:
+						st = infokey (world, "sk_t4_soldier");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_sold";
+						break;
+					case PC_DEMOMAN:
+						st = infokey (world, "sk_t4_demoman");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_demo";
+						break;
+					case PC_MEDIC:
+						st = infokey (world, "sk_t4_medic");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_medic";
+						break;
+					case PC_HWGUY:
+						st = infokey (world, "sk_t4_hwguy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_hwguy";
+						break;
+					case PC_PYRO:
+						st = infokey (world, "sk_t4_pyro");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_pyro";
+						break;
+					case PC_SPY:
+						st = infokey (world, "sk_t4_spy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_spy";
+						break;
+					case PC_ENGINEER:
+						st = infokey (world, "sk_t4_engineer");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_eng";
+						break;
+				}			
+			}
+		}
+		else if ((tn == 3))
+		{
+			if ((tfvsdm == 1))
+			{
+				if ((pc == 1))
+				{
+					st = infokey (world, "sk_t3_civilian");
+					if ((st != string_null))
+						skin = st;
+					else
+						skin = "base";
+				}
+			}
+			else
+			{
+				switch(pc) {
+					case PC_SCOUT:
+						st = infokey (world, "sk_t3_scout");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_scout";
+						break;
+					case PC_SNIPER:
+						st = infokey (world, "sk_t3_sniper");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_snipe";
+						break;
+					case PC_SOLDIER:
+						st = infokey (world, "sk_t3_soldier");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_sold";
+						break;
+					case PC_DEMOMAN:
+						st = infokey (world, "sk_t3_demoman");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_demo";
+						break;
+					case PC_MEDIC:
+						st = infokey (world, "sk_t3_medic");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_medic";
+						break;
+					case PC_HWGUY:
+						st = infokey (world, "sk_t3_hwguy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_hwguy";
+						break;
+					case PC_PYRO:
+						st = infokey (world, "sk_t3_pyro");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_pyro";
+						break;
+					case PC_SPY:
+						st = infokey (world, "sk_t3_spy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_spy";
+						break;
+					case PC_ENGINEER:
+						st = infokey (world, "sk_t3_engineer");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_eng";
+						break;
+				}			
+			}
+		}
+		else if ((tn == 2))
+		{
+			if ((tfvsdm == 1))
+			{
+				if ((pc == 1))
+				{
+					st = infokey (world, "sk_t2_civilian");
+					if ((st != string_null))
+						skin = st;
+					else
+						skin = "base";
+				}
+			}
+			else
+			{
+				switch(pc) {
+					case PC_SCOUT:
+						st = infokey (world, "sk_t2_scout");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_scout";
+						break;
+					case PC_SNIPER:
+						st = infokey (world, "sk_t2_sniper");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_snipe";
+						break;
+					case PC_SOLDIER:
+						st = infokey (world, "sk_t2_soldier");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_sold";
+						break;
+					case PC_DEMOMAN:
+						st = infokey (world, "sk_t2_demoman");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_demo";
+						break;
+					case PC_MEDIC:
+						st = infokey (world, "sk_t2_medic");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_medic";
+						break;
+					case PC_HWGUY:
+						st = infokey (world, "sk_t2_hwguy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_hwguy";
+						break;
+					case PC_PYRO:
+						st = infokey (world, "sk_t2_pyro");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_pyro";
+						break;
+					case PC_SPY:
+						st = infokey (world, "sk_t2_spy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_spy";
+						break;
+					case PC_ENGINEER:
+						st = infokey (world, "sk_t2_engineer");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_eng";
+						break;
+				}			
+			}
+		}
+		else
+		{
+			if ((tfvsdm == 1))
+			{
+				if ((pc == 1))
+				{
+					st = infokey (world, "sk_t1_civilian");
+					if ((st != string_null))
+						skin = st;
+					else
+						skin = "base";
+				}
+			}
+			else
+			{
+				switch(pc) {
+					case PC_SCOUT:
+						st = infokey (world, "sk_t1_scout");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_scout";
+						break;
+					case PC_SNIPER:
+						st = infokey (world, "sk_t1_sniper");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_snipe";
+						break;
+					case PC_SOLDIER:
+						st = infokey (world, "sk_t1_soldier");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_sold";
+						break;
+					case PC_DEMOMAN:
+						st = infokey (world, "sk_t1_demoman");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_demo";
+						break;
+					case PC_MEDIC:
+						st = infokey (world, "sk_t1_medic");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_medic";
+						break;
+					case PC_HWGUY:
+						st = infokey (world, "sk_t1_hwguy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_hwguy";
+						break;
+					case PC_PYRO:
+						st = infokey (world, "sk_t1_pyro");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_pyro";
+						break;
+					case PC_SPY:
+						st = infokey (world, "sk_t1_spy");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_spy";
+						break;
+					case PC_ENGINEER:
+						st = infokey (world, "sk_t1_engineer");
+						if (st != string_null)
+							skin = st;
+						else
+							skin = "tf_eng";
+						break;
+				}			
 			}
 		}
 	}
-
-}
-
     return skin;
 };
 
@@ -2009,7 +1847,7 @@ void (entity p) TeamFortress_SetSkin =
 	local string st;
 	local float tn;
 
-	if (((p.playerclass == PC_SPY) && (p.undercover_skin != 0)))
+	if ((p.playerclass == PC_SPY) && (p.undercover_skin != 0))
 	{
 		p.skin = p.undercover_skin;
 	}
@@ -2017,7 +1855,7 @@ void (entity p) TeamFortress_SetSkin =
 	{
 		p.skin = p.playerclass;
 	}
-	if ((p.skin != 0))
+	if (p.skin != 0)
 	{
 		stuffcmd (p, "skin ");
 		st = TeamFortress_GetSkin (p);
@@ -2139,9 +1977,12 @@ void () TeamFortress_SetEquipment =
 			self.weaponmodel = string_null;
 			modelindex_player = 0;
 			self.tfstate = (self.tfstate | 2);
+			self.max_health = 1;
+			self.takedamage = 0;
 			setmodel (self, string_null);
 			break;
 	}
+	self.health = self.max_health;
 	if (self.playerclass)
 	{
 		if (rounds)
@@ -2152,7 +1993,7 @@ void () TeamFortress_SetEquipment =
 			self.ammo_rockets = ceil ((self.maxammo_rockets / 2));
 			if ((self.playerclass == PC_MEDIC))
 			{
-				self.ammo_nails = _d;
+				self.ammo_nails = 100;
 			}
 			else
 			{
@@ -2189,32 +2030,27 @@ void () TeamFortress_SetEquipment =
 	{
 		self.items = (self.items | 32768);
 	}
-	else
+	else if ((self.armortype >= 0.6))
 	{
-		if ((self.armortype >= 0.6))
-		{
-			self.items = (self.items | 16384);
-		}
-		else
-		{
-			if ((self.armortype >= 0.3))
-			{
-				self.items = (self.items | 8192);
-			}
-		}
+		self.items = (self.items | 16384);
+	}		
+	else if ((self.armortype >= 0.3))
+	{
+		self.items = (self.items | 8192);
 	}
+	
 	noitems = stof (infokey (world, "noitems"));
-	if ((noitems & 1))
+	if (noitems & 1)
 	{
 		self.no_grenades_1 = 0;
 		self.tp_grenades_1 = 0;
 	}
-	if ((noitems & 2))
+	if (noitems & 2)
 	{
 		self.no_grenades_2 = 0;
 		self.tp_grenades_2 = 0;
 	}
-	if ((noitems & 4))
+	if (noitems & 4)
 	{
 		self.ammo_detpack = 0;
 		self.maxammo_detpack = 0;
@@ -2233,53 +2069,35 @@ void () TeamFortress_SetEquipment =
 
 float (entity Retriever, float AmmoType) TeamFortress_GetMaxAmmo =
 {
-	if ((AmmoType == 256))
-	{
-		return (Retriever.maxammo_shells);
+	local float maxammo = 0
+	switch (AmmoType) {
+		case ITEM_MEDKIT:
+			maxammo = Retriever.maxammo_medikit;
+			break;
+		case ITEM_SHELLS:
+			maxammo = Retriever.maxammo_shells;
+			break;
+		case ITEM_NAILS:
+			maxammo = Retriever.maxammo_nails;
+			break;
+		case ITEM_ROCKETS:
+			maxammo = Retriever.maxammo_rockets;
+			break;
+		case ITEM_CELLS:
+			maxammo = Retriever.maxammo_cells;
+			break;
+		case ITEM_DETPACK:
+			maxammo = Retriever.maxammo_detpack;
+			break;
 	}
-	else
-	{
-		if ((AmmoType == 512))
-		{
-			return (Retriever.maxammo_nails);
-		}
-		else
-		{
-			if ((AmmoType == 2048))
-			{
-				return (Retriever.maxammo_cells);
-			}
-			else
-			{
-				if ((AmmoType == 1024))
-				{
-					return (Retriever.maxammo_rockets);
-				}
-				else
-				{
-					if ((AmmoType == 4))
-					{
-						return (Retriever.maxammo_medikit);
-					}
-					else
-					{
-						if ((AmmoType == 131072))
-						{
-							return (Retriever.maxammo_detpack);
-						}
-					}
-				}
-			}
-		}
-	}
-	dprint ("Error in TeamFortress_GetMaxAmmo()\n");
-	dprint ("Invalid ammo type passed.\n");
-	return (0);
+//	dprint ("Error in TeamFortress_GetMaxAmmo()\n");
+//	dprint ("Invalid ammo type passed.\n");
+	return (maxammo);
 };
 
 float (entity Retriever, float WeaponType) TeamFortress_CanGetWeapon =
 {
-	if ((Retriever.items_allowed & WeaponType))
+	if (Retriever.items_allowed & WeaponType)
 	{
 		return (1);
 	}
@@ -2290,27 +2108,27 @@ void (entity Player, float Armorclass) TeamFortress_DescribeArmor =
 {
 	local string st;
 
-	if ((Armorclass == 0))
+	if (Armorclass == 0)
 	{
 		return;
 	}
-	if ((Armorclass & 16))
+	if (Armorclass & 16)
 	{
 		sprint (Player, 2, "Asbestos ");
 	}
-	if ((Armorclass & 2))
+	if (Armorclass & 2)
 	{
 		sprint (Player, 2, "Wooden ");
 	}
-	if ((Armorclass & 4))
+	if (Armorclass & 4)
 	{
 		sprint (Player, 2, "Blast ");
 	}
-	if ((Armorclass & 8))
+	if (Armorclass & 8)
 	{
 		sprint (Player, 2, "Shockproof ");
 	}
-	if ((Armorclass & 1))
+	if (Armorclass & 1)
 	{
 		sprint (Player, 2, "Kevlar ");
 	}
@@ -2324,94 +2142,49 @@ void (entity Retriever, entity Items) TeamFortress_AddBackpackItems =
 
 string (float pc) TeamFortress_GetClassName =
 {
-	if ((pc == 1))
-	{
-		return ("Scout");
-	}
-	else
-	{
-		if ((pc == 2))
-		{
-			return ("Sniper");
-		}
-		else
-		{
-			if ((pc == 3))
-			{
-				return ("Soldier");
-			}
+	local string name = "Observer";
+	switch(pc) {
+		case PC_OBSERVER:
+			name = "Observer";
+			break;
+		case PC_SCOUT:
+			name = "Scout";
+			break;
+		case PC_SNIPER:
+			name = "Sniper";
+			break;
+		case PC_SOLDIER:
+			name = "Soldier";
+			break;
+		case PC_DEMOMAN:
+			name = "Demolitions Man";
+			break;
+		case PC_MEDIC:
+			name = "Combat Medic";
+			break;
+		case PC_HWGUY:
+			name = "Heavy Weapons Guy";
+			break;
+		case PC_PYRO:
+			name = "Pyro";
+			break;
+		case PC_SPY:
+			name = "Spy";
+			break;
+		case PC_ENGINEER:
+			name = "Engineer";
+			break;
+		case PC_RANDOM:
+			name = "Random Playerclass";
+			break;
+		case PC_CIVILIAN:
+			if (tfvsdm == 1)			
+				name = "Ranger";
 			else
-			{
-				if ((pc == 4))
-				{
-					return ("Demolitions Man");
-				}
-				else
-				{
-					if ((pc == 5))
-					{
-						return ("Combat Medic");
-					}
-					else
-					{
-						if ((pc == 6))
-						{
-							return ("Heavy Weapons Guy");
-						}
-						else
-						{
-							if ((pc == 7))
-							{
-								return ("Pyro");
-							}
-							else
-							{
-								if ((pc == 8))
-								{
-									return ("Spy");
-								}
-								else
-								{
-									if ((pc == 9))
-									{
-										return ("Engineer");
-									}
-									else
-									{
-										if ((pc == 11))
-										{
-											if ((tfvsdm == 1))
-											{
-												return ("Quake Soldier");
-											}
-											else
-											{
-												return ("Civilian");
-											}
-										}
-										else
-										{
-											if ((pc == 0))
-											{
-												return ("Observer");
-											}
-											else
-											{
-												if ((pc == 10))
-												{
-													return ("Random Playerclass");
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+				name = "Civilian";
+			break;
 	}
+	return name;
 };
 
 void (entity Viewer, float pc, float rpc) TeamFortress_PrintClassName =
@@ -2420,7 +2193,7 @@ void (entity Viewer, float pc, float rpc) TeamFortress_PrintClassName =
 
 	st = TeamFortress_GetClassName (pc);
 	sprint (Viewer, 2, st);
-	if ((rpc != 0))
+	if (rpc != 0)
 	{
 		sprint (Viewer, 2, " (Random)");
 	}
@@ -2435,24 +2208,24 @@ void () TeamFortress_RemoveTimers =
 	self.is_undercover = 0;
 	self.is_building = 0;
 	self.building = world;
-	if ((self.tfstate & 2048))
+	if (self.tfstate & TFSTATE_AIMING)
 	{
-		self.tfstate = (self.tfstate - 2048);
+		self.tfstate = (self.tfstate - TFSTATE_AIMING);
 		TeamFortress_SetSpeed (self);
 		self.heat = 0;
 	}
-	if ((self.tfstate & 16))
+	if (self.tfstate & TFSTATE_INFECTED)
 	{
-		self.tfstate = (self.tfstate - (self.tfstate & 16));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_INFECTED));
 	}
-	if ((self.tfstate & 16384))
+	if (self.tfstate & TFSTATE_HALLUCINATING)
 	{
-		self.tfstate = (self.tfstate - (self.tfstate & 16384));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_HALLUCINATING));
 	}
 	te = find (world, classname, "timer");
-	while ((te != world))
+	while (te != world)
 	{
-		if (((te.owner == self) && (te.no_active_gas_grens <= 0)))
+		if ((te.owner == self) && (te.no_active_gas_grens <= 0))
 		{
 			dremove (te);
 			te = find (world, classname, "timer");
@@ -2463,9 +2236,9 @@ void () TeamFortress_RemoveTimers =
 		}
 	}
 	te = find (world, classname, "grentimer");
-	while ((te != world))
+	while (te != world)
 	{
-		if (((te.owner == self) && (te.no_active_napalm_grens <= 0)))
+		if ((te.owner == self) && (te.no_active_napalm_grens <= 0))
 		{
 			dremove (te);
 			te = find (world, classname, "grentimer");
@@ -2478,24 +2251,21 @@ void () TeamFortress_RemoveTimers =
 	te = find (world, classname, "item_tfgoal");
 	while (te)
 	{
-		if ((te.owner == self))
+		if (te.owner == self)
 		{
-			if ((!(te.goal_activation & 256) || (self.has_disconnected == 1)))
+			if (!(te.goal_activation & 256) || (self.has_disconnected == 1))
 			{
 				tfgoalitem_RemoveFromPlayer (te, self, 0);
 			}
-			if (((CTF_Map == 1) && (te.goal_no == 1)))
+			if ((CTF_Map == 1) && (te.goal_no == 1))
 			{
 				bprint (2, self.netname);
 				bprint (2, " лост the блуе flag!\n");
 			}
-			else
+			else if ((CTF_Map == 1) && (te.goal_no == 2))
 			{
-				if (((CTF_Map == 1) && (te.goal_no == 2)))
-				{
-					bprint (2, self.netname);
-					bprint (2, " лост the ред flag!\n");
-				}
+				bprint (2, self.netname);
+				bprint (2, " лост the ред flag!\n");
 			}
 		}
 		te = find (te, classname, "item_tfgoal");
@@ -2503,19 +2273,19 @@ void () TeamFortress_RemoveTimers =
 	te = find (world, classname, "detpack");
 	while (te)
 	{
-		if (((te.weaponmode == 1) && (te.enemy == self)))
+		if ((te.weaponmode == 1) && (te.enemy == self))
 		{
 			te.weaponmode = 0;
 		}
 		te = find (te, classname, "detpack");
 	}
 	TeamFortress_DetonatePipebombs ();
-	if ((self.has_disconnected == 1))
+	if (self.has_disconnected == 1)
 	{
 		te = find (world, classname, "grenade");
 		while (te)
 		{
-			if (((te.owner == self) && (te.model == "progs/caltrop.mdl")))
+			if ((te.owner == self) && (te.model == "progs/caltrop.mdl"))
 			{
 				dremove (te);
 				te = find (world, classname, "grenade");
@@ -2541,11 +2311,11 @@ void () TeamFortress_SetupRespawn =
 	local float restime;
 	local string db;
 
-	if ((self.respawn_time > time))
+	if (self.respawn_time > time)
 	{
 		return;
 	}
-	if ((toggleflags & 4))
+	if (toggleflags & TFLAG_RESPAWNDELAY)
 	{
 		restime = respawn_delay_time;
 	}
@@ -2587,49 +2357,49 @@ void () TeamFortress_CheckClassStats =
 	{
 		self.armorvalue = 0;
 	}
-	if ((self.ammo_shells > TeamFortress_GetMaxAmmo (self, 256)))
+	if ((self.ammo_shells > TeamFortress_GetMaxAmmo (self, ITEM_SHELLS)))
 	{
-		self.ammo_shells = TeamFortress_GetMaxAmmo (self, 256);
+		self.ammo_shells = TeamFortress_GetMaxAmmo (self, ITEM_SHELLS);
 	}
 	if ((self.ammo_shells < 0))
 	{
 		self.ammo_shells = 0;
 	}
-	if ((self.ammo_nails > TeamFortress_GetMaxAmmo (self, 512)))
+	if ((self.ammo_nails > TeamFortress_GetMaxAmmo (self, ITEM_NAILS)))
 	{
-		self.ammo_nails = TeamFortress_GetMaxAmmo (self, 512);
+		self.ammo_nails = TeamFortress_GetMaxAmmo (self, ITEM_NAILS);
 	}
 	if ((self.ammo_nails < 0))
 	{
 		self.ammo_nails = 0;
 	}
-	if ((self.ammo_rockets > TeamFortress_GetMaxAmmo (self, 1024)))
+	if ((self.ammo_rockets > TeamFortress_GetMaxAmmo (self, ITEM_ROCKETS)))
 	{
-		self.ammo_rockets = TeamFortress_GetMaxAmmo (self, 1024);
+		self.ammo_rockets = TeamFortress_GetMaxAmmo (self, ITEM_ROCKETS);
 	}
 	if ((self.ammo_rockets < 0))
 	{
 		self.ammo_rockets = 0;
 	}
-	if ((self.ammo_cells > TeamFortress_GetMaxAmmo (self, 2048)))
+	if ((self.ammo_cells > TeamFortress_GetMaxAmmo (self, ITEM_CELLS)))
 	{
-		self.ammo_cells = TeamFortress_GetMaxAmmo (self, 2048);
+		self.ammo_cells = TeamFortress_GetMaxAmmo (self, ITEM_CELLS);
 	}
 	if ((self.ammo_cells < 0))
 	{
 		self.ammo_cells = 0;
 	}
-	if ((self.ammo_medikit > TeamFortress_GetMaxAmmo (self, 4)))
+	if ((self.ammo_medikit > TeamFortress_GetMaxAmmo (self, ITEM_MEDKIT)))
 	{
-		self.ammo_medikit = TeamFortress_GetMaxAmmo (self, 4);
+		self.ammo_medikit = TeamFortress_GetMaxAmmo (self, ITEM_MEDKIT);
 	}
 	if ((self.ammo_medikit < 0))
 	{
 		self.ammo_medikit = 0;
 	}
-	if ((self.ammo_detpack > TeamFortress_GetMaxAmmo (self, 131072)))
+	if ((self.ammo_detpack > TeamFortress_GetMaxAmmo (self, ITEM_DETPACK)))
 	{
-		self.ammo_detpack = TeamFortress_GetMaxAmmo (self, 131072);
+		self.ammo_detpack = TeamFortress_GetMaxAmmo (self, ITEM_DETPACK);
 	}
 	if ((self.ammo_detpack < 0))
 	{
@@ -2643,7 +2413,7 @@ void () TeamFortress_CheckClassStats =
 	{
 		self.no_grenades_2 = 0;
 	}
-	if (((self.health > self.max_health) && !(self.items & 65536)))
+	if ((self.health > self.max_health) && !(self.items & ITEM_SUPERHEALTH))
 	{
 		TF_T_Damage (self, world, world, (self.max_health - self.health), 0, 256);
 	}
@@ -2651,24 +2421,18 @@ void () TeamFortress_CheckClassStats =
 	{
 		T_Heal (self, (self.health - self.health), 0);
 	}
-	self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
+	self.items = (self.items - (self.items & (ITEM_ARMOR1 | ITEM_ARMOR2 | ITEM_ARMOR3)));
 	if ((self.armortype >= 0.8))
 	{
-		self.items = (self.items | 32768);
+		self.items = (self.items | ITEM_ARMOR3);
 	}
-	else
+	else if ((self.armortype >= 0.6))
 	{
-		if ((self.armortype >= 0.6))
-		{
-			self.items = (self.items | 16384);
-		}
-		else
-		{
-			if ((self.armortype >= 0.3))
-			{
-				self.items = (self.items | 8192);
-			}
-		}
+			self.items = (self.items | ITEM_ARMOR2);
+	}
+	else if ((self.armortype >= 0.3))
+	{
+		self.items = (self.items | ITEM_ARMOR1);
 	}
 };
 
@@ -2677,30 +2441,30 @@ void () TeamFortress_AssaultWeapon =
 	local float it;
 
 	self.impulse = 0;
-	if ((self.tfstate & 2))
+	if (self.tfstate & TFSTATE_RELOADING)
 	{
 		return;
 	}
-	if (!(self.weapons_carried & 32768))
+	if !(self.weapons_carried & WEAP_ASSAULT_CANNON)
 	{
 		return;
 	}
-	if ((self.heat > 0))
+	if (self.heat > 0)
 	{
 		sprint (self, 2, "the assault cannon is still overheated.\n");
 		return;
 	}
-	if ((self.ammo_shells < 1))
+	if (self.ammo_shells < 1)
 	{
 		sprint (self, 2, "not enough ammo.\n");
 		return;
 	}
-	if ((self.ammo_cells < 6))
+	if (self.ammo_cells < 6)
 	{
 		sprint (self, 2, "not enough cells to power the assault cannon.\n");
 		return;
 	}
-	self.current_weapon = 32768;
+	self.current_weapon = WEAP_ASSAULT_CANNON;
 	W_SetCurrentAmmo ();
 };
 
@@ -2708,7 +2472,7 @@ void (entity Gren) TeamFortress_ExplodePerson =
 {
 	local entity te;
 
-	Gren.owner.tfstate = (Gren.owner.tfstate - (Gren.owner.tfstate & 1));
+	Gren.owner.tfstate = (Gren.owner.tfstate - (Gren.owner.tfstate & TFSTATE_GRENPRIMED));
 	KickPlayer (-2, Gren.owner);
 	newmis = spawn ();
 	newmis.movetype = 10;
@@ -2720,189 +2484,125 @@ void (entity Gren) TeamFortress_ExplodePerson =
 	newmis.angles = vectoangles (newmis.velocity);
 	newmis.think = SUB_Null;
 	newmis.nextthink = (time + 0.1);
-	if ((Gren.weapon == 1))
-	{
-		newmis.touch = NormalGrenadeTouch;
-		newmis.think = NormalGrenadeExplode;
-		newmis.skin = 0;
-		newmis.avelocity = '300 300 300';
-		setmodel (newmis, "progs/hgren2.mdl");
-	}
-	else
-	{
-		if ((Gren.weapon == 2))
-		{
+	switch(Gren.weapon) {
+		case GR_TYPE_NORMAL:
+			newmis.touch = NormalGrenadeTouch;
+			newmis.think = NormalGrenadeExplode;
+			newmis.skin = 0;
+			newmis.avelocity = '300 300 300';
+			setmodel (newmis, "progs/hgren2.mdl");
+			break;
+		case GR_TYPE_CONCUSSION:
 			newmis.touch = ConcussionGrenadeTouch;
 			newmis.think = ConcussionGrenadeExplode;
 			newmis.skin = 1;
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
-		}
+			break;
+		case GR_TYPE_NAIL:
+			newmis.touch = NailGrenadeTouch;
+			newmis.think = NailGrenadeExplode;
+			newmis.skin = 1;
+			newmis.avelocity = '0 300 0';
+			setmodel (newmis, "progs/biggren.mdl");
+			break;
+		case GR_TYPE_MIRV:
+			newmis.touch = MirvGrenadeTouch;
+			newmis.think = MirvGrenadeExplode;
+			newmis.skin = 0;
+			newmis.avelocity = '0 300 0';
+			setmodel (newmis, "progs/biggren.mdl");
+			break;
+		case GR_TYPE_NAPALM:
+			newmis.touch = NapalmGrenadeTouch;
+			newmis.think = NapalmGrenadeExplode;
+			newmis.skin = 2;
+			newmis.avelocity = '0 300 0';
+			setmodel (newmis, "progs/biggren.mdl");
+			break;
+		case GR_TYPE_FLARE:
+			sprint (Gren.owner, 2, "Flare lit.\n");
+			te = spawn ();
+			te.touch = SUB_Null;
+			te.think = RemoveFlare;
+			te.nextthink = (time + 25);
+			te.owner = Gren.owner;
+			te.solid = 0;
+			Gren.owner.effects = (Gren.owner.effects | 4);
+			dremove (Gren);
+			dremove (newmis);
+			break;
+		case GR_TYPE_GAS:
+			newmis.touch = GasGrenadeTouch;
+			newmis.think = GasGrenadeExplode;
+			newmis.skin = 2;
+			newmis.avelocity = '300 300 300';
+			setmodel (newmis, "progs/grenade2.mdl");
+			break;
+		case GR_TYPE_EMP:
+			newmis.touch = EMPGrenadeTouch;
+			newmis.think = EMPGrenadeExplode;
+			newmis.skin = 4;
+			newmis.avelocity = '300 300 300';
+			setmodel (newmis, "progs/grenade2.mdl");
+			break;
+		case GR_TYPE_FLASH:
+			break;
+		case GR_TYPE_CALTROP:
+			newmis.touch = CaltropTouch;
+			newmis.think = ScatterCaltrops;
+			break;
+		case GR_TYPE_IMPACT:
+			newmis.weapon = 11;
+            newmis.touch = ConcussionGrenadeTouch;
+            newmis.think = ConcussionGrenadeExplode;
+            newmis.skin = 1;
+            newmis.avelocity = '300 300 300';
+            setmodel (newmis, "progs/hgren2.mdl");
+			break;
 
-else  if ((Gren.weapon == 11)) // impact grenade
-                {
-                        newmis.weapon = 11;
-                        newmis.touch = ConcussionGrenadeTouch;
-                        newmis.think = ConcussionGrenadeExplode;
-                        newmis.skin = 1;
-                        newmis.avelocity = '300 300 300';
-                        setmodel (newmis, "progs/hgren2.mdl");
-                }
-
-
-		else
-		{
-			if ((Gren.weapon == 3))
-			{
-				newmis.touch = NailGrenadeTouch;
-				newmis.think = NailGrenadeExplode;
-				newmis.skin = 1;
-				newmis.avelocity = '0 300 0';
-				setmodel (newmis, "progs/biggren.mdl");
-			}
-			else
-			{
-				if ((Gren.weapon == 4))
-				{
-					newmis.touch = MirvGrenadeTouch;
-					newmis.think = MirvGrenadeExplode;
-					newmis.skin = 0;
-					newmis.avelocity = '0 300 0';
-					setmodel (newmis, "progs/biggren.mdl");
-				}
-				else
-				{
-					if ((Gren.weapon == 5))
-					{
-						newmis.touch = NapalmGrenadeTouch;
-						newmis.think = NapalmGrenadeExplode;
-						newmis.skin = 2;
-						newmis.avelocity = '0 300 0';
-						setmodel (newmis, "progs/biggren.mdl");
-					}
-					else
-					{
-						if ((Gren.weapon == 6))
-						{
-							sprint (Gren.owner, 2, "Flare lit.\n");
-							te = spawn ();
-							te.touch = SUB_Null;
-							te.think = RemoveFlare;
-							te.nextthink = (time + 25);
-							te.owner = Gren.owner;
-							te.solid = 0;
-							Gren.owner.effects = (Gren.owner.effects | 4);
-							dremove (Gren);
-							dremove (newmis);
-							return;
-						}
-						else
-						{
-							if ((Gren.weapon == 7))
-							{
-								newmis.touch = GasGrenadeTouch;
-								newmis.think = GasGrenadeExplode;
-								newmis.skin = 2;
-								newmis.avelocity = '300 300 300';
-								setmodel (newmis, "progs/grenade2.mdl");
-							}
-							else
-							{
-								if ((Gren.weapon == 8))
-								{
-									newmis.touch = EMPGrenadeTouch;
-									newmis.think = EMPGrenadeExplode;
-									newmis.skin = 4;
-									newmis.avelocity = '300 300 300';
-									setmodel (newmis, "progs/grenade2.mdl");
-								}
-								else
-								{
-									if ((Gren.weapon == 10))
-									{
-										newmis.touch = CaltropTouch;
-										newmis.think = ScatterCaltrops;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, Gren.owner.origin);
-	if (((Gren.owner.playerclass == PC_SCOUT) && (Gren.weapon != 10)))
-	{
-		bprint3 (1, "No ", Gren.owner.netname, ", swallowing the grenade isn't very effective!\n");
-	}
-	else
-	{
-		if ((Gren.owner.playerclass == PC_SNIPER))
-		{
-			bprint3 (1, "Well ", Gren.owner.netname, ", don't quit your day job!\n");
-		}
-		else
-		{
-			if ((Gren.owner.playerclass == PC_SOLDIER))
-			{
+	switch  (Gren.owner.playerclass) {
+		case PC_SCOUT:
+			if (Gren.weapon != GR_TYPE_CALTROP)
+				bprint3 (1, "No ", Gren.owner.netname, ", swallowing the grenade isn't very effective!\n");
+			break;
+		case PC_SNIPER:
+				bprint3 (1, "Well ", Gren.owner.netname, ", don't quit your day job!\n");
+			break;
+		case PC_SOLDIER:
 				bprint3 (1, "Ummm, ", Gren.owner.netname, ", you're supposed to THROW the grenade!\n");
-			}
-			else
-			{
-				if ((Gren.owner.playerclass == PC_DEMOMAN))
-				{
-					bprint3 (1, "Ack! ", Gren.owner.netname, "! The grenade is your friend for another reason!\n");
-				}
-				else
-				{
-					if ((Gren.owner.playerclass == PC_MEDIC))
-					{
-						bprint3 (1, "No ", Gren.owner.netname, "! Assist your own suicide some other time!\n");
-					}
-					else
-					{
-						if ((Gren.owner.playerclass == PC_HWGUY))
-						{
-							bprint3 (1, "Hey ", Gren.owner.netname, ", you're not THAT heavy!\n");
-						}
-						else
-						{
-							if ((Gren.owner.playerclass == PC_PYRO))
-							{
-								bprint3 (1, "Yes ", Gren.owner.netname, ", the grenade does explode on '3'!\n");
-							}
-							else
-							{
-								if ((Gren.owner.playerclass == PC_SPY))
-								{
-									bprint3 (1, "You do realize ", Gren.owner.netname, ", you can blow your cover in easier ways!\n");
-								}
-								else
-								{
-									if ((Gren.owner.playerclass == PC_ENGINEER))
-									{
-										bprint3 (1, "Hey ", Gren.owner.netname, ", study grenade dynamics on your own time!\n");
-									}
-									else
-									{
-										bprint3 (1, "No ", Gren.owner.netname, ", throw the grenade, not the pin!\n");
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+			break;
+		case PC_DEMOMAN:
+				bprint3 (1, "Ack! ", Gren.owner.netname, "! The grenade is your friend for another reason!\n");				
+			break;
+		case PC_MEDIC:
+				bprint3 (1, "No ", Gren.owner.netname, "! Assist your own suicide some other time!\n");
+			break;
+		case PC_HWGUY:
+				bprint3 (1, "Hey ", Gren.owner.netname, ", you're not THAT heavy!\n");
+			break;
+		case PC_PYRO:
+				bprint3 (1, "Yes ", Gren.owner.netname, ", the grenade does explode on '3'!\n");
+			break;
+		case PC_SPY:
+				bprint3 (1, "You do realize ", Gren.owner.netname, ", you can blow your cover in easier ways!\n");
+			break;
+		case PC_ENGINEER:
+			bprint3 (1, "Hey ", Gren.owner.netname, ", study grenade dynamics on your own time!\n");
+			break;
+		default:
+			bprint3 (1, "No ", Gren.owner.netname, ", throw the grenade, not the pin!\n");
+			break;
 	}
 	dremove (Gren);
 };
 
 void () NormalGrenadeTouch =
 {
-	if ((other == self.owner))
+	if (other == self.owner)
 	{
 		return;
 	}
@@ -2936,7 +2636,7 @@ void () TeamFortress_DisplayDetectionItems =
 	{
 		return;
 	}
-	if ((Goal.display_item_status1 != 0))
+	if (Goal.display_item_status1 != 0)
 	{
 		te = Finditem (Goal.display_item_status1);
 		if (te)
@@ -2952,7 +2652,7 @@ void () TeamFortress_DisplayDetectionItems =
 	{
 		return;
 	}
-	if ((Goal.display_item_status2 != 0))
+	if (Goal.display_item_status2 != 0)
 	{
 		te = Finditem (Goal.display_item_status2);
 		if (te)
@@ -2968,7 +2668,7 @@ void () TeamFortress_DisplayDetectionItems =
 	{
 		return;
 	}
-	if ((Goal.display_item_status3 != 0))
+	if (Goal.display_item_status3 != 0)
 	{
 		te = Finditem (Goal.display_item_status3);
 		if (te)
@@ -2984,7 +2684,7 @@ void () TeamFortress_DisplayDetectionItems =
 	{
 		return;
 	}
-	if ((Goal.display_item_status4 != 0))
+	if (Goal.display_item_status4 != 0)
 	{
 		te = Finditem (Goal.display_item_status4);
 		if (te)
@@ -3003,36 +2703,36 @@ void () BioInfection_Decay =
 	local entity te;
 	local entity Bio;
 
-	if ((((teamplay & 16) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0)))
+	if (((teamplay & 16) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0))
 	{
-		self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 16));
+		self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_INFECTED));
 		dremove (self);
 		return;
 	}
 	else
 	{
-		if ((self.invincible_finished > time))
+		if (self.invincible_finished > time)
 		{
-			self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 16));
+			self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_INFECTED));
 			dremove (self);
 			return;
 		}
 	}
-	if ((!(self.owner.tfstate & 16) || (self.owner.playerclass == PC_MEDIC)))
+	if (!(self.owner.tfstate & TFSTATE_INFECTED) || (self.owner.playerclass == PC_MEDIC))
 	{
 		dremove (self);
 		return;
 	}
 	te = findradius (self.owner.origin, _P);
-	while (((te != world) && (te != self.owner)))
+	while ((te != world) && (te != self.owner))
 	{
-		if ((((te.classname == "player") && (te.deadflag == 0)) && te.playerclass))
+		if (((te.classname == "player") && (te.deadflag == 0)) && te.playerclass)
 		{
-			if (!(te.tfstate & 16))
+			if !(te.tfstate & TFSTATE_INFECTED)
 			{
-				if ((te.playerclass != 5))
+				if (te.playerclass != PC_MEDIC)
 				{
-					if (!(((teamplay & 16) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0)))
+					if !(((teamplay & TEAMPLAY_NOEXPLOSIVE) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0))
 					{
 						Bio = spawn ();
 						Bio.nextthink = 2;
@@ -3080,7 +2780,7 @@ void (string halias, float himpulse1, float himpulse2) TeamFortress_Alias =
 	stuffcmd (self, " \"impulse ");
 	imp = ftos (himpulse1);
 	stuffcmd (self, imp);
-	if ((himpulse2 != 0))
+	if (himpulse2 != 0)
 	{
 		stuffcmd (self, ";wait; impulse ");
 		imp = ftos (himpulse2);
@@ -3101,7 +2801,7 @@ void (entity pl, float fr, float type) TF_AddFrags =
 {
 	local entity e;
 
-	if (((intermission_running != 0) || (intermission_exittime > time)))
+	if ((intermission_running != 0) || (intermission_exittime > time))
 	{
 		return;
 	}
@@ -3113,60 +2813,26 @@ void (entity pl, float fr, float type) TF_AddFrags =
 	{
 		return;
 	}
-	if ((toggleflags & 2048))
+	if ((toggleflags & TFLAG_FULLTEAMSCORE))
 	{
 		if ((pl.team_no == 1))
-		{
 			team1score = (team1score + fr);
-		}
-		else
-		{
-			if ((pl.team_no == 2))
-			{
-				team2score = (team2score + fr);
-			}
-			else
-			{
-				if ((pl.team_no == 3))
-				{
-					team3score = (team3score + fr);
-				}
-				else
-				{
-					if ((pl.team_no == 4))
-					{
-						team4score = (team4score + fr);
-					}
-				}
-			}
-		}
+		else if ((pl.team_no == 2))
+			team2score = (team2score + fr);
+		else if ((pl.team_no == 3))
+			team3score = (team3score + fr);
+		else if ((pl.team_no == 4))
+			team4score = (team4score + fr);
 	}
-	if ((pl.team_no == 1))
-	{
+	if (pl.team_no == 1)
 		team1frags = (team1frags + fr);
-	}
-	else
-	{
-		if ((pl.team_no == 2))
-		{
-			team2frags = (team2frags + fr);
-		}
-		else
-		{
-			if ((pl.team_no == 3))
-			{
-				team3frags = (team3frags + fr);
-			}
-			else
-			{
-				if ((pl.team_no == 4))
-				{
-					team4frags = (team4frags + fr);
-				}
-			}
-		}
-	}
-	if ((toggleflags & 2048))
+	else if (pl.team_no == 2)
+		team2frags = (team2frags + fr);
+	else if (pl.team_no == 3)
+		team3frags = (team3frags + fr);
+	else if (pl.team_no == 4)
+		team4frags = (team4frags + fr);
+	if (toggleflags & TFLAG_FULLTEAMSCORE)
 	{
 		e = find (world, classname, "player");
 		while (e)
@@ -3178,12 +2844,9 @@ void (entity pl, float fr, float type) TF_AddFrags =
 			e = find (e, classname, "player");
 		}
 	}
-	else
+	else if (!(toggleflags & TFLAG_TEAMFRAGS))
 	{
-		if (!(toggleflags & 128))
-		{
-			pl.frags = (pl.frags + fr);
-		}
+		pl.frags = (pl.frags + fr);
 	}
 };
 
@@ -3192,78 +2855,43 @@ void (entity p) TeamFortress_ExecClassScript =
 	local string st;
 
 	st = infokey (p, "ec");
-	if ((st == string_null))
+	if (st == string_null)
 	{
 		st = infokey (p, "exec_class");
 	}
-	if (((st == "on") || (self.tfkey & 2)))
+	if ((st == "on") || (self.tfkey & 2))
 	{
-		if ((p.playerclass == PC_SCOUT))
-		{
-			stuffcmd (p, "exec scout.cfg\n");
-		}
-		else
-		{
-			if ((p.playerclass == PC_SNIPER))
-			{
+		switch(p.playerclass) {
+			case PC_SCOUT:
+				stuffcmd (p, "exec scout.cfg\n");
+				break;
+			case PC_SNIPER:
 				stuffcmd (p, "exec sniper.cfg\n");
-			}
-			else
-			{
-				if ((p.playerclass == PC_SOLDIER))
-				{
-					stuffcmd (p, "exec soldier.cfg\n");
-				}
-				else
-				{
-					if ((p.playerclass == PC_DEMOMAN))
-					{
-						stuffcmd (p, "exec demoman.cfg\n");
-					}
-					else
-					{
-						if ((p.playerclass == PC_MEDIC))
-						{
-							stuffcmd (p, "exec medic.cfg\n");
-						}
-						else
-						{
-							if ((p.playerclass == PC_HWGUY))
-							{
-								stuffcmd (p, "exec hwguy.cfg\n");
-							}
-							else
-							{
-								if ((p.playerclass == PC_PYRO))
-								{
-									stuffcmd (p, "exec pyro.cfg\n");
-								}
-								else
-								{
-									if ((p.playerclass == PC_SPY))
-									{
-										stuffcmd (p, "exec spy.cfg\n");
-									}
-									else
-									{
-										if ((p.playerclass == PC_ENGINEER))
-										{
-											stuffcmd (p, "exec engineer.cfg\n");
-										}
-										else
-										{
-											if ((p.playerclass == PC_CIVILIAN))
-											{
-												stuffcmd (p, "exec dm.cfg\n");
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+				break;
+			case PC_SOLDIER:
+				stuffcmd (p, "exec soldier.cfg\n");
+				break;
+			case PC_DEMOMAN:
+				stuffcmd (p, "exec demoman.cfg\n");
+				break;
+			case PC_MEDIC:
+				stuffcmd (p, "exec medic.cfg\n");
+				break;
+			case PC_HWGUY:
+				stuffcmd (p, "exec hwguy.cfg\n");
+				break;
+			case PC_PYRO:
+				stuffcmd (p, "exec pyro.cfg\n");
+				break;
+			case PC_SPY:
+				stuffcmd (p, "exec spy.cfg\n");
+				break;
+			case PC_ENGINEER:
+				stuffcmd (p, "exec engineer.cfg\n");
+				break;
+			case PC_CIVILIAN:
+				stuffcmd (p, "exec dm.cfg\n");
+				break;
 		}
 	}
 };
@@ -3273,11 +2901,11 @@ void (entity p) TeamFortress_ExecMapScript =
 	local string st;
 
 	st = infokey (p, "em");
-	if ((st == string_null))
+	if (st == string_null)
 	{
 		st = infokey (p, "exec_map");
 	}
-	if (((st == "on") || (self.tfkey & 4)))
+	if ((st == "on") || (self.tfkey & 4))
 	{
 		stuffcmd (p, "exec mapdefault.cfg\n");
 		stuffcmd (p, "exec ");

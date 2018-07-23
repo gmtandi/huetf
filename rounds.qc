@@ -322,9 +322,8 @@ void () RoundBegin =
 				self.on_hook = 0;
 				self.hook_out = 0;
 				self.fire_held_down = 0;
-				self.mapcount = _d;
+				self.mapcount = 100;
 				TeamFortress_SetEquipment ();
-				TeamFortress_SetHealth ();
 				TeamFortress_SetSpeed (self);
 				stuffcmd (self, "v_cshift; wait; bf\n");
 			}

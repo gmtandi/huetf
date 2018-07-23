@@ -31,6 +31,7 @@ void () TeamFortress_Sniper = {
 	self.armorvalue 			= 0;
 	self.armor_allowed 			= 0.3;
 	self.maxarmor 				= 50;
+	self.max_health				= 75;
 	self.items 					= ( 1 | 2 | 4);
 }
 

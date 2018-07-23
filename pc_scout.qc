@@ -37,6 +37,7 @@ void () TeamFortress_Scout =
 	self.armorvalue 		= 25;
 	self.armor_allowed 		= 0.3;
 	self.maxarmor 			= 50;
+	self.max_health			= 75;
 	self.current_weapon 	= WEAP_NAILGUN;
 	self.items_allowed 		= PC_SCOUT_WEAPONS;
 	self.items 				= (self.items | ITEM_SCANNER | 4);	

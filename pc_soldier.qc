@@ -25,6 +25,7 @@ void () TeamFortress_Soldier =
 	self.armorvalue 		= 100;
 	self.armor_allowed 		= 0.8;
 	self.maxarmor 			= 200;
+	self.max_health			= 100;
 	self.current_weapon 	= WEAP_ROCKET_LAUNCHER;
 	self.items_allowed 		= PC_SOLDIER_WEAPONS;
 	self.items 				= ( 1 | 2 | 32);
