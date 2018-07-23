@@ -12,7 +12,7 @@ void () TeamFortress_MOTD =
 	{
 		if ((0 == 0))
 		{
-			self.tfstate = (self.tfstate | 4096);
+			self.tfstate = (self.tfstate | TFSTATE_ZOOMOFF);
 		}
 		if (((teamplay != 0) && (self.team_no == 0)))
 		{

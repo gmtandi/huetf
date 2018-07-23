@@ -11,7 +11,7 @@ float () crandom =
 
 void () autoteam_think =
 {
-	toggleflags = (toggleflags | 64);
+	toggleflags = (toggleflags | TFLAG_AUTOTEAM);
 	dremove (self);
 };
 
@@ -67,7 +67,7 @@ void () Calibrate_Level =
 	}
 
 	st = infokey (world, "grapple");
-	if (((st == "on") || (toggleflags & 1024)))
+	if (((st == "on") || (toggleflags & TFLAG_GRAPPLE)))
 	{
 		allow_hook = 1;
 	}
@@ -97,19 +97,19 @@ void () Calibrate_Level =
 	if ((st == "on"))
 	{
 		autoteam_time = 30;
-		toggleflags = (toggleflags | 64);
+		toggleflags = (toggleflags | TFLAG_AUTOTEAM);
 	}
 	else
 	{
 		if ((st == "off"))
 		{
-			toggleflags = (toggleflags - (toggleflags & 64));
+			toggleflags = (toggleflags - (toggleflags & TFLAG_AUTOTEAM));
 		}
 		else
 		{
 			if ((stof (st) != 0))
 			{
-				toggleflags = (toggleflags | 64);
+				toggleflags = (toggleflags | TFLAG_AUTOTEAM);
 				autoteam_time = stof (st);
 			}
 		}
@@ -124,33 +124,33 @@ void () Calibrate_Level =
 	st = infokey (world, "teamfrags");
 	if ((st == "on"))
 	{
-		toggleflags = (toggleflags | 128);
+		toggleflags = (toggleflags | TFLAG_TEAMFRAGS);
 	}
 	else
 	{
 		if ((st == "off"))
 		{
-			toggleflags = (toggleflags - (toggleflags & 128));
+			toggleflags = (toggleflags - (toggleflags & TFLAG_TEAMFRAGS));
 		}
 	}
 	st = infokey (world, "fullteamscore");
 	if ((st == "on"))
 	{
-		toggleflags = (toggleflags | 2048);
+		toggleflags = (toggleflags | TFLAG_FULLTEAMSCORE);
 	}
 	st = infokey (world, "rd");
 	respawn_delay_time = stof (st);
 	if (respawn_delay_time)
 	{
-		toggleflags = (toggleflags | 4);
+		toggleflags = (toggleflags | TFLAG_RESPAWNDELAY);
 	}
-	if (((toggleflags & 4) && (respawn_delay_time == 0)))
+	if (((toggleflags & TFLAG_RESPAWNDELAY) && (respawn_delay_time == 0)))
 	{
 		respawn_delay_time = 3;
 	}
-	if ((toggleflags & 64))
+	if ((toggleflags & TFLAG_AUTOTEAM))
 	{
-		toggleflags = (toggleflags - (toggleflags & 64));
+		toggleflags = (toggleflags - (toggleflags & TFLAG_AUTOTEAM));
 		ent = spawn ();
 		ent.nextthink = (time + autoteam_time);
 		ent.think = autoteam_think;

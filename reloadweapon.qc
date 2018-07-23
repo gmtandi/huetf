@@ -5,7 +5,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 	local float rt;
 	local entity tWeapon;
 
-	if ((self.tfstate & 2))
+	if ((self.tfstate & TFSTATE_RELOADING))
 	{
 		return;
 	}
@@ -17,7 +17,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 	{
 		return;
 	}
-	if ((self.current_weapon == 128))
+	if ((self.current_weapon == WEAP_SHOTGUN))
 	{
 		if ((self.ammo_shells == 0))
 		{
@@ -45,7 +45,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 				self.reload_shotgun = (8 - self.ammo_shells);
 			}
 			sprint (self, 2, "reloading... \n");
-			self.tfstate = (self.tfstate | 2);
+			self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 			tWeapon = spawn ();
 			tWeapon.owner = self;
 			tWeapon.classname = "timer";
@@ -61,7 +61,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 	}
 	else
 	{
-		if ((self.current_weapon == 256))
+		if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
 		{
 			if ((self.ammo_shells == 0))
 			{
@@ -89,7 +89,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 					self.reload_super_shotgun = (16 - self.ammo_shells);
 				}
 				sprint (self, 2, "reloading...\n");
-				self.tfstate = (self.tfstate | 2);
+				self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 				tWeapon = spawn ();
 				tWeapon.owner = self;
 				tWeapon.classname = "timer";
@@ -105,7 +105,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 		}
 		else
 		{
-			if ((self.current_weapon == 2048))
+			if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
 			{
 				if ((self.ammo_rockets == 0))
 				{
@@ -133,7 +133,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 						self.reload_grenade_launcher = (6 - self.ammo_rockets);
 					}
 					sprint (self, 2, "reloading...\n");
-					self.tfstate = (self.tfstate | 2);
+					self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 					tWeapon = spawn ();
 					tWeapon.owner = self;
 					tWeapon.classname = "timer";
@@ -147,11 +147,11 @@ void () TeamFortress_ReloadCurrentWeapon =
 					sprint (self, 2, "not enough ammo to reload\n");
 				}
 			}
-			else if ((self.current_weapon == 1048576))
+			else if ((self.current_weapon == WEAP_TRIBOLT))
 			{
 				if ((self.ammo_rockets == 0))
 				{
-					sprint (self, 2, "out of grenades.\n");
+					sprint (self, 2, "out of bolts.\n");
 					return;
 				}
 				if ((self.reload_tribolt == 0))
@@ -161,7 +161,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 				}
 				if (((12 - self.reload_tribolt) == self.ammo_rockets))
 				{
-					sprint (self, 2, "all grenades are in the clip.\n");
+					sprint (self, 2, "all bolts are in the clip.\n");
 					return;
 				}
 				if ((self.reload_tribolt < self.ammo_rockets))
@@ -175,7 +175,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 						self.reload_tribolt = (12 - self.ammo_rockets);
 					}
 					sprint (self, 2, "reloading...\n");
-					self.tfstate = (self.tfstate | 2);
+					self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 					tWeapon = spawn ();
 					tWeapon.owner = self;
 					tWeapon.classname = "timer";
@@ -189,7 +189,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 					sprint (self, 2, "not enough ammo to reload\n");
 				}
 			}			
-			else if ((self.current_weapon == 8192))
+			else if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 			{
 				if ((self.ammo_rockets == 0))
 				{
@@ -217,7 +217,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 						self.reload_rocket_launcher = (4 - self.ammo_rockets);
 					}
 					sprint (self, 2, "reloading...\n");
-					self.tfstate = (self.tfstate | 2);
+					self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 					tWeapon = spawn ();
 					tWeapon.owner = self;
 					tWeapon.classname = "timer";
@@ -256,7 +256,7 @@ void () TeamFortress_ReloadCurrentWeapon =
 					rt = (5 - (5 * rt));
 					self.reload_sniper_rifle = 0;
 					sprint (self, 2, "reloading...\n");
-					self.tfstate = (self.tfstate | 2);
+					self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 					tWeapon = spawn ();
 					tWeapon.owner = self;
 					tWeapon.classname = "timer";

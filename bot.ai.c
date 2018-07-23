@@ -175,7 +175,7 @@ void () BotAI =
 	}
 	if ((self.target1 == world))
 	{
-		if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
+		if (((self.tfstate & TFSTATE_GRENPRIMED) || (self.tfstate & FL_PARTIALGROUND)))
 		{
 			eGren = world;
 			eTemp = find (world, classname, "timer");

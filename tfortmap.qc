@@ -221,23 +221,23 @@ void (entity Goal) UpdateAbbreviations =
 			st = infokey (world, "flag_drop");
 			if ((st == "on"))
 			{
-				toggleflags = (toggleflags | 8);
+				toggleflags = (toggleflags | TFLAG_FLAG_DROP);
 			}
 			st = infokey (world, "flag_solid");
 			if ((st == "on"))
 			{
-				toggleflags = (toggleflags | 16);
+				toggleflags = (toggleflags | TFLAG_FLAG_SOLID);
 			}
 			flag = stof (infokey (world, "flag_model"));
 			if ((flag == 1))
 			{
-				toggleflags = (toggleflags | 4096);
+				toggleflags = (toggleflags | TFLAG_FLAG_MODEL);
 			}
 			else
 			{
 				if ((flag == 2))
 				{
-					toggleflags = (toggleflags | 8192);
+					toggleflags = (toggleflags | TFLAG_WARSTANDARD);
 				}
 				else
 				{
@@ -249,7 +249,7 @@ void (entity Goal) UpdateAbbreviations =
 			}
 			flagem_checked = 1;
 		}
-		if ((toggleflags & 4096))
+		if ((toggleflags & TFLAG_FLAGEMU))
 		{
 			if ((((Goal.mdl == "progs/b_s_key.mdl") || (Goal.mdl == "progs/m_s_key.mdl")) || (Goal.mdl == "progs/w_s_key.mdl")))
 			{
@@ -277,7 +277,7 @@ void (entity Goal) UpdateAbbreviations =
 		}
 		else
 		{
-			if ((toggleflags & 8192))
+			if ((toggleflags & TFLAG_WARSTANDARD))
 			{
 				if ((((Goal.mdl == "progs/b_s_key.mdl") || (Goal.mdl == "progs/m_s_key.mdl")) || (Goal.mdl == "progs/w_s_key.mdl")))
 				{
@@ -689,11 +689,11 @@ void () item_tfgoal =
 		precache_sound2 (self.noise);
 	}
 	self.touch = item_tfgoal_touch;
-	if ((self.goal_state == 0))
+	if (self.goal_state == 0)
 	{
 		self.goal_state = 2;
 	}
-	if (((self.goal_activation & 8192) || (toggleflags & 16)))
+	if ((self.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID))
 	{
 		self.solid = 2;
 	}
@@ -886,7 +886,7 @@ void (entity Goal) InactivateGoal =
 	{
 		if ((Goal.search_time == 0))
 		{
-			if ((((Goal.goal_activation & 8192) || (toggleflags & 16)) && (Goal.classname == "item_tfgoal")))
+			if (((Goal.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID)) && (Goal.classname == "item_tfgoal"))
 			{
 				Goal.solid = 2;
 			}
@@ -909,7 +909,7 @@ void (entity Goal) RestoreGoal =
 	{
 		if ((Goal.search_time == 0))
 		{
-			if ((((Goal.goal_activation & 8192) || (toggleflags & 16)) && (Goal.classname == "item_tfgoal")))
+			if (((Goal.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID)) && (Goal.classname == "item_tfgoal"))
 			{
 				Goal.solid = 2;
 			}
@@ -1114,7 +1114,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 			{
 				Player.ammo_detpack = Player.maxammo_detpack;
 			}
-			if ((Player.tfstate & 1))
+			if ((Player.tfstate & TFSTATE_GRENPRIMED))
 			{
 				te = find (world, classname, "primer");
 				while (te)
@@ -1123,16 +1123,16 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 					{
 						if (((te.impulse == 151) && (Player.no_grenades_2 <= 0)))
 						{
-							Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
-							Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
+							Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENPRIMED));
+							Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENTHROWING));
 							dremove (te);
 						}
 						else
 						{
 							if (((te.impulse == 150) && (Player.no_grenades_1 <= 0)))
 							{
-								Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
-								Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
+								Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENPRIMED));
+								Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENTHROWING));
 								dremove (te);
 							}
 						}
@@ -1151,7 +1151,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 				Player.invincible_finished = (time + Goal.invincible_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
-					Player.tfstate = (Player.tfstate | space);
+					Player.tfstate = (Player.tfstate | TFSTATE_INVINCIBLE);
 					Player.invincible_finished = (time + 666);
 				}
 			}
@@ -1162,7 +1162,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 				Player.invisible_finished = (time + Goal.invisible_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
-					Player.tfstate = (Player.tfstate | 64);
+					Player.tfstate = (Player.tfstate | TFSTATE_INVISIBLE);
 					Player.invisible_finished = (time + 666);
 				}
 			}
@@ -1173,7 +1173,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 				Player.super_damage_finished = (time + Goal.super_damage_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
-					Player.tfstate = (Player.tfstate | 128);
+					Player.tfstate = (Player.tfstate | TFSTATE_QUAD);
 					Player.super_damage_finished = (time + 666);
 				}
 			}
@@ -1184,14 +1184,14 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 				Player.radsuit_finished = (time + Goal.radsuit_finished);
 				if ((Goal.classname == "item_tfgoal"))
 				{
-					Player.tfstate = (Player.tfstate | 256);
+					Player.tfstate = (Player.tfstate | TFSTATE_RADSUIT);
 					Player.radsuit_finished = (time + 666);
 				}
 			}
 		}
 		if (Goal.frags)
 		{
-			if (((Goal.goal_effects == 1) || !(toggleflags & 2048)))
+			if ((Goal.goal_effects == 1) || !(toggleflags & TFLAG_FULLTEAMSCORE))
 			{
 				TF_AddFrags (Player, Goal.frags, 0);
 			}
@@ -1328,7 +1328,7 @@ void (entity Goal, entity Player) RemoveResults =
 	Player.armorclass = (Player.armorclass - (Player.armorclass & Goal.armorclass));
 	if (Goal.frags)
 	{
-		if (((Goal.goal_effects == 1) || !(toggleflags & 2048)))
+		if (((Goal.goal_effects == 1) || !(toggleflags & TFLAG_FULLTEAMSCORE)))
 		{
 			TF_AddFrags (Player, Goal.frags, 0);
 		}
@@ -1361,7 +1361,7 @@ void (entity Goal, entity Player) RemoveResults =
 	{
 		Player.ammo_detpack = Player.maxammo_detpack;
 	}
-	if ((Player.tfstate & 1))
+	if ((Player.tfstate & TFSTATE_GRENPRIMED))
 	{
 		te = find (world, classname, "primer");
 		while (te)
@@ -1370,16 +1370,16 @@ void (entity Goal, entity Player) RemoveResults =
 			{
 				if (((te.impulse == 151) && (Player.no_grenades_2 <= 0)))
 				{
-					Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
-					Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
+					Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENPRIMED));
+					Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENTHROWING));
 					dremove (te);
 				}
 				else
 				{
 					if (((te.impulse == 150) && (Player.no_grenades_1 <= 0)))
 					{
-						Player.tfstate = (Player.tfstate - (Player.tfstate & 1));
-						Player.tfstate = (Player.tfstate - (Player.tfstate & 1024));
+						Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENPRIMED));
+						Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_GRENTHROWING));
 						dremove (te);
 					}
 				}
@@ -1421,28 +1421,28 @@ void (entity Goal, entity Player) RemoveResults =
 	}
 	if (((Goal.invincible_finished > 0) && !puinvin))
 	{
-		Player.tfstate = (Player.tfstate - (Player.tfstate & space));
+		Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_INVINCIBLE));
 		Player.items = (Player.items | 1048576);
 		Player.invincible_time = 1;
 		Player.invincible_finished = (time + Goal.invincible_finished);
 	}
 	if (((Goal.invisible_finished > 0) && !puinvis))
 	{
-		Player.tfstate = (Player.tfstate - (Player.tfstate & 64));
+		Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_INVISIBLE));
 		Player.items = (Player.items | 524288);
 		Player.invisible_time = 1;
 		Player.invisible_finished = (time + Goal.invisible_finished);
 	}
 	if (((Goal.super_damage_finished > 0) && !puquad))
 	{
-		Player.tfstate = (Player.tfstate - (Player.tfstate & 128));
+		Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_QUAD));
 		Player.items = (Player.items | 4194304);
 		Player.super_time = 1;
 		Player.super_damage_finished = (time + Goal.super_damage_finished);
 	}
 	if (((Goal.radsuit_finished > 0) && !purad))
 	{
-		Player.tfstate = (Player.tfstate - (Player.tfstate & 256));
+		Player.tfstate = (Player.tfstate - (Player.tfstate & TFSTATE_RADSUIT));
 		Player.items = (Player.items | 2097152);
 		Player.rad_time = 1;
 		Player.radsuit_finished = (time + Goal.radsuit_finished);
@@ -2844,7 +2844,7 @@ void () ReturnItem =
 	self.enemy.goal_state = 2;
 	if ((self.enemy.classname == "item_tfgoal"))
 	{
-		if (((self.enemy.goal_activation & 8192) || (toggleflags & 16)))
+		if (((self.enemy.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID)))
 		{
 			self.enemy.solid = 2;
 		}
@@ -3065,7 +3065,7 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 		{
 			if ((Item.goal_activation & 4))
 			{
-				if (((method == 2) && ((Item.goal_activation & 4096) || (toggleflags & 8))))
+				if (((method == 2) && ((Item.goal_activation & 4096) || (toggleflags & TFLAG_FLAG_DROP))))
 				{
 					tfgoalitem_drop (Item, 1, AP);
 				}
@@ -3145,7 +3145,7 @@ void () tfgoalitem_dropthink =
 						self.velocity_y = (-50 + (random () * _d));
 						self.goal_state = 2;
 						self.movetype = 6;
-						if (((self.goal_activation & 8192) || (toggleflags & 16)))
+						if (((self.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID)))
 						{
 							self.solid = 2;
 						}
@@ -3200,7 +3200,7 @@ void (entity Item, float PAlive, entity P) tfgoalitem_drop =
 	Item.velocity_y = (-50 + (random () * _d));
 	Item.goal_state = 2;
 	Item.movetype = 6;
-	if (((Item.goal_activation & 8192) || (toggleflags & 16)))
+	if (((Item.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID)))
 	{
 		Item.solid = 2;
 	}
@@ -3623,7 +3623,7 @@ void () DropGoalItems =
 	{
 		if ((te.owner == self))
 		{
-			if (((te.goal_activation & 4096) || (toggleflags & 8)))
+			if (((te.goal_activation & 4096) || (toggleflags & TFLAG_FLAG_DROP)))
 			{
 				tfgoalitem_RemoveFromPlayer (te, self, 2);
 			}

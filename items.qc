@@ -276,7 +276,7 @@ void () health_touch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if ((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING))
 	{
 		return;
 	}
@@ -291,7 +291,7 @@ void () health_touch =
 	medi = 0;
 	if ((self.healtype == 2))
 	{
-		if (!(other.tfstate & 16))
+		if (!(other.tfstate & TFSTATE_INFECTED))
 		{
 			if ((other.health >= 250))
 			{
@@ -340,10 +340,10 @@ void () health_touch =
 			return;
 		}
 	}
-	if (((other.tfstate & 16) && (self.healamount > _P)))
+	if (((other.tfstate & TFSTATE_INFECTED) && (self.healamount > _P)))
 	{
 		sprint (other, 1, "You have been healed of your infection!");
-		other.tfstate = (other.tfstate - (other.tfstate & 16));
+		other.tfstate = (other.tfstate - (other.tfstate & TFSTATE_INFECTED));
 	}
 	else
 	{
@@ -420,7 +420,7 @@ void () armor_touch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if ((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING))
 	{
 		return;
 	}
@@ -435,24 +435,22 @@ void () armor_touch =
 	if ((self.classname == "item_armor1"))
 	{
 		type = 0.3;
-		value = _d;
-		bit = 8192;
+		value = 100;
+		bit = ITEM_ARMOR1;
+	}
+	else if ((self.classname == "item_armor2"))
+	{
+		type = 0.6;
+		value = 150;
+		bit = ITEM_ARMOR2;
 	}
 	else
 	{
-		if ((self.classname == "item_armor2"))
-		{
-			type = 0.6;
-			value = 150;
-			bit = 16384;
-		}
-		else
-		{
-			type = 0.8;
-			value = 300;
-			bit = 32768;
-		}
+		type = 0.8;
+		value = 300;
+		bit = ITEM_ARMOR3;
 	}
+	
 	if (((other.armortype * other.armorvalue) >= (type * value)))
 	{
 		if ((other.playerclass == PC_ENGINEER))
@@ -492,22 +490,17 @@ void () armor_touch =
 		type = other.armor_allowed;
 		if ((type == 0.3))
 		{
-			bit = 8192;
+			bit = ITEM_ARMOR1;
 		}
-		else
+		else if ((type == 0.6))
 		{
-			if ((type == 0.6))
-			{
-				bit = 16384;
-			}
-			else
-			{
-				if ((type == 0.8))
-				{
-					bit = 32768;
-				}
-			}
+			bit = ITEM_ARMOR2;
 		}
+		else if ((type == 0.8))
+		{
+			bit = ITEM_ARMOR3;
+		}
+		
 	}
 	sprint (other, 0, "You got armor\n");
 	if ((value > other.maxarmor))
@@ -533,7 +526,7 @@ void () armor_touch =
 	{
 		other.armortype = type;
 		other.armorvalue = value;
-		other.items = ((other.items - (other.items & ((8192 | 16384) | 32768))) + bit);
+		other.items = ((other.items - (other.items & (ITEM_ARMOR1 | ITEM_ARMOR2 | ITEM_ARMOR3))) + bit);
 	}
 	if ((self.armorclass > 0))
 	{
@@ -743,7 +736,7 @@ void () weapon_touch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if ((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING))
 	{
 		return;
 	}
@@ -769,112 +762,112 @@ void () weapon_touch =
 	}
 	if ((self.classname == "weapon_nailgun"))
 	{
-		if ((leave && (other.weapons_carried & 512)))
+		if ((leave && (other.weapons_carried & WEAP_NAILGUN)))
 		{
 			return;
 		}
-		if (!TeamFortress_CanGetWeapon (other, 512))
+		if (!TeamFortress_CanGetWeapon (other, WEAP_NAILGUN))
 		{
 			return;
 		}
 		hadammo = other.ammo_nails;
-		new = 512;
+		new = WEAP_NAILGUN;
 		other.ammo_nails = (other.ammo_nails + 30);
 	}
 	else
 	{
 		if ((self.classname == "weapon_supernailgun"))
 		{
-			if ((leave && (other.weapons_carried & 1024)))
+			if ((leave && (other.weapons_carried & WEAP_SUPER_NAILGUN)))
 			{
 				return;
 			}
-			if (!TeamFortress_CanGetWeapon (other, 1024))
+			if (!TeamFortress_CanGetWeapon (other, WEAP_SUPER_NAILGUN))
 			{
 				return;
 			}
 			hadammo = other.ammo_rockets;
-			new = 1024;
+			new = WEAP_SUPER_NAILGUN;
 			other.ammo_nails = (other.ammo_nails + 30);
 		}
 		else
 		{
 			if ((self.classname == "weapon_supershotgun"))
 			{
-				if ((leave && (other.weapons_carried & 256)))
+				if ((leave && (other.weapons_carried & WEAP_SUPER_SHOTGUN)))
 				{
 					return;
 				}
-				if (!TeamFortress_CanGetWeapon (other, 256))
+				if (!TeamFortress_CanGetWeapon (other, WEAP_SUPER_SHOTGUN))
 				{
 					return;
 				}
 				hadammo = other.ammo_rockets;
-				new = 256;
+				new = WEAP_SUPER_SHOTGUN;
 				other.ammo_shells = (other.ammo_shells + 5);
 			}
 			else
 			{
 				if ((self.classname == "weapon_rocketlauncher"))
 				{
-					if ((leave && (other.weapons_carried & 8192)))
+					if ((leave && (other.weapons_carried & WEAP_ROCKET_LAUNCHER)))
 					{
 						return;
 					}
-					if (!TeamFortress_CanGetWeapon (other, 8192))
+					if (!TeamFortress_CanGetWeapon (other, WEAP_ROCKET_LAUNCHER))
 					{
 						return;
 					}
 					hadammo = other.ammo_rockets;
-					new = 8192;
+					new = WEAP_ROCKET_LAUNCHER;
 					other.ammo_rockets = (other.ammo_rockets + 5);
 				}
 				else
 				{
 					if ((self.classname == "weapon_grenadelauncher"))
 					{
-						if ((leave && (other.weapons_carried & 2048)))
+						if ((leave && (other.weapons_carried & WEAP_GRENADE_LAUNCHER)))
 						{
 							return;
 						}
-						if (!TeamFortress_CanGetWeapon (other, 2048))
+						if (!TeamFortress_CanGetWeapon (other, WEAP_GRENADE_LAUNCHER))
 						{
 							return;
 						}
 						hadammo = other.ammo_rockets;
-						new = 2048;
+						new = WEAP_GRENADE_LAUNCHER;
 						other.ammo_rockets = (other.ammo_rockets + 5);
 					}
 					else
 					{
 						if ((self.classname == "weapon_lightning"))
 						{
-							if ((leave && (other.weapons_carried & 65536)))
+							if ((leave && (other.weapons_carried & WEAP_LIGHTNING)))
 							{
 								return;
 							}
-							if (!TeamFortress_CanGetWeapon (other, 65536))
+							if (!TeamFortress_CanGetWeapon (other, WEAP_LIGHTNING))
 							{
 								return;
 							}
 							hadammo = other.ammo_rockets;
-							new = 65536;
+							new = WEAP_LIGHTNING;
 							other.ammo_cells = (other.ammo_cells + 15);
 						}
 						else
 						{
 							if ((self.classname == "weapon_tribolt"))
 							{
-								if ((leave && (other.weapons_carried & 1048576)))
+								if ((leave && (other.weapons_carried & WEAP_TRIBOLT)))
 								{
 									return;
 								}
-								if (!TeamFortress_CanGetWeapon (other, 1048576))
+								if (!TeamFortress_CanGetWeapon (other, WEAP_TRIBOLT))
 								{
 									return;
 								}
 								hadammo = other.ammo_rockets;
-								new = 1048576;
+								new = WEAP_TRIBOLT;
 								other.ammo_rockets = (other.ammo_rockets + 5);
 							}
 							else
@@ -1158,7 +1151,7 @@ void () ammo_touch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if ((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING))
 	{
 		return;
 	}
@@ -1430,7 +1423,7 @@ void () key_touch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if ((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING))
 	{
 		return;
 	}
@@ -1571,7 +1564,7 @@ void () sigil_touch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if ((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING))
 	{
 		return;
 	}
@@ -1648,7 +1641,7 @@ void () powerup_touch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if ((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING))
 	{
 		return;
 	}

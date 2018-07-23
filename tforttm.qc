@@ -307,7 +307,7 @@ float (float tno) TeamFortress_TeamSet =
 		bprint (2, st);
 		bprint (2, ".\n");
 		self.immune_to_check = (time + 5);
-		if (((toggleflags & 128) || (toggleflags & 2048)))
+		if (((toggleflags & TFLAG_TEAMFRAGS) || (toggleflags & TFLAG_FULLTEAMSCORE)))
 		{
 			self.frags = TeamFortress_TeamGetScore (tno);
 		}
@@ -330,7 +330,7 @@ if (!captainmode) {
 	self.playerclass = 0;
 	self.team_no = tno;
 	self.immune_to_check = (time + 5);
-	if (((toggleflags & 128) || (toggleflags & 2048)))
+	if (((toggleflags & TFLAG_TEAMFRAGS) || (toggleflags & TFLAG_FULLTEAMSCORE)))
 	{
 		self.frags = TeamFortress_TeamGetScore (tno);
 	}
@@ -567,7 +567,7 @@ void (float tno, float scoretoadd) TeamFortress_TeamIncreaseScore =
 	{
 		team4score = (team4score + scoretoadd);
 	}
-	if (((toggleflags & 128) || (toggleflags & 2048)))
+	if (((toggleflags & TFLAG_TEAMFRAGS) || (toggleflags & TFLAG_FULLTEAMSCORE)))
 	{
 		e = find (world, classname, "player");
 		while (e)
@@ -604,7 +604,7 @@ float (float tno) TeamFortress_TeamGetScore =
 
 float (float tno) TeamFortress_TeamGetScoreFrags =
 {
-	if (((toggleflags & 128) || (toggleflags & 2048)))
+	if (((toggleflags & TFLAG_TEAMFRAGS) || (toggleflags & TFLAG_FULLTEAMSCORE)))
 	{
 		TeamFortress_TeamGetScore (tno);
 	}
@@ -999,7 +999,7 @@ void (entity Player) TeamFortress_TeamShowMemberClasses =
 				}
 				sprint (Player, 2, e.netname);
 				sprint (Player, 2, " : ");
-				TeamFortress_PrintClassName (Player, e.playerclass, (e.tfstate & 8));
+				TeamFortress_PrintClassName (Player, e.playerclass, (e.tfstate & TFSTATE_RANDOMPC));
 			}
 		}
 		e = find (e, classname, "player");
@@ -1224,7 +1224,7 @@ float (float tno, float pc) ClassIsRestricted =
 			{
 				if ((pc == enter))
 				{
-					if ((te.tfstate & 8))
+					if ((te.tfstate & TFSTATE_RANDOMPC))
 					{
 						num = (num + 1);
 					}
@@ -1233,7 +1233,7 @@ float (float tno, float pc) ClassIsRestricted =
 				{
 					if (((te.playerclass == pc) || (te.nextpc == pc)))
 					{
-						if (!(te.tfstate & 8))
+						if (!(te.tfstate & TFSTATE_RANDOMPC))
 						{
 							num = (num + 1);
 						}

@@ -294,9 +294,9 @@ void () RoundBegin =
 			}
 			else
 			{
-				if ((self.tfstate & 8))
+				if ((self.tfstate & TFSTATE_RANDOMPC))
 				{
-					self.tfstate = 8;
+					self.tfstate = TFSTATE_RANDOMPC;
 				}
 				else
 				{

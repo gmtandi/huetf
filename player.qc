@@ -42,21 +42,21 @@ void () player_touch =
 			}
 		}
 	}
-	if ((((self.tfstate & 16) && !cb_prematch) && !practice))
+	if (((self.tfstate & TFSTATE_INFECTED) && !cb_prematch) && !practice)
 	{
-		if (((other.classname == "player") && te.playerclass))
+		if ((other.classname == "player") && te.playerclass)
 		{
-			if (!(other.tfstate & 16))
+			if !(other.tfstate & TFSTATE_INFECTED)
 			{
 				if ((other.playerclass != 5))
 				{
-					if (!(((teamplay & 16) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0)))
+					if (!((teamplay & 16) && (self.owner.team_no == self.enemy.team_no)) && (self.owner.team_no != 0))
 					{
 						found = 0;
 						te = find (world, classname, "timer");
-						while (((te != world) && (found == 0)))
+						while ((te != world) && (found == 0))
 						{
-							if (((te.owner == self) && (te.think == BioInfection_Decay)))
+							if ((te.owner == self) && (te.think == BioInfection_Decay))
 							{
 								found = 1;
 							}
@@ -71,7 +71,7 @@ void () player_touch =
 						Bio.owner = other;
 						Bio.classname = "timer";
 						Bio.enemy = te.enemy;
-						other.tfstate = (other.tfstate | 16);
+						other.tfstate = (other.tfstate | TFSTATE_INFECTED);
 						other.infection_team_no = self.infection_team_no;
 						sprint (other, 1, "You have been infected by ");
 						sprint (other, 1, self.netname);
@@ -569,9 +569,9 @@ void () player_nail2 = [ 104, player_nail1 ]
 
 void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 {
-	if (((!self.button0 || (self.ammo_shells < 1)) || intermission_running))
+	if ((!self.button0 || (self.ammo_shells < 1)) || intermission_running)
 	{
-		self.tfstate = (self.tfstate - (self.tfstate & 2048));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 		TeamFortress_SetSpeed (self);
 		self.count = 1;
 		self.heat = 0;
@@ -606,9 +606,9 @@ void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 
 void () player_assaultcannonup2 = [ 103, player_assaultcannonup1 ]
 {
-	if ((((!self.button0 || (self.ammo_shells < 1)) || intermission_running) || !(self.flags & 512)))
+	if (((!self.button0 || (self.ammo_shells < 1)) || intermission_running) || !(self.flags & 512))
 	{
-		self.tfstate = (self.tfstate - (self.tfstate & 2048));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 		TeamFortress_SetSpeed (self);
 		self.count = 1;
 		self.heat = 0;
@@ -672,9 +672,9 @@ void () player_assaultcannon1 = [ 103, player_assaultcannon2 ]
 			self.weaponframe = 2;
 		}
 	}
-	if (((!self.button0 || (self.ammo_shells < 1)) || intermission_running))
+	if ((!self.button0 || (self.ammo_shells < 1)) || intermission_running)
 	{
-		self.tfstate = (self.tfstate - (self.tfstate & 2048));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 		TeamFortress_SetSpeed (self);
 		self.weaponframe = 0;
 		self.count = 1;
@@ -712,9 +712,9 @@ void () player_assaultcannon2 = [ 104, player_assaultcannon1 ]
 			self.weaponframe = 2;
 		}
 	}
-	if (((!self.button0 || (self.ammo_shells < 1)) || intermission_running))
+	if ((!self.button0 || (self.ammo_shells < 1)) || intermission_running)
 	{
-		self.tfstate = (self.tfstate - (self.tfstate & 2048));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 		TeamFortress_SetSpeed (self);
 		self.weaponframe = 0;
 		self.count = 1;
@@ -738,7 +738,7 @@ void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 		{
 			self.heat = 0;
 			self.fire_held_down = 0;
-			self.tfstate = (self.tfstate - (self.tfstate & 2048));
+			self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 			TeamFortress_SetSpeed (self);
 			if (((self.ammo_shells < 1) || (self.ammo_cells < 7)))
 			{
@@ -770,7 +770,7 @@ void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 	{
 		self.heat = 0;
 		self.fire_held_down = 0;
-		self.tfstate = (self.tfstate - (self.tfstate & 2048));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 		TeamFortress_SetSpeed (self);
 		if (((self.ammo_shells < 1) || (self.ammo_cells < 7)))
 		{
@@ -1288,7 +1288,7 @@ void () PlayerDie =
 	self.super_damage_finished = 0;
 	self.radsuit_finished = 0;
 	self.modelindex = modelindex_player;
-	if (((self.tfstate & 16) && (self == self.enemy)))
+	if (((self.tfstate & TFSTATE_INFECTED) && (self == self.enemy)))
 	{
 		te = find (world, classname, "timer");
 		while (te)

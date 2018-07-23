@@ -101,7 +101,6 @@ void () W_FireIncendiaryCannon;
 void () W_FireTranq;
 void () W_FireRail;
 void () W_Attack;
-void () W_FireTriBolt;
 void () W_FireSniperRail;
 void () SniperRail_Think;
 void () SniperRail_Touch;
@@ -152,7 +151,7 @@ void () W_Precache =
 
 void (float att_delay) Attack_Finished =
 {
-	if ((self.tfstate & 32768))
+	if ((self.tfstate & TFSTATE_TRANQUILISED))
 	{
 		self.attack_finished = (time + (att_delay * 2));
 	}
@@ -399,7 +398,7 @@ void () W_FireMedikit =
 					}
 					dremove (te);
 				}
-				if ((trace_ent.tfstate & 16384))
+				if ((trace_ent.tfstate & TFSTATE_HALLUCINATING))
 				{
 					te = find (world, classname, "timer");
 					while ((((te.owner != trace_ent) || (te.think != HallucinationTimer)) && (te != world)))
@@ -408,7 +407,7 @@ void () W_FireMedikit =
 					}
 					if ((te != world))
 					{
-						trace_ent.tfstate = (trace_ent.tfstate - (trace_ent.tfstate & 16384));
+						trace_ent.tfstate = (trace_ent.tfstate - (trace_ent.tfstate & TFSTATE_HALLUCINATING));
 						SpawnBlood (org, 20);
 						bprint (1, self.netname);
 						bprint (1, " healed ");
@@ -425,7 +424,7 @@ void () W_FireMedikit =
 						dprint ("Warning: Error in Hallucination Timer logic.\n");
 					}
 				}
-				if ((trace_ent.tfstate & 32768))
+				if ((trace_ent.tfstate & TFSTATE_TRANQUILISED))
 				{
 					te = find (world, classname, "timer");
 					while ((((te.owner != trace_ent) || (te.think != TranquiliserTimer)) && (te != world)))
@@ -434,7 +433,7 @@ void () W_FireMedikit =
 					}
 					if ((te != world))
 					{
-						trace_ent.tfstate = (trace_ent.tfstate - (trace_ent.tfstate & 32768));
+						trace_ent.tfstate = (trace_ent.tfstate - (trace_ent.tfstate & TFSTATE_TRANQUILISED));
 						TeamFortress_SetSpeed (trace_ent);
 						SpawnBlood (org, 20);
 						bprint (1, self.netname);
@@ -452,10 +451,10 @@ void () W_FireMedikit =
 						dprint ("Warning: Error in Tranquilisation Timer logic.\n");
 					}
 				}
-				if ((trace_ent.tfstate & 16))
+				if ((trace_ent.tfstate & TFSTATE_INFECTED))
 				{
 					healam = rint ((trace_ent.health / 2));
-					trace_ent.tfstate = (trace_ent.tfstate - (trace_ent.tfstate & 16));
+					trace_ent.tfstate = (trace_ent.tfstate - (trace_ent.tfstate & TFSTATE_INFECTED));
 					deathmsg = 23;
 					T_Damage (trace_ent, self, self, healam);
 					SpawnBlood (org, 30);
@@ -536,7 +535,7 @@ void () W_FireMedikit =
 				{
 					return;
 				}
-				trace_ent.tfstate = (trace_ent.tfstate | 16);
+				trace_ent.tfstate = (trace_ent.tfstate | TFSTATE_INFECTED);
 				BioInfection = spawn ();
 				BioInfection.classname = "timer";
 				BioInfection.owner = trace_ent;
@@ -592,7 +591,7 @@ void () W_FireBioweapon =
 				{
 					return;
 				}
-				trace_ent.tfstate = (trace_ent.tfstate | 16);
+				trace_ent.tfstate = (trace_ent.tfstate | TFSTATE_INFECTED);
 				BioInfection = spawn ();
 				BioInfection.classname = "timer";
 				BioInfection.owner = trace_ent;
@@ -1547,11 +1546,6 @@ void () GrenadeExplode =
 	GrenadeProjectileExplode(_x);
 };
 
-void () TriBoltExplode =
-{
-	GrenadeProjectileExplode(40);
-};
-
 void () PipebombTouch =
 {
 	if ((other.classname != "worldspawn"))
@@ -1581,26 +1575,6 @@ void () GrenadeTouch =
 	{
 		self.avelocity = '0 0 0';
 	}
-};
-
-void () TriboltTouch =
-{
-	if ((other == self.owner))
-	{
-		return;
-	}
-	if ((other == world) || (other.takedamage != 2))
-	{
-		self.movetype = 0;
-		self.velocity = '0 0 0';
-		//self.nextthink = time + 0.6;
-		self.think = TriBoltExplode;
-	}
-	else {
-		TriBoltExplode();
-	}
-	
-	return;
 };
 
 void () W_FireGrenade =
@@ -1667,76 +1641,6 @@ void () W_FireGrenade =
 	setmodel (newmis, "progs/grenade2.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, self.origin);
-};
-
-void () W_TriboltBullet = {	
-	if (self.ammo_rockets < 1)
-		return;
-	if (!practice)
-	{
-		self.ammo_rockets = (self.ammo_rockets - 1);
-		self.currentammo = self.ammo_rockets;
-	}
-	player_rocket1 ();
-	sound (self, 1, "weapons/grenade.wav", 1, 1);
-	KickPlayer (-2, self);
-	newmis = spawn ();
-	newmis.voided = 0;
-	newmis.owner = self;
-	newmis.movetype = enter;
-	newmis.solid = 2;
-	newmis.weapon = 5;
-	newmis.classname = "bolt";
-	newmis.skin = 1;
-	newmis.touch = TriboltTouch;
-	newmis.nextthink = (time + 0.6);
-	
-
-	makevectors (self.v_angle);
-	if (self.v_angle_x)
-	{
-		newmis.velocity = ((((v_forward * 1000) + (v_up * 200)) + ((crandom () * v_right) * enter)) + ((crandom () * v_up) * enter));
-	}
-	else
-	{
-		newmis.velocity = aim (self, 10000);
-		newmis.velocity = (newmis.velocity * 1000);
-		newmis.velocity_z = 200;
-	}
-	newmis.avelocity = '300 300 300';
-	newmis.angles = vectoangles (newmis.velocity);
-	newmis.think = TriBoltExplode;
-	setmodel (newmis, "progs/hook.mdl");
-	setsize (newmis, '0 0 0', '0 0 0');
-	setorigin (newmis, self.origin);
-}
-
-void () TriBolt_Think =
-{
-   
-   self.cnt = self.cnt + 1;
-   if (self.cnt < 3 && self.owner.health > 0) {
-   	self.nextthink = time + 0.15;
-   }
-   else {
-   	dremove (self);
-   	return;
-   }
-   self = self.owner;
-   W_TriboltBullet();
-
-};
-
-void () W_FireTriBolt =
-{
-	local entity work;
-
-	W_TriboltBullet();
-	work = spawn();
-   	work.think = TriBolt_Think;
-   	work.owner = self;
-   	work.cnt = 0;
-   	work.nextthink = time +0.15;
 };
 
 void () SniperRail_Touch =
@@ -2042,7 +1946,7 @@ void () W_SetCurrentAmmo =
 	{
 		return;
 	}
-	if (((self.current_weapon == 32768) && (self.tfstate & 2048)))
+	if (((self.current_weapon == 32768) && (self.tfstate & TFSTATE_AIMING)))
 	{
 		return;
 	}
@@ -2078,7 +1982,7 @@ void () W_SetCurrentAmmo =
 	}
 	else
 	{
-		if ((self.current_weapon == 1))
+		if ((self.current_weapon == WEAP_HOOK))
 		{
 			self.currentammo = 0;
 			self.weaponmodel = "progs/v_grap.mdl";
@@ -2086,7 +1990,7 @@ void () W_SetCurrentAmmo =
 		}
 		else
 		{
-			if ((self.current_weapon == 8))
+			if ((self.current_weapon == WEAP_SPANNER))
 			{
 				self.currentammo = self.ammo_cells;
 				self.weaponmodel = "progs/v_span.mdl";
@@ -2094,11 +1998,11 @@ void () W_SetCurrentAmmo =
 			}
 			else
 			{
-				if ((self.current_weapon == 128))
+				if ((self.current_weapon == WEAP_SHOTGUN))
 				{
 					self.currentammo = self.ammo_shells;
 					self.items = (self.items | 2048);
-					if (!(self.tfstate & 2))
+					if (!(self.tfstate & TFSTATE_RELOADING))
 					{
 						self.weaponmodel = "progs/v_shot.mdl";
 						self.weaponframe = 0;
@@ -2108,10 +2012,10 @@ void () W_SetCurrentAmmo =
 				}
 				else
 				{
-					if ((self.current_weapon == 256))
+					if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
 					{
 						self.currentammo = self.ammo_shells;
-						if (!(self.tfstate & 2))
+						if (!(self.tfstate & TFSTATE_RELOADING))
 						{
 							self.weaponmodel = "progs/v_shot2.mdl";
 							self.weaponframe = 0;
@@ -2121,10 +2025,10 @@ void () W_SetCurrentAmmo =
 					}
 					else
 					{
-						if ((self.current_weapon == 512))
+						if ((self.current_weapon == WEAP_NAILGUN))
 						{
 							self.currentammo = self.ammo_nails;
-							if (!(self.tfstate & 2))
+							if (!(self.tfstate & TFSTATE_RELOADING))
 							{
 								self.weaponmodel = "progs/v_nail.mdl";
 								self.weaponframe = 0;
@@ -2134,10 +2038,10 @@ void () W_SetCurrentAmmo =
 						}
 						else
 						{
-							if ((self.current_weapon == 1024))
+							if ((self.current_weapon == WEAP_SUPER_NAILGUN))
 							{
 								self.currentammo = self.ammo_nails;
-								if (!(self.tfstate & 2))
+								if (!(self.tfstate & TFSTATE_RELOADING))
 								{
 									self.weaponmodel = "progs/v_nail2.mdl";
 									self.weaponframe = 0;
@@ -2147,10 +2051,10 @@ void () W_SetCurrentAmmo =
 							}
 							else
 							{
-								if ((self.current_weapon == 2048))
+								if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
 								{
 									self.currentammo = self.ammo_rockets;
-									if (!(self.tfstate & 2))
+									if (!(self.tfstate & TFSTATE_RELOADING))
 									{
 										self.weaponmodel = "progs/v_rock.mdl";
 										self.weaponframe = 0;
@@ -2160,10 +2064,10 @@ void () W_SetCurrentAmmo =
 								}
 								else
 								{
-									if ((self.current_weapon == 8192))
+									if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 									{
 										self.currentammo = self.ammo_rockets;
-										if (!(self.tfstate & 2))
+										if (!(self.tfstate & TFSTATE_RELOADING))
 										{
 											self.weaponmodel = "progs/v_rock2.mdl";
 											self.weaponframe = 0;
@@ -2173,10 +2077,10 @@ void () W_SetCurrentAmmo =
 									}
 									else
 									{
-										if ((self.current_weapon == 65536))
+										if ((self.current_weapon == WEAP_LIGHTNING))
 										{
 											self.currentammo = self.ammo_cells;
-											if (!(self.tfstate & 2))
+											if (!(self.tfstate & TFSTATE_RELOADING))
 											{
 												self.weaponmodel = "progs/v_light.mdl";
 												self.weaponframe = 0;
@@ -2186,10 +2090,10 @@ void () W_SetCurrentAmmo =
 										}
 										else
 										{
-											if ((self.current_weapon == space))
+											if ((self.current_weapon == WEAP_SNIPER_RIFLE))
 											{
 												self.currentammo = self.ammo_shells;
-												if (!(self.tfstate & 2))
+												if (!(self.tfstate & TFSTATE_RELOADING))
 												{
 													self.weaponmodel = "progs/v_srifle.mdl";
 													self.weaponframe = 0;
@@ -2199,10 +2103,10 @@ void () W_SetCurrentAmmo =
 											}
 											else
 											{
-												if ((self.current_weapon == 64))
+												if ((self.current_weapon == WEAP_AUTO_RIFLE))
 												{
 													self.currentammo = self.ammo_shells;
-													if (!(self.tfstate & 2))
+													if (!(self.tfstate & TFSTATE_RELOADING))
 													{
 														self.weaponmodel = "progs/v_srifle.mdl";
 														self.weaponframe = 0;
@@ -2212,10 +2116,10 @@ void () W_SetCurrentAmmo =
 												}
 												else
 												{
-													if ((self.current_weapon == 32768))
+													if ((self.current_weapon == WEAP_ASSAULT_CANNON))
 													{
 														self.currentammo = self.ammo_shells;
-														if (!(self.tfstate & 2))
+														if (!(self.tfstate & TFSTATE_RELOADING))
 														{
 															self.weaponmodel = "progs/v_asscan.mdl";
 															self.weaponframe = 0;
@@ -2225,10 +2129,10 @@ void () W_SetCurrentAmmo =
 													}
 													else
 													{
-														if ((self.current_weapon == 4096))
+														if ((self.current_weapon == WEAP_FLAMETHROWER))
 														{
 															self.currentammo = self.ammo_cells;
-															if (!(self.tfstate & 2))
+															if (!(self.tfstate & TFSTATE_RELOADING))
 															{
 																self.weaponmodel = "progs/v_rock.mdl";
 																self.weaponframe = 0;
@@ -2238,10 +2142,10 @@ void () W_SetCurrentAmmo =
 														}
 														else
 														{
-															if ((self.current_weapon == 16384))
+															if ((self.current_weapon == WEAP_INCENDIARY))
 															{
 																self.currentammo = self.ammo_rockets;
-																if (!(self.tfstate & 2))
+																if (!(self.tfstate & TFSTATE_RELOADING))
 																{
 																	self.weaponmodel = "progs/v_rock2.mdl";
 																	self.weaponframe = 0;
@@ -2251,7 +2155,7 @@ void () W_SetCurrentAmmo =
 															}
 															else
 															{
-																if ((self.current_weapon == 4))
+																if ((self.current_weapon == WEAP_MEDIKIT))
 																{
 																	self.currentammo = self.ammo_medikit;
 																	self.weaponmodel = "progs/v_medi.mdl";
@@ -2259,7 +2163,7 @@ void () W_SetCurrentAmmo =
 																}
 																else
 																{
-																	if ((self.current_weapon == 2))
+																	if ((self.current_weapon == WEAP_BIOWEAPON))
 																	{
 																		self.currentammo = 0;
 																		self.weaponmodel = "progs/v_bio.mdl";
@@ -2267,10 +2171,10 @@ void () W_SetCurrentAmmo =
 																	}
 																	else
 																	{
-																		if ((self.current_weapon == 262144))
+																		if ((self.current_weapon == WEAP_TRANQ))
 																		{
 																			self.currentammo = self.ammo_shells;
-																			if (!(self.tfstate & 2))
+																			if (!(self.tfstate & TFSTATE_RELOADING))
 																			{
 																				self.weaponmodel = "progs/v_shot.mdl";
 																				self.weaponframe = 0;
@@ -2283,7 +2187,7 @@ void () W_SetCurrentAmmo =
 																			if ((self.current_weapon == WEAP_RAILGUN))
 																			{
 																				self.currentammo = self.ammo_nails;
-																				if (!(self.tfstate & 2))
+																				if (!(self.tfstate & TFSTATE_RELOADING))
 																				{
 																					self.weaponmodel = "progs/v_rail.mdl";
 																					self.weaponframe = 0;
@@ -2291,10 +2195,10 @@ void () W_SetCurrentAmmo =
 																				self.items = (self.items | 512);
 																				self.weapon = 1;
 																			}
-																			else if ((self.current_weapon == 1048576))
+																			else if ((self.current_weapon == WEAP_TRIBOLT))
 																			{
 																				self.currentammo = self.ammo_rockets;
-																				if (!(self.tfstate & 2))
+																				if (!(self.tfstate & TFSTATE_RELOADING))
 																				{
 																					self.weaponmodel = "progs/v_rock.mdl";
 																					self.weaponframe = 0;
@@ -2302,10 +2206,10 @@ void () W_SetCurrentAmmo =
 																				self.weapon = 16;
 																				self.items = (self.items | 1024);
 																			}
-																			else if ((self.current_weapon == 2097152))
+																			else if ((self.current_weapon == WEAP_SNIPERRAIL))
 																			{
 																				self.currentammo = self.ammo_shells;
-																				if (!(self.tfstate & 2))
+																				if (!(self.tfstate & TFSTATE_RELOADING))
 																				{
 																					self.weaponmodel = "progs/v_srifle.mdl";
 																					self.weaponframe = 0;
@@ -2412,7 +2316,7 @@ float () W_CheckNoAmmo = {
 
 void () W_Reload_shotgun =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_shot.mdl";
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
@@ -2421,7 +2325,7 @@ void () W_Reload_shotgun =
 
 void () W_Reload_super_shotgun =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_shot2.mdl";
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
@@ -2430,7 +2334,7 @@ void () W_Reload_super_shotgun =
 
 void () W_Reload_grenade_launcher =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_rock.mdl";
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
@@ -2439,7 +2343,7 @@ void () W_Reload_grenade_launcher =
 
 void () W_Reload_tribolt =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_rock.mdl";
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
@@ -2449,7 +2353,7 @@ void () W_Reload_tribolt =
 
 void () W_Reload_rocket_launcher =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_rock2.mdl";
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
@@ -2458,7 +2362,7 @@ void () W_Reload_rocket_launcher =
 
 void () W_Reload_sniper_rifle =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_srifle.mdl";
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
@@ -2485,7 +2389,7 @@ float () CheckForReload =
 					self.reload_shotgun = (8 - self.ammo_shells);
 				}
 				sprint (self, 2, "reloading... \n");
-				self.tfstate = (self.tfstate | 2);
+				self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 				tWeapon = spawn ();
 				tWeapon.owner = self;
 				tWeapon.classname = "timer";
@@ -2512,7 +2416,7 @@ float () CheckForReload =
 						self.reload_super_shotgun = (16 - self.ammo_shells);
 					}
 					sprint (self, 2, "reloading... \n");
-					self.tfstate = (self.tfstate | 2);
+					self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 					tWeapon = spawn ();
 					tWeapon.owner = self;
 					tWeapon.classname = "timer";
@@ -2525,7 +2429,7 @@ float () CheckForReload =
 			}
 			else
 			{
-				if ((self.current_weapon == 2048))
+				if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
 				{
 					if (((self.reload_grenade_launcher >= 6) && (self.ammo_rockets > 0)))
 					{
@@ -2535,7 +2439,7 @@ float () CheckForReload =
 							self.reload_grenade_launcher = (6 - self.ammo_rockets);
 						}
 						sprint (self, 2, "reloading...\n");
-						self.tfstate = (self.tfstate | 2);
+						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 						tWeapon = spawn ();
 						tWeapon.owner = self;
 						tWeapon.classname = "timer";
@@ -2546,7 +2450,7 @@ float () CheckForReload =
 						return (1);
 					}
 				}
-				else if ((self.current_weapon == 1048576))
+				else if ((self.current_weapon == WEAP_TRIBOLT))
 				{
 					if (((self.reload_tribolt >= 12) && (self.ammo_rockets > 0)))
 					{
@@ -2556,7 +2460,7 @@ float () CheckForReload =
 							self.reload_tribolt = (12 - self.ammo_rockets);
 						}
 						sprint (self, 2, "reloading...\n");
-						self.tfstate = (self.tfstate | 2);
+						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 						tWeapon = spawn ();
 						tWeapon.owner = self;
 						tWeapon.classname = "timer";
@@ -2567,7 +2471,7 @@ float () CheckForReload =
 						return (1);
 					}
 				}
-				else if ((self.current_weapon == 8192))
+				else if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 				{
 					if (((self.reload_rocket_launcher >= 4) && (self.ammo_rockets > 0)))
 					{
@@ -2577,7 +2481,7 @@ float () CheckForReload =
 							self.reload_rocket_launcher = (4 - self.ammo_rockets);
 						}
 						sprint (self, 2, "reloading... \n");
-						self.tfstate = (self.tfstate | 2);
+						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 						tWeapon = spawn ();
 						tWeapon.owner = self;
 						tWeapon.classname = "timer";
@@ -2594,7 +2498,7 @@ float () CheckForReload =
 					{
 						self.reload_sniper_rifle = 0;						
 						sprint (self, 2, "reloading... \n");
-						self.tfstate = (self.tfstate | 2);
+						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 						tWeapon = spawn ();
 						tWeapon.owner = self;
 						tWeapon.classname = "timer";
@@ -2657,7 +2561,7 @@ void () W_Attack =
 	{
 		return;
 	}
-	if ((self.tfstate & 2))
+	if ((self.tfstate & TFSTATE_RELOADING))
 	{
 		return;
 	}
@@ -2705,7 +2609,7 @@ void () W_Attack =
 		}
 		else
 		{
-			if ((self.current_weapon == 1))
+			if ((self.current_weapon == WEAP_HOOK))
 			{
 				if (!self.hook_out)
 				{
@@ -2715,7 +2619,7 @@ void () W_Attack =
 			}
 			else
 			{
-				if ((self.current_weapon == 128))
+				if ((self.current_weapon == WEAP_SHOTGUN))
 				{
 					if (CheckForReload ())
 					{
@@ -2730,7 +2634,7 @@ void () W_Attack =
 				}
 				else
 				{
-					if ((self.current_weapon == 256))
+					if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
 					{
 						if (CheckForReload ())
 						{
@@ -2745,19 +2649,19 @@ void () W_Attack =
 					}
 					else
 					{
-						if ((self.current_weapon == 512))
+						if ((self.current_weapon == WEAP_NAILGUN))
 						{
 							player_nail1 ();
 						}
 						else
 						{
-							if ((self.current_weapon == 1024))
+							if ((self.current_weapon == WEAP_SUPER_NAILGUN))
 							{
 								player_nail1 ();
 							}
 							else
 							{
-								if ((self.current_weapon == 2048))
+								if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
 								{
 									if (CheckForReload ())
 									{
@@ -2772,7 +2676,7 @@ void () W_Attack =
 								}
 								else
 								{
-									if ((self.current_weapon == 8192))
+									if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 									{
 										if (CheckForReload ())
 										{
@@ -2785,7 +2689,7 @@ void () W_Attack =
 										CheckForReload ();
 										Attack_Finished (0.8);
 									}
-									else if ((self.current_weapon == 65536))
+									else if ((self.current_weapon == WEAP_LIGHTNING))
 									{
 										player_light1 ();
 										Attack_Finished (0.1);
@@ -2812,7 +2716,7 @@ void () W_Attack =
 			}
 		}
 	}
-	if ((self.current_weapon == space))
+	if ((self.current_weapon == WEAP_SNIPER_RIFLE))
 	{
 		if (((self.flags & 512) || self.hook_out))
 		{
@@ -2823,7 +2727,7 @@ void () W_Attack =
 	}
 	else
 	{
-		if ((self.current_weapon == 64))
+		if ((self.current_weapon == WEAP_AUTO_RIFLE))
 		{
 			player_autorifle1 ();
 			W_FireAutoRifle ();
@@ -2831,7 +2735,7 @@ void () W_Attack =
 		}
 		else
 		{
-			if ((self.current_weapon == 32768))
+			if ((self.current_weapon == WEAP_ASSAULT_CANNON))
 			{
 				if ((self.ammo_cells < 7))
 				{
@@ -2842,14 +2746,14 @@ void () W_Attack =
 					self.ammo_cells = (self.ammo_cells - 7);
 					self.heat = 1;
 					self.immune_to_check = (time + 5);
-					self.tfstate = (self.tfstate | 2048);
+					self.tfstate = (self.tfstate | TFSTATE_AIMING);
 					TeamFortress_SetSpeed (self);
 					player_assaultcannonup1 ();
 				}
 			}
 			else
 			{
-				if ((self.current_weapon == 4096))
+				if ((self.current_weapon == WEAP_FLAMETHROWER))
 				{
 					player_shot1 ();
 					W_FireFlame ();
@@ -2864,7 +2768,7 @@ void () W_Attack =
 				}
 				else
 				{
-					if ((self.current_weapon == 16384))
+					if ((self.current_weapon == WEAP_INCENDIARY))
 					{
 						player_rocket1 ();
 						W_FireIncendiaryCannon ();
@@ -2879,7 +2783,7 @@ void () W_Attack =
 					}
 					else
 					{
-						if ((self.current_weapon == 4))
+						if ((self.current_weapon == WEAP_MEDIKIT))
 						{
 							sound (self, 1, "weapons/ax1.wav", 1, 1);
 							r = random ();
@@ -2909,7 +2813,7 @@ void () W_Attack =
 						}
 						else
 						{
-							if ((self.current_weapon == 2))
+							if ((self.current_weapon == WEAP_BIOWEAPON))
 							{
 								sound (self, 1, "weapons/ax1.wav", 1, 1);
 								r = random ();
@@ -2939,7 +2843,7 @@ void () W_Attack =
 							}
 							else
 							{
-								if ((self.current_weapon == 262144))
+								if ((self.current_weapon == WEAP_TRANQ))
 								{
 									sound (self, 1, "weapons/dartgun.wav", 1, 1);
 									player_shot1 ();
@@ -2948,14 +2852,14 @@ void () W_Attack =
 								}
 								else
 								{
-									if ((self.current_weapon == 524288))
+									if ((self.current_weapon == WEAP_RAILGUN))
 									{
 										sound (self, 1, "weapons/railgun.wav", 1, 1);
 										player_shot1 ();
 										W_FireRail ();
 										Attack_Finished (0.4);
 									}
-									else if ((self.current_weapon == 1048576))
+									else if ((self.current_weapon == WEAP_TRIBOLT))
 									{
 										if (CheckForReload ())
 										{
@@ -2967,7 +2871,7 @@ void () W_Attack =
 										CheckForReload ();
 										Attack_Finished (1.7);
 									}
-									else if ((self.current_weapon == 2097152))
+									else if ((self.current_weapon == WEAP_SNIPERRAIL))
 									{
 										sound (self, 1, "weapons/sniper.wav", 1, 1);
 										player_shot1 ();
@@ -3088,7 +2992,7 @@ void () W_ChangeWeapon =
 	local float have_weapon;
 	local float usable;
 
-	if ((self.tfstate & 2))
+	if ((self.tfstate & TFSTATE_RELOADING))
 	{
 		return;
 	}
@@ -3222,9 +3126,9 @@ void () W_ChangeWeapon =
 			{
 				if ((self.impulse == 2))
 				{
-					if ((it & space))
+					if ((it & WEAP_SNIPER_RIFLE))
 					{
-						fl = space;
+						fl = WEAP_SNIPER_RIFLE;
 						if ((self.ammo_shells < 1))
 						{
 							am = 1;
@@ -3232,9 +3136,9 @@ void () W_ChangeWeapon =
 					}
 					else
 					{
-						if ((it & 128))
+						if ((it & WEAP_SHOTGUN))
 						{
-							fl = 128;
+							fl = WEAP_SHOTGUN;
 							if ((self.ammo_shells < 1))
 							{
 								am = 1;
@@ -3242,9 +3146,9 @@ void () W_ChangeWeapon =
 						}
 						else
 						{
-							if ((it & 262144))
+							if ((it & WEAP_TRANQ))
 							{
-								fl = 262144;
+								fl = WEAP_TRANQ;
 								if ((self.ammo_shells < 1))
 								{
 									am = 1;
@@ -3252,17 +3156,17 @@ void () W_ChangeWeapon =
 							}
 							else
 							{
-								if ((it & 524288))
+								if ((it & WEAP_RAILGUN))
 								{
-									fl = 524288;
+									fl = WEAP_RAILGUN;
 									if ((self.ammo_nails < 1))
 									{
 										am = 1;
 									}
 								}
-								else if ((it & 2097152))
+								else if ((it & WEAP_SNIPERRAIL))
 								{
-									fl = 2097152;
+									fl = WEAP_SNIPERRAIL;
 									if ((self.ammo_shells < 1))
 									{
 										am = 1;
@@ -3280,9 +3184,9 @@ void () W_ChangeWeapon =
 				{
 					if ((self.impulse == 3))
 					{
-						if ((it & 64))
+						if ((it & WEAP_AUTO_RIFLE))
 						{
-							fl = 64;
+							fl = WEAP_AUTO_RIFLE;
 							if ((self.ammo_shells < 1))
 							{
 								am = 1;
@@ -3290,7 +3194,7 @@ void () W_ChangeWeapon =
 						}
 						else
 						{
-							fl = 256;
+							fl = WEAP_SUPER_SHOTGUN;
 							if ((self.ammo_shells < 2))
 							{
 								am = 1;
@@ -3301,7 +3205,7 @@ void () W_ChangeWeapon =
 					{
 						if ((self.impulse == 4))
 						{
-							fl = 512;
+							fl = WEAP_NAILGUN;
 							if ((self.ammo_nails < 1))
 							{
 								am = 1;
@@ -3311,9 +3215,9 @@ void () W_ChangeWeapon =
 						{
 							if ((self.impulse == 5))
 							{
-								if ((it & 1024))
+								if ((it & WEAP_SUPER_NAILGUN))
 								{
-									fl = 1024;
+									fl = WEAP_SUPER_NAILGUN;
 									if ((self.ammo_nails < 2))
 									{
 										am = 1;
@@ -3321,9 +3225,9 @@ void () W_ChangeWeapon =
 								}
 								else
 								{
-									if ((it & 4096))
+									if ((it & WEAP_FLAMETHROWER))
 									{
-										fl = 4096;
+										fl = WEAP_FLAMETHROWER;
 										if ((self.ammo_cells < 1))
 										{
 											am = 1;
@@ -3335,9 +3239,9 @@ void () W_ChangeWeapon =
 							{
 								if ((self.impulse == 6))
 								{
-									if ((it & 16384))
+									if ((it & WEAP_INCENDIARY))
 									{
-										fl = 16384;
+										fl = WEAP_INCENDIARY;
 										if ((self.ammo_rockets < 2))
 										{
 											am = 1;
@@ -3346,9 +3250,9 @@ void () W_ChangeWeapon =
 									}
 									else
 									{
-										if ((it & 2048))
+										if ((it & WEAP_GRENADE_LAUNCHER))
 										{
-											fl = 2048;
+											fl = WEAP_GRENADE_LAUNCHER;
 											if ((self.ammo_rockets < 1))
 											{
 												am = 1;
@@ -3365,9 +3269,9 @@ void () W_ChangeWeapon =
 								{
 									if ((self.impulse == 7))
 									{
-										if ((it & 16384))
+										if ((it & WEAP_INCENDIARY))
 										{
-											fl = 16384;
+											fl = WEAP_INCENDIARY;
 											if ((self.ammo_rockets < 3))
 											{
 												am = 1;
@@ -3376,9 +3280,9 @@ void () W_ChangeWeapon =
 										}
 										else
 										{
-											if ((it & 8192))
+											if ((it & WEAP_ROCKET_LAUNCHER))
 											{
-												fl = 8192;
+												fl = WEAP_ROCKET_LAUNCHER;
 												if ((self.ammo_rockets < 1))
 												{
 													am = 1;
@@ -3386,9 +3290,9 @@ void () W_ChangeWeapon =
 											}
 											else
 											{
-												if ((it & 32768))
+												if ((it & WEAP_ASSAULT_CANNON))
 												{
-													fl = 32768;
+													fl = WEAP_ASSAULT_CANNON;
 													if ((self.ammo_shells < 1))
 													{
 														am = 1;
@@ -3403,9 +3307,9 @@ void () W_ChangeWeapon =
 												}
 												else
 												{
-													if ((it & 2048))
+													if ((it & WEAP_GRENADE_LAUNCHER))
 													{
-														fl = 2048;
+														fl = WEAP_GRENADE_LAUNCHER;
 														wm = 1;
 														if ((self.ammo_rockets < 1))
 														{
@@ -3413,9 +3317,9 @@ void () W_ChangeWeapon =
 														}
 													}
 													else {
-														if ((it & 1048576))
+														if ((it & WEAP_TRIBOLT))
 														{
-															fl = 1048576;		
+															fl = WEAP_TRIBOLT;		
 															if ((self.ammo_rockets < 1))
 															{
 																am = 1;
@@ -3435,7 +3339,7 @@ void () W_ChangeWeapon =
 									{
 										if ((self.impulse == 8))
 										{
-											fl = 65536;
+											fl = WEAP_LIGHTNING;
 											if ((self.ammo_cells < 1))
 											{
 												am = 1;
@@ -3443,9 +3347,9 @@ void () W_ChangeWeapon =
 										}
 										else
 										{
-											if ((self.impulse == COLOR_RED))
+											if ((self.impulse == 176))
 											{
-												fl = 4;
+												fl = WEAP_MEDIKIT;
 												if ((it & 4))
 												{
 													usable = 1;
@@ -3460,42 +3364,42 @@ void () W_ChangeWeapon =
 													{
 														usable = 1;
 													}
-													if ((((fl & (((((space | 64) | 128) | 256) | 32768) | 262144)) != 0) && (self.ammo_shells < 1)))
+													if (((fl & (WEAP_SNIPER_RIFLE | WEAP_AUTO_RIFLE | WEAP_SHOTGUN | WEAP_SUPER_SHOTGUN | WEAP_ASSAULT_CANNON | WEAP_TRANQ | WEAP_SNIPERRAIL)) != 0) && (self.ammo_shells < 1))
 													{
 														am = 1;
 													}
 													else
 													{
-														if ((((fl & ((512 | 1024) | 524288 | 2097152)) != 0) && (self.ammo_nails < 1)))
+														if (((fl & (WEAP_NAILGUN | WEAP_SUPER_NAILGUN | WEAP_RAILGUN | WEAP_SNIPERRAIL) != 0) && (self.ammo_nails < 1)))
 														{
 															am = 1;
 														}
 														else
 														{
-															if ((((fl & (2048 | 8192)) != 0) && (self.ammo_rockets < 1)))
+															if (((fl & (WEAP_GRENADE_LAUNCHER | WEAP_ROCKET_LAUNCHER | WEAP_TRIBOLT)) != 0) && (self.ammo_rockets < 1))
 															{
 																am = 1;
 															}
 															else
 															{
-																if ((((fl & (4096 | 65536)) != 0) && (self.ammo_cells < 1)))
+																if (((fl & (WEAP_FLAMETHROWER | WEAP_LIGHTNING)) != 0) && (self.ammo_cells < 1))
 																{
 																	am = 1;
 																}
 																else
 																{
-																	if (((fl & 16384) != 0))
+																	if ((fl & WEAP_INCENDIARY) != 0)
 																	{
-																		if ((self.weaponmode == 1))
+																		if (self.weaponmode == 1)
 																		{
-																			if ((self.ammo_rockets < 2))
+																			if (self.ammo_rockets < 2)
 																			{
 																				am = 1;
 																			}
 																		}
 																		else
 																		{
-																			if ((self.ammo_rockets < 3))
+																			if (self.ammo_rockets < 3)
 																			{
 																				am = 1;
 																			}
@@ -3503,7 +3407,7 @@ void () W_ChangeWeapon =
 																	}
 																	else
 																	{
-																		if (((fl == 32768) && (self.ammo_cells < 7)))
+																		if ((fl == WEAP_ASSAULT_CANNON) && (self.ammo_cells < 7))
 																		{
 																			am = 2;
 																		}
@@ -3565,7 +3469,7 @@ void () CycleWeaponCommand =
 	{
 		return;
 	}
-	if ((self.tfstate & 2))
+	if ((self.tfstate & TFSTATE_RELOADING))
 	{
 		return;
 	}
@@ -3577,15 +3481,15 @@ void () CycleWeaponCommand =
 	{
 		am = 0;
 		cont = 0;
-		if ((self.current_weapon == 16))
+		if ((self.current_weapon == WEAP_AXE))
 		{
-			self.current_weapon = 8;
+			self.current_weapon = WEAP_SPANNER;
 		}
 		else
 		{
-			if ((self.current_weapon == 8))
+			if ((self.current_weapon == WEAP_SPANNER))
 			{
-				self.current_weapon = 128;
+				self.current_weapon = WEAP_SHOTGUN;
 				if ((self.ammo_shells < 1))
 				{
 					am = 1;
@@ -3593,9 +3497,9 @@ void () CycleWeaponCommand =
 			}
 			else
 			{
-				if ((self.current_weapon == 128))
+				if ((self.current_weapon == WEAP_SHOTGUN))
 				{
-					self.current_weapon = 524288;
+					self.current_weapon = WEAP_RAILGUN;
 					if ((self.ammo_nails < 1))
 					{
 						am = 1;
@@ -3603,9 +3507,9 @@ void () CycleWeaponCommand =
 				}
 				else
 				{
-					if ((self.current_weapon == 524288))
+					if ((self.current_weapon == WEAP_RAILGUN))
 					{
-						self.current_weapon = 262144;
+						self.current_weapon = WEAP_TRANQ;
 						if ((self.ammo_shells < 1))
 						{
 							am = 1;
@@ -3613,9 +3517,9 @@ void () CycleWeaponCommand =
 					}
 					else
 					{
-						if ((self.current_weapon == 262144))
+						if ((self.current_weapon == WEAP_TRANQ))
 						{
-							self.current_weapon = space;
+							self.current_weapon = WEAP_SNIPER_RIFLE;
 							if ((self.ammo_shells < 1))
 							{
 								am = 1;
@@ -3623,9 +3527,9 @@ void () CycleWeaponCommand =
 						}
 						else
 						{
-							if ((self.current_weapon == space))
+							if ((self.current_weapon == WEAP_SNIPER_RIFLE))
 							{
-								self.current_weapon = 64;
+								self.current_weapon = WEAP_AUTO_RIFLE;
 								if ((self.ammo_shells < 1))
 								{
 									am = 1;
@@ -3633,9 +3537,9 @@ void () CycleWeaponCommand =
 							}
 							else
 							{
-								if ((self.current_weapon == 64))
+								if ((self.current_weapon == WEAP_AUTO_RIFLE))
 								{
-									self.current_weapon = 256;
+									self.current_weapon = WEAP_SUPER_SHOTGUN;
 									if ((self.ammo_shells < 2))
 									{
 										am = 1;
@@ -3643,9 +3547,9 @@ void () CycleWeaponCommand =
 								}
 								else
 								{
-									if ((self.current_weapon == 256))
+									if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
 									{
-										self.current_weapon = 512;
+										self.current_weapon = WEAP_NAILGUN;
 										if ((self.ammo_nails < 1))
 										{
 											am = 1;
@@ -3653,9 +3557,9 @@ void () CycleWeaponCommand =
 									}
 									else
 									{
-										if ((self.current_weapon == 512))
+										if ((self.current_weapon == WEAP_NAILGUN))
 										{
-											self.current_weapon = 1024;
+											self.current_weapon = WEAP_SUPER_NAILGUN;
 											if ((self.ammo_nails < 2))
 											{
 												am = 1;
@@ -3663,9 +3567,9 @@ void () CycleWeaponCommand =
 										}
 										else
 										{
-											if ((self.current_weapon == 1024))
+											if ((self.current_weapon == WEAP_SUPER_NAILGUN))
 											{
-												self.current_weapon = 2048;
+												self.current_weapon = WEAP_GRENADE_LAUNCHER;
 												self.weaponmode = 0;
 												if ((self.ammo_rockets < 1))
 												{
@@ -3674,16 +3578,16 @@ void () CycleWeaponCommand =
 											}
 											else
 											{
-												if (((self.current_weapon == 2048) && (self.weaponmode == 0)))
+												if (((self.current_weapon == WEAP_GRENADE_LAUNCHER) && (self.weaponmode == 0)))
 												{
 													if ((self.playerclass != 11))
 													{
-														self.current_weapon = 2048;
+														self.current_weapon = WEAP_GRENADE_LAUNCHER;
 														self.weaponmode = 1;
 													}
 													else
 													{
-														self.current_weapon = 8192;
+														self.current_weapon = WEAP_ROCKET_LAUNCHER;
 													}
 													if ((self.ammo_rockets < 1))
 													{
@@ -3692,9 +3596,9 @@ void () CycleWeaponCommand =
 												}
 												else
 												{
-													if (((self.current_weapon == 2048) && (self.weaponmode == 1)))
+													if (((self.current_weapon == WEAP_GRENADE_LAUNCHER) && (self.weaponmode == 1)))
 													{
-														self.current_weapon = 8192;
+														self.current_weapon = WEAP_ROCKET_LAUNCHER;
 														if ((self.ammo_rockets < 1))
 														{
 															am = 1;
@@ -3702,9 +3606,9 @@ void () CycleWeaponCommand =
 													}
 													else
 													{
-														if ((self.current_weapon == 8192))
+														if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 														{
-															self.current_weapon = 65536;
+															self.current_weapon = WEAP_LIGHTNING;
 															if ((self.ammo_cells < 1))
 															{
 																am = 1;
@@ -3712,9 +3616,9 @@ void () CycleWeaponCommand =
 														}
 														else
 														{
-															if ((self.current_weapon == 65536))
+															if ((self.current_weapon == WEAP_LIGHTNING))
 															{
-																self.current_weapon = 4096;
+																self.current_weapon = WEAP_FLAMETHROWER;
 																if ((self.ammo_cells < 1))
 																{
 																	am = 1;
@@ -3722,9 +3626,9 @@ void () CycleWeaponCommand =
 															}
 															else
 															{
-																if ((self.current_weapon == 4096))
+																if ((self.current_weapon == WEAP_FLAMETHROWER))
 																{
-																	self.current_weapon = 16384;
+																	self.current_weapon = WEAP_INCENDIARY;
 																	self.weaponmode = 1;
 																	if ((self.ammo_rockets < 3))
 																	{
@@ -3733,9 +3637,9 @@ void () CycleWeaponCommand =
 																}
 																else
 																{
-																	if (((self.current_weapon == 16384) && (self.weaponmode == 1)))
+																	if (((self.current_weapon == WEAP_INCENDIARY) && (self.weaponmode == 1)))
 																	{
-																		self.current_weapon = 16384;
+																		self.current_weapon = WEAP_INCENDIARY;
 																		self.weaponmode = 0;
 																		if ((self.ammo_rockets < 2))
 																		{
@@ -3744,9 +3648,9 @@ void () CycleWeaponCommand =
 																	}
 																	else
 																	{
-																		if (((self.current_weapon == 16384) && (self.weaponmode == 0)))
+																		if (((self.current_weapon == WEAP_INCENDIARY) && (self.weaponmode == 0)))
 																		{
-																			self.current_weapon = 32768;
+																			self.current_weapon = WEAP_ASSAULT_CANNON;
 																			if ((self.ammo_cells < 7))
 																			{
 																				am = 1;
@@ -3758,9 +3662,9 @@ void () CycleWeaponCommand =
 																		}
 																		else
 																		{
-																			if ((self.current_weapon == 32768))
+																			if ((self.current_weapon == WEAP_ASSAULT_CANNON))
 																			{
-																				self.current_weapon = 1;
+																				self.current_weapon = WEAP_HOOK;
 																				if (!allow_hook)
 																				{
 																					am = 1;
@@ -3768,21 +3672,21 @@ void () CycleWeaponCommand =
 																			}
 																			else
 																			{
-																				if ((self.current_weapon == 1))
+																				if ((self.current_weapon == WEAP_HOOK))
 																				{
-																					self.current_weapon = 4;
+																					self.current_weapon = WEAP_MEDIKIT;
 																				}
 																				else
 																				{
-																					if ((self.current_weapon == 2))
+																					if ((self.current_weapon == WEAP_BIOWEAPON))
 																					{
-																						self.current_weapon = 4;
+																						self.current_weapon = WEAP_MEDIKIT;
 																					}
 																					else
 																					{
-																						if ((self.current_weapon == 4))
+																						if ((self.current_weapon == WEAP_MEDIKIT))
 																						{
-																							self.current_weapon = 16;
+																							self.current_weapon = WEAP_AXE;
 																						}
 																					}
 																				}
@@ -5891,7 +5795,7 @@ void () W_WeaponFrame =
 	local vector tv;
 	local string st;
 
-	if (!(self.tfstate & 2048))
+	if (!(self.tfstate & TFSTATE_AIMING))
 	{
 		if (((self.height > 29) && (self.height < self.oldheight)))
 		{
@@ -6001,7 +5905,7 @@ void () W_WeaponFrame =
 	{
 		if (self.current_weapon == WEAP_ASSAULT_CANNON ) {
 			self.fire_held_down = 0;
-			self.tfstate = (self.tfstate - (self.tfstate & 2048));
+			self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 			TeamFortress_SetSpeed (self);
 			player_run ();
 		}
@@ -6039,7 +5943,7 @@ void () W_WeaponFrame =
 		                if (vlen(tv) <= 50) {
 		                    SniperSight_Create();
 		                    self.heat = 50;
-		                    self.tfstate = self.tfstate | 2048;
+		                    self.tfstate = self.tfstate | TFSTATE_AIMING;
 		                    if (sniperpower)
 		                    	self.power_full = 0;
 		                    TeamFortress_SetSpeed(self);
@@ -6073,13 +5977,13 @@ void () W_WeaponFrame =
 		}
 		else
 		{
-			if ((self.tfstate & 2048))
+			if ((self.tfstate & TFSTATE_AIMING))
 			{
 				if ((self.current_weapon != 32768))
 				{
 					W_Attack ();
 				}
-				self.tfstate = (self.tfstate - 2048);
+				self.tfstate = (self.tfstate - TFSTATE_AIMING);
 				TeamFortress_SetSpeed (self);
 				self.heat = 0;
 			}

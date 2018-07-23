@@ -70,7 +70,7 @@ void () UseSpecialSkill =
 		case PC_HWGUY:						
 			if (self.current_weapon == WEAP_ASSAULT_CANNON)
 			{
-				if ((self.tfstate & 2048))
+				if ((self.tfstate & TFSTATE_AIMING))
 					sprint (self, 1, "Cannot switch weapons while firing.\n");
 				else
 					self.impulse = 3;
@@ -152,7 +152,7 @@ void (float inp) TeamFortress_ChangeClass =
 			}
 			self.nextpc = inp;
 			sprint (self, 2, "Next Round, you will return as a ");
-			TeamFortress_PrintClassName (self, self.nextpc, (self.tfstate & 8));
+			TeamFortress_PrintClassName (self, self.nextpc, (self.tfstate & TFSTATE_RANDOMPC));
 			return;
 		}
 	}
@@ -182,12 +182,12 @@ void (float inp) TeamFortress_ChangeClass =
 		{
 			sprint (self, 2, "After dying, you will return as a ");
 		}
-		TeamFortress_PrintClassName (self, self.nextpc, (self.tfstate & 8));
+		TeamFortress_PrintClassName (self, self.nextpc, (self.tfstate & TFSTATE_RANDOMPC));
 		return;
 	}
 	if (teamplay && (self.team_no == 0) && !captainmode)
 	{
-		if (toggleflags & 64)
+		if (toggleflags & TFLAG_AUTOTEAM)
 		{
 			if ((TeamFortress_TeamPutPlayerInTeam () == 0))
 			{
@@ -259,7 +259,7 @@ void (float inp) TeamFortress_ChangeClass =
 	if (self.playerclass == 10)
 	{
 		sprint (self, 2, "Random Playerclass.\n");
-		self.tfstate = (self.tfstate | 8);
+		self.tfstate = (self.tfstate | TFSTATE_RANDOMPC);
 		self.playerclass = (1 + floor ((random () * (10 - 1))));
 		if (CheckClassAvailable (self.team_no))
 		{
@@ -321,11 +321,11 @@ void (float inp) TeamFortress_ChangeClass =
 		{
 			sprint (spot, 2, self.netname);
 			sprint (spot, 2, " is playing as a ");
-			TeamFortress_PrintClassName (spot, self.playerclass, (self.tfstate & 8));
+			TeamFortress_PrintClassName (spot, self.playerclass, (self.tfstate & TFSTATE_RANDOMPC));
 		}
 		spot = find (spot, classname, "player");
 	}
-	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & 8));
+	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & TFSTATE_RANDOMPC));
 	TeamFortress_SetEquipment ();
 	TeamFortress_SetSpeed (self);
 	TeamFortress_SetSkin (self);
@@ -340,7 +340,7 @@ void (float inp) TeamFortress_ChangeClass =
 	{
 		sprint (self, 2, "\n\nCEASE FIRE MODE\n");
 		self.immune_to_check = (time + 5);
-		self.tfstate = (self.tfstate | 65536);
+		self.tfstate = (self.tfstate | TFSTATE_CANT_MOVE);
 		TeamFortress_SetSpeed (self);
 	}
 };
@@ -591,7 +591,7 @@ void () TeamFortress_ShowTF =
 {
 	local string st;
 
-	if ((toggleflags & 1))
+	if ((toggleflags & TFLAG_CLASS_PERSIST))
 	{
 		sprint (self, 2, "Class Persistence On.\n");
 	}
@@ -599,7 +599,7 @@ void () TeamFortress_ShowTF =
 	{
 		sprint (self, 2, "Class Persistence Off.\n");
 	}
-	if ((toggleflags & 2))
+	if ((toggleflags & TFLAG_CHEATCHECK))
 	{
 		sprint (self, 2, "Cheat Checking On.\n");
 	}
@@ -607,11 +607,11 @@ void () TeamFortress_ShowTF =
 	{
 		sprint (self, 2, "Cheat Checking Off.\n");
 	}
-	if ((toggleflags & 64))
+	if ((toggleflags & TFLAG_AUTOTEAM))
 	{
 		sprint (self, 2, "AutoTeam On.\n");
 	}
-	if ((toggleflags & 4))
+	if ((toggleflags & TFLAG_RESPAWNDELAY))
 	{
 		st = ftos (respawn_delay_time);
 	}
@@ -625,7 +625,7 @@ void () TeamFortress_ShowTF =
 		sprint (self, 2, " second");
 	}
 	sprint (self, 2, " Respawn Delay.\n");
-	if ((toggleflags & 128))
+	if ((toggleflags & TFLAG_TEAMFRAGS))
 	{
 		sprint (self, 2, "TeamFrags On.\n");
 	}
@@ -641,7 +641,7 @@ void () TeamFortress_ShowTF =
 	{
 		sprint (self, 2, "Grapple On.\n");
 	}
-	if ((toggleflags & 2048))
+	if ((toggleflags & TFLAG_FULLTEAMSCORE))
 	{
 		sprint (self, 2, "Full TeamScore On.\n");
 	}
@@ -727,7 +727,7 @@ void () TeamFortress_PrimeGrenade =
 	{
 		return;
 	}
-	if (((self.tfstate & 1) || (self.tfstate & 1024)))
+	if (((self.tfstate & TFSTATE_GRENPRIMED) || (self.tfstate & TFSTATE_GRENTHROWING)))
 	{
 		return;
 	}
@@ -852,7 +852,7 @@ void () TeamFortress_PrimeGrenade =
 			return;
 		}
 	}
-	self.tfstate = (self.tfstate | 1);
+	self.tfstate = (self.tfstate | TFSTATE_GRENPRIMED);
 	tGrenade = spawn ();
 	tGrenade.owner = self;
 	tGrenade.weapon = gtype;
@@ -889,7 +889,7 @@ void () TeamFortress_GrenadePrimed =
 	local entity oldself;
 
 	user = self.owner;
-	if ((!(user.tfstate & 1024) && !user.deadflag))
+	if ((!(user.tfstate & TFSTATE_GRENTHROWING) && !user.deadflag))
 	{
 		self.nextthink = (time + 0.1);
 		if (!self.think)
@@ -902,12 +902,12 @@ void () TeamFortress_GrenadePrimed =
 		}
 		return;
 	}
-	if (!(user.tfstate & 1))
+	if (!(user.tfstate & TFSTATE_GRENPRIMED))
 	{
 		dprint ("GrenadePrimed logic error\n");
 	}
-	user.tfstate = (user.tfstate - (user.tfstate & 1));
-	user.tfstate = (user.tfstate - (user.tfstate & 1024));
+	user.tfstate = (user.tfstate - (user.tfstate & TFSTATE_GRENPRIMED));
+	user.tfstate = (user.tfstate - (user.tfstate & TFSTATE_GRENTHROWING));
 	sound (user, 1, "weapons/ax1.wav", 1, 1);
 	KickPlayer (-1, user);
 	newmis = spawn ();
@@ -1022,11 +1022,11 @@ void () TeamFortress_GrenadePrimed =
 
 void () TeamFortress_ThrowGrenade =
 {
-	if (!(self.tfstate & 1))
+	if !(self.tfstate & TFSTATE_GRENPRIMED)
 	{
 		return;
 	}
-	self.tfstate = (self.tfstate | 1024);
+	self.tfstate = (self.tfstate | TFSTATE_GRENTHROWING);
 };
 
 float (float pc) IsLegalClass =
@@ -1083,7 +1083,7 @@ void (entity p) TeamFortress_SetSpeed =
 	local string st;
 
 	stuffcmd (p, "cl_movespeedkey 1\n");
-	if ((p.tfstate & 65536))
+	if ((p.tfstate & TFSTATE_CANT_MOVE))
 	{
 		if ((0 == 1))
 		{
@@ -1161,7 +1161,7 @@ void (entity p) TeamFortress_SetSpeed =
 		}
 		te = find (te, classname, "item_tfgoal");
 	}
-	if ((p.tfstate & 32768))
+	if ((p.tfstate & TFSTATE_TRANQUILISED))
 	{
 		p.maxspeed = (p.maxspeed / 2);
 	}
@@ -1173,7 +1173,7 @@ void (entity p) TeamFortress_SetSpeed =
 		}
 		p.maxspeed = (p.maxspeed * ((10 - p.leg_damage) / 10));
 	}
-	if ((p.tfstate & 2048))
+	if ((p.tfstate & TFSTATE_AIMING))
 	{
 		if ((p.current_weapon == 32768))
 		{
@@ -1917,7 +1917,7 @@ void () TeamFortress_SetEquipment =
 	self.weaponmode = 0;
 	self.respawn_time = 0;
 	self.heat = 0;
-	self.tfstate = (self.tfstate - (self.tfstate & 2));
+	self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_RELOADING));
 	self.items = (self.items | kept_items);
 	switch (self.playerclass) {
 		case PC_SCOUT:
@@ -1976,7 +1976,7 @@ void () TeamFortress_SetEquipment =
 			self.modelindex = 0;
 			self.weaponmodel = string_null;
 			modelindex_player = 0;
-			self.tfstate = (self.tfstate | 2);
+			self.tfstate = (self.tfstate | TFSTATE_RELOADING);
 			self.max_health = 1;
 			self.takedamage = 0;
 			setmodel (self, string_null);
@@ -2028,15 +2028,15 @@ void () TeamFortress_SetEquipment =
 	}
 	if ((self.armortype >= 0.8))
 	{
-		self.items = (self.items | 32768);
+		self.items = (self.items | ITEM_ARMOR3);
 	}
 	else if ((self.armortype >= 0.6))
 	{
-		self.items = (self.items | 16384);
+		self.items = (self.items | ITEM_ARMOR2);
 	}		
 	else if ((self.armortype >= 0.3))
 	{
-		self.items = (self.items | 8192);
+		self.items = (self.items | ITEM_ARMOR1);
 	}
 	
 	noitems = stof (infokey (world, "noitems"));

@@ -269,7 +269,7 @@ void () DecodeLevelParms =
 	self.current_weapon = parm8;
 	self.armortype = (parm9 * 0.01);
 
-	if (!(toggleflags & 256))
+	if (!(toggleflags & TFLAG_FIRSTENTRY))
 	{
 
 		localcmd ("serverinfo huetf 1.45\n");
@@ -278,7 +278,7 @@ void () DecodeLevelParms =
 		flagem_checked = 0;
 		if ((coop || !deathmatch))
 		{
-			toggleflags = (toggleflags | 1);
+			toggleflags = (toggleflags | TFLAG_CLASS_PERSIST);
 		}
 		nextmap = mapname;
 		ent = find (world, classname, "info_tfdetect");
@@ -353,14 +353,14 @@ void () DecodeLevelParms =
 		cease_fire = 0;
 		if (1)
 		{
-			toggleflags = (toggleflags - (toggleflags & 128));
+			toggleflags = (toggleflags - (toggleflags & TFLAG_TEAMFRAGS));
 		}
 		if (0)
 		{
-			toggleflags = (toggleflags | 128);
+			toggleflags = (toggleflags | TFLAG_TEAMFRAGS);
 		}
-		toggleflags = (toggleflags - (toggleflags & 2));
-		toggleflags = (toggleflags | 256);
+		toggleflags = (toggleflags - (toggleflags & TFLAG_CHEATCHECK));
+		toggleflags = (toggleflags | TFLAG_FIRSTENTRY);
 		st = infokey (world, "temp1");
 		fl = stof (st);
 		if (fl)
@@ -493,7 +493,7 @@ void () DecodeLevelParms =
 					{
 						centerprint (te, "CEASE FIRE\n");
 						te.immune_to_check = (time + 5);
-						te.tfstate = (te.tfstate | 65536);
+						te.tfstate = (te.tfstate | TFSTATE_CANT_MOVE);
 						TeamFortress_SetSpeed (te);
 						te = find (te, classname, "player");
 					}
@@ -998,7 +998,7 @@ void () ClientKill =
 		TF_AddFrags (self, -1, 0);
 		set_suicide_frame ();
 		self.modelindex = modelindex_player;
-		if ((self.tfstate & 16))
+		if ((self.tfstate & TFSTATE_INFECTED))
 		{
 			te = find (world, classname, "timer");
 			while (te)
@@ -1361,7 +1361,7 @@ void () PutClientInServer =
 		}
 	}
 	iszoom = 0;
-	if ((self.tfstate & 4096))
+	if ((self.tfstate & TFSTATE_LOCK))
 	{
 		iszoom = 1;
 	}
@@ -1375,18 +1375,18 @@ void () PutClientInServer =
 		{
 			self.playerclass = self.nextpc;
 			self.nextpc = 0;
-			if ((self.playerclass == enter))
+			if ((self.playerclass == PC_RANDOM))
 			{
-				self.tfstate = (self.tfstate | 8);
+				self.tfstate = (self.tfstate | TFSTATE_RANDOMPC);
 			}
 			else
 			{
-				self.tfstate = (self.tfstate - (self.tfstate & 8));
+				self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_RANDOMPC));
 				TeamFortress_ExecClassScript (self);
 			}
 		}
 	}
-	if ((self.tfstate & 8))
+	if ((self.tfstate & TFSTATE_RANDOMPC))
 	{
 		if (round_active)
 		{
@@ -1408,7 +1408,7 @@ void () PutClientInServer =
 				sprint (self, 2, "All classes disabled, returning to Observer mode.\n");
 				self.playerclass = 0;
 			}
-			self.tfstate = 8;
+			self.tfstate = TFSTATE_RANDOMPC;
 			TeamFortress_ExecClassScript (self);
 		}
 	}
@@ -1419,14 +1419,14 @@ void () PutClientInServer =
 	if ((iszoom == 1))
 	{
 		self.oldheight = stof (infokey (self, "fov"));
-		self.tfstate = (self.tfstate | 4096);
+		self.tfstate = (self.tfstate | TFSTATE_LOCK);
 	}
 	if ((self.playerclass != 9))
 	{
 		Engineer_RemoveBuildings (self);
 	}
 	self.takedamage = 2;
-	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & 8));
+	TeamFortress_PrintClassName (self, self.playerclass, (self.tfstate & TFSTATE_RANDOMPC));
 	TeamFortress_SetEquipment ();
 	TeamFortress_SetSpeed (self);
 	TeamFortress_SetSkin (self);
@@ -1533,7 +1533,7 @@ void () PutClientInServer =
 	{
 		sprint (self, 2, "\n\nCEASE FIRE MODE\n");
 		self.immune_to_check = (time + 5);
-		self.tfstate = (self.tfstate | 65536);
+		self.tfstate = (self.tfstate | TFSTATE_CANT_MOVE);
 		TeamFortress_SetSpeed (self);
 	}
 };
@@ -1798,7 +1798,7 @@ void () PlayerJump =
 	{
 		return;
 	}
-	if ((self.tfstate & 65536))
+	if ((self.tfstate & TFSTATE_CANT_MOVE))
 	{
 		return;
 	}
@@ -1851,7 +1851,7 @@ void () PlayerJump =
 		}
 		if ((self.fire_held_down && (self.current_weapon == 32768)))
 		{
-			self.tfstate = (self.tfstate - (self.tfstate & 2048));
+			self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 			TeamFortress_SetSpeed (self);
 			self.weaponframe = 0;
 			self.heat = 0;
@@ -1898,7 +1898,7 @@ void () PlayerJump =
 	if ((self.button0 && (self.current_weapon == 32768)))
 	{
 		sprint (self, 1, "You cannot fire the assault cannon without your feet on the ground...\n");
-		self.tfstate = (self.tfstate - (self.tfstate & 2048));
+		self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_AIMING));
 		TeamFortress_SetSpeed (self);
 		self.weaponframe = 0;
 		self.count = 1;
@@ -2136,7 +2136,7 @@ void () CheckPowerups =
 	{
 		if (self.invisible_finished)
 		{
-			if ((self.tfstate & 64))
+			if ((self.tfstate & TFSTATE_INVISIBLE))
 			{
 				if ((self.invisible_finished < (time + enter)))
 				{
@@ -2179,7 +2179,7 @@ void () CheckPowerups =
 	}
 	if (self.invincible_finished)
 	{
-		if ((self.tfstate & space))
+		if ((self.tfstate & TFSTATE_INVINCIBLE))
 		{
 			if ((self.invincible_finished < (time + enter)))
 			{
@@ -2237,7 +2237,7 @@ void () CheckPowerups =
 	}
 	if (self.super_damage_finished)
 	{
-		if ((self.tfstate & 128))
+		if ((self.tfstate & TFSTATE_QUAD))
 		{
 			if ((self.super_damage_finished == (time + enter)))
 			{
@@ -2296,7 +2296,7 @@ void () CheckPowerups =
 	if (self.radsuit_finished)
 	{
 		self.air_finished = (time + 12);
-		if ((self.tfstate & 256))
+		if ((self.tfstate & TFSTATE_RADSUIT))
 		{
 			if ((self.radsuit_finished == (time + enter)))
 			{
@@ -2607,7 +2607,7 @@ void () ClientConnect =
 
 	if ((0 == 0))
 	{
-		self.tfstate = (self.tfstate | 4096);
+		self.tfstate = (self.tfstate | TFSTATE_LOCK);
 	}
 	self.motd = 0;
 	self.get_aliases = 1;

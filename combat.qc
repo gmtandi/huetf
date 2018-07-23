@@ -126,7 +126,7 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 		save = targ.armorvalue;
 		targ.armortype = 0;
 		targ.armorclass = 0;
-		targ.items = (targ.items - (targ.items & ((8192 | 16384) | 32768)));
+		targ.items = (targ.items - (targ.items & (ITEM_ARMOR1 | ITEM_ARMOR2 | ITEM_ARMOR3)));
 	}
 	targ.armorvalue = (targ.armorvalue - save);
 	take = ceil ((damage - save));
@@ -360,7 +360,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			save = targ.armorvalue;
 			targ.armortype = 0;
 			targ.armorclass = 0;
-			targ.items = (targ.items - (targ.items & ((8192 | 16384) | 32768)));
+			targ.items = (targ.items - (targ.items & (ITEM_ARMOR1 | ITEM_ARMOR2 | ITEM_ARMOR3)));
 		}
 		targ.armorvalue = (targ.armorvalue - save);
 		take = ceil ((damage - save));
@@ -371,7 +371,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		targ.dmg_save = (targ.dmg_save + save);
 		targ.dmg_inflictor = inflictor;
 	}
-	if ((((inflictor != world) && (targ.movetype == 3)) && !(targ.tfstate & 65536)))
+	if ((((inflictor != world) && (targ.movetype == 3)) && !(targ.tfstate & TFSTATE_CANT_MOVE)))
 	{
 		if ((deathmsg != 9))
 		{

@@ -357,7 +357,7 @@ void () FlameFollow =
 	}
 	if ((self.enemy.tfstate & 131072))
 	{
-		self.health = minus;
+		self.health = 45;
 		self.enemy.tfstate = (self.enemy.tfstate - (self.enemy.tfstate & 131072));
 	}
 	if ((self.health < 1))

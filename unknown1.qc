@@ -1268,7 +1268,7 @@ void () RefreshStatusBar =
 	}
 	if (!(self.sbar_type & 1))
 	{
-		if ((self.current_weapon == 128))
+		if ((self.current_weapon == WEAP_SHOTGUN))
 		{
 			if (((8 - self.reload_shotgun) > self.ammo_shells))
 			{
@@ -1278,7 +1278,7 @@ void () RefreshStatusBar =
 		}
 		else
 		{
-			if ((self.current_weapon == 256))
+			if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
 			{
 				if (((16 - self.reload_super_shotgun) > self.ammo_shells))
 				{
@@ -1288,7 +1288,7 @@ void () RefreshStatusBar =
 			}
 			else
 			{
-				if ((self.current_weapon == 2048))
+				if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
 				{
 					if (((6 - self.reload_grenade_launcher) > self.ammo_rockets))
 					{
@@ -1296,7 +1296,7 @@ void () RefreshStatusBar =
 					}
 					num = (6 - self.reload_grenade_launcher);
 				}
-				else if ((self.current_weapon == 1048576))
+				else if ((self.current_weapon == WEAP_TRIBOLT))
 				{
 					if (((12 - self.reload_tribolt) > self.ammo_rockets))
 					{
@@ -1304,7 +1304,7 @@ void () RefreshStatusBar =
 					}
 					num = (12 - self.reload_tribolt);
 				}
-				else if ((self.current_weapon == 8192))
+				else if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 				{	
 					if (((4 - self.reload_rocket_launcher) > self.ammo_rockets))
 					{
@@ -2023,7 +2023,7 @@ void (float menu_no) DisplayMenu =
 
 void () Menu_Team =
 {
-	if (((toggleflags & 64) && teamplay && !captainmode))
+	if (((toggleflags & TFLAG_AUTOTEAM) && teamplay && !captainmode))
 	{
 		if (TeamFortress_TeamPutPlayerInTeam ())
 		{
@@ -3079,7 +3079,7 @@ void (float inp) Menu_EngineerFix_Dispenser_Input =
 		{
 			self.armortype = 0;
 			self.armorclass = 0;
-			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
+			self.items = (self.items - (self.items & (ITEM_ARMOR1 | ITEM_ARMOR2 | ITEM_ARMOR3)));
 		}
 		W_SetCurrentAmmo ();
 	}
@@ -3316,7 +3316,7 @@ if (!sglvl2to3) {
 		{
 			self.armortype = 0;
 			self.armorclass = 0;
-			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
+			self.items = (self.items - (self.items & (ITEM_ARMOR1 | ITEM_ARMOR2 | ITEM_ARMOR3)));
 		}
 		W_SetCurrentAmmo ();
 	}
@@ -3362,7 +3362,7 @@ void (float inp) Menu_EngineerFix_SentryGun_Rotate_Input = {
 		{
 			self.armortype = 0;
 			self.armorclass = 0;
-			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
+			self.items = (self.items - (self.items & ((ITEM_ARMOR1 | ITEM_ARMOR2) | ITEM_ARMOR3)));
 		}
 		W_SetCurrentAmmo ();
 	}
@@ -3435,7 +3435,7 @@ void (float inp) Menu_Dispenser_Input =
 				if ((self.armortype == 0))
 				{
 					self.armortype = 0.3;
-					self.items = (self.items | 8192);
+					self.items = (self.items | ITEM_ARMOR1);
 				}
 				self.building.armorvalue = (self.building.armorvalue - am);
 				self.armorvalue = (self.armorvalue + am);
@@ -3457,7 +3457,7 @@ void (float inp) Menu_Dispenser_Input =
 		{
 			self.armortype = 0;
 			self.armorclass = 0;
-			self.items = (self.items - (self.items & ((8192 | 16384) | 32768)));
+			self.items = (self.items - (self.items & ((ITEM_ARMOR1 | ITEM_ARMOR2) | ITEM_ARMOR3)));
 		}
 		W_SetCurrentAmmo ();
 	}

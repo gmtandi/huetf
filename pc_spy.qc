@@ -556,7 +556,7 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 			self.is_feigning = 0;
 			self.current_weapon = self.weapon;
 			W_SetCurrentAmmo ();
-			self.tfstate = (self.tfstate - (self.tfstate & 65536));
+			self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_CANT_MOVE));
 			TeamFortress_SetSpeed (self);
 			if ((self.weapon <= 16))
 			{
@@ -626,7 +626,7 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 			at_spot = at_spot.chain;
 		}
 		self.immune_to_check = (time + 5);
-		self.tfstate = (self.tfstate | 65536);
+		self.tfstate = (self.tfstate | TFSTATE_CANT_MOVE);
 		TeamFortress_SetSpeed (self);
 		self.is_feigning = 1;
 		Attack_Finished (0.8);
@@ -976,7 +976,7 @@ void () GasGrenadeMakeGas =
 				dam_mult = 1.33;
 
 			TF_T_Damage (te, world, self.owner, enter * dam_mult, (1 | 2), 0);
-			if ((te.tfstate & 16384))
+			if ((te.tfstate & TFSTATE_HALLUCINATING))
 			{
 				timer = find (world, classname, "timer");
 				while ((((timer.owner != te) || (timer.think != HallucinationTimer)) && (timer != world)))
@@ -995,7 +995,7 @@ void () GasGrenadeMakeGas =
 			else
 			{
 				sprint (te, 2, "Run for cover! They're everywhere!\n");
-				te.tfstate = (te.tfstate | 16384);
+				te.tfstate = (te.tfstate | TFSTATE_HALLUCINATING);
 				timer = spawn ();
 				timer.nextthink = (time + 0.3);
 				timer.think = HallucinationTimer;
@@ -1058,14 +1058,14 @@ void () HallucinationTimer =
 	}
 	if ((((self.health <= 0) || (self.owner.deadflag != 0)) || (self.owner.has_disconnected == 1)))
 	{
-		self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 16384));
+		self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_HALLUCINATING));
 	}
 	if (((self.owner.deadflag != 0) || (self.owner.has_disconnected == 1)))
 	{
 		dremove (self);
 		return;
 	}
-	if (!(self.owner.tfstate & 16384))
+	if (!(self.owner.tfstate & TFSTATE_HALLUCINATING))
 	{
 		sprint (self.owner, 2, "You feel a little better now.\n");
 		dremove (self);
@@ -1367,7 +1367,7 @@ void () T_TranqDartTouch =
 	{
 		if (((other.classname == "player") && !((other.team_no == self.owner.team_no) && (teamplay & (2 | 4)))))
 		{
-			if ((other.tfstate & 32768))
+			if ((other.tfstate & TFSTATE_TRANQUILISED))
 			{
 				timer = find (world, classname, "timer");
 				while ((((timer.owner != other) || (timer.think != TranquiliserTimer)) && (timer != world)))
@@ -1382,7 +1382,7 @@ void () T_TranqDartTouch =
 			else
 			{
 				sprint (other, 2, "You feel tired...\n");
-				other.tfstate = (other.tfstate | 32768);
+				other.tfstate = (other.tfstate | TFSTATE_TRANQUILISED);
 				timer = spawn ();
 				timer.nextthink = (time + 15);
 				timer.think = TranquiliserTimer;
@@ -1424,7 +1424,7 @@ void () T_TranqDartTouch =
 
 void () TranquiliserTimer =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 32768));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_TRANQUILISED));
 	TeamFortress_SetSpeed (self.owner);
 	sprint (self.owner, 2, "You feel more alert now\n");
 	dremove (self);

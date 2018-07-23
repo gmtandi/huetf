@@ -368,7 +368,7 @@ void () TeamFortress_EngineerBuild =
 		if ((self.is_building == 1))
 		{
 			sprint (self, 2, "You stop building.\n");
-			self.tfstate = (self.tfstate - (self.tfstate & 65536));
+			self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_CANT_MOVE));
 			TeamFortress_SetSpeed (self);
 			te = find (world, netname, "build_timer");
 			while (te)
@@ -538,7 +538,7 @@ void (float objtobuild) TeamFortress_Build =
 	}
 	self.is_building = 1;
 	self.immune_to_check = (time + 5);
-	self.tfstate = (self.tfstate | 65536);
+	self.tfstate = (self.tfstate | TFSTATE_CANT_MOVE);
 	self.weapon = self.current_weapon;
 	self.current_weapon = 0;
 	self.weaponmodel = "";
@@ -633,7 +633,7 @@ void () TeamFortress_FinishedBuilding =
 	oldself.owner = world;
 	oldself.real_owner = self;
 	self.is_building = 0;
-	self.tfstate = (self.tfstate - (self.tfstate & 65536));
+	self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_CANT_MOVE));
 	self.current_weapon = self.weapon;
 	self.StatusRefreshTime = (time + 0.1);
 	TeamFortress_SetSpeed (self);

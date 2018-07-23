@@ -1,7 +1,7 @@
 
 void () ReloadWeapons =
 {
-	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
+	if (((self.tfstate & TFSTATE_GRENPRIMED) || (self.tfstate & FL_PARTIALGROUND)))
 	{
 		return;
 	}
@@ -358,7 +358,7 @@ void () PickBestWeapon =
 			self.impulse = 1;
 			return;
 		}
-		if (((self.ammo_shells > 0) && !(self.target1.tfstate & 32768)))
+		if (((self.ammo_shells > 0) && !(self.target1.tfstate & TFSTATE_TRANQUILISED)))
 		{
 			self.impulse = BOT_FIGHTING;
 			return;
@@ -695,7 +695,7 @@ void () HandleGrens =
 	local float fGrenZVelocity;
 	local float fArc;
 
-	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
+	if (((self.tfstate & TFSTATE_GRENPRIMED) || (self.tfstate & FL_PARTIALGROUND)))
 	{
 		eGren = world;
 		eTemp = find (world, classname, "timer");
@@ -766,7 +766,7 @@ void () HandleGrens =
 
 void () DitchGrens =
 {
-	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
+	if (((self.tfstate & TFSTATE_GRENPRIMED) || (self.tfstate & FL_PARTIALGROUND)))
 	{
 		self.impulse = 152;
 	}
@@ -783,7 +783,7 @@ void () UseGren =
 	local float fGrenZVelocity;
 	local float fArc;
 
-	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
+	if (((self.tfstate & TFSTATE_GRENPRIMED) || (self.tfstate & FL_PARTIALGROUND)))
 	{
 		eGren = world;
 		eTemp = find (world, classname, "timer");

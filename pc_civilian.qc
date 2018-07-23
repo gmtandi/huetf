@@ -17,7 +17,7 @@ void () TeamFortress_Civilian =
 		self.armortype 			= 0.6;
 		self.armor_allowed 		= 0.6;
 		self.maxarmor 			= 140;
-		self.current_weapon 	= 8192;
+		self.current_weapon 	= WEAP_ROCKET_LAUNCHER;
 		self.items_allowed 		= PC_CIVILIAN_DM_WEAPONS;
 		self.items 				= ( 1 | 2 | 4 | 8 | 16 | 32 | 64);
 	}

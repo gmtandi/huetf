@@ -12,6 +12,7 @@ items.qc
 infocheck.qc
 track.qc
 stored.qc
+weap_tribolt.qc
 weapons.qc
 world.qc
 client.qc

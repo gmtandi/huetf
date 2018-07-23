@@ -40,7 +40,7 @@ void () TeamFortress_SniperWeapon =
 	local float it;
 
 	self.impulse = 0;
-	if ((self.tfstate & 2))
+	if ((self.tfstate & TFSTATE_RELOADING))
 	{
 		return;
 	}
@@ -68,7 +68,7 @@ void (float zoom_level) TF_zoom =
 {
 	local string zl;
 
-	if ((self.tfstate & 4096))
+	if ((self.tfstate & TFSTATE_ZOOMOFF))
 	{
 		return;
 	}
@@ -82,9 +82,9 @@ void () SniperSight_Update =
 {
 	local vector org;
 
-	if ((!(self.owner.tfstate & 2048) || (self.owner.current_weapon != space)))
+	if ((!(self.owner.tfstate & TFSTATE_AIMING) || (self.owner.current_weapon != space)))
 	{
-		self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 2048));
+		self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_AIMING));
 		TeamFortress_SetSpeed (self.owner);
 		self.owner.heat = 0;
 		dremove (self);
@@ -112,7 +112,7 @@ void () SniperSight_Create =
 	{
 		return;
 	}
-	self.tfstate = (self.tfstate | 2048);
+	self.tfstate = (self.tfstate | TFSTATE_AIMING);
 	sight = spawn ();
 	sight.owner = self;
 	sight.movetype = 8;
@@ -154,14 +154,14 @@ void () SniperSight_Create =
 
 void () TeamFortress_AutoZoomToggle =
 {
-	if ((self.tfstate & 4096))
+	if ((self.tfstate & TFSTATE_ZOOMOFF))
 	{
-		self.tfstate = (self.tfstate - 4096);
+		self.tfstate = (self.tfstate - TFSTATE_ZOOMOFF);
 		sprint (self, 2, "autozoom ON\n");
 	}
 	else
 	{
-		self.tfstate = (self.tfstate | 4096);
+		self.tfstate = (self.tfstate | TFSTATE_ZOOMOFF);
 		sprint (self, 2, "autozoom OFF\n");
 	}
 };

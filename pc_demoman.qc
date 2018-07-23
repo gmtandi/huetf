@@ -178,7 +178,7 @@ void (entity bowner) TeamFortress_SetBomb =
 		bowner.ammo_detpack = (bowner.ammo_detpack - 1);
 	}
 	bowner.immune_to_check = (time + 5);
-	bowner.tfstate = (bowner.tfstate | 65536);
+	bowner.tfstate = (bowner.tfstate | TFSTATE_CANT_MOVE);
 	bowner.weapon = bowner.current_weapon;
 	bowner.current_weapon = 0;
 	bowner.weaponmodel = "";
@@ -292,7 +292,7 @@ void (float timer) TeamFortress_SetDetpack =
 		self.ammo_detpack = (self.ammo_detpack - 1);
 	}
 	self.immune_to_check = (time + 5);
-	self.tfstate = (self.tfstate | 65536);
+	self.tfstate = (self.tfstate | TFSTATE_CANT_MOVE);
 	self.weapon = self.current_weapon;
 	self.current_weapon = 0;
 	self.weaponmodel = "";
@@ -333,7 +333,7 @@ void () TeamFortress_DetpackStop =
 	sprint (self, 2, "Detpack retrieved.\n");
 	self.ammo_detpack = (self.ammo_detpack + 1);
 	dremove (detpack_timer);
-	self.tfstate = (self.tfstate - (self.tfstate & 65536));
+	self.tfstate = (self.tfstate - (self.tfstate & TFSTATE_CANT_MOVE));
 	self.current_weapon = self.weapon;
 	W_SetCurrentAmmo ();
 	TeamFortress_SetSpeed (self);
@@ -348,7 +348,7 @@ void () TeamFortress_DetpackSet =
 	local string st;
 
 	self.is_detpacking = 0;
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 65536));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_CANT_MOVE));
 	TeamFortress_SetSpeed (self.owner);
 	oldself = self;
 	self = self.owner;
@@ -585,7 +585,7 @@ void () TeamFortress_DetpackTouch =
 		}
 	}
 	other.immune_to_check = (time + 5);
-	other.tfstate = (other.tfstate | 65536);
+	other.tfstate = (other.tfstate | TFSTATE_CANT_MOVE);
 	TeamFortress_SetSpeed (other);
 	disarm = spawn ();
 	disarm.owner = other;
@@ -643,7 +643,7 @@ void () TeamFortress_DetpackDisarm =
 		bprint (1, self.owner.netname);
 		bprint (1, "\n");
 	}
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & 65536));
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_CANT_MOVE));
 	TF_AddFrags (self.owner, 1, 0);
 	TeamFortress_SetSpeed (self.owner);
 	dremove (self.enemy.oldenemy);

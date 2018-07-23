@@ -37,7 +37,7 @@ void () TeamFortress_AmmoboxTouch =
 	{
 		return;
 	}
-	if (((other.tfstate & 65536) || (other.tfstate & 2048)))
+	if (((other.tfstate & TFSTATE_CANT_MOVE) || (other.tfstate & TFSTATE_AIMING)))
 	{
 		return;
 	}

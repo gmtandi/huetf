@@ -172,7 +172,7 @@ void () Admin_CeaseFire =
 		{
 			CenterPrint3 (te, "CEASE FIRE\nCalled by: ", self.netname, "\n");
 			te.immune_to_check = (time + 5);
-			te.tfstate = (te.tfstate | 65536);
+			te.tfstate = (te.tfstate | TFSTATE_CANT_MOVE);
 			TeamFortress_SetSpeed (te);
 			te = find (te, classname, "player");
 		}
@@ -201,7 +201,7 @@ void () Admin_CeaseFire =
 		{
 			CenterPrint3 (te, "RESUME FIRE\nCalled by: ", self.netname, "\n");
 			te.immune_to_check = (time + 5);
-			te.tfstate = (te.tfstate - (te.tfstate & 65536));
+			te.tfstate = (te.tfstate - (te.tfstate & TFSTATE_CANT_MOVE));
 			TeamFortress_SetSpeed (te);
 			te = find (te, classname, "player");
 		}
