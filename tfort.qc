@@ -1,4 +1,21 @@
 //=-=-=-=-=
+void () UseSpecialSkill;
+void (float inp) TeamFortress_ChangeClass;
+void () TeamFortress_DisplayLegalClasses;
+void (float grenade) TeamFortress_Inventory_PrintGrenades;
+void () TeamFortress_Inventory;
+void () TeamFortress_ShowTF;
+void () TeamFortress_GrenadePrimed;
+void () GrenadeTimer;
+void () RemoveGrenadeTimers
+string (float grenade) TeamFortress_GetGrenadeName;
+void () TeamFortress_PrimeGrenade;
+void () TeamFortress_GrenadePrimed;
+void () TeamFortress_ThrowGrenade;
+float (float pc) IsLegalClass;
+void (entity p) TeamFortress_SetSpeed;
+
+
 void (entity Goal, entity Player, entity Item) DisplayItemStatus;
 void () TeamFortress_CheckClassStats;
 void (entity Player, float Armorclass) TeamFortress_DescribeArmor;
@@ -8,138 +25,78 @@ void () UseSpecialSkill =
 	local vector src;
 
 	self.impulse = 0;
-	if ((self.playerclass == PC_SCOUT))
+	switch (self.playerclass) 
 	{
-		self.impulse = 159;
-		return;
-	}
-	else
-	{
-		if ((self.playerclass == PC_SNIPER))
-		{
+		case PC_SCOUT:
+			self.impulse = 159;
+			break;
+		case PC_SNIPER:		
 			self.impulse = 174;
-			return;
-		}
-		else
-		{
-			if ((self.playerclass == PC_SOLDIER))
+			break;	
+		case PC_SOLDIER:
+			self.impulse = 173;
+			break;
+		case PC_DEMOMAN:
+			self.impulse = 170;
+			break;
+		case PC_MEDIC:
+			if (self.current_weapon == WEAP_SUPER_NAILGUN)
+				self.impulse = 176;
+			else
+				self.impulse = 5;
+			break;
+		case PC_HWGUY:						
+			if (self.current_weapon == WEAP_ASSAULT_CANNON)
 			{
-				self.impulse = 173;
-				return;
+				if ((self.tfstate & 2048))
+					sprint (self, 1, "Cannot switch weapons while firing.\n");
+				else
+					self.impulse = 3;
 			}
 			else
+				self.impulse = 7;
+			break;
+		case PC_PYRO:							
+			if ((self.current_weapon == WEAP_FLAMETHROWER))
+				self.impulse = 6;
+			else
+				self.impulse = 5;
+			break;
+		case PC_SPY:
+			self.impulse = 177;
+			break;
+		case PC_ENGINEER:
+			self.impulse = 179;
+			break;
+		default:
+			if (clanbattle)
 			{
-				if ((self.playerclass == PC_DEMOMAN))
+				sprint (self, 2, "Clan Battle in progress....\n");
+				self.impulse = 0;
+				return;
+			}
+			src = (self.origin + (v_forward * 10));
+			src_z = (self.absmin_z + (self.size_z * 0.7));
+			traceline (src, (src + (v_forward * 2048)), 0, self);
+			if ((trace_ent != world))
+			{
+				if ((trace_ent.netname != string_null))
 				{
-					self.impulse = 170;
-					return;
+					sprint3 (self, 2, "Locked onto ", trace_ent.netname, "\n");
 				}
 				else
 				{
-					if ((self.playerclass == PC_MEDIC))
-					{
-						if ((self.current_weapon == 1024))
-						{
-							self.impulse = COLOR_RED;
-							return;
-						}
-						else
-						{
-							self.impulse = 5;
-							return;
-						}
-					}
-					else
-					{
-						if ((self.playerclass == PC_HWGUY))
-						{
-							if ((self.current_weapon == 32768))
-							{
-								if ((self.tfstate & 2048))
-								{
-									sprint (self, 1, "Cannot switch weapons while firing.\n");
-									return;
-								}
-								else
-								{
-									self.impulse = 3;
-									return;
-								}
-							}
-							else
-							{
-								self.impulse = 7;
-								return;
-							}
-						}
-						else
-						{
-							if ((self.playerclass == PC_PYRO))
-							{
-								if ((self.current_weapon == 4096))
-								{
-									self.impulse = 6;
-									return;
-								}
-								else
-								{
-									self.impulse = 5;
-									return;
-								}
-							}
-							else
-							{
-								if ((self.playerclass == PC_SPY))
-								{
-									self.impulse = 177;
-									return;
-								}
-								else
-								{
-									if ((self.playerclass == PC_ENGINEER))
-									{
-										self.impulse = 179;
-										return;
-									}
-									else
-									{
-										if (!self.playerclass)
-										{
-											if (clanbattle)
-											{
-												sprint (self, 2, "Clan Battle in progress....\n");
-												self.impulse = 0;
-												return;
-											}
-											src = (self.origin + (v_forward * enter));
-											src_z = (self.absmin_z + (self.size_z * 0.7));
-											traceline (src, (src + (v_forward * 2048)), 0, self);
-											if ((trace_ent != world))
-											{
-												if ((trace_ent.netname != string_null))
-												{
-													sprint3 (self, 2, "Locked onto ", trace_ent.netname, "\n");
-												}
-												else
-												{
-													sprint3 (self, 2, "Locked onto ", trace_ent.classname, "\n");
-												}
-												self.goalentity = trace_ent;
-												if (!self.tracking)
-												{
-													Toggle_Tracking ();
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+					sprint3 (self, 2, "Locked onto ", trace_ent.classname, "\n");
+				}
+				self.goalentity = trace_ent;
+				if (!self.tracking)
+				{
+					Toggle_Tracking ();
 				}
 			}
-		}
+			break;	
 	}
+	return;
 };
 
 void (float inp) TeamFortress_ChangeClass =
@@ -206,9 +163,9 @@ void (float inp) TeamFortress_ChangeClass =
 		TeamFortress_PrintClassName (self, self.nextpc, (self.tfstate & 8));
 		return;
 	}
-	if ((teamplay && (self.team_no == 0) && !captainmode))
+	if (teamplay && (self.team_no == 0) && !captainmode)
 	{
-		if ((toggleflags & 64))
+		if (toggleflags & 64)
 		{
 			if ((TeamFortress_TeamPutPlayerInTeam () == 0))
 			{
@@ -221,15 +178,15 @@ void (float inp) TeamFortress_ChangeClass =
 			return;
 		}
 	}
-	if ((self.respawn_time > time))
+	if (self.respawn_time > time)
 	{
 		return;
 	}
-	if ((round_over == 2))
+	if (round_over == 2)
 	{
 		return;
 	}
-	if ((!IsLegalClass (inp) && (inp != 11)))
+	if (!IsLegalClass (inp) && (inp != 11))
 	{
 		sprint (self, 2, "You cannot play that playerclass on this map. \n");
 		TeamFortress_DisplayLegalClasses ();
@@ -241,7 +198,7 @@ void (float inp) TeamFortress_ChangeClass =
 		return;
 	}
 	TeamFortress_ExecClassScript (self);
-	if (((inp > 0) && (inp < 12)))
+	if ((inp > 0) && (inp < 12))
 	{
 		self.playerclass = inp;
 	}
@@ -272,23 +229,23 @@ void (float inp) TeamFortress_ChangeClass =
 	setsize (self, '-16 -16 -24', '16 16 32');
 	self.view_ofs = '0 0 22';
 	player_stand1 ();
-	if ((deathmatch || coop))
+	if (deathmatch || coop)
 	{
 		makevectors (self.angles);
-		spawn_tfog ((self.origin + (v_forward * 20)));
+		spawn_tfog (self.origin + (v_forward * 20));
 	}
-	if ((self.playerclass == enter))
+	if (self.playerclass == 10)
 	{
 		sprint (self, 2, "Random Playerclass.\n");
 		self.tfstate = (self.tfstate | 8);
-		self.playerclass = (1 + floor ((random () * (enter - 1))));
+		self.playerclass = (1 + floor ((random () * (10 - 1))));
 		if (CheckClassAvailable (self.team_no))
 		{
 			oldclass = self.playerclass;
-			self.playerclass = (1 + floor ((random () * (enter - 1))));
-			while (((self.playerclass == oldclass) || ClassIsRestricted (self.team_no, self.playerclass)))
+			self.playerclass = (1 + floor ((random () * (10 - 1))));
+			while ((self.playerclass == oldclass) || ClassIsRestricted (self.team_no, self.playerclass))
 			{
-				self.playerclass = (1 + floor ((random () * (enter - 1))));
+				self.playerclass = (1 + floor ((random () * (10 - 1))));
 			}
 		}
 		else
@@ -297,7 +254,7 @@ void (float inp) TeamFortress_ChangeClass =
 			self.playerclass = 0;
 		}
 	}
-	if (((spot.classname == "info_player_teamspawn") && !cb_prematch))
+	if ((spot.classname == "info_player_teamspawn") && !cb_prematch)
 	{
 		if ((spot.items != 0))
 		{
@@ -319,7 +276,7 @@ void (float inp) TeamFortress_ChangeClass =
 				spot.message = string_null;
 			}
 		}
-		if ((spot.activate_goal_no != 0))
+		if (spot.activate_goal_no != 0)
 		{
 			te = Findgoal (spot.activate_goal_no);
 			if (te)
@@ -327,7 +284,7 @@ void (float inp) TeamFortress_ChangeClass =
 				AttemptToActivate (te, self, spot);
 			}
 		}
-		if ((spot.goal_effects == 1))
+		if (spot.goal_effects == 1)
 		{
 			spot.classname = "deadpoint";
 			spot.team_str_home = string_null;
@@ -338,7 +295,7 @@ void (float inp) TeamFortress_ChangeClass =
 	spot = find (world, classname, "player");
 	while (spot)
 	{
-		if (((spot.team_no == self.team_no) && (spot != self)))
+		if ((spot.team_no == self.team_no) && (spot != self))
 		{
 			sprint (spot, 2, self.netname);
 			sprint (spot, 2, " is playing as a ");
@@ -375,7 +332,7 @@ void () TeamFortress_DisplayLegalClasses =
 	sprint (self, 2, "Legal Classes for your team are:\n");
 	gotone = 0;
 	ill = TeamFortress_TeamGetIllegalClasses (self.team_no);
-	if ((!(illegalclasses & 1) && !(ill & 1)))
+	if (!(illegalclasses & 1) && !(ill & 1))
 	{
 		if (gotone)
 		{
@@ -384,7 +341,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Scout");
 	}
-	if ((!(illegalclasses & 2) && !(ill & 2)))
+	if (!(illegalclasses & 2) && !(ill & 2))
 	{
 		if (gotone)
 		{
@@ -393,7 +350,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Sniper");
 	}
-	if ((!(illegalclasses & 4) && !(ill & 4)))
+	if (!(illegalclasses & 4) && !(ill & 4))
 	{
 		if (gotone)
 		{
@@ -402,7 +359,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Soldier");
 	}
-	if ((!(illegalclasses & 8) && !(ill & 8)))
+	if (!(illegalclasses & 8) && !(ill & 8))
 	{
 		if (gotone)
 		{
@@ -411,7 +368,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Demolitions Man");
 	}
-	if ((!(illegalclasses & 16) && !(ill & 16)))
+	if (!(illegalclasses & 16) && !(ill & 16))
 	{
 		if (gotone)
 		{
@@ -420,7 +377,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Combat Medic");
 	}
-	if ((!(illegalclasses & space) && !(ill & space)))
+	if (!(illegalclasses & 32) && !(ill & 32))
 	{
 		if (gotone)
 		{
@@ -429,7 +386,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Heavy Weapons Guy");
 	}
-	if ((!(illegalclasses & 64) && !(ill & 64)))
+	if (!(illegalclasses & 64) && !(ill & 64))
 	{
 		if (gotone)
 		{
@@ -438,7 +395,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Pyro");
 	}
-	if ((!(illegalclasses & 256) && !(ill & 256)))
+	if (!(illegalclasses & 256) && !(ill & 256))
 	{
 		if (gotone)
 		{
@@ -447,7 +404,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Spy");
 	}
-	if ((!(illegalclasses & 512) && !(ill & 512)))
+	if (!(illegalclasses & 512) && !(ill & 512))
 	{
 		if (gotone)
 		{
@@ -456,7 +413,7 @@ void () TeamFortress_DisplayLegalClasses =
 		gotone = 1;
 		sprint (self, 2, "Engineer");
 	}
-	if ((!(illegalclasses & 128) && !(ill & 128)))
+	if (!(illegalclasses & 128) && !(ill & 128))
 	{
 		if (gotone)
 		{
@@ -466,6 +423,52 @@ void () TeamFortress_DisplayLegalClasses =
 		sprint (self, 2, "RandomPC");
 	}
 	sprint (self, 2, "\n");
+};
+
+void (float grenade) TeamFortress_Inventory_PrintGrenades = 
+{
+	local string num;
+	switch (grenade) {
+		case GR_TYPE_NORMAL:
+			sprint (self, 2, " Normal(");
+			break;
+		case GR_TYPE_CONCUSSION:
+			sprint (self, 2, " Concussion(");
+			break;
+		case GR_TYPE_NAIL:
+			sprint (self, 2, " Nail(");
+			break;
+		case GR_TYPE_MIRV:
+			sprint (self, 2, " Mirv(");
+			break;
+		case GR_TYPE_NAPALM:
+			sprint (self, 2, " Napalm(");
+			break;
+		case GR_TYPE_FLARE:
+			sprint (self, 2, " Flare(");
+			break;
+		case GR_TYPE_GAS:
+			sprint (self, 2, " Hallucinogenic(");
+			break;
+		case GR_TYPE_EMP:
+			sprint (self, 2, " EMP(");
+			break;
+		case GR_TYPE_FLASH:
+			sprint (self, 2, " Flash(");
+			break;
+		case GR_TYPE_CALTROP:
+			sprint (self, 2, " Caltrop(");
+			break;
+		case GR_TYPE_IMPACT:
+			sprint (self, 2, " Impact(");
+			break;
+		default:
+			sprint (self, 2, "N/A(");
+			break;
+	}
+	num = ftos (self.no_grenades_1);
+	sprint (self, 2, num);
+	sprint (self, 2, ")\n");
 };
 
 void () TeamFortress_Inventory =
@@ -485,144 +488,12 @@ void () TeamFortress_Inventory =
 	if ((self.no_grenades_1 > 0))
 	{
 		sprint (self, 2, "Gren.Type 1 : ");
-		if ((self.tp_grenades_1 == 1))
-		{
-			sprint (self, 2, " Normal(");
-		}
-		else
-		{
-			if ((self.tp_grenades_1 == 2))
-			{
-				sprint (self, 2, " Concussion(");
-			}
-			else
-			{
-				if ((self.tp_grenades_1 == 3))
-				{
-					sprint (self, 2, " Nail(");
-				}
-				else
-				{
-					if ((self.tp_grenades_1 == 4))
-					{
-						sprint (self, 2, " Mirv(");
-					}
-					else
-					{
-						if ((self.tp_grenades_1 == 5))
-						{
-							sprint (self, 2, " Napalm(");
-						}
-						else
-						{
-							if ((self.tp_grenades_1 == 6))
-							{
-								sprint (self, 2, " Flare(");
-							}
-							else
-							{
-								if ((self.tp_grenades_1 == 7))
-								{
-									sprint (self, 2, " Hallucinogenic(");
-								}
-								else
-								{
-									if ((self.tp_grenades_1 == 8))
-									{
-										sprint (self, 2, " EMP(");
-									}
-									else
-									{
-										if ((self.tp_grenades_1 == enter))
-										{
-											sprint (self, 2, " Caltrop(");
-										}
-
-
-else
-  if ((self.tp_grenades_1 == 11))
-    sprint (self, 2, " Impact(");
-
-
-										else
-										{
-											sprint (self, 2, "N/A(");
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		ac = ftos (self.no_grenades_1);
-		sprint (self, 2, ac);
-		sprint (self, 2, ")\n");
+		TeamFortress_Inventory_PrintGrenades(self.tp_grenades_1);		
 	}
 	if ((self.no_grenades_2 > 0))
 	{
 		sprint (self, 2, "Gren.Type 2 : ");
-		if ((self.tp_grenades_2 == 1))
-		{
-			sprint (self, 2, " Normal(");
-		}
-		else
-		{
-			if ((self.tp_grenades_2 == 2))
-			{
-				sprint (self, 2, " Concussion(");
-			}
-			else
-			{
-				if ((self.tp_grenades_2 == 3))
-				{
-					sprint (self, 2, " Nail(");
-				}
-				else
-				{
-					if ((self.tp_grenades_2 == 4))
-					{
-						sprint (self, 2, " Mirv(");
-					}
-					else
-					{
-						if ((self.tp_grenades_2 == 5))
-						{
-							sprint (self, 2, " Napalm(");
-						}
-						else
-						{
-							if ((self.tp_grenades_2 == 6))
-							{
-								sprint (self, 2, " Flare(");
-							}
-							else
-							{
-								if ((self.tp_grenades_2 == 7))
-								{
-									sprint (self, 2, " Hallucinogenic(");
-								}
-								else
-								{
-									if ((self.tp_grenades_2 == 8))
-									{
-										sprint (self, 2, " EMP(");
-									}
-									else
-									{
-										sprint (self, 2, "N/A(");
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		ac = ftos (self.no_grenades_2);
-		sprint (self, 2, ac);
-		sprint (self, 2, ")\n");
+		TeamFortress_Inventory_PrintGrenades(self.tp_grenades_2);
 	}
 	if ((self.tf_items & 1))
 	{
@@ -781,6 +652,49 @@ void () RemoveGrenadeTimers = {
     }
 };
 
+string (float grenade) TeamFortress_GetGrenadeName =
+{
+	local string gs;
+	switch (grenade) 
+	{
+		case GR_TYPE_NORMAL:
+			gs = "Grenade";
+			break;
+		case GR_TYPE_CONCUSSION:
+			gs = "Concussion grenade";
+			break;
+		case GR_TYPE_NAIL:
+			gs = "Nail grenade";
+			break;
+		case GR_TYPE_MIRV:
+			gs = "Mirv grenade";
+			break;
+		case GR_TYPE_NAPALM:
+			gs = "Napalm grenade";
+			break;
+		case GR_TYPE_FLARE:
+			gs = "Flare";
+			break;
+		case GR_TYPE_GAS:
+			gs = "Gas grenade";
+			break;
+		case GR_TYPE_EMP:
+			gs = "EMP grenade";
+			break;
+		case GR_TYPE_FLASH:
+			gs = "Flash grenade";
+			break;
+		case GR_TYPE_CALTROP:
+			gs = "Caltrop canister";
+			break;
+		case GR_TYPE_IMPACT:
+			gs = "Impact Grenade";
+			break;
+		default:
+			break;
+	}
+	return gs;
+};
 
 
 void () TeamFortress_PrimeGrenade =
@@ -792,7 +706,7 @@ void () TeamFortress_PrimeGrenade =
 	local entity timer;
 
 
-	if ((self.playerclass == PC_CIVILIAN))
+	if (self.playerclass == PC_CIVILIAN)
 	{
 		return;
 	}
@@ -803,69 +717,8 @@ void () TeamFortress_PrimeGrenade =
 	if ((self.impulse == 150))
 	{
 		gtype = self.tp_grenades_1;
-		if ((self.tp_grenades_1 == 2))
-		{
-			gs = "Concussion grenade";
-		}
-		else
-		{
-			if ((self.tp_grenades_1 == 3))
-			{
-				gs = "Nail grenade";
-			}
-			else
-			{
-				if ((self.tp_grenades_1 == 4))
-				{
-					gs = "Mirv grenade";
-				}
-				else
-				{
-					if ((self.tp_grenades_1 == 5))
-					{
-						gs = "Napalm grenade";
-					}
-					else
-					{
-						if ((self.tp_grenades_1 == 6))
-						{
-							gs = "Flare";
-						}
-						else
-						{
-							if ((self.tp_grenades_1 == 7))
-							{
-								gs = "Gas grenade";
-							}
-							else
-							{
-								if ((self.tp_grenades_1 == 8))
-								{
-									gs = "EMP grenade";
-								}
-								else
-								{
-									if ((self.tp_grenades_1 == enter))
-									{
-										gs = "Caltrop canister";
-									}
+		gs = TeamFortress_GetGrenadeName(self.tp_grenades_1);
 
-else
-if ((self.tp_grenades_1 == 11))
- gs = "Impact Grenade";
-
-
-									else
-									{
-										gs = "Grenade";
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 		if ((self.no_grenades_1 > 0))
 		{
 			if (!practice)
@@ -921,56 +774,7 @@ if ((self.tp_grenades_1 == 11))
 	if ((self.impulse == 151))
 	{
 		gtype = self.tp_grenades_2;
-		if ((self.tp_grenades_2 == 2))
-		{
-			gs = "Concussion grenade";
-		}
-		else
-		{
-			if ((self.tp_grenades_2 == 3))
-			{
-				gs = "Nail grenade";
-			}
-			else
-			{
-				if ((self.tp_grenades_2 == 4))
-				{
-					gs = "Mirv grenade";
-				}
-				else
-				{
-					if ((self.tp_grenades_2 == 5))
-					{
-						gs = "Napalm grenade";
-					}
-					else
-					{
-						if ((self.tp_grenades_2 == 6))
-						{
-							gs = "Flare";
-						}
-						else
-						{
-							if ((self.tp_grenades_2 == 7))
-							{
-								gs = "Gas grenade";
-							}
-							else
-							{
-								if ((self.tp_grenades_2 == 8))
-								{
-									gs = "EMP grenade";
-								}
-								else
-								{
-									gs = "Grenade";
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+		gs = TeamFortress_GetGrenadeName(self.tp_grenades_2);
 		if ((self.no_grenades_2 > 0))
 		{
 			if (!practice)
@@ -1007,7 +811,7 @@ if ((self.tp_grenades_1 == 11))
 				setorigin (newmis, self.origin);
 				return;
 			}
-			if ((gtype == enter))
+			if ((gtype == 10))
 			{
 				ptime = ftos (0.5);
 				sprint (self, 2, "Opening ");
@@ -1045,11 +849,9 @@ if ((self.tp_grenades_1 == 11))
 	else
 	{
 		tGrenade.heat = ((time + 3) + 0.8);
-
-	        RemoveGrenadeTimers();
-
-	        local float grensound = stof(infokey(self, "grensound"));
-	        if (grentimers == 1) {
+        RemoveGrenadeTimers();
+        local float grensound = stof(infokey(self, "grensound"));
+        if (grentimers == 1) {
 			timer = spawn();
 			timer.nextthink = time + 0.8;
 			timer.think = GrenadeTimer;
@@ -1058,15 +860,9 @@ if ((self.tp_grenades_1 == 11))
 			timer.classname = "gtimer";
 			if (grensound == 1) {
 				stuffcmd(self, "play grentimer\n");
+			}
 		}
 	}
-
-
-	}
-
-
-
-
 	tGrenade.think = TeamFortress_GrenadePrimed;
 };
 
@@ -1099,7 +895,7 @@ void () TeamFortress_GrenadePrimed =
 	KickPlayer (-1, user);
 	newmis = spawn ();
 	newmis.owner = user;
-	newmis.movetype = enter;
+	newmis.movetype = 10;
 	newmis.solid = 2;
 	newmis.classname = "grenade";
 	makevectors (user.v_angle);
@@ -1111,7 +907,7 @@ void () TeamFortress_GrenadePrimed =
 	{
 		if (user.v_angle_x)
 		{
-			newmis.velocity = ((((v_forward * 600) + (v_up * 200)) + ((crandom () * v_right) * enter)) + ((crandom () * v_up) * enter));
+			newmis.velocity = ((((v_forward * 600) + (v_up * 200)) + ((crandom () * v_right) * 10)) + ((crandom () * v_up) * 10));
 		}
 		else
 		{
@@ -1123,113 +919,81 @@ void () TeamFortress_GrenadePrimed =
 	newmis.angles = vectoangles (newmis.velocity);
 	newmis.think = SUB_Null;
 	newmis.nextthink = self.heat;
-	if ((self.weapon == 1))
-	{
-		newmis.touch = NormalGrenadeTouch;
-		newmis.think = NormalGrenadeExplode;
-		newmis.skin = 0;
-		newmis.avelocity = '300 300 300';
-		setmodel (newmis, "progs/hgren2.mdl");
-	}
-	else
-	{
-		if ((self.weapon == 2))
-		{
+	switch(self.weapon) {
+		case GR_TYPE_NORMAL:
+			newmis.touch = NormalGrenadeTouch;
+			newmis.think = NormalGrenadeExplode;
+			newmis.skin = 0;
+			newmis.avelocity = '300 300 300';
+			setmodel (newmis, "progs/hgren2.mdl");
+			break;
+		case GR_TYPE_CONCUSSION:
 			newmis.touch = ConcussionGrenadeTouch;
 			newmis.think = ConcussionGrenadeExplode;
 			newmis.skin = 1;
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
-		}
-
-else  if ((self.weapon == 11)) // impact grenade
-		{
+			break;
+		case GR_TYPE_NAIL:
+			newmis.touch = NailGrenadeTouch;
+			newmis.think = NailGrenadeExplode;
+			newmis.skin = 1;
+			newmis.avelocity = '0 300 0';
+			setmodel (newmis, "progs/biggren.mdl");
+			break;
+		case GR_TYPE_MIRV:
+			newmis.touch = MirvGrenadeTouch;
+			newmis.think = MirvGrenadeExplode;
+			newmis.skin = 0;
+			newmis.avelocity = '0 300 0';
+			setmodel (newmis, "progs/biggren.mdl");
+			break;
+		case GR_TYPE_NAPALM:
+			newmis.touch = NapalmGrenadeTouch;
+			newmis.think = NapalmGrenadeExplode;
+			newmis.skin = 2;
+			newmis.avelocity = '0 300 0';
+			setmodel (newmis, "progs/biggren.mdl");
+			break;
+		case GR_TYPE_FLARE:
+			newmis.touch = FlareGrenadeTouch;
+			newmis.weapon = self.team_no;
+			newmis.think = FlareGrenadeExplode;
+			newmis.skin = 1;
+			newmis.avelocity = '300 300 300';
+			newmis.mdl = "flare";
+			setmodel (newmis, "progs/flare.mdl");
+			break;
+		case GR_TYPE_GAS:
+			newmis.touch = GasGrenadeTouch;
+			newmis.think = GasGrenadeExplode;
+			newmis.skin = 3;
+			newmis.avelocity = '300 300 300';
+			setmodel (newmis, "progs/grenade2.mdl");
+			break;
+		case GR_TYPE_EMP:
+			newmis.touch = EMPGrenadeTouch;
+			newmis.think = EMPGrenadeExplode;
+			newmis.skin = 4;
+			newmis.avelocity = '300 300 300';
+			setmodel (newmis, "progs/grenade2.mdl");
+			break;
+		case GR_TYPE_FLASH:			
+			break;
+		case GR_TYPE_CALTROP:
+			newmis.touch = CanisterTouch;
+			newmis.think = ScatterCaltrops;
+			newmis.skin = 0;
+			newmis.avelocity = '0 0 0';
+			break;
+		case GR_TYPE_IMPACT:
 			newmis.weapon = 11;
 			newmis.touch = ConcussionGrenadeTouch;
 			newmis.think = ConcussionGrenadeExplode;
 			newmis.skin = 1;
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
-		}
-
-		else
-		{
-			if ((self.weapon == 3))
-			{
-				newmis.touch = NailGrenadeTouch;
-				newmis.think = NailGrenadeExplode;
-				newmis.skin = 1;
-				newmis.avelocity = '0 300 0';
-				setmodel (newmis, "progs/biggren.mdl");
-			}
-			else
-			{
-				if ((self.weapon == 4))
-				{
-					newmis.touch = MirvGrenadeTouch;
-					newmis.think = MirvGrenadeExplode;
-					newmis.skin = 0;
-					newmis.avelocity = '0 300 0';
-					setmodel (newmis, "progs/biggren.mdl");
-				}
-				else
-				{
-					if ((self.weapon == 5))
-					{
-						newmis.touch = NapalmGrenadeTouch;
-						newmis.think = NapalmGrenadeExplode;
-						newmis.skin = 2;
-						newmis.avelocity = '0 300 0';
-						setmodel (newmis, "progs/biggren.mdl");
-					}
-					else
-					{
-						if ((self.weapon == 6))
-						{
-							newmis.touch = FlareGrenadeTouch;
-							newmis.weapon = self.team_no;
-							newmis.think = FlareGrenadeExplode;
-							newmis.skin = 1;
-							newmis.avelocity = '300 300 300';
-							newmis.mdl = "flare";
-							setmodel (newmis, "progs/flare.mdl");
-						}
-						else
-						{
-							if ((self.weapon == 7))
-							{
-								newmis.touch = GasGrenadeTouch;
-								newmis.think = GasGrenadeExplode;
-								newmis.skin = 3;
-								newmis.avelocity = '300 300 300';
-								setmodel (newmis, "progs/grenade2.mdl");
-							}
-							else
-							{
-								if ((self.weapon == 8))
-								{
-									newmis.touch = EMPGrenadeTouch;
-									newmis.think = EMPGrenadeExplode;
-									newmis.skin = 4;
-									newmis.avelocity = '300 300 300';
-									setmodel (newmis, "progs/grenade2.mdl");
-								}
-								else
-								{
-									if ((self.weapon == enter))
-									{
-										newmis.touch = CanisterTouch;
-										newmis.think = ScatterCaltrops;
-										newmis.skin = 0;
-										newmis.avelocity = '0 0 0';
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+			break;
 	}
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, user.origin);
@@ -1252,73 +1016,41 @@ float (float pc) IsLegalClass =
 {
 	local float bit;
 
-	if ((pc == 1))
-	{
-		bit = 1;
-	}
-	else
-	{
-		if ((pc == 2))
-		{
+	switch (pc) {
+		case PC_SCOUT:
+			bit = 1;
+			break;
+		case PC_SNIPER:
 			bit = 2;
-		}
-		else
-		{
-			if ((pc == 3))
-			{
-				bit = 4;
-			}
-			else
-			{
-				if ((pc == 4))
-				{
-					bit = 8;
-				}
-				else
-				{
-					if ((pc == 5))
-					{
-						bit = 16;
-					}
-					else
-					{
-						if ((pc == 6))
-						{
-							bit = space;
-						}
-						else
-						{
-							if ((pc == 7))
-							{
-								bit = 64;
-							}
-							else
-							{
-								if ((pc == 8))
-								{
-									bit = 256;
-								}
-								else
-								{
-									if ((pc == 9))
-									{
-										bit = 512;
-									}
-									else
-									{
-										if ((pc == enter))
-										{
-											bit = 128;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+			break;
+		case PC_SOLDIER:
+			bit = 4;
+			break;
+		case PC_DEMOMAN:
+			bit = 8;
+			break;
+		case PC_MEDIC:
+			bit = 16;
+			break;
+		case PC_HWGUY:
+			bit = 32;
+			break;
+		case PC_PYRO:
+			bit = 64;
+			break;
+		case PC_SPY:
+			bit = 256;
+			break;
+		case PC_ENGINEER:
+			bit = 512;
+			break;
+		case PC_RANDOM:
+			bit = 128;
+			break;
+		default:
+			break;
 	}
+
 	if (((illegalclasses & bit) || (TeamFortress_TeamGetIllegalClasses (self.team_no) & bit)))
 	{
 		return (0);
@@ -1356,95 +1088,47 @@ void (entity p) TeamFortress_SetSpeed =
 			stuffcmd (p, "m_side 0.8\n");
 		}
 	}
-	if ((p.playerclass == PC_SCOUT))
-	{
-		p.maxspeed = 450;
-	}
-	else
-	{
-		if ((p.playerclass == PC_SNIPER))
-		{
-			p.maxspeed = 300;
-		}
-		else
-		{
-			if ((p.playerclass == PC_SOLDIER))
-			{
-				p.maxspeed = 240;
-			}
+	switch(p.playerclass) {
+		case PC_SCOUT:
+			p.maxspeed = PC_SCOUT_MAXSPEED;
+			break;
+		case PC_SNIPER:
+			p.maxspeed = PC_SNIPER_MAXSPEED;
+			break;
+		case PC_SOLDIER:
+			p.maxspeed = PC_SOLDIER_MAXSPEED;
+			break;
+		case PC_DEMOMAN:
+			p.maxspeed = PC_DEMOMAN_MAXSPEED;
+			break;
+		case PC_MEDIC:
+			p.maxspeed = PC_MEDIC_MAXSPEED;
+			break;
+		case PC_HWGUY:
+			p.maxspeed = PC_HWGUY_MAXSPEED;
+			break;
+		case PC_PYRO:
+			p.maxspeed = PC_PYRO_MAXSPEED;
+			break;
+		case PC_SPY:
+			p.maxspeed = PC_SPY_MAXSPEED;
+			break;
+		case PC_ENGINEER:
+			p.maxspeed = PC_ENGINEER_MAXSPEED;
+			break;
+		case PC_CIVILIAN:
+			if ((tfvsdm == 1))
+				p.maxspeed = PC_CIVILIAN_DM_MAXSTRAFESPEED;
 			else
-			{
-				if ((p.playerclass == PC_DEMOMAN))
-				{
-					p.maxspeed = 280;
-				}
-				else
-				{
-					if ((p.playerclass == PC_MEDIC))
-					{
-						p.maxspeed = 320;
-					}
-					else
-					{
-						if ((p.playerclass == PC_HWGUY))
-						{
-							p.maxspeed = 230;
-						}
-						else
-						{
-							if ((p.playerclass == PC_PYRO))
-							{
-								p.maxspeed = 300;
-							}
-							else
-							{
-								if ((p.playerclass == PC_CIVILIAN))
-								{
-									if ((tfvsdm == 1))
-									{
-										p.maxspeed = 320;
-									}
-									else
-									{
-										p.maxspeed = 240;
-									}
-								}
-								else
-								{
-									if ((p.playerclass == PC_SPY))
-									{
-										p.maxspeed = 300;
-									}
-									else
-									{
-										if ((p.playerclass == PC_ENGINEER))
-										{
-											p.maxspeed = 300;
-										}
-										else
-										{
-											if (!p.playerclass)
-											{
-												st = infokey (world, "clan");
-												if ((st == "on"))
-												{
-													p.maxspeed = 0;
-													return;
-												}
-												else
-												{
-													p.maxspeed = 400;
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+				p.maxspeed = PC_CIVILIAN_MAXSPEED;
+			break;
+		default:
+			st = infokey (world, "clan");
+			if ((st == "on"))
+				p.maxspeed = 0;
+			else
+				p.maxspeed = PC_SCOUT_MAXSPEED;												
+			break;
 	}
 	tf = 0;
 	te = find (world, classname, "item_tfgoal");
@@ -1470,7 +1154,7 @@ void (entity p) TeamFortress_SetSpeed =
 		{
 			p.leg_damage = 6;
 		}
-		p.maxspeed = (p.maxspeed * ((enter - p.leg_damage) / enter));
+		p.maxspeed = (p.maxspeed * ((10 - p.leg_damage) / 10));
 	}
 	if ((p.tfstate & 2048))
 	{
@@ -2713,7 +2397,7 @@ string (float pc) TeamFortress_GetClassName =
 											}
 											else
 											{
-												if ((pc == enter))
+												if ((pc == 10))
 												{
 													return ("Random Playerclass");
 												}
@@ -3027,7 +2711,7 @@ void (entity Gren) TeamFortress_ExplodePerson =
 	Gren.owner.tfstate = (Gren.owner.tfstate - (Gren.owner.tfstate & 1));
 	KickPlayer (-2, Gren.owner);
 	newmis = spawn ();
-	newmis.movetype = enter;
+	newmis.movetype = 10;
 	newmis.solid = 2;
 	newmis.classname = "grenade";
 	newmis.team_no = Gren.owner.team_no;
@@ -3134,7 +2818,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 								}
 								else
 								{
-									if ((Gren.weapon == enter))
+									if ((Gren.weapon == 10))
 									{
 										newmis.touch = CaltropTouch;
 										newmis.think = ScatterCaltrops;
@@ -3149,7 +2833,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 	}
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, Gren.owner.origin);
-	if (((Gren.owner.playerclass == PC_SCOUT) && (Gren.weapon != enter)))
+	if (((Gren.owner.playerclass == PC_SCOUT) && (Gren.weapon != 10)))
 	{
 		bprint3 (1, "No ", Gren.owner.netname, ", swallowing the grenade isn't very effective!\n");
 	}
