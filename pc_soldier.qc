@@ -1,3 +1,6 @@
+//@import - aux_spikes.qc | TODO: Move to Nail grenade specific file
+void () superspike_touch;
+
 //=-=-=-=-=
 void () TeamFortress_Soldier;
 void () NailGrenadeExplode;

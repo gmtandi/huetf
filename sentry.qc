@@ -1,3 +1,6 @@
+//@import - aux_lightning.qc
+void (vector p1, vector p2, entity from, float damage) LightningDamage;
+
 //=-=-=-=-=
 void (entity bld) CheckBelowBuilding;
 void (entity gunhead) CheckSentry;

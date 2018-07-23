@@ -1,3 +1,6 @@
+//@import - aux_spikes.qc
+void () superspike_touch;
+
 //=-=-=-=-=
 void () info_null =
 {
