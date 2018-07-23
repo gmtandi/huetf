@@ -13,8 +13,22 @@ void () BioInfection_Decay;
 void () BioInfection_MonsterDecay;
 
 //=-=-=-=-= Local Functions
-void () W_FireLightning;
-//=-=-=-=-= 
+void () TeamFortress_Medikit;
+void () TeamFortress_BioWeapon;
+void () W_FireMedikit;
+//=-=-=-=-=
+
+void () TeamFortress_Medikit = {
+	self.currentammo = self.ammo_medikit;
+	self.weaponmodel = "progs/v_medi.mdl";
+	self.weaponframe = 0;
+};
+
+void () TeamFortress_BioWeapon = {
+	self.currentammo = 0;
+	self.weaponmodel = "progs/v_bio.mdl";
+	self.weaponframe = 0;
+};
 
 void () W_FireMedikit =
 {

@@ -1,8 +1,20 @@
 //=-=-=-=-= Local Functions
+void () TeamFortress_RocketLauncher;
 void () W_FireRocket;
 void () MissileRadius;
 void () T_MissileTouch;
 //=-=-=-=-=
+
+void () TeamFortress_RocketLauncher = {
+	self.currentammo = self.ammo_rockets;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_rock2.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 1024);
+	self.weapon = space;
+};
 
 void () W_FireRocket =
 {

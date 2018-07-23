@@ -34,6 +34,7 @@ weap_super_nailgun.qc
 weap_super_shotgun.qc
 weap_tranq.qc
 weap_tribolt.qc
+hook.qc
 weapons.qc
 world.qc
 client.qc
@@ -68,7 +69,6 @@ halflife.qc //halflife
 newents.qc //soccer
 tfortmap.qc
 commands.qc
-hook.qc
 ctf.qc
 actions.qc
 

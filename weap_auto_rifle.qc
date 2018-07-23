@@ -5,9 +5,21 @@ void (float damage, vector dir) TraceAttack;
 void () ApplyMultiDamage;
 
 //=-=-=-=-= Local Functions
+void () TeamFortress_AutoRifle;
 void () W_FireAutoRifle;
 void (vector direction, float damage) FireSniperBullet;
 //=-=-=-=-=
+
+void () TeamFortress_AutoRifle = {
+	self.currentammo = self.ammo_shells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_srifle.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 256);
+	self.weapon = 2;
+};
 
 void () W_FireAutoRifle =
 {

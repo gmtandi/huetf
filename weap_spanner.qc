@@ -6,8 +6,15 @@ void (entity disp) Engineer_UseDispenser;
 void (entity gun) Engineer_UseSentryGun;
 
 //=-=-=-=-= Local Functions
+void () TeamFortress_Spanner;
 void () W_FireSpanner;
 //=-=-=-=-= 
+
+void () TeamFortress_Spanner = {
+	self.currentammo = self.ammo_cells;
+	self.weaponmodel = "progs/v_span.mdl";
+	self.weaponframe = 0;
+};
 
 void () W_FireSpanner =
 {

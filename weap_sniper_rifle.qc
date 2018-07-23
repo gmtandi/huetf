@@ -1,3 +1,18 @@
+//=-=-=-=-= Local Functions
+void () TeamFortress_SniperRifle;
+//=-=-=-=-=
+
+void () TeamFortress_SniperRifle = {
+	self.currentammo = self.ammo_shells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_srifle.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 256);
+	self.weapon = 1;
+};
+
 void () W_FireSniperRifle =
 {
 	local vector dir;

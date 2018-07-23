@@ -1,4 +1,5 @@
-//=-=-=-=-=
+//=-=-=-=-= Local Functions
+void () TeamFortress_Tribolt;
 void () W_FireTriBolt;
 void () Tribolt_Think;
 void () W_TriboltBullet;
@@ -6,6 +7,17 @@ void () TriboltTouch
 void () TriboltExplode;
 void () player_rocket1;
 //=-=-=-=-=
+
+void () TeamFortress_Tribolt = {
+	self.currentammo = self.ammo_rockets;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_rock.mdl";
+		self.weaponframe = 0;
+	}
+	self.weapon = 16;
+	self.items = (self.items | 1024);
+};
 
 void () W_FireTriBolt =
 {

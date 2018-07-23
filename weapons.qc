@@ -487,300 +487,84 @@ void () W_SetCurrentAmmo =
 	{
 		return;
 	}
-	if (((self.current_weapon == 32768) && (self.tfstate & TFSTATE_AIMING)))
+	if (((self.current_weapon == WEAP_ASSAULT_CANNON) && (self.tfstate & TFSTATE_AIMING)))
 	{
 		return;
 	}
 	player_run ();
 	self.items = (self.items - (self.items & (((256 | 512) | 1024) | 2048)));
 	self.weapon = 0;
-	if ((self.current_weapon == 16))
-	{
-		self.currentammo = 0;
-		if ((self.playerclass == PC_SPY))
-		{
-			if ((self.weaponmode == 0))
-			{
-				self.weaponmodel = "progs/v_knife.mdl";
-			}
-			else
-			{
-				self.weaponmodel = "progs/v_knife2.mdl";
-			}
-		}
-		else
-		{
-			if (tfstrike)
-			{
-				self.weaponmodel = "progs/v_knife.mdl";
-			}
-			else
-			{
-				self.weaponmodel = "progs/v_axe.mdl";
-			}
-		}
-		self.weaponframe = 0;
-	}
-	else
-	{
-		if ((self.current_weapon == WEAP_HOOK))
-		{
+	switch(self.current_weapon) {
+		case WEAP_HOOK:
+			TeamFortress_Hook();
+			break;
+		case WEAP_BIOWEAPON:
+			TeamFortress_BioWeapon();
+			break;
+		case WEAP_MEDIKIT:
+			TeamFortress_Medikit();
+			break;
+		case WEAP_SPANNER:
+			TeamFortress_Spanner();
+			break;
+		case WEAP_AXE:
+			TeamFortress_Axe();
+			break;
+		case WEAP_SNIPER_RIFLE:
+			TeamFortress_SniperRifle();
+			break;
+		case WEAP_AUTO_RIFLE:
+			TeamFortress_AutoRifle();
+			break;
+		case WEAP_SHOTGUN:
+			TeamFortress_Shotgun();
+			break;
+		case WEAP_SUPER_SHOTGUN:
+			TeamFortress_SuperShotgun();
+			break;
+		case WEAP_NAILGUN:
+			TeamFortress_NailGun();
+			break;
+		case WEAP_SUPER_NAILGUN:
+			TeamFortress_SuperNailGun();
+			break;
+		case WEAP_GRENADE_LAUNCHER:
+			TeamFortress_GrenadeLauncher();
+			break;
+		case WEAP_FLAMETHROWER:
+			TeamFortress_FlameThrower();
+			break;
+		case WEAP_ROCKET_LAUNCHER:
+			TeamFortress_RocketLauncher();
+			break;
+		case WEAP_INCENDIARY:
+			TeamFortress_IncendiaryCannon();
+			break;
+		case WEAP_ASSAULT_CANNON:
+			TeamFortress_AssaultCannon();
+			break;
+		case WEAP_LIGHTNING:
+			TeamFortress_Lightning();
+			break;
+		case WEAP_PLASMAGUN:
+			break;
+		case WEAP_TRANQ:
+			TeamFortress_Tranquilizer();
+			break;
+		case WEAP_RAILGUN:
+			TeamFortress_RailGun();
+			break;
+		case WEAP_TRIBOLT:
+			TeamFortress_Tribolt();
+			break;
+		case WEAP_SNIPERRAIL:
+			TeamFortress_SniperRail();
+			break;
+		default:
 			self.currentammo = 0;
-			self.weaponmodel = "progs/v_grap.mdl";
+			self.weaponmodel = "";
 			self.weaponframe = 0;
-		}
-		else
-		{
-			if ((self.current_weapon == WEAP_SPANNER))
-			{
-				self.currentammo = self.ammo_cells;
-				self.weaponmodel = "progs/v_span.mdl";
-				self.weaponframe = 0;
-			}
-			else
-			{
-				if ((self.current_weapon == WEAP_SHOTGUN))
-				{
-					self.currentammo = self.ammo_shells;
-					self.items = (self.items | 2048);
-					if (!(self.tfstate & TFSTATE_RELOADING))
-					{
-						self.weaponmodel = "progs/v_shot.mdl";
-						self.weaponframe = 0;
-					}
-					self.items = (self.items | 256);
-					self.weapon = 1;
-				}
-				else
-				{
-					if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
-					{
-						self.currentammo = self.ammo_shells;
-						if (!(self.tfstate & TFSTATE_RELOADING))
-						{
-							self.weaponmodel = "progs/v_shot2.mdl";
-							self.weaponframe = 0;
-						}
-						self.items = (self.items | 256);
-						self.weapon = 2;
-					}
-					else
-					{
-						if ((self.current_weapon == WEAP_NAILGUN))
-						{
-							self.currentammo = self.ammo_nails;
-							if (!(self.tfstate & TFSTATE_RELOADING))
-							{
-								self.weaponmodel = "progs/v_nail.mdl";
-								self.weaponframe = 0;
-							}
-							self.items = (self.items | 512);
-							self.weapon = 4;
-						}
-						else
-						{
-							if ((self.current_weapon == WEAP_SUPER_NAILGUN))
-							{
-								self.currentammo = self.ammo_nails;
-								if (!(self.tfstate & TFSTATE_RELOADING))
-								{
-									self.weaponmodel = "progs/v_nail2.mdl";
-									self.weaponframe = 0;
-								}
-								self.items = (self.items | 512);
-								self.weapon = 8;
-							}
-							else
-							{
-								if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
-								{
-									self.currentammo = self.ammo_rockets;
-									if (!(self.tfstate & TFSTATE_RELOADING))
-									{
-										self.weaponmodel = "progs/v_rock.mdl";
-										self.weaponframe = 0;
-									}
-									self.weapon = 16;
-									self.items = (self.items | 1024);
-								}
-								else
-								{
-									if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
-									{
-										self.currentammo = self.ammo_rockets;
-										if (!(self.tfstate & TFSTATE_RELOADING))
-										{
-											self.weaponmodel = "progs/v_rock2.mdl";
-											self.weaponframe = 0;
-										}
-										self.items = (self.items | 1024);
-										self.weapon = space;
-									}
-									else
-									{
-										if ((self.current_weapon == WEAP_LIGHTNING))
-										{
-											self.currentammo = self.ammo_cells;
-											if (!(self.tfstate & TFSTATE_RELOADING))
-											{
-												self.weaponmodel = "progs/v_light.mdl";
-												self.weaponframe = 0;
-											}
-											self.items = (self.items | 2048);
-											self.weapon = 64;
-										}
-										else
-										{
-											if ((self.current_weapon == WEAP_SNIPER_RIFLE))
-											{
-												self.currentammo = self.ammo_shells;
-												if (!(self.tfstate & TFSTATE_RELOADING))
-												{
-													self.weaponmodel = "progs/v_srifle.mdl";
-													self.weaponframe = 0;
-												}
-												self.items = (self.items | 256);
-												self.weapon = 1;
-											}
-											else
-											{
-												if ((self.current_weapon == WEAP_AUTO_RIFLE))
-												{
-													self.currentammo = self.ammo_shells;
-													if (!(self.tfstate & TFSTATE_RELOADING))
-													{
-														self.weaponmodel = "progs/v_srifle.mdl";
-														self.weaponframe = 0;
-													}
-													self.items = (self.items | 256);
-													self.weapon = 2;
-												}
-												else
-												{
-													if ((self.current_weapon == WEAP_ASSAULT_CANNON))
-													{
-														self.currentammo = self.ammo_shells;
-														if (!(self.tfstate & TFSTATE_RELOADING))
-														{
-															self.weaponmodel = "progs/v_asscan.mdl";
-															self.weaponframe = 0;
-														}
-														self.items = (self.items | 256);
-														self.weapon = space;
-													}
-													else
-													{
-														if ((self.current_weapon == WEAP_FLAMETHROWER))
-														{
-															self.currentammo = self.ammo_cells;
-															if (!(self.tfstate & TFSTATE_RELOADING))
-															{
-																self.weaponmodel = "progs/v_rock.mdl";
-																self.weaponframe = 0;
-															}
-															self.items = (self.items | 2048);
-															self.weapon = 8;
-														}
-														else
-														{
-															if ((self.current_weapon == WEAP_INCENDIARY))
-															{
-																self.currentammo = self.ammo_rockets;
-																if (!(self.tfstate & TFSTATE_RELOADING))
-																{
-																	self.weaponmodel = "progs/v_rock2.mdl";
-																	self.weaponframe = 0;
-																}
-																self.items = (self.items | 1024);
-																self.weapon = 16;
-															}
-															else
-															{
-																if ((self.current_weapon == WEAP_MEDIKIT))
-																{
-																	self.currentammo = self.ammo_medikit;
-																	self.weaponmodel = "progs/v_medi.mdl";
-																	self.weaponframe = 0;
-																}
-																else
-																{
-																	if ((self.current_weapon == WEAP_BIOWEAPON))
-																	{
-																		self.currentammo = 0;
-																		self.weaponmodel = "progs/v_bio.mdl";
-																		self.weaponframe = 0;
-																	}
-																	else
-																	{
-																		if ((self.current_weapon == WEAP_TRANQ))
-																		{
-																			self.currentammo = self.ammo_shells;
-																			if (!(self.tfstate & TFSTATE_RELOADING))
-																			{
-																				self.weaponmodel = "progs/v_shot.mdl";
-																				self.weaponframe = 0;
-																			}
-																			self.items = (self.items | 256);
-																			self.weapon = 1;
-																		}
-																		else
-																		{
-																			if ((self.current_weapon == WEAP_RAILGUN))
-																			{
-																				self.currentammo = self.ammo_nails;
-																				if (!(self.tfstate & TFSTATE_RELOADING))
-																				{
-																					self.weaponmodel = "progs/v_rail.mdl";
-																					self.weaponframe = 0;
-																				}
-																				self.items = (self.items | 512);
-																				self.weapon = 1;
-																			}
-																			else if ((self.current_weapon == WEAP_TRIBOLT))
-																			{
-																				self.currentammo = self.ammo_rockets;
-																				if (!(self.tfstate & TFSTATE_RELOADING))
-																				{
-																					self.weaponmodel = "progs/v_rock.mdl";
-																					self.weaponframe = 0;
-																				}
-																				self.weapon = 16;
-																				self.items = (self.items | 1024);
-																			}
-																			else if ((self.current_weapon == WEAP_SNIPERRAIL))
-																			{
-																				self.currentammo = self.ammo_shells;
-																				if (!(self.tfstate & TFSTATE_RELOADING))
-																				{
-																					self.weaponmodel = "progs/v_srifle.mdl";
-																					self.weaponframe = 0;
-																				}
-																				self.weapon = 16;
-																				self.items = (self.items | 512);
-																			}
-																			else
-																			{
-																				self.currentammo = 0;
-																				self.weaponmodel = "";
-																				self.weaponframe = 0;
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+			break;
 	}
 };
 

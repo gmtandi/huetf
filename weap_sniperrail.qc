@@ -1,8 +1,20 @@
 //=-=-=-=-= Local Functions
+void () TeamFortress_SniperRail;
 void () W_FireSniperRail;
 void () SniperRail_Touch;
 void () SniperRail_Think;
 //=-=-=-=-=
+
+void () TeamFortress_SniperRail = {
+	self.currentammo = self.ammo_shells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_srifle.mdl";
+		self.weaponframe = 0;
+	}
+	self.weapon = 16;
+	self.items = (self.items | 512);
+};
 
 void () W_FireSniperRail =
 {

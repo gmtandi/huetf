@@ -1,4 +1,5 @@
 //=-=-=-=-= Local Functions
+void () TeamFortress_GrenadeLauncher;
 void () W_FireGrenade;
 void () PipebombTouch;
 void () GrenadeTouch;
@@ -7,7 +8,18 @@ void (float tno) increment_team_pipebombs;
 void (float tno) decrement_team_pipebombs;
 float (float tno) num_team_pipebombs;
 void (float tno) ExplodeOldPipebomb;
-//=-=-=-=-= 
+//=-=-=-=-=
+
+void () TeamFortress_GrenadeLauncher = {
+	self.currentammo = self.ammo_rockets;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_rock.mdl";
+		self.weaponframe = 0;
+	}
+	self.weapon = 16;
+	self.items = (self.items | 1024);	
+};
 
 void () W_FireGrenade =
 {

@@ -5,8 +5,20 @@ void () W_FireSuperSpikes;
 void (vector org, vector dir) launch_spike;
 
 //=-=-=-=-= Local Functions
+void () TeamFortress_NailGun;
 void (float ox) W_FireSpikes;
 //=-=-=-=-=
+
+void () TeamFortress_NailGun = {
+	self.currentammo = self.ammo_nails;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_nail.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 512);
+	self.weapon = 4;
+};
 
 void (float ox) W_FireSpikes =
 {

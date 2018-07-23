@@ -1,10 +1,21 @@
 //@import - weapons.qc
 void (float shotcount, vector dir, vector spread) FireBullets;
 
-//=-=-=-=-=
-void () W_FireAssaultCannon
+//=-=-=-=-= Local Functions
+void () TeamFortress_AssaultCannon;
+void () W_FireAssaultCannon;
 //=-=-=-=-=
 
+void () TeamFortress_AssaultCannon = {
+	self.currentammo = self.ammo_shells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_asscan.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 256);
+	self.weapon = space;	
+};
 
 void () W_FireAssaultCannon =
 {

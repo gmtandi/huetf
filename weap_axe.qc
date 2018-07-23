@@ -5,8 +5,36 @@ void (vector org, float damage) SpawnBlood;
 float (vector veca, vector vecb) crossproduct;
 
 //=-=-=-=-=
+void () TeamFortress_Axe;
 void () W_FireAxe;
 //=-=-=-=-=
+
+void () TeamFortress_Axe = {
+	self.currentammo = 0;
+	if ((self.playerclass == PC_SPY))
+	{
+		if ((self.weaponmode == 0))
+		{
+			self.weaponmodel = "progs/v_knife.mdl";
+		}
+		else
+		{
+			self.weaponmodel = "progs/v_knife2.mdl";
+		}
+	}
+	else
+	{
+		if (tfstrike)
+		{
+			self.weaponmodel = "progs/v_knife.mdl";
+		}
+		else
+		{
+			self.weaponmodel = "progs/v_axe.mdl";
+		}
+	}
+	self.weaponframe = 0;
+};
 
 void () W_FireAxe =
 {

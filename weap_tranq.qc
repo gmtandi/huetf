@@ -2,10 +2,22 @@
 void (float damage) spawn_touchblood;
 
 //=-=-=-=-= Local Functions
+void () TeamFortress_Tranquilizer;
 void () W_FireTranq;
 void () T_TranqDartTouch;
 void () TranquiliserTimer;
 //=-=-=-=-=
+
+void () TeamFortress_Tranquilizer = {
+	self.currentammo = self.ammo_shells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_shot.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 256);
+	self.weapon = 1;	
+};
 
 void () W_FireTranq =
 {

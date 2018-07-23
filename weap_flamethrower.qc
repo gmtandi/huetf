@@ -26,17 +26,14 @@ void () s_explode6;
 
 void () TeamFortress_FlameThrower =
 {
-	if (!(self.weapons_carried & 4096))
+	self.currentammo = self.ammo_cells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
-		return;
+		self.weaponmodel = "progs/v_rock.mdl";
+		self.weaponframe = 0;
 	}
-	if ((self.ammo_cells < 1))
-	{
-		sprint (self, 2, "not enough ammo.\n");
-		return;
-	}
-	self.current_weapon = 4096;
-	W_SetCurrentAmmo ();
+	self.items = (self.items | 2048);
+	self.weapon = 8;
 };
 
 void () W_FireFlame =

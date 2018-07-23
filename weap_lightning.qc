@@ -5,8 +5,20 @@ void () W_PrintWeaponMessage;
 void (vector p1, vector p2, entity from, float damage) LightningDamage;
 
 //=-=-=-=-= Local Functions
+void () TeamFortress_Lightning;
 void () W_FireLightning;
-//=-=-=-=-= 
+//=-=-=-=-=
+
+void () TeamFortress_Lightning = {
+	self.currentammo = self.ammo_cells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_light.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 2048);
+	self.weapon = 64;	
+};
 
 void () W_FireLightning =
 {

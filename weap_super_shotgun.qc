@@ -2,8 +2,20 @@
 void (float shotcount, vector dir, vector spread) FireBullets;
 
 //=-=-=-=-=
+void () TeamFortress_SuperShotgun;
 void () W_FireSuperShotgun;
 //=-=-=-=-=
+
+void () TeamFortress_SuperShotgun = {
+	self.currentammo = self.ammo_shells;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_shot2.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 256);
+	self.weapon = 2;
+};
 
 void () W_FireSuperShotgun =
 {

@@ -8,28 +8,14 @@ void () T_IncendiaryTouch;
 //=-=-=-=-= 
 void () TeamFortress_IncendiaryCannon =
 {
-	if (!(self.weapons_carried & WEAP_INCENDIARY))
+	self.currentammo = self.ammo_rockets;
+	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
-		return;
+		self.weaponmodel = "progs/v_rock2.mdl";
+		self.weaponframe = 0;
 	}
-	if ((self.weaponmode == 1))
-	{
-		if ((self.ammo_rockets < 2))
-		{
-			sprint (self, 2, "not enough ammo.\n");
-			return;
-		}
-	}
-	else
-	{
-		if ((self.ammo_rockets < 3))
-		{
-			sprint (self, 2, "not enough ammo.\n");
-			return;
-		}
-	}
-	self.current_weapon = WEAP_INCENDIARY;
-	W_SetCurrentAmmo ();
+	self.items = (self.items | 1024);
+	self.weapon = 16;
 };
 
 

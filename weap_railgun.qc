@@ -1,8 +1,20 @@
 //=-=-=-=-= Local Functions
+void () TeamFortress_RailGun;
 void () W_FireRail;
 void () Rail_Think;
 void () Rail_Touch;
 //=-=-=-=-=
+
+void () TeamFortress_RailGun = {
+	self.currentammo = self.ammo_nails;
+	if (!(self.tfstate & TFSTATE_RELOADING))
+	{
+		self.weaponmodel = "progs/v_rail.mdl";
+		self.weaponframe = 0;
+	}
+	self.items = (self.items | 512);
+	self.weapon = 1;
+};
 
 void () W_FireRail =
 {

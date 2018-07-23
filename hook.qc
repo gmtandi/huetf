@@ -1,5 +1,11 @@
 //=-=-=-=-=
 
+void () TeamFortress_Hook = {
+	self.currentammo = 0;
+	self.weaponmodel = "progs/v_grap.mdl";
+	self.weaponframe = 0;
+}
+
 void (entity rhook) Reset_Grapple =
 {
 	sound (rhook.owner, 1, "weapons/bounce.wav", 1, 0);
