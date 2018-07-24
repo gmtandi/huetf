@@ -85,7 +85,6 @@ bot2.qc
 bot.classthink.c
 bot.ai.c
 
-reloadweapon.qc
 spect.qc
 mvdsv.qc
 misc2.qc
