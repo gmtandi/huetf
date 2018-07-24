@@ -3,9 +3,19 @@ void () TeamFortress_RocketLauncher;
 void () W_FireRocket;
 void () MissileRadius;
 void () T_MissileTouch;
+float () W_Check_Reload_Rocket_Launcher;
+void () W_Reload_Rocket_Launcher_Start;
+void () W_Reload_Rocket_Launcher_Finish; 
 //=-=-=-=-=
 
 void () TeamFortress_RocketLauncher = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 1;
+	self.CheckForReloadFunction = W_Check_Reload_Rocket_Launcher;
+	self.ReloadStartFunction    = W_Reload_Rocket_Launcher_Start;
+	self.ReloadEndFunction 	    = W_Reload_Rocket_Launcher_Finish;	
+
 	self.currentammo = self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -13,7 +23,7 @@ void () TeamFortress_RocketLauncher = {
 		self.weaponframe = 0;
 	}
 	self.items = (self.items | 1024);
-	self.weapon = space;
+	self.weapon = 32;
 };
 
 void () W_FireRocket =
@@ -112,3 +122,82 @@ void () T_MissileTouch =
 	MissileRadius ();
 };
 
+float () W_Check_Reload_Rocket_Launcher =
+{
+	local float rt;
+	local entity tWeapon;
+	
+	if (((self.reload_rocket_launcher >= 4) && (self.ammo_rockets > 0)))
+	{
+		self.reload_rocket_launcher = 0;
+		if ((self.ammo_rockets < 4))
+		{
+			self.reload_rocket_launcher = (4 - self.ammo_rockets);
+		}
+		sprint (self, 2, "reloading... \n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + 5);
+		tWeapon.think = W_Reload_Rocket_Launcher_Finish;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+		return (1);
+	}
+};
+
+void () W_Reload_Rocket_Launcher_Start =
+{
+	local float rt;
+	local entity tWeapon;
+
+	if ((self.ammo_rockets == 0))
+	{
+		sprint (self, 2, "out of rockets.\n");
+		return;
+	}
+	if ((self.reload_rocket_launcher == 0))
+	{
+		sprint (self, 2, "clip full.\n");
+		return;
+	}
+	if (((4 - self.reload_rocket_launcher) == self.ammo_rockets))
+	{
+		sprint (self, 2, "all rockets are in the clip.\n");
+		return;
+	}
+	if ((self.reload_rocket_launcher < self.ammo_rockets))
+	{
+		Attack_Finished (0.8);
+		rt = ((4 - self.reload_rocket_launcher) / 4);
+		rt = (5 - (5 * rt));
+		self.reload_rocket_launcher = 0;
+		if ((self.ammo_rockets < 4))
+		{
+			self.reload_rocket_launcher = (4 - self.ammo_rockets);
+		}
+		sprint (self, 2, "reloading...\n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + rt);
+		tWeapon.think = W_Reload_Rocket_Launcher_Finish;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+	}
+	else
+	{
+		sprint (self, 2, "not enough ammo to reload\n");
+	}
+};
+
+void () W_Reload_Rocket_Launcher_Finish =
+{
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
+	self.owner.weaponmodel = "progs/v_rock2.mdl";
+	sprint (self.owner, 2, "finished reloading\n");
+	dremove (self);
+	self.owner.StatusRefreshTime = (time + 0.1);
+};

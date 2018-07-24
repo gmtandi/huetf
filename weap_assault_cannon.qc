@@ -7,6 +7,9 @@ void () W_FireAssaultCannon;
 //=-=-=-=-=
 
 void () TeamFortress_AssaultCannon = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -14,7 +17,7 @@ void () TeamFortress_AssaultCannon = {
 		self.weaponframe = 0;
 	}
 	self.items = (self.items | 256);
-	self.weapon = space;	
+	self.weapon = space;
 };
 
 void () W_FireAssaultCannon =

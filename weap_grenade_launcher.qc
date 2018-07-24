@@ -1,3 +1,6 @@
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_GrenadeLauncher;
 void () W_FireGrenade;
@@ -8,9 +11,19 @@ void (float tno) increment_team_pipebombs;
 void (float tno) decrement_team_pipebombs;
 float (float tno) num_team_pipebombs;
 void (float tno) ExplodeOldPipebomb;
+float () W_Check_Reload_Grenade_Launcher;
+void () W_Reload_Grenade_Launcher_Start;
+void () W_Reload_Grenade_Launcher_Finish;
 //=-=-=-=-=
 
 void () TeamFortress_GrenadeLauncher = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 1;
+	self.CheckForReloadFunction = W_Check_Reload_Grenade_Launcher;
+	self.ReloadStartFunction    = W_Reload_Grenade_Launcher_Start;
+	self.ReloadEndFunction 	    = W_Reload_Grenade_Launcher_Start;	
+
 	self.currentammo = self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -285,4 +298,84 @@ void (float tno) ExplodeOldPipebomb =
 		}
 		old = find (old, classname, "pipebomb");
 	}
+};
+
+float () W_Check_Reload_Grenade_Launcher = 
+{
+	local float rt;
+	local entity tWeapon;
+	
+	if ((self.reload_grenade_launcher >= 6) && (self.ammo_rockets > 0))
+	{
+		self.reload_grenade_launcher = 0;
+		if ((self.ammo_rockets < 6))
+		{
+			self.reload_grenade_launcher = (6 - self.ammo_rockets);
+		}
+		sprint (self, 2, "reloading...\n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + 4);
+		tWeapon.think = W_Reload_Grenade_Launcher_Finish;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+		return (1);
+	}
+};
+
+void () W_Reload_Grenade_Launcher_Start = 
+{
+	local float rt;
+	local entity tWeapon;
+
+	if (self.ammo_rockets == 0)
+	{
+		sprint (self, 2, "out of grenades.\n");
+		return;
+	}
+	if (self.reload_grenade_launcher == 0)
+	{
+		sprint (self, 2, "clip full.\n");
+		return;
+	}
+	if ((6 - self.reload_grenade_launcher) == self.ammo_rockets)
+	{
+		sprint (self, 2, "all grenades are in the clip.\n");
+		return;
+	}
+	if (self.reload_grenade_launcher < self.ammo_rockets)
+	{
+		Attack_Finished (0.6);
+		rt = ((6 - self.reload_grenade_launcher) / 6);
+		rt = (4 - (4 * rt));
+		self.reload_grenade_launcher = 0;
+		if ((self.ammo_rockets < 6))
+		{
+			self.reload_grenade_launcher = (6 - self.ammo_rockets);
+		}
+		sprint (self, 2, "reloading...\n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + rt);
+		tWeapon.think = W_Reload_Grenade_Launcher_Finish;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+	}
+	else
+	{
+		sprint (self, 2, "not enough ammo to reload\n");
+	}
+};
+
+void () W_Reload_Grenade_Launcher_Finish =
+{
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
+	self.owner.weaponmodel = "progs/v_rock.mdl";
+	sprint (self.owner, 2, "finished reloading\n");
+	dremove (self);
+	self.owner.StatusRefreshTime = (time + 0.1);
 };

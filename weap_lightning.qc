@@ -10,6 +10,9 @@ void () W_FireLightning;
 //=-=-=-=-=
 
 void () TeamFortress_Lightning = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_cells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

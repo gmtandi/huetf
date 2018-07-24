@@ -11,6 +11,9 @@ void () W_FireSpanner;
 //=-=-=-=-= 
 
 void () TeamFortress_Spanner = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_cells;
 	self.weaponmodel = "progs/v_span.mdl";
 	self.weaponframe = 0;

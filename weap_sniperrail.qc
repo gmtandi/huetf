@@ -6,6 +6,9 @@ void () SniperRail_Think;
 //=-=-=-=-=
 
 void () TeamFortress_SniperRail = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

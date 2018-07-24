@@ -9,6 +9,18 @@ void () SUB_Null =
 {
 };
 
+float () SUB_Zero =
+{
+	return (0);
+};
+
+void () SUB_ResetWeaponFunctions =
+{
+	self.CheckForReloadFunction = SUB_Zero;
+	self.ReloadStartFunction    = SUB_Null;
+	self.ReloadEndFunction 	    = SUB_Null;
+};
+
 void () SUB_Remove =
 {
 	dremove (self);

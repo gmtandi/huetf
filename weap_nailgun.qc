@@ -10,6 +10,9 @@ void (float ox) W_FireSpikes;
 //=-=-=-=-=
 
 void () TeamFortress_NailGun = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

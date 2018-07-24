@@ -8,6 +8,9 @@ void () T_IncendiaryTouch;
 //=-=-=-=-= 
 void () TeamFortress_IncendiaryCannon =
 {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

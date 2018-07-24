@@ -1,3 +1,9 @@
+//@import - player.qc
+void () player_rocket1;
+
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_Tribolt;
 void () W_FireTriBolt;
@@ -5,10 +11,19 @@ void () Tribolt_Think;
 void () W_TriboltBullet;
 void () TriboltTouch 
 void () TriboltExplode;
-void () player_rocket1;
+float () W_Check_Reload_Tribolt;
+void () W_Reload_Tribolt_Start;
+void () W_Reload_Tribolt_Finish;
 //=-=-=-=-=
 
 void () TeamFortress_Tribolt = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 1;
+	self.CheckForReloadFunction = W_Check_Reload_Tribolt;
+	self.ReloadStartFunction    = W_Reload_Tribolt_Start;
+	self.ReloadEndFunction 	    = W_Reload_Tribolt_Finish;	
+
 	self.currentammo = self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -143,4 +158,83 @@ void () TriboltExplode = {
 	WriteCoord (4, self.origin_z);
 	multicast (self.origin, 1);
 	dremove (self);
+};
+
+float () W_Check_Reload_Tribolt = 
+{
+	local float rt;
+	local entity tWeapon;
+	if (((self.reload_tribolt >= 12) && (self.ammo_rockets > 0)))
+	{
+		self.reload_tribolt = 0;
+		if ((self.ammo_rockets < 12))
+		{
+			self.reload_tribolt = (12 - self.ammo_rockets);
+		}
+		sprint (self, 2, "reloading...\n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + 5);
+		tWeapon.think = W_Reload_Tribolt_Finish;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+		return (1);
+	}
+};
+
+void () W_Reload_Tribolt_Start =
+{
+	local float rt;
+	local entity tWeapon;
+
+	if ((self.ammo_rockets == 0))
+	{
+		sprint (self, 2, "out of bolts.\n");
+		return;
+	}
+	if ((self.reload_tribolt == 0))
+	{
+		sprint (self, 2, "clip full.\n");
+		return;
+	}
+	if (((12 - self.reload_tribolt) == self.ammo_rockets))
+	{
+		sprint (self, 2, "all bolts are in the clip.\n");
+		return;
+	}
+	if ((self.reload_tribolt < self.ammo_rockets))
+	{
+		Attack_Finished (1.7);
+		rt = ((12 - self.reload_tribolt) / 12);
+		rt = (5 - (5 * rt));
+		self.reload_tribolt = 0;
+		if ((self.ammo_rockets < 6))
+		{
+			self.reload_tribolt = (12 - self.ammo_rockets);
+		}
+		sprint (self, 2, "reloading...\n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + rt);
+		tWeapon.think = W_Reload_Tribolt_Finish;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+	}
+	else
+	{
+		sprint (self, 2, "not enough ammo to reload\n");
+	}
+};
+
+void () W_Reload_Tribolt_Finish =
+{
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
+	self.owner.weaponmodel = "progs/v_rock.mdl";
+	sprint (self.owner, 2, "finished reloading\n");
+	dremove (self);
+	self.owner.StatusRefreshTime = (time + 0.1);
 };

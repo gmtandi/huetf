@@ -6,6 +6,9 @@ void () Rail_Touch;
 //=-=-=-=-=
 
 void () TeamFortress_RailGun = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

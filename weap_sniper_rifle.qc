@@ -1,8 +1,22 @@
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
-void () TeamFortress_SniperRifle;
+void  () TeamFortress_SniperRifle;
+void  () W_FireSniperRifle;
+float () W_Check_Reload_Sniper_Rifle;
+void  () W_Reload_Sniper_Rifle_Start;
+void  () W_Reload_Sniper_Rifle_Finish;
 //=-=-=-=-=
 
 void () TeamFortress_SniperRifle = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 1;
+	self.CheckForReloadFunction = W_Check_Reload_Sniper_Rifle;
+	self.ReloadStartFunction    = W_Reload_Sniper_Rifle_Start;
+	self.ReloadEndFunction 	    = W_Reload_Sniper_Rifle_Finish;
+	
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -13,7 +27,7 @@ void () TeamFortress_SniperRifle = {
 	self.weapon = 1;
 };
 
-void () W_FireSniperRifle =
+void () W_FireSniperRifle = 
 {
 	local vector dir;
 	local vector src;
@@ -114,4 +128,76 @@ void () W_FireSniperRifle =
 		TraceAttack ((self.heat * dam_mult), dir);
 	}
 	ApplyMultiDamage ();
+};
+
+float () W_Check_Reload_Sniper_Rifle =
+{
+	local float rt;
+	local entity tWeapon;
+	
+	if (((self.reload_sniper_rifle >= 1) && (self.ammo_shells > 0)))
+	{
+		self.reload_sniper_rifle = 0;						
+		sprint (self, 2, "reloading... \n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + 5);
+		tWeapon.think = W_Reload_Sniper_Rifle_Finish;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+		return (1);
+	}
+};
+
+void () W_Reload_Sniper_Rifle_Start =
+{
+	local float rt;
+	local entity tWeapon;
+
+	if ((self.ammo_shells == 0))
+	{
+		sprint (self, 2, "out of shells.\n");
+		return;
+	}
+	if ((self.reload_sniper_rifle == 0))
+	{
+		sprint (self, 2, "clip full.\n");
+		return;
+	}
+	if (((4 - self.reload_sniper_rifle) == self.ammo_shells))
+	{
+		sprint (self, 2, "all shells are in the clip.\n");
+		return;
+	}
+	if ((self.reload_sniper_rifle < self.ammo_shells))
+	{
+		Attack_Finished (0.8);
+		rt = ((1 - self.reload_sniper_rifle) / 1);
+		rt = (5 - (5 * rt));
+		self.reload_sniper_rifle = 0;
+		sprint (self, 2, "reloading...\n");
+		self.tfstate = (self.tfstate | TFSTATE_RELOADING);
+		tWeapon = spawn ();
+		tWeapon.owner = self;
+		tWeapon.classname = "timer";
+		tWeapon.nextthink = (time + rt);
+		tWeapon.think = self.ReloadEndFunction;
+		self.weaponmodel = "";
+		self.weaponframe = 0;
+	}
+	else
+	{
+		sprint (self, 2, "not enough ammo to reload\n");
+	}
+}
+
+void () W_Reload_Sniper_Rifle_Finish =
+{
+	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
+	self.owner.weaponmodel = "progs/v_srifle.mdl";
+	sprint (self.owner, 2, "finished reloading\n");
+	dremove (self);
+	self.owner.StatusRefreshTime = (time + 0.1);
 };

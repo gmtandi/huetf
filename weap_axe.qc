@@ -10,6 +10,9 @@ void () W_FireAxe;
 //=-=-=-=-=
 
 void () TeamFortress_Axe = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = 0;
 	if ((self.playerclass == PC_SPY))
 	{

@@ -639,59 +639,16 @@ float () W_CheckNoAmmo = {
 
 };
 
-void () W_Reload_shotgun =
+void () TeamFortress_ReloadCurrentWeapon =
 {
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
-	self.owner.weaponmodel = "progs/v_shot.mdl";
-	sprint (self.owner, 2, "finished reloading\n");
-	dremove (self);
-	self.owner.StatusRefreshTime = (time + 0.1);
-};
-
-void () W_Reload_super_shotgun =
-{
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
-	self.owner.weaponmodel = "progs/v_shot2.mdl";
-	sprint (self.owner, 2, "finished reloading\n");
-	dremove (self);
-	self.owner.StatusRefreshTime = (time + 0.1);
-};
-
-void () W_Reload_grenade_launcher =
-{
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
-	self.owner.weaponmodel = "progs/v_rock.mdl";
-	sprint (self.owner, 2, "finished reloading\n");
-	dremove (self);
-	self.owner.StatusRefreshTime = (time + 0.1);
-};
-
-void () W_Reload_tribolt =
-{
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
-	self.owner.weaponmodel = "progs/v_rock.mdl";
-	sprint (self.owner, 2, "finished reloading\n");
-	dremove (self);
-	self.owner.StatusRefreshTime = (time + 0.1);
-	
-};
-
-void () W_Reload_rocket_launcher =
-{
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
-	self.owner.weaponmodel = "progs/v_rock2.mdl";
-	sprint (self.owner, 2, "finished reloading\n");
-	dremove (self);
-	self.owner.StatusRefreshTime = (time + 0.1);
-};
-
-void () W_Reload_sniper_rifle =
-{
-	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
-	self.owner.weaponmodel = "progs/v_srifle.mdl";
-	sprint (self.owner, 2, "finished reloading\n");
-	dremove (self);
-	self.owner.StatusRefreshTime = (time + 0.1);
+	if (self.tfstate & TFSTATE_RELOADING)
+		return;
+	if (self.playerclass == PC_CIVILIAN)
+		return;
+	if (practice)
+		return;
+	if (self.ReloadStartFunction != SUB_Null)
+		self.ReloadStartFunction();
 };
 
 float () CheckForReload =
@@ -699,147 +656,14 @@ float () CheckForReload =
 	local entity tWeapon;
 
 	if (practice)
-	{
-		return (0);
-	}
-	if ((self.playerclass != 11))
-	{
-		if ((self.current_weapon == WEAP_SHOTGUN ))
-		{
-			if (((self.reload_shotgun >= 8) && (self.ammo_shells > 0)))
-			{
-				self.reload_shotgun = 0;
-				if ((self.ammo_shells < 8))
-				{
-					self.reload_shotgun = (8 - self.ammo_shells);
-				}
-				sprint (self, 2, "reloading... \n");
-				self.tfstate = (self.tfstate | TFSTATE_RELOADING);
-				tWeapon = spawn ();
-				tWeapon.owner = self;
-				tWeapon.classname = "timer";
-				tWeapon.nextthink = (time + 2);
-				tWeapon.think = W_Reload_shotgun;
-				self.weaponmodel = "";
-				self.weaponframe = 0;
-				return (1);
-			}
-		}
-		else
-		{
-			if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
-			{
-				if ((self.reload_super_shotgun > 16))
-				{
-					self.reload_super_shotgun = 16;
-				}
-				if (((self.reload_super_shotgun >= 16) && (self.ammo_shells > 0)))
-				{
-					self.reload_super_shotgun = 0;
-					if ((self.ammo_shells < 16))
-					{
-						self.reload_super_shotgun = (16 - self.ammo_shells);
-					}
-					sprint (self, 2, "reloading... \n");
-					self.tfstate = (self.tfstate | TFSTATE_RELOADING);
-					tWeapon = spawn ();
-					tWeapon.owner = self;
-					tWeapon.classname = "timer";
-					tWeapon.nextthink = (time + 3);
-					tWeapon.think = W_Reload_super_shotgun;
-					self.weaponmodel = "";
-					self.weaponframe = 0;
-					return (1);
-				}
-			}
-			else
-			{
-				if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
-				{
-					if (((self.reload_grenade_launcher >= 6) && (self.ammo_rockets > 0)))
-					{
-						self.reload_grenade_launcher = 0;
-						if ((self.ammo_rockets < 6))
-						{
-							self.reload_grenade_launcher = (6 - self.ammo_rockets);
-						}
-						sprint (self, 2, "reloading...\n");
-						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
-						tWeapon = spawn ();
-						tWeapon.owner = self;
-						tWeapon.classname = "timer";
-						tWeapon.nextthink = (time + 4);
-						tWeapon.think = W_Reload_grenade_launcher;
-						self.weaponmodel = "";
-						self.weaponframe = 0;
-						return (1);
-					}
-				}
-				else if ((self.current_weapon == WEAP_TRIBOLT))
-				{
-					if (((self.reload_tribolt >= 12) && (self.ammo_rockets > 0)))
-					{
-						self.reload_tribolt = 0;
-						if ((self.ammo_rockets < 12))
-						{
-							self.reload_tribolt = (12 - self.ammo_rockets);
-						}
-						sprint (self, 2, "reloading...\n");
-						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
-						tWeapon = spawn ();
-						tWeapon.owner = self;
-						tWeapon.classname = "timer";
-						tWeapon.nextthink = (time + 5);
-						tWeapon.think = W_Reload_tribolt;
-						self.weaponmodel = "";
-						self.weaponframe = 0;
-						return (1);
-					}
-				}
-				else if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
-				{
-					if (((self.reload_rocket_launcher >= 4) && (self.ammo_rockets > 0)))
-					{
-						self.reload_rocket_launcher = 0;
-						if ((self.ammo_rockets < 4))
-						{
-							self.reload_rocket_launcher = (4 - self.ammo_rockets);
-						}
-						sprint (self, 2, "reloading... \n");
-						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
-						tWeapon = spawn ();
-						tWeapon.owner = self;
-						tWeapon.classname = "timer";
-						tWeapon.nextthink = (time + 5);
-						tWeapon.think = W_Reload_rocket_launcher;
-						self.weaponmodel = "";
-						self.weaponframe = 0;
-						return (1);
-					}
-				}				
-				else if ((sniperpower) && (self.current_weapon == WEAP_SNIPER_RIFLE))
-				{
-					if (((self.reload_sniper_rifle >= 1) && (self.ammo_shells > 0)))
-					{
-						self.reload_sniper_rifle = 0;						
-						sprint (self, 2, "reloading... \n");
-						self.tfstate = (self.tfstate | TFSTATE_RELOADING);
-						tWeapon = spawn ();
-						tWeapon.owner = self;
-						tWeapon.classname = "timer";
-						tWeapon.nextthink = (time + 5);
-						tWeapon.think = W_Reload_sniper_rifle;
-						self.weaponmodel = "";
-						self.weaponframe = 0;
-						return (1);
-					}
-				}
-				
-			}
-		}
-	}
+		return (0);	
+	if (self.playerclass != 11)
+		if (self.CheckForReloadFunction) {
+			return self.CheckForReloadFunction();
+		}		
 	return (0);
 };
+
 void () player_axe1;
 void () player_axeb1;
 void () player_axec1;

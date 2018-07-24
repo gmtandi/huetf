@@ -11,6 +11,9 @@ void (vector direction, float damage) FireSniperBullet;
 //=-=-=-=-=
 
 void () TeamFortress_AutoRifle = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

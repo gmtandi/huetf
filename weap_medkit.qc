@@ -19,15 +19,22 @@ void () W_FireMedikit;
 //=-=-=-=-=
 
 void () TeamFortress_Medikit = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_medikit;
 	self.weaponmodel = "progs/v_medi.mdl";
 	self.weaponframe = 0;
 };
 
 void () TeamFortress_BioWeapon = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;
 	self.currentammo = 0;
 	self.weaponmodel = "progs/v_bio.mdl";
 	self.weaponframe = 0;
+	
 };
 
 void () W_FireMedikit =

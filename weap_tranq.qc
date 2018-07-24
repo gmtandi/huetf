@@ -9,6 +9,9 @@ void () TranquiliserTimer;
 //=-=-=-=-=
 
 void () TeamFortress_Tranquilizer = {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -16,7 +19,7 @@ void () TeamFortress_Tranquilizer = {
 		self.weaponframe = 0;
 	}
 	self.items = (self.items | 256);
-	self.weapon = 1;	
+	self.weapon = 1;
 };
 
 void () W_FireTranq =

@@ -26,6 +26,9 @@ void () s_explode6;
 
 void () TeamFortress_FlameThrower =
 {
+	SUB_ResetWeaponFunctions();
+	
+	self.needsReload = 0;	
 	self.currentammo = self.ammo_cells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

@@ -30,7 +30,6 @@ entity pteam4;
 .float max_ammoboxes;
 .float num_ammoboxes;
 
-
 .float forward;
 .float right;
 .float up;
@@ -331,3 +330,10 @@ float classrework;
 .float reload_sniper_rifle;
 float headshots;
 float shortergrens;
+
+//weapon
+.float needsReload = 0;
+.float () CheckForReloadFunction;
+.void () ReloadStartFunction;
+.void () ReloadEndFunction;
+
