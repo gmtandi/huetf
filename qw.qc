@@ -333,6 +333,7 @@ float shortergrens;
 
 //weapon
 .float needsReload = 0;
+.void () AttackFunction;
 .float () CheckForReloadFunction;
 .void () ReloadStartFunction;
 .void () ReloadEndFunction;

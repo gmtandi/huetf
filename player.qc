@@ -525,48 +525,6 @@ void () player_bioweapond4 = [ 140, player_run ]
 	self.weaponframe = 8;
 };
 
-void () player_nail1 = [ 103, player_nail2 ]
-{
-	muzzleflash ();
-	if ((!self.button0 || intermission_running))
-	{
-		player_run ();
-		return;
-	}
-	self.weaponframe = (self.weaponframe + 1);
-	if ((self.weaponframe == 9))
-	{
-		self.weaponframe = 1;
-	}
-	SuperDamageSound ();
-	if ((self.nailpos == 0))
-	{
-		W_FireSpikes (4);
-		self.nailpos = 1;
-	}
-	else
-	{
-		W_FireSpikes (-4);
-		self.nailpos = 0;
-	}
-	Attack_Finished (0.2);
-};
-
-void () player_nail2 = [ 104, player_nail1 ]
-{
-	if ((!self.button0 || intermission_running))
-	{
-		player_run ();
-		return;
-	}
-	self.weaponframe = (self.weaponframe + 1);
-	if ((self.weaponframe == 9))
-	{
-		self.weaponframe = 1;
-	}
-	Attack_Finished (0.2);
-};
-
 void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 {
 	if ((!self.button0 || (self.ammo_shells < 1)) || intermission_running)

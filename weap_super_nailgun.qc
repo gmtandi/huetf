@@ -2,6 +2,15 @@
 void (vector org, vector dir) launch_spike;
 void () superspike_touch;
 
+//@import - player.qc
+void () player_run;
+
+//@import - weapons.qc
+void () SuperDamageSound;
+
+//@import - weap_nailgun.qc
+void () player_nail1;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_SuperNailGun;
 void () W_FireSuperSpikes;
@@ -11,6 +20,7 @@ void () TeamFortress_SuperNailGun = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 0;	
+	self.AttackFunction = player_nail1;
 	self.currentammo = self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -39,4 +49,5 @@ void () W_FireSuperSpikes =
 	setmodel (newmis, "progs/s_spike.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	KickPlayer (-2, self);
+	Attack_Finished (0.2);
 };

@@ -700,6 +700,11 @@ void () W_Attack =
 
 	if (!W_CheckNoAmmo ())
 	{
+		self.last_weapon = self.current_weapon;
+		self.last_weaponmode = self.weaponmode;
+		self.current_weapon = W_BestWeapon ();
+		W_SetCurrentAmmo ();
+		W_PrintWeaponMessage ();
 		return;
 	}
 	if ((self.has_disconnected == 1))
@@ -800,43 +805,27 @@ void () W_Attack =
 					{
 						if ((self.current_weapon == WEAP_NAILGUN))
 						{
-							player_nail1 ();
+							self.AttackFunction();
 						}
 						else
 						{
 							if ((self.current_weapon == WEAP_SUPER_NAILGUN))
 							{
-								player_nail1 ();
+								self.AttackFunction();
 							}
 							else
 							{
 								if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
 								{
-									if (CheckForReload ())
-									{
-										return;
-									}
-									player_rocket1 ();
-									W_FireGrenade ();
-									self.reload_grenade_launcher = (self.reload_grenade_launcher + 1);
-									self.StatusRefreshTime = (time + 0.1);
-									CheckForReload ();
-									Attack_Finished (0.6);
+									self.AttackFunction();
 								}
 								else
 								{
 									if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 									{
-										if (CheckForReload ())
-										{
-											return;
-										}
-										player_rocket1 ();
-										W_FireRocket ();
-										self.reload_rocket_launcher = (self.reload_rocket_launcher + 1);
-										self.StatusRefreshTime = (time + 0.1);
-										CheckForReload ();
-										Attack_Finished (0.8);
+							
+										self.AttackFunction();
+										
 									}
 									else if ((self.current_weapon == WEAP_LIGHTNING))
 									{

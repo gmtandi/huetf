@@ -1,5 +1,9 @@
 //@import - weapons.qc
 void (float att_delay) Attack_Finished;
+float () CheckForReload;
+
+//@import - player.qc
+void () player_rocket1;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_GrenadeLauncher;
@@ -20,6 +24,7 @@ void () TeamFortress_GrenadeLauncher = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
+	self.AttackFunction 		= W_FireGrenade;
 	self.CheckForReloadFunction = W_Check_Reload_Grenade_Launcher;
 	self.ReloadStartFunction    = W_Reload_Grenade_Launcher_Start;
 	self.ReloadEndFunction 	    = W_Reload_Grenade_Launcher_Start;	
@@ -41,6 +46,9 @@ void () W_FireGrenade =
 		self.ammo_rockets = (self.ammo_rockets - 1);
 		self.currentammo = self.ammo_rockets;
 	}
+	if (CheckForReload ())
+		return;
+	player_rocket1 ();
 	sound (self, 1, "weapons/grenade.wav", 1, 1);
 	KickPlayer (-2, self);
 	newmis = spawn ();
@@ -98,6 +106,10 @@ void () W_FireGrenade =
 	setmodel (newmis, "progs/grenade2.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, self.origin);
+	self.reload_grenade_launcher = (self.reload_grenade_launcher + 1);
+	self.StatusRefreshTime = (time + 0.1);
+	CheckForReload ();
+	Attack_Finished (0.6);
 };
 
 void () PipebombTouch =
