@@ -725,81 +725,33 @@ void () W_Attack =
 	}
 	makevectors (self.v_angle);
 	self.show_hostile = (time + 1);
-	if ((self.current_weapon == 16))
-	{
-		Attack_Finished (0.5);
-		sound (self, 1, "weapons/ax1.wav", 1, 1);
-		r = random ();
-		if ((r < 0.25))
-		{
-			player_axe1 ();
-		}
-		else
-		{
-			if ((r < 0.5))
-			{
-				player_axeb1 ();
-			}
-			else
-			{
-				if ((r < 0.75))
-				{
-					player_axec1 ();
-				}
-				else
-				{
-					player_axed1 ();
-				}
-			}
-		}
-	}
+	if (self.current_weapon == WEAP_AXE)
+		self.AttackFunction();
 	else
 	{
-		if ((self.current_weapon == 8))
+		if (self.current_weapon == WEAP_SPANNER)
 		{
-			Attack_Finished (0.5);
-			sound (self, 1, "weapons/ax1.wav", 1, 1);
-			player_axe1 ();
+			self.AttackFunction();
 		}
 		else
 		{
 			if ((self.current_weapon == WEAP_HOOK))
 			{
-				if (!self.hook_out)
-				{
-					player_chain1 ();
-				}
-				Attack_Finished (0.1);
+				self.AttackFunction();
 			}
 			else
 			{
 				if ((self.current_weapon == WEAP_SHOTGUN))
 				{
-					if (CheckForReload ())
-					{
-						return;
-					}
-					player_shot1 ();
-					W_FireShotgun ();
-					self.reload_shotgun = (self.reload_shotgun + 1);
-					self.StatusRefreshTime = (time + 0.1);
-					CheckForReload ();
-					Attack_Finished (0.5);
+
+					self.AttackFunction();
+					
 				}
 				else
 				{
 					if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
-					{
-						if (CheckForReload ())
-						{
-							return;
-						}
-						player_shot1 ();
-						W_FireSuperShotgun ();
-						self.reload_super_shotgun = (self.reload_super_shotgun + 2);
-						self.StatusRefreshTime = (time + 0.1);
-						CheckForReload ();
-						Attack_Finished (0.7);
+					{						
+						self.AttackFunction();
 					}
 					else
 					{

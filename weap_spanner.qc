@@ -5,15 +5,27 @@ void () button_fire;
 void (entity disp) Engineer_UseDispenser;
 void (entity gun) Engineer_UseSentryGun;
 
+//@import - player.qc
+void () player_run;
+
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_Spanner;
 void () W_FireSpanner;
+void () W_Spanner_Attack;
+void () player_spanner1;
+void () player_spanner2;
+void () player_spanner3;
+void () player_spanner4;
 //=-=-=-=-= 
 
 void () TeamFortress_Spanner = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
+	self.needsReload = 0;
+	self.AttackFunction = W_Spanner_Attack;	
 	self.currentammo = self.ammo_cells;
 	self.weaponmodel = "progs/v_span.mdl";
 	self.weaponframe = 0;
@@ -157,4 +169,32 @@ void () W_FireSpanner =
 		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
+};
+
+void () W_Spanner_Attack = 
+{
+	Attack_Finished (0.5);
+	sound (self, 1, "weapons/ax1.wav", 1, 1);
+	player_spanner1();
+}
+
+void () player_spanner1 = [ 119, player_spanner2 ]
+{
+	self.weaponframe = 1;
+};
+
+void () player_spanner2 = [ 120, player_spanner3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_spanner3 = [ 121, player_spanner4 ]
+{
+	self.weaponframe = 3;
+	W_FireSpanner ();
+};
+
+void () player_spanner4 = [ 122, player_run ]
+{
+	self.weaponframe = 4;
 };

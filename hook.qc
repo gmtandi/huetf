@@ -1,13 +1,24 @@
-//=-=-=-=-=
+//=-=-=-=-= Local Functions
+void () W_Hook_Attack;
+void () player_chain1;
+void () player_chain1a;
+void () player_chain2;
+void () player_chain2a;
+void () player_chain3;
+void () player_chain4;
+void () player_chain5;
+//=-=-=-=-= 
 
 void () TeamFortress_Hook = {
+	self.needsReload = 0;
+	self.AttackFunction = W_Hook_Attack;
 	self.currentammo = 0;
 	self.weaponmodel = "progs/v_grap.mdl";
 	self.weaponframe = 0;
 }
 
 void (entity rhook) Reset_Grapple =
-{
+{	
 	sound (rhook.owner, 1, "weapons/bounce.wav", 1, 0);
 	rhook.owner.on_hook = 0;
 	rhook.owner.hook_out = 0;
@@ -250,4 +261,67 @@ void () Service_Grapple =
 		}
 		self.lefty = 0;
 	}
+};
+
+void () W_Hook_Attack =
+{
+	if (!self.hook_out)
+		player_chain1 ();
+	Attack_Finished (0.1);
+}
+
+void () player_chain1 = [ 137, player_chain1a ]
+{
+	self.weaponframe = 1;
+	Throw_Grapple ();
+};
+
+void () player_chain1a = [ 137, player_chain2 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_chain2 = [ 138, player_chain2a ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_chain2a = [ 138, player_chain3 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_chain3 = [ 139, player_chain3 ]
+{
+	self.weaponframe = 6;
+	if (!self.hook_out)
+	{
+		player_chain5 ();
+		return;
+	}
+	if ((vlen (self.velocity) >= 750))
+	{
+		player_chain4 ();
+		return;
+	}
+};
+
+void () player_chain4 = [ 73, player_chain4 ]
+{
+	self.weaponframe = 6;
+	if (!self.hook_out)
+	{
+		player_chain5 ();
+		return;
+	}
+	if ((vlen (self.velocity) < 750))
+	{
+		player_chain3 ();
+		return;
+	}
+};
+
+void () player_chain5 = [ 140, player_run ]
+{
+	self.weaponframe = 0;
 };

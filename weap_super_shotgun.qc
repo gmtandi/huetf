@@ -1,6 +1,10 @@
 //@import - weapons.qc
 void (float shotcount, vector dir, vector spread) FireBullets;
 void (float att_delay) Attack_Finished;
+float () CheckForReload;
+
+//@import - weapon_shotgun.qc
+void () W_FireShotgun;
 
 //=-=-=-=-=
 void  () TeamFortress_SuperShotgun;
@@ -8,12 +12,20 @@ void  () W_FireSuperShotgun;
 float () W_Check_Reload_Super_Shotgun;
 void  () W_Reload_Super_Shotgun_Start;
 void  () W_Reload_Super_Shotgun_Finish;
+void  () player_supershot1;
+void  () player_supershot2;
+void  () player_supershot3;
+void  () player_supershot4;
+void  () player_supershot5;
+void  () player_supershot6;
+
 //=-=-=-=-=
 
 void () TeamFortress_SuperShotgun = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
+	self.AttackFunction = W_FireSuperShotgun;
 	self.CheckForReloadFunction = W_Check_Reload_Super_Shotgun;
 	self.ReloadStartFunction    = W_Reload_Super_Shotgun_Start;
 	self.ReloadEndFunction 	    = W_Reload_Super_Shotgun_Finish;
@@ -31,7 +43,9 @@ void () TeamFortress_SuperShotgun = {
 void () W_FireSuperShotgun =
 {
 	local vector dir;
-
+	if (CheckForReload ())
+		return;
+	player_supershot1();
 	if ((self.currentammo == 1))
 	{
 		W_FireShotgun ();
@@ -47,6 +61,11 @@ void () W_FireSuperShotgun =
 	dir = aim (self, 100000);
 	deathmsg = 2;
 	FireBullets (14, dir, '0.14 0.08 0');
+	self.reload_super_shotgun = (self.reload_super_shotgun + 2);
+	self.StatusRefreshTime = (time + 0.1);
+	CheckForReload ();
+	Attack_Finished (0.7);
+
 };
 
 float () W_Check_Reload_Super_Shotgun =
@@ -131,4 +150,35 @@ void () W_Reload_Super_Shotgun_Finish =
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
 	self.owner.StatusRefreshTime = (time + 0.1);
+};
+
+void () player_supershot1 = [ 113, player_supershot2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_supershot2 = [ 114, player_supershot3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_supershot3 = [ 115, player_supershot4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_supershot4 = [ 116, player_supershot5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_supershot5 = [ 117, player_supershot6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_supershot6 = [ 118, player_run ]
+{
+	self.weaponframe = 6;
 };

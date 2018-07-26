@@ -1,18 +1,40 @@
-//@import - weapons.qc
-void (vector org, float damage) SpawnBlood;
+//@import - player.qc
+void () player_run;
 
 //@import - tfort.qc
 float (vector veca, vector vecb) crossproduct;
 
-//=-=-=-=-=
+//@import - weapons.qc
+void (vector org, float damage) SpawnBlood;
+void (float att_delay) Attack_Finished;
+
+//=-=-=-=-= Local Functions
 void () TeamFortress_Axe;
 void () W_FireAxe;
+void () W_Axe_Attack;
+void () player_axe1;
+void () player_axe2;
+void () player_axe3;
+void () player_axe4;
+void () player_axeb1;
+void () player_axeb2;
+void () player_axeb3;
+void () player_axeb4;
+void () player_axec1;
+void () player_axec2;
+void () player_axec3;
+void () player_axec4;
+void () player_axed1;
+void () player_axed2;
+void () player_axed3;
+void () player_axed4;
 //=-=-=-=-=
 
 void () TeamFortress_Axe = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 0;	
+	self.AttackFunction = W_Axe_Attack;
 	self.currentammo = 0;
 	if ((self.playerclass == PC_SPY))
 	{
@@ -92,4 +114,102 @@ void () W_FireAxe =
 		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
+};
+
+void () W_Axe_Attack = {
+	Attack_Finished (0.5);
+	sound (self, 1, "weapons/ax1.wav", 1, 1);
+	local float r = random ();
+	if (r < 0.25)
+		player_axe1 ();		
+	else if (r < 0.5)
+		player_axeb1 ();
+	else if (r < 0.75)
+		player_axec1 ();
+	else
+		player_axed1 ();
+}
+
+void () player_axe1 = [ 119, player_axe2 ]
+{
+	self.weaponframe = 1;
+};
+
+void () player_axe2 = [ 120, player_axe3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_axe3 = [ 121, player_axe4 ]
+{
+	self.weaponframe = 3;
+	W_FireAxe ();
+};
+
+void () player_axe4 = [ 122, player_run ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_axeb1 = [ 125, player_axeb2 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_axeb2 = [ 126, player_axeb3 ]
+{
+	self.weaponframe = 6;
+};
+
+void () player_axeb3 = [ 127, player_axeb4 ]
+{
+	self.weaponframe = 7;
+	W_FireAxe ();
+};
+
+void () player_axeb4 = [ 128, player_run ]
+{
+	self.weaponframe = 8;
+};
+
+void () player_axec1 = [ 131, player_axec2 ]
+{
+	self.weaponframe = 1;
+};
+
+void () player_axec2 = [ 132, player_axec3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_axec3 = [ 133, player_axec4 ]
+{
+	self.weaponframe = 3;
+	W_FireAxe ();
+};
+
+void () player_axec4 = [ 134, player_run ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_axed1 = [ 137, player_axed2 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_axed2 = [ 138, player_axed3 ]
+{
+	self.weaponframe = 6;
+};
+
+void () player_axed3 = [ 139, player_axed4 ]
+{
+	self.weaponframe = 7;
+	W_FireAxe ();
+};
+
+void () player_axed4 = [ 140, player_run ]
+{
+	self.weaponframe = 8;
 };
