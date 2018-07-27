@@ -498,9 +498,6 @@ void () W_SetCurrentAmmo =
 		case WEAP_HOOK:
 			TeamFortress_Hook();
 			break;
-		case WEAP_BIOWEAPON:
-			TeamFortress_BioWeapon();
-			break;
 		case WEAP_MEDIKIT:
 			TeamFortress_Medikit();
 			break;
@@ -680,10 +677,6 @@ void () player_medikit1;
 void () player_medikitb1;
 void () player_medikitc1;
 void () player_medikitd1;
-void () player_bioweapon1;
-void () player_bioweaponb1;
-void () player_bioweaponc1;
-void () player_bioweapond1;
 void () player_chain1;
 void () player_chain2;
 void () player_chain3;
@@ -775,28 +768,15 @@ void () W_Attack =
 								{
 									if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
 									{
-							
 										self.AttackFunction();
-										
 									}
 									else if ((self.current_weapon == WEAP_LIGHTNING))
 									{
-										player_light1 ();
-										Attack_Finished (0.1);
-										sound (self, 0, "weapons/lstart.wav", 1, 1);
+										self.AttackFunction();
 									}									 
 									else if (sniperpower && (self.current_weapon == WEAP_SNIPER_RIFLE))
 									{
-										if (CheckForReload ())
-										{
-											return;
-										}
-										player_shot1 ();
-										W_FireSniperRifle ();
-										self.reload_sniper_rifle = (self.reload_sniper_rifle + 1);
-										self.StatusRefreshTime = (time + 0.1);
-										CheckForReload ();
-										Attack_Finished (0.8);
+										self.AttackFunction();
 									}
 								}
 							}
@@ -806,70 +786,27 @@ void () W_Attack =
 			}
 		}
 	}
-	if ((self.current_weapon == WEAP_SNIPER_RIFLE))
-	{
-		if (((self.flags & 512) || self.hook_out))
-		{
-			player_shot1 ();
-			W_FireSniperRifle ();
-			Attack_Finished (1.7);
-		}
-	}
-	else
-	{
 		if ((self.current_weapon == WEAP_AUTO_RIFLE))
 		{
-			player_autorifle1 ();
-			W_FireAutoRifle ();
-			Attack_Finished (0.1);
+			self.AttackFunction();
 		}
 		else
 		{
 			if ((self.current_weapon == WEAP_ASSAULT_CANNON))
 			{
-				if ((self.ammo_cells < 7))
-				{
-					sprint (self, 1, "Insufficient cells to power up the Assault Cannon.\n");
-				}
-				else
-				{
-					self.ammo_cells = (self.ammo_cells - 7);
-					self.heat = 1;
-					self.immune_to_check = (time + 5);
-					self.tfstate = (self.tfstate | TFSTATE_AIMING);
-					TeamFortress_SetSpeed (self);
-					player_assaultcannonup1 ();
-				}
+				self.AttackFunction();
 			}
 			else
 			{
 				if ((self.current_weapon == WEAP_FLAMETHROWER))
 				{
-					player_shot1 ();
-					W_FireFlame ();
-					if ((self.waterlevel > 2))
-					{
-						Attack_Finished (1);
-					}
-					else
-					{
-						Attack_Finished (0.15);
-					}
+					self.AttackFunction();
 				}
 				else
 				{
 					if ((self.current_weapon == WEAP_INCENDIARY))
 					{
-						player_rocket1 ();
-						W_FireIncendiaryCannon ();
-						if ((self.weaponmode == 1))
-						{
-							Attack_Finished (0.9);
-						}
-						else
-						{
-							Attack_Finished (1.2);
-						}
+						self.AttackFunction();
 					}
 					else
 					{
@@ -902,81 +839,51 @@ void () W_Attack =
 							Attack_Finished (0.5);
 						}
 						else
-						{
-							if ((self.current_weapon == WEAP_BIOWEAPON))
+						{							
+							if ((self.current_weapon == WEAP_TRANQ))
 							{
-								sound (self, 1, "weapons/ax1.wav", 1, 1);
-								r = random ();
-								if ((r < 0.25))
-								{
-									player_bioweapon1 ();
-								}
-								else
-								{
-									if ((r < 0.5))
-									{
-										player_bioweaponb1 ();
-									}
-									else
-									{
-										if ((r < 0.75))
-										{
-											player_bioweaponc1 ();
-										}
-										else
-										{
-											player_bioweapond1 ();
-										}
-									}
-								}
-								Attack_Finished (0.5);
+								sound (self, 1, "weapons/dartgun.wav", 1, 1);
+								player_shot1 ();
+								W_FireTranq ();
+								Attack_Finished (1.7);
 							}
 							else
 							{
-								if ((self.current_weapon == WEAP_TRANQ))
+								if ((self.current_weapon == WEAP_RAILGUN))
 								{
-									sound (self, 1, "weapons/dartgun.wav", 1, 1);
+									sound (self, 1, "weapons/railgun.wav", 1, 1);
 									player_shot1 ();
-									W_FireTranq ();
+									W_FireRail ();
+									Attack_Finished (0.4);
+								}
+								else if ((self.current_weapon == WEAP_TRIBOLT))
+								{
+									if (CheckForReload ())
+									{
+										return;
+									}
+									W_FireTriBolt ();
+									self.reload_tribolt = (self.reload_tribolt + 3);
+									self.StatusRefreshTime = (time + 0.1);
+									CheckForReload ();
 									Attack_Finished (1.7);
 								}
-								else
+								else if ((self.current_weapon == WEAP_SNIPERRAIL))
 								{
-									if ((self.current_weapon == WEAP_RAILGUN))
-									{
-										sound (self, 1, "weapons/railgun.wav", 1, 1);
-										player_shot1 ();
-										W_FireRail ();
-										Attack_Finished (0.4);
-									}
-									else if ((self.current_weapon == WEAP_TRIBOLT))
-									{
-										if (CheckForReload ())
-										{
-											return;
-										}
-										W_FireTriBolt ();
-										self.reload_tribolt = (self.reload_tribolt + 3);
-										self.StatusRefreshTime = (time + 0.1);
-										CheckForReload ();
-										Attack_Finished (1.7);
-									}
-									else if ((self.current_weapon == WEAP_SNIPERRAIL))
-									{
-										sound (self, 1, "weapons/sniper.wav", 1, 1);
-										player_shot1 ();
-										W_FireSniperRail ();
-										Attack_Finished (2);
-									}
-
+									sound (self, 1, "weapons/sniper.wav", 1, 1);
+									player_shot1 ();
+									W_FireSniperRail ();
+									Attack_Finished (2);
 								}
+
 							}
+							
 						}
 					}
 				}
 			}
 		}
-	}
+	
 };
 
 void () W_PrintWeaponMessage =

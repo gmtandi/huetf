@@ -7,12 +7,20 @@ void  () W_FireSniperRifle;
 float () W_Check_Reload_Sniper_Rifle;
 void  () W_Reload_Sniper_Rifle_Start;
 void  () W_Reload_Sniper_Rifle_Finish;
+void () player_sniperrifle1;
+void () player_sniperrifle2;
+void () player_sniperrifle3;
+void () player_sniperrifle4;
+void () player_sniperrifle5;
+void () player_sniperrifle6;
+void () W_Attack_Sniper_Rifle;
 //=-=-=-=-=
 
 void () TeamFortress_SniperRifle = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
+	self.AttackFunction = W_Attack_Sniper_Rifle;
 	self.CheckForReloadFunction = W_Check_Reload_Sniper_Rifle;
 	self.ReloadStartFunction    = W_Reload_Sniper_Rifle_Start;
 	self.ReloadEndFunction 	    = W_Reload_Sniper_Rifle_Finish;
@@ -193,6 +201,29 @@ void () W_Reload_Sniper_Rifle_Start =
 	}
 }
 
+void () W_Attack_Sniper_Rifle = 
+{
+	if (sniperpower) 
+	{
+		if (CheckForReload ())
+		{
+			return;
+		}
+		player_sniperrifle1 ();
+		W_FireSniperRifle ();
+		self.reload_sniper_rifle = (self.reload_sniper_rifle + 1);
+		self.StatusRefreshTime = (time + 0.1);
+		CheckForReload ();
+		Attack_Finished (0.8);
+	}
+	else
+	{
+		player_sniperrifle1 ();
+		W_FireSniperRifle ();
+		Attack_Finished (1.7);
+	}
+};
+
 void () W_Reload_Sniper_Rifle_Finish =
 {
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
@@ -200,4 +231,35 @@ void () W_Reload_Sniper_Rifle_Finish =
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
 	self.owner.StatusRefreshTime = (time + 0.1);
+};
+
+void () player_sniperrifle1 = [ 113, player_sniperrifle2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_sniperrifle2 = [ 114, player_sniperrifle3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_sniperrifle3 = [ 115, player_sniperrifle4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_sniperrifle4 = [ 116, player_sniperrifle5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_sniperrifle5 = [ 117, player_sniperrifle6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_sniperrifle6 = [ 118, player_run ]
+{
+	self.weaponframe = 6;
 };

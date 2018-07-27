@@ -14,7 +14,6 @@ void () BioInfection_MonsterDecay;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_Medikit;
-void () TeamFortress_BioWeapon;
 void () W_FireMedikit;
 //=-=-=-=-=
 
@@ -27,15 +26,6 @@ void () TeamFortress_Medikit = {
 	self.weaponframe = 0;
 };
 
-void () TeamFortress_BioWeapon = {
-	SUB_ResetWeaponFunctions();
-	
-	self.needsReload = 0;
-	self.currentammo = 0;
-	self.weaponmodel = "progs/v_bio.mdl";
-	self.weaponframe = 0;
-	
-};
 
 void () W_FireMedikit =
 {
@@ -224,83 +214,6 @@ void () W_FireMedikit =
 				BioInfection.think = BioInfection_Decay;
 				BioInfection.enemy = self;
 				trace_ent.infection_team_no = self.team_no;
-			}
-		}
-	}
-	else
-	{
-		sound (self, 1, "player/axhit2.wav", 1, 1);
-		WriteByte (4, 23);
-		WriteByte (4, 2);
-		WriteByte (4, 3);
-		WriteCoord (4, org_x);
-		WriteCoord (4, org_y);
-		WriteCoord (4, org_z);
-		multicast (org, 2);
-	}
-};
-
-void () W_FireBioweapon =
-{
-	local vector source;
-	local vector org;
-	local float healam;
-	local entity BioInfection;
-
-	source = (self.origin + '0 0 16');
-	traceline (source, (source + (v_forward * 64)), 0, self);
-	if ((trace_fraction == 1))
-	{
-		return;
-	}
-	org = (trace_endpos - (v_forward * 4));
-	if (trace_ent.takedamage)
-	{
-		if ((trace_ent.classname == "player"))
-		{
-			if (((((trace_ent.team_no != self.team_no) && (self.team_no != 0)) && teamplay) || (teamplay == 0)))
-			{
-				trace_ent.axhitme = 1;
-				SpawnBlood (org, 20);
-				deathmsg = 14;
-				T_Damage (trace_ent, self, self, enter);
-				if ((trace_ent.playerclass == PC_MEDIC))
-				{
-					return;
-				}
-				if (cb_prematch)
-				{
-					return;
-				}
-				trace_ent.tfstate = (trace_ent.tfstate | TFSTATE_INFECTED);
-				BioInfection = spawn ();
-				BioInfection.classname = "timer";
-				BioInfection.owner = trace_ent;
-				BioInfection.nextthink = (time + 2);
-				BioInfection.think = BioInfection_Decay;
-				BioInfection.enemy = self;
-				trace_ent.infection_team_no = self.team_no;
-			}
-		}
-		else
-		{
-			if ((trace_ent.flags & space))
-			{
-				trace_ent.axhitme = 1;
-				SpawnBlood (org, 20);
-				T_Damage (trace_ent, self, self, enter);
-				BioInfection = spawn ();
-				BioInfection.classname = "timer";
-				BioInfection.nextthink = (time + 2);
-				BioInfection.think = BioInfection_MonsterDecay;
-				BioInfection.owner = self;
-				BioInfection.enemy = trace_ent;
-			}
-			else
-			{
-				trace_ent.axhitme = 1;
-				SpawnBlood (org, 30);
-				T_Damage (trace_ent, self, self, 40);
 			}
 		}
 	}

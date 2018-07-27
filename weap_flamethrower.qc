@@ -1,6 +1,3 @@
-//@import - player.qc
-void () DeathBubblesSpawn;
-
 //@import - aux_flame.qc
 void (entity this) FlameDestroy;
 entity (string type, entity p_owner) FlameSpawn;
@@ -10,8 +7,15 @@ void () FlameFollow;
 void () WorldFlame_touch;
 void () Remove;
 
+//@import - player.qc
+void () DeathBubblesSpawn;
+
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_FlameThrower;
+void () W_Attack_FlameThrower;
 void () W_FireFlame;
 void (float num_bubbles, vector bub_origin) NewBubbles;
 void () Flamer_stream_touch;
@@ -22,13 +26,20 @@ void () s_explode3;
 void () s_explode4;
 void () s_explode5;
 void () s_explode6;
+void () player_flame1;
+void () player_flame2;
+void () player_flame3;
+void () player_flame4;
+void () player_flame5;
+void () player_flame6;
 //=-=-=-=-= 
 
 void () TeamFortress_FlameThrower =
 {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
+	self.needsReload = 0;
+	self.AttackFunction = W_Attack_FlameThrower;	
 	self.currentammo = self.ammo_cells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -37,6 +48,20 @@ void () TeamFortress_FlameThrower =
 	}
 	self.items = (self.items | 2048);
 	self.weapon = 8;
+};
+
+void () W_Attack_FlameThrower =
+{
+	player_flame1 ();
+	W_FireFlame ();
+	if ((self.waterlevel > 2))
+	{
+		Attack_Finished (1);
+	}
+	else
+	{
+		Attack_Finished (0.15);
+	}
 };
 
 void () W_FireFlame =
@@ -212,4 +237,35 @@ void () s_explode5 = [ 4, s_explode6 ]
 
 void () s_explode6 = [ 5, SUB_Remove ]
 {
+};
+
+void () player_flame1 = [ 113, player_flame2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_flame2 = [ 114, player_flame3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_flame3 = [ 115, player_flame4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_flame4 = [ 116, player_flame5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_flame5 = [ 117, player_flame6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_flame6 = [ 118, player_run ]
+{
+	self.weaponframe = 6;
 };

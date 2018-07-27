@@ -5,20 +5,27 @@ void () TeamFortress_IncendiaryCannon;
 void () W_FireIncendiaryCannon;
 void () IncendiaryRadius;
 void () T_IncendiaryTouch;
+void () player_incendiary1;
+void () player_incendiary2;
+void () player_incendiary3;
+void () player_incendiary4;
+void () player_incendiary5;
+void () player_incendiary6;
 //=-=-=-=-= 
 void () TeamFortress_IncendiaryCannon =
 {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
-	self.currentammo = self.ammo_rockets;
+	self.needsReload 		= 0;
+	self.AttackFunction 	= W_FireIncendiaryCannon;	
+	self.currentammo 		= self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
-		self.weaponmodel = "progs/v_rock2.mdl";
-		self.weaponframe = 0;
+		self.weaponmodel 	= "progs/v_rock2.mdl";
+		self.weaponframe 	= 0;
 	}
-	self.items = (self.items | 1024);
-	self.weapon = 16;
+	self.items 				= (self.items | 1024);
+	self.weapon 			= 16;
 };
 
 
@@ -45,6 +52,7 @@ void () W_FireIncendiaryCannon =
 			self.currentammo = self.ammo_rockets;
 		}
 	}
+	player_incendiary1();
 	newmis = spawn ();
 	newmis.owner = self;
 	sound (self, 1, "weapons/sgun1.wav", 1, 1);
@@ -71,6 +79,10 @@ void () W_FireIncendiaryCannon =
 	setmodel (newmis, "progs/missile.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, ((self.origin + (v_forward * 8)) + '0 0 16'));
+	if ((self.weaponmode == 1))
+		Attack_Finished (0.9);
+	else
+		Attack_Finished (1.2);
 };
 
 void () IncendiaryRadius =
@@ -127,4 +139,35 @@ void () T_IncendiaryTouch =
 		TF_T_Damage (other, self, self.owner, damg, 2, 0);
 	}
 	IncendiaryRadius ();
+};
+
+void () player_incendiary1 = [ 107, player_incendiary2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_incendiary2 = [ 108, player_incendiary3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_incendiary3 = [ 109, player_incendiary4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_incendiary4 = [ 110, player_incendiary5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_incendiary5 = [ 111, player_incendiary6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_incendiary6 = [ 112, player_run ]
+{
+	self.weaponframe = 6;
 };
