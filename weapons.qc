@@ -718,172 +718,7 @@ void () W_Attack =
 	}
 	makevectors (self.v_angle);
 	self.show_hostile = (time + 1);
-	if (self.current_weapon == WEAP_AXE)
-		self.AttackFunction();
-	else
-	{
-		if (self.current_weapon == WEAP_SPANNER)
-		{
-			self.AttackFunction();
-		}
-		else
-		{
-			if ((self.current_weapon == WEAP_HOOK))
-			{
-				self.AttackFunction();
-			}
-			else
-			{
-				if ((self.current_weapon == WEAP_SHOTGUN))
-				{
-
-					self.AttackFunction();
-					
-				}
-				else
-				{
-					if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
-					{						
-						self.AttackFunction();
-					}
-					else
-					{
-						if ((self.current_weapon == WEAP_NAILGUN))
-						{
-							self.AttackFunction();
-						}
-						else
-						{
-							if ((self.current_weapon == WEAP_SUPER_NAILGUN))
-							{
-								self.AttackFunction();
-							}
-							else
-							{
-								if ((self.current_weapon == WEAP_GRENADE_LAUNCHER))
-								{
-									self.AttackFunction();
-								}
-								else
-								{
-									if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
-									{
-										self.AttackFunction();
-									}
-									else if ((self.current_weapon == WEAP_LIGHTNING))
-									{
-										self.AttackFunction();
-									}									 
-									else if (sniperpower && (self.current_weapon == WEAP_SNIPER_RIFLE))
-									{
-										self.AttackFunction();
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-		if ((self.current_weapon == WEAP_AUTO_RIFLE))
-		{
-			self.AttackFunction();
-		}
-		else
-		{
-			if ((self.current_weapon == WEAP_ASSAULT_CANNON))
-			{
-				self.AttackFunction();
-			}
-			else
-			{
-				if ((self.current_weapon == WEAP_FLAMETHROWER))
-				{
-					self.AttackFunction();
-				}
-				else
-				{
-					if ((self.current_weapon == WEAP_INCENDIARY))
-					{
-						self.AttackFunction();
-					}
-					else
-					{
-						if ((self.current_weapon == WEAP_MEDIKIT))
-						{
-							sound (self, 1, "weapons/ax1.wav", 1, 1);
-							r = random ();
-							if ((r < 0.25))
-							{
-								player_medikit1 ();
-							}
-							else
-							{
-								if ((r < 0.5))
-								{
-									player_medikitb1 ();
-								}
-								else
-								{
-									if ((r < 0.75))
-									{
-										player_medikitc1 ();
-									}
-									else
-									{
-										player_medikitd1 ();
-									}
-								}
-							}
-							Attack_Finished (0.5);
-						}
-						else
-						{							
-							if ((self.current_weapon == WEAP_TRANQ))
-							{
-								sound (self, 1, "weapons/dartgun.wav", 1, 1);
-								player_shot1 ();
-								W_FireTranq ();
-								Attack_Finished (1.7);
-							}
-							else
-							{
-								if ((self.current_weapon == WEAP_RAILGUN))
-								{
-									sound (self, 1, "weapons/railgun.wav", 1, 1);
-									player_shot1 ();
-									W_FireRail ();
-									Attack_Finished (0.4);
-								}
-								else if ((self.current_weapon == WEAP_TRIBOLT))
-								{
-									if (CheckForReload ())
-									{
-										return;
-									}
-									W_FireTriBolt ();
-									self.reload_tribolt = (self.reload_tribolt + 3);
-									self.StatusRefreshTime = (time + 0.1);
-									CheckForReload ();
-									Attack_Finished (1.7);
-								}
-								else if ((self.current_weapon == WEAP_SNIPERRAIL))
-								{
-									sound (self, 1, "weapons/sniper.wav", 1, 1);
-									player_shot1 ();
-									W_FireSniperRail ();
-									Attack_Finished (2);
-								}
-
-							}
-							
-						}
-					}
-				}
-			}
-		}
-	
+	self.AttackFunction();
 };
 
 void () W_PrintWeaponMessage =
@@ -1817,7 +1652,7 @@ void () ImpulseCommands =
 			return;
 		}
 	}
-	if ((self.impulse == __) && !captainmode)
+	if ((self.impulse == 95) && !captainmode)
 	{
 		if ((clanbattle && !cb_prematch))
 		{
@@ -1830,14 +1665,14 @@ void () ImpulseCommands =
 		self.impulse = 0;
 		return;
 	}
-	if ((self.impulse == 168))
+	if (self.impulse == 168)
 	{
 		dprint ("hi\n");
 		self.last_impulse = self.impulse;
 		self.impulse = 0;
 		return;
 	}
-	if ((self.impulse == 170))
+	if (self.impulse == 170)
 	{
 		if (pipedelay)
 		{
@@ -1850,274 +1685,197 @@ void () ImpulseCommands =
 		self.impulse = 0;
 		return;
 	}
-	if (((!self.is_building && !self.is_detpacking) && !self.is_feigning))
+	if ((!self.is_building && !self.is_detpacking) && !self.is_feigning)
 	{
-		if ((((self.impulse >= 1) && (self.impulse < 9)) || (self.impulse == COLOR_RED)))
+		if (((self.impulse >= 1) && (self.impulse < 9)) || (self.impulse == COLOR_RED))
 		{
 			W_ChangeWeapon ();
 			self.impulse = 0;
 			return;
 		}
-		else
+		else if (allow_hook && ((self.impulse == 22) || (self.impulse == 39)))
 		{
-			if ((allow_hook && ((self.impulse == 22) || (self.impulse == 39))))
+			W_ChangeWeapon ();
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 40)
+		{
+			W_ChangeWeapon ();
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 10)
+		{
+			CycleWeaponCommand ();
+			self.impulse = 0;
+			return;
+		}
+		else if ((self.impulse == 12) && (self.last_weapon != 0))
+		{
+			W_ChangeWeapon ();
+			self.impulse = 0;
+			return;
+		}
+		else if ((self.impulse == 150))
+		{
+			TeamFortress_PrimeGrenade ();
+			self.impulse = 0;
+			return;
+		}
+		else if ((self.impulse == 151))
+		{
+			TeamFortress_PrimeGrenade ();
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 164)
+		{
+			TeamFortress_SetDetpack (5);
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 165)
+		{
+			TeamFortress_SetDetpack (20);
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 166)
+		{
+			TeamFortress_SetDetpack (_2);
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 167)
+		{
+			TeamFortress_SetDetpack (255);
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 172)
+		{
+			self.current_menu = 4;
+			self.menu_count = 30;
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 173)
+		{
+			if (time < self.attack_finished)
 			{
-				W_ChangeWeapon ();
-				self.impulse = 0;
 				return;
 			}
-			else
-			{
-				if ((self.impulse == 40))
-				{
-					W_ChangeWeapon ();
-					self.impulse = 0;
-					return;
-				}
-				else
-				{
-					if ((self.impulse == enter))
-					{
-						CycleWeaponCommand ();
-						self.impulse = 0;
-						return;
-					}
-					else
-					{
-						if (((self.impulse == 12) && (self.last_weapon != 0)))
-						{
-							W_ChangeWeapon ();
-							self.impulse = 0;
-							return;
-						}
-						else
-						{
-							if ((self.impulse == 150))
-							{
-								TeamFortress_PrimeGrenade ();
-								self.impulse = 0;
-								return;
-							}
-							else
-							{
-								if ((self.impulse == 151))
-								{
-									TeamFortress_PrimeGrenade ();
-									self.impulse = 0;
-									return;
-								}
-								else
-								{
-									if ((self.impulse == 173))
-									{
-										if ((time < self.attack_finished))
-										{
-											return;
-										}
-										TeamFortress_ReloadCurrentWeapon ();
-										self.impulse = 0;
-										return;
-									}
-									else
-									{
-										if ((self.impulse == 164))
-										{
-											TeamFortress_SetDetpack (5);
-											self.impulse = 0;
-											return;
-										}
-										else
-										{
-											if ((self.impulse == 165))
-											{
-												TeamFortress_SetDetpack (20);
-												self.impulse = 0;
-												return;
-											}
-											else
-											{
-												if ((self.impulse == 166))
-												{
-													TeamFortress_SetDetpack (_2);
-													self.impulse = 0;
-													return;
-												}
-												else
-												{
-													if ((self.impulse == 167))
-													{
-														TeamFortress_SetDetpack (255);
-														self.impulse = 0;
-														return;
-													}
-													else
-													{
-														if ((self.impulse == 172))
-														{
-															self.current_menu = 4;
-															self.menu_count = 30;
-															self.impulse = 0;
-															return;
-														}
-														else
-														{
-															if ((self.impulse == 184))
-															{
-																TeamFortress_Discard ();
-																self.impulse = 0;
-																return;
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			TeamFortress_ReloadCurrentWeapon ();
+			self.impulse = 0;
+			return;
+		}
+		else if (self.impulse == 184) 
+		{
+			TeamFortress_Discard ();
+			self.impulse = 0;
+			return;
 		}
 	}
-	if ((self.impulse == redlamp))
+
+	if (self.impulse == 135)
 	{
 		TeamFortress_Inventory ();
 		self.impulse = 0;
 		return;
 	}
-	else
+	else if (self.playerclass && (self.impulse == 181))
 	{
-		if ((self.playerclass && (self.impulse == 181)))
+		TeamFortress_SaveMe ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 152)
+	{
+		TeamFortress_ThrowGrenade ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 185)
+	{
+		TeamFortress_ID ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.playerclass && (self.impulse == 194))
+	{
+		DropGoalItems ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 169)
+	{
+		TeamFortress_DetpackStop ();
+		self.impulse = 0;
+		return;
+	}
+	else if ((self.impulse == 188) && (self.playerclass == PC_ENGINEER))
+	{
+		DestroyBuilding (self, "building_sentrygun");
+		self.impulse = 0;
+		return;
+	}
+	else if ((self.impulse == 187) && (self.playerclass == PC_ENGINEER))
+	{
+		DestroyBuilding (self, "building_dispenser");
+		self.impulse = 0;
+		return;
+	}
+	else if ((self.impulse == 177) && (self.playerclass == PC_SPY))
+	{
+		TeamFortress_SpyGoUndercover ();
+		self.impulse = 0;
+		return;
+	}
+	else if ((self.impulse == 178) && (self.playerclass == PC_SPY))
+	{
+		TeamFortress_SpyFeignDeath (0);
+		self.impulse = 0;
+		return;
+	}
+	else if ((self.impulse == 199) && (self.playerclass == PC_SPY))
+	{
+		TeamFortress_SpyFeignDeath (1);
+		self.impulse = 0;
+		return;
+	}
+	else if ((self.impulse == 179) && (self.playerclass == PC_ENGINEER))
+	{
+		TeamFortress_EngineerBuild ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 23)
+	{
+		if (CTF_Map == 1)
 		{
-			TeamFortress_SaveMe ();
-			self.impulse = 0;
-			return;
+			TeamFortress_CTF_FlagInfo ();
 		}
 		else
 		{
-			if ((self.impulse == 152))
-			{
-				TeamFortress_ThrowGrenade ();
-				self.impulse = 0;
-				return;
-			}
-			else
-			{
-				if ((self.impulse == 185))
-				{
-					TeamFortress_ID ();
-					self.impulse = 0;
-					return;
-				}
-				else
-				{
-					if ((self.playerclass && (self.impulse == 194)))
-					{
-						DropGoalItems ();
-						self.impulse = 0;
-						return;
-					}
-					else
-					{
-						if ((self.impulse == 169))
-						{
-							TeamFortress_DetpackStop ();
-							self.impulse = 0;
-							return;
-						}
-						else
-						{
-							if (((self.impulse == 188) && (self.playerclass == PC_ENGINEER)))
-							{
-								DestroyBuilding (self, "building_sentrygun");
-								self.impulse = 0;
-								return;
-							}
-							else
-							{
-								if (((self.impulse == 187) && (self.playerclass == PC_ENGINEER)))
-								{
-									DestroyBuilding (self, "building_dispenser");
-									self.impulse = 0;
-									return;
-								}
-								else
-								{
-									if (((self.impulse == 177) && (self.playerclass == PC_SPY)))
-									{
-										TeamFortress_SpyGoUndercover ();
-										self.impulse = 0;
-										return;
-									}
-									else
-									{
-										if (((self.impulse == 178) && (self.playerclass == PC_SPY)))
-										{
-											TeamFortress_SpyFeignDeath (0);
-											self.impulse = 0;
-											return;
-										}
-										else
-										{
-											if (((self.impulse == 199) && (self.playerclass == PC_SPY)))
-											{
-												TeamFortress_SpyFeignDeath (1);
-												self.impulse = 0;
-												return;
-											}
-											else
-											{
-												if (((self.impulse == 179) && (self.playerclass == PC_ENGINEER)))
-												{
-													TeamFortress_EngineerBuild ();
-													self.impulse = 0;
-													return;
-												}
-												else
-												{
-													if ((self.impulse == 23))
-													{
-														if ((CTF_Map == 1))
-														{
-															TeamFortress_CTF_FlagInfo ();
-														}
-														else
-														{
-															TeamFortress_DisplayDetectionItems ();
-														}
-														self.impulse = 0;
-														return;
-													}
-													else
-													{
-														if ((self.impulse == _v))
-														{
-															display_location ();
-															self.impulse = 0;
-															return;
-														}
-														else
-														{
-															if (DeadImpulses ())
-															{
-																return;
-															}
-															CommandImpulses ();
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			TeamFortress_DisplayDetectionItems ();
 		}
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 118)
+	{
+		display_location ();
+		self.impulse = 0;
+		return;
+	}
+	else
+	{
+		if (DeadImpulses ())
+		{
+			return;
+		}
+		CommandImpulses ();
 	}
 	self.impulse = 0;
 };
@@ -2132,7 +1890,7 @@ void () CommandImpulses =
 	}
 	else
 	{
-		if ((self.impulse == _p))
+		if ((self.impulse == 112))
 		{
 			if ((self.classname != "observer"))
 			{
@@ -2157,7 +1915,7 @@ void () CommandImpulses =
 		}
 		else
 		{
-			if ((self.impulse == _q))
+			if ((self.impulse == 113))
 			{
 				if ((self.classname != "observer"))
 				{
@@ -3794,7 +3552,7 @@ void () W_WeaponFrame =
 
 	if (!(self.tfstate & TFSTATE_AIMING))
 	{
-		if (((self.height > 29) && (self.height < self.oldheight)))
+		if ((self.height > 29) && (self.height < self.oldheight))
 		{
 			self.height = (self.height + 8);
 			if ((self.height > self.oldheight))
@@ -3838,10 +3596,10 @@ void () W_WeaponFrame =
 			return;
 		}
 	}
-	if ((self.current_menu > 0))
+	if (self.current_menu > 0)
 	{
 		Player_Menu ();
-		if (((self.impulse > 0) && (((self.current_menu == 21) || (self.current_menu == 22)) || (self.current_menu == 23))))
+		if ((self.impulse > 0) && (((self.current_menu == 21) || (self.current_menu == 22)) || (self.current_menu == 23)))
 		{
 			Menu_Input (self.impulse);
 		}
@@ -3871,7 +3629,7 @@ void () W_WeaponFrame =
 			}
 		}
 	}
-	if (((self.current_weapon == 32768) || (self.current_weapon == 8)))
+	if (((self.current_weapon == WEAP_ASSAULT_CANNON) || (self.current_weapon == WEAP_SPANNER)))
 	{
 		if ((time < self.attack_finished))
 		{
@@ -3894,7 +3652,7 @@ void () W_WeaponFrame =
 	{
 		return;
 	}
-	if ((((self.is_building != 0) || (self.is_detpacking != 0)) || (self.is_feigning != 0)))
+	if (((self.is_building != 0) || (self.is_detpacking != 0)) || (self.is_feigning != 0))
 	{
 		return;
 	}
@@ -3950,7 +3708,7 @@ void () W_WeaponFrame =
 	        }
 			else
 			{
-				if ((self.current_weapon == 32768))
+				if ((self.current_weapon == WEAP_ASSAULT_CANNON))
 				{
 					if ((self.flags & 512))
 					{

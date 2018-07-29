@@ -1,11 +1,12 @@
 //@import - player.qc
-void () player_rocket1;
+void () player_tribolt1;
 
 //@import - weapons.qc
 void (float att_delay) Attack_Finished;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_Tribolt;
+void () W_Attack_Tribolt;
 void () W_FireTriBolt;
 void () Tribolt_Think;
 void () W_TriboltBullet;
@@ -14,12 +15,19 @@ void () TriboltExplode;
 float () W_Check_Reload_Tribolt;
 void () W_Reload_Tribolt_Start;
 void () W_Reload_Tribolt_Finish;
+void () player_tribolt1;
+void () player_tribolt2;
+void () player_tribolt3;
+void () player_tribolt4;
+void () player_tribolt5;
+void () player_tribolt6;
 //=-=-=-=-=
 
 void () TeamFortress_Tribolt = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
+	self.AttackFunction = W_Attack_Tribolt;
 	self.CheckForReloadFunction = W_Check_Reload_Tribolt;
 	self.ReloadStartFunction    = W_Reload_Tribolt_Start;
 	self.ReloadEndFunction 	    = W_Reload_Tribolt_Finish;	
@@ -32,6 +40,19 @@ void () TeamFortress_Tribolt = {
 	}
 	self.weapon = 16;
 	self.items = (self.items | 1024);
+};
+
+void () W_Attack_Tribolt =
+{
+	if (CheckForReload ())
+	{
+		return;
+	}
+	W_FireTriBolt ();
+	self.reload_tribolt = (self.reload_tribolt + 3);
+	self.StatusRefreshTime = (time + 0.1);
+	CheckForReload ();
+	Attack_Finished (1.7);
 };
 
 void () W_FireTriBolt =
@@ -70,7 +91,7 @@ void () W_TriboltBullet = {
 		self.ammo_rockets = (self.ammo_rockets - 1);
 		self.currentammo = self.ammo_rockets;
 	}
-	player_rocket1 ();
+	player_tribolt1 ();
 	sound (self, 1, "weapons/grenade.wav", 1, 1);
 	KickPlayer (-2, self);
 	newmis = spawn ();
@@ -237,4 +258,35 @@ void () W_Reload_Tribolt_Finish =
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
 	self.owner.StatusRefreshTime = (time + 0.1);
+};
+
+void () player_tribolt1 = [ 107, player_tribolt2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_tribolt2 = [ 108, player_tribolt3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_tribolt3 = [ 109, player_tribolt4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_tribolt4 = [ 110, player_tribolt5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_tribolt5 = [ 111, player_tribolt6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_tribolt6 = [ 112, player_run ]
+{
+	self.weaponframe = 6;
 };

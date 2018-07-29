@@ -1,14 +1,25 @@
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_SniperRail;
+void () W_Attack_SniperRail;
 void () W_FireSniperRail;
 void () SniperRail_Touch;
 void () SniperRail_Think;
+void () player_srail1;
+void () player_srail2;
+void () player_srail3;
+void () player_srail4;
+void () player_srail5;
+void () player_srail6;
 //=-=-=-=-=
 
 void () TeamFortress_SniperRail = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
+	self.needsReload = 0;
+	self.AttackFunction = W_Attack_SniperRail;	
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -17,6 +28,14 @@ void () TeamFortress_SniperRail = {
 	}
 	self.weapon = 16;
 	self.items = (self.items | 512);
+};
+
+void () W_Attack_SniperRail =
+{
+	sound (self, 1, "weapons/sniper.wav", 1, 1);
+	player_srail1 ();
+	W_FireSniperRail ();
+	Attack_Finished (2);
 };
 
 void () W_FireSniperRail =
@@ -112,4 +131,35 @@ void () SniperRail_Think =
 	setmodel (self, "progs/e_spike2.mdl");
 	self.nextthink = (time + 1);
 	self.think = SUB_Remove;
+};
+
+void () player_srail1 = [ 113, player_srail2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_srail2 = [ 114, player_srail3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_srail3 = [ 115, player_srail4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_srail4 = [ 116, player_srail5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_srail5 = [ 117, player_srail6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_srail6 = [ 118, player_run ]
+{
+	self.weaponframe = 6;
 };

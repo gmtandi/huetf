@@ -2,9 +2,6 @@
 void (float att_delay) Attack_Finished;
 float () CheckForReload;
 
-//@import - player.qc
-void () player_rocket1;
-
 //=-=-=-=-= Local Functions
 void () TeamFortress_GrenadeLauncher;
 void () W_FireGrenade;
@@ -18,6 +15,12 @@ void (float tno) ExplodeOldPipebomb;
 float () W_Check_Reload_Grenade_Launcher;
 void () W_Reload_Grenade_Launcher_Start;
 void () W_Reload_Grenade_Launcher_Finish;
+void () player_glaunch1;
+void () player_glaunch2;
+void () player_glaunch3;
+void () player_glaunch4;
+void () player_glaunch5;
+void () player_glaunch6;
 //=-=-=-=-=
 
 void () TeamFortress_GrenadeLauncher = {
@@ -48,7 +51,7 @@ void () W_FireGrenade =
 	}
 	if (CheckForReload ())
 		return;
-	player_rocket1 ();
+	player_glaunch1();
 	sound (self, 1, "weapons/grenade.wav", 1, 1);
 	KickPlayer (-2, self);
 	newmis = spawn ();
@@ -390,4 +393,35 @@ void () W_Reload_Grenade_Launcher_Finish =
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
 	self.owner.StatusRefreshTime = (time + 0.1);
+};
+
+void () player_glaunch1 = [ 107, player_glaunch2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_glaunch2 = [ 108, player_glaunch3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_glaunch3 = [ 109, player_glaunch4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_glaunch4 = [ 110, player_glaunch5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_glaunch5 = [ 111, player_glaunch6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_glaunch6 = [ 112, player_run ]
+{
+	self.weaponframe = 6;
 };

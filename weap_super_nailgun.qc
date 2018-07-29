@@ -7,6 +7,7 @@ void () player_run;
 
 //@import - weapons.qc
 void () SuperDamageSound;
+void (float att_delay) Attack_Finished;
 
 //@import - weap_nailgun.qc
 void () player_nail1;

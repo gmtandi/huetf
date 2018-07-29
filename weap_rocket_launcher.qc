@@ -2,9 +2,6 @@
 void (float att_delay) Attack_Finished;
 float () CheckForReload;
 
-//@import - player.qc
-void () player_rocket1;
-
 //=-=-=-=-= Local Functions
 void () TeamFortress_RocketLauncher;
 void () W_FireRocket;
@@ -12,7 +9,13 @@ void () MissileRadius;
 void () T_MissileTouch;
 float () W_Check_Reload_Rocket_Launcher;
 void () W_Reload_Rocket_Launcher_Start;
-void () W_Reload_Rocket_Launcher_Finish; 
+void () W_Reload_Rocket_Launcher_Finish;
+void () player_rocket1;
+void () player_rocket2;
+void () player_rocket3;
+void () player_rocket4;
+void () player_rocket5;
+void () player_rocket6;
 //=-=-=-=-=
 
 void () TeamFortress_RocketLauncher = {
@@ -215,4 +218,35 @@ void () W_Reload_Rocket_Launcher_Finish =
 	sprint (self.owner, 2, "finished reloading\n");
 	dremove (self);
 	self.owner.StatusRefreshTime = (time + 0.1);
+};
+
+void () player_rocket1 = [ 107, player_rocket2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_rocket2 = [ 108, player_rocket3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_rocket3 = [ 109, player_rocket4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_rocket4 = [ 110, player_rocket5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_rocket5 = [ 111, player_rocket6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_rocket6 = [ 112, player_run ]
+{
+	self.weaponframe = 6;
 };

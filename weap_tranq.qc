@@ -1,17 +1,26 @@
 //@import - weapons.qc
 void (float damage) spawn_touchblood;
+void (float att_delay) Attack_Finished;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_Tranquilizer;
+void () W_Attack_Tranq;
 void () W_FireTranq;
 void () T_TranqDartTouch;
 void () TranquiliserTimer;
+void () player_tranq1;
+void () player_tranq2;
+void () player_tranq3;
+void () player_tranq4;
+void () player_tranq5;
+void () player_tranq6;
 //=-=-=-=-=
 
 void () TeamFortress_Tranquilizer = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
+	self.needsReload = 0;
+	self.AttackFunction = W_Attack_Tranq;
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -20,6 +29,14 @@ void () TeamFortress_Tranquilizer = {
 	}
 	self.items = (self.items | 256);
 	self.weapon = 1;
+};
+
+void () W_Attack_Tranq =
+{
+	sound (self, 1, "weapons/dartgun.wav", 1, 1);
+	player_tranq1 ();
+	W_FireTranq ();
+	Attack_Finished (1.7);
 };
 
 void () W_FireTranq =
@@ -124,4 +141,35 @@ void () TranquiliserTimer =
 	TeamFortress_SetSpeed (self.owner);
 	sprint (self.owner, 2, "You feel more alert now\n");
 	dremove (self);
+};
+
+void () player_tranq1 = [ 113, player_tranq2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_tranq2 = [ 114, player_tranq3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_tranq3 = [ 115, player_tranq4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_tranq4 = [ 116, player_tranq5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_tranq5 = [ 117, player_tranq6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_tranq6 = [ 118, player_run ]
+{
+	self.weaponframe = 6;
 };

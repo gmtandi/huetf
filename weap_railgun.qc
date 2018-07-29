@@ -1,14 +1,25 @@
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_RailGun;
+void () W_Attack_Railgun
 void () W_FireRail;
 void () Rail_Think;
 void () Rail_Touch;
+void () player_rail1;
+void () player_rail2;
+void () player_rail3;
+void () player_rail4;
+void () player_rail5;
+void () player_rail6;
 //=-=-=-=-=
 
 void () TeamFortress_RailGun = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
+	self.needsReload = 0;
+	self.AttackFunction = W_Attack_Railgun;	
 	self.currentammo = self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
@@ -17,6 +28,14 @@ void () TeamFortress_RailGun = {
 	}
 	self.items = (self.items | 512);
 	self.weapon = 1;
+};
+
+void () W_Attack_Railgun =
+{
+	sound (self, 1, "weapons/railgun.wav", 1, 1);
+	player_rail1 ();
+	W_FireRail ();
+	Attack_Finished (0.4);
 };
 
 void () W_FireRail =
@@ -105,4 +124,36 @@ void () Rail_Touch =
 		multicast (self.origin, 1);
 	}
 	dremove (self);
+};
+
+
+void () player_rail1 = [ 113, player_rail2 ]
+{
+	self.weaponframe = 1;
+	muzzleflash ();
+};
+
+void () player_rail2 = [ 114, player_rail3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_rail3 = [ 115, player_rail4 ]
+{
+	self.weaponframe = 3;
+};
+
+void () player_rail4 = [ 116, player_rail5 ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_rail5 = [ 117, player_rail6 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_rail6 = [ 118, player_run ]
+{
+	self.weaponframe = 6;
 };

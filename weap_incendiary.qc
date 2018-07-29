@@ -1,5 +1,8 @@
 //@import - aux_flame.qc
 
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //=-=-=-=-= Local Functions
 void () TeamFortress_IncendiaryCannon;
 void () W_FireIncendiaryCannon;

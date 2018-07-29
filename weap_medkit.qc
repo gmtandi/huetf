@@ -4,6 +4,9 @@ void () ConcussionGrenadeTimer;
 //@import - pc_spy.qc | TODO: Move to gas grenade specific file
 void () HallucinationTimer;
 
+//@import - weapons.qc
+void (float att_delay) Attack_Finished;
+
 //@import - weap_tranq.qc
 void () TranquiliserTimer;
 
@@ -14,18 +17,64 @@ void () BioInfection_MonsterDecay;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_Medikit;
+void () W_Attack_Medikit;
 void () W_FireMedikit;
+void () player_medikit1;
+void () player_medikit2;
+void () player_medikit3;
+void () player_medikit4;
+void () player_medikitb1;
+void () player_medikitb2;
+void () player_medikitb3;
+void () player_medikitb4;
+void () player_medikitc1;
+void () player_medikitc2;
+void () player_medikitc3;
+void () player_medikitc4;
+void () player_medikitd1;
+void () player_medikitd2;
+void () player_medikitd3;
+void () player_medikitd4;
 //=-=-=-=-=
 
 void () TeamFortress_Medikit = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
+	self.needsReload = 0;
+	self.AttackFunction = W_Attack_Medikit;
 	self.currentammo = self.ammo_medikit;
 	self.weaponmodel = "progs/v_medi.mdl";
 	self.weaponframe = 0;
 };
 
+void () W_Attack_Medikit =
+{
+	sound (self, 1, "weapons/ax1.wav", 1, 1);
+	local float r = random ();
+	if ((r < 0.25))
+	{
+		player_medikit1 ();
+	}
+	else
+	{
+		if ((r < 0.5))
+		{
+			player_medikitb1 ();
+		}
+		else
+		{
+			if ((r < 0.75))
+			{
+				player_medikitc1 ();
+			}
+			else
+			{
+				player_medikitd1 ();
+			}
+		}
+	}
+	Attack_Finished (0.5);
+}
 
 void () W_FireMedikit =
 {
@@ -228,4 +277,89 @@ void () W_FireMedikit =
 		WriteCoord (4, org_z);
 		multicast (org, 2);
 	}
+};
+
+
+void () player_medikit1 = [ 119, player_medikit2 ]
+{
+	self.weaponframe = 1;
+};
+
+void () player_medikit2 = [ 120, player_medikit3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_medikit3 = [ 121, player_medikit4 ]
+{
+	self.weaponframe = 3;
+	W_FireMedikit ();
+};
+
+void () player_medikit4 = [ 122, player_run ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_medikitb1 = [ 125, player_medikitb2 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_medikitb2 = [ 126, player_medikitb3 ]
+{
+	self.weaponframe = 6;
+};
+
+void () player_medikitb3 = [ 127, player_medikitb4 ]
+{
+	self.weaponframe = 7;
+	W_FireMedikit ();
+};
+
+void () player_medikitb4 = [ 128, player_run ]
+{
+	self.weaponframe = 8;
+};
+
+void () player_medikitc1 = [ 131, player_medikitc2 ]
+{
+	self.weaponframe = 1;
+};
+
+void () player_medikitc2 = [ 132, player_medikitc3 ]
+{
+	self.weaponframe = 2;
+};
+
+void () player_medikitc3 = [ 133, player_medikitc4 ]
+{
+	self.weaponframe = 3;
+	W_FireMedikit ();
+};
+
+void () player_medikitc4 = [ 134, player_run ]
+{
+	self.weaponframe = 4;
+};
+
+void () player_medikitd1 = [ 137, player_medikitd2 ]
+{
+	self.weaponframe = 5;
+};
+
+void () player_medikitd2 = [ 138, player_medikitd3 ]
+{
+	self.weaponframe = 6;
+};
+
+void () player_medikitd3 = [ 139, player_medikitd4 ]
+{
+	self.weaponframe = 7;
+	W_FireMedikit ();
+};
+
+void () player_medikitd4 = [ 140, player_run ]
+{
+	self.weaponframe = 8;
 };

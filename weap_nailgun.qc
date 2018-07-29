@@ -7,10 +7,10 @@ void () player_run;
 
 //@import - weapons.qc
 void () SuperDamageSound;
+void (float att_delay) Attack_Finished;
 
 //@import - weap_super_nailgun.qc
 void () W_FireSuperSpikes;
-
 
 //@import - aux_spikes.qc
 void (vector org, vector dir) launch_spike;
