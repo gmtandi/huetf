@@ -158,7 +158,7 @@ void () SetChangeParms =
 		return;
 	}
 	self.items = (self.items - (self.items & (((((131072 | 262144) | 524288) | 1048576) | 2097152) | 4194304)));
-	if ((self.health > _d))
+	if ((self.health > 100))
 	{
 		self.health = _d;
 	}
@@ -181,7 +181,7 @@ void () SetChangeParms =
 	parm6 = self.ammo_rockets;
 	parm7 = self.ammo_cells;
 	parm8 = self.current_weapon;
-	parm9 = (self.armortype * _d);
+	parm9 = (self.armortype * 100);
 	parm10 = 0;
 	parm11 = 0;
 	parm12 = 0;
@@ -1267,7 +1267,7 @@ entity () SelectSpawnPoint =
 				spot = find (world, classname, "info_player_deathmatch");
 			}
 			attempts = 0;
-			while (((spot != world) && (attempts < _d)))
+			while (((spot != world) && (attempts < 100)))
 			{
 				attempts = (attempts + 1);
 				at_spot = findradius (spot.origin, 40);
@@ -1593,7 +1593,7 @@ void (entity c) PrintClientScore =
 	{
 		if ((c.frags >= 0))
 		{
-			if ((c.frags < _d))
+			if ((c.frags < 100))
 			{
 				bprint (1, " ");
 			}
@@ -1882,7 +1882,7 @@ void () PlayerJump =
 		{
 			crandom ();
 			crandom ();
-			stumble = (crandom () * (te.health / _d));
+			stumble = (crandom () * (te.health / 100));
 			if ((crandom () < 0))
 			{
 				self.velocity_x = (self.velocity_y + stumble);

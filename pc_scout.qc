@@ -630,7 +630,7 @@ entity (entity scanner, float scanrange, float enemies, float friends) T_RadiusS
 			}
 			head = head.chain;
 		}
-		rangedist = (rangedist + _d);
+		rangedist = (rangedist + 100);
 	}
 	return (world);
 };

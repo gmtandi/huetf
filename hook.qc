@@ -252,7 +252,7 @@ void () Service_Grapple =
 		}
 	}
 	self.velocity = ((normalize (hook_dir) * self.maxspeed) * 1.5);
-	if (((vlen (hook_dir) <= _d) && self.lefty))
+	if (((vlen (hook_dir) <= 100) && self.lefty))
 	{
 		if (self.hook.goalentity)
 		{

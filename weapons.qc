@@ -839,117 +839,102 @@ void () W_ChangeWeapon =
 		{
 			have_weapon = 0;
 		}
-		while ((!usable && have_weapon))
+		while (!usable && have_weapon)
 		{
-			if ((fl == 8))
+			if (fl == WEAP_SPANNER)
 			{
-				fl = 2;
-				if ((it & 2))
+				fl = WEAP_BIOWEAPON;
+				if (it & WEAP_BIOWEAPON)
 				{
 					usable = 1;
 				}
 				usable = 0;
 			}
+			else if (fl == WEAP_BIOWEAPON)
+			{
+				fl = WEAP_MEDIKIT;
+				if (it & WEAP_MEDIKIT)
+				{
+					usable = 1;
+				}
+			}
+			else if (fl == WEAP_MEDIKIT)
+			{
+				fl = WEAP_HOOK;
+				if (allow_hook && (fl & WEAP_HOOK))
+				{
+					usable = 1;
+				}
+				if (self.hook_out)
+				{
+					Reset_Grapple (self.hook);
+				}
+			}
+			else if (fl == WEAP_HOOK)
+			{
+				fl = WEAP_AXE;
+				if (it & WEAP_AXE)
+				{
+					usable = 1;
+				}
+			}
 			else
 			{
-				if ((fl == 2))
+				fl = WEAP_SPANNER;
+				if (it & WEAP_SPANNER)
 				{
-					fl = 4;
-					if ((it & 4))
-					{
-						usable = 1;
-					}
-				}
-				else
-				{
-					if ((fl == 4))
-					{
-						fl = 1;
-						if ((allow_hook && (fl & 1)))
-						{
-							usable = 1;
-						}
-						if (self.hook_out)
-						{
-							Reset_Grapple (self.hook);
-						}
-					}
-					else
-					{
-						if ((fl == 1))
-						{
-							fl = 16;
-							if ((it & 16))
-							{
-								usable = 1;
-							}
-						}
-						else
-						{
-							fl = 8;
-							if ((it & 8))
-							{
-								usable = 1;
-							}
-						}
-					}
+					usable = 1;
 				}
 			}
 		}
 	}
 	else
 	{
-		if ((allow_hook && ((self.impulse == 22) || (self.impulse == 39))))
+		if (allow_hook && ((self.impulse == 22) || (self.impulse == 39)))
 		{
 			fl = 1;
 		}
 		else
 		{
-			if ((self.impulse == 40))
+			if (self.impulse == 40)
 			{
-				if (!(it & (((2 | 4) | 16) | 8)))
+				if (!(it & (WEAP_BIOWEAPON | WEAP_MEDIKIT | WEAP_AXE) | WEAP_SPANNER))
 				{
 					have_weapon = 0;
 				}
 				while ((!usable && have_weapon))
 				{
-					if ((fl == 8))
+					if (fl == WEAP_SPANNER)
 					{
-						fl = 2;
-						if ((it & 2))
+						fl = WEAP_BIOWEAPON;
+						if (it & WEAP_BIOWEAPON)
 						{
 							usable = 1;
 						}
 						usable = 0;
 					}
+					else if (fl == WEAP_BIOWEAPON)
+					{
+						fl = WEAP_MEDIKIT;
+						if (it & WEAP_MEDIKIT)
+						{
+							usable = 1;
+						}
+					}
+					else if (fl == WEAP_MEDIKIT)
+					{
+						fl = WEAP_AXE;
+						if (it & WEAP_AXE)
+						{
+							usable = 1;
+						}
+					}
 					else
 					{
-						if ((fl == 2))
+						fl = WEAP_SPANNER;
+						if (it & WEAP_SPANNER)
 						{
-							fl = 4;
-							if ((it & 4))
-							{
-								usable = 1;
-							}
-						}
-						else
-						{
-							if ((fl == 4))
-							{
-								fl = 16;
-								if ((it & 16))
-								{
-									usable = 1;
-								}
-							}
-							else
-							{
-								fl = 8;
-								if ((it & 8))
-								{
-									usable = 1;
-								}
-							}
+							usable = 1;
 						}
 					}
 				}
@@ -1182,240 +1167,140 @@ void () CycleWeaponCommand =
 		am = 0;
 		cont = 0;
 		if ((self.current_weapon == WEAP_AXE))
-		{
 			self.current_weapon = WEAP_SPANNER;
-		}
-		else
+		else if (self.current_weapon == WEAP_SPANNER)
 		{
-			if ((self.current_weapon == WEAP_SPANNER))
+			self.current_weapon = WEAP_SHOTGUN;
+			if (self.ammo_shells < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_SHOTGUN)
+		{
+			self.current_weapon = WEAP_RAILGUN;
+			if (self.ammo_nails < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_RAILGUN)
+		{
+			self.current_weapon = WEAP_TRANQ;
+			if (self.ammo_shells < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_TRANQ)
+		{
+			self.current_weapon = WEAP_SNIPER_RIFLE;
+			if (self.ammo_shells < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_SNIPER_RIFLE)
+		{
+			self.current_weapon = WEAP_AUTO_RIFLE;
+			if (self.ammo_shells < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_AUTO_RIFLE)
+		{
+			self.current_weapon = WEAP_SUPER_SHOTGUN;
+			if (self.ammo_shells < 2)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_SUPER_SHOTGUN)
+		{
+			self.current_weapon = WEAP_NAILGUN;
+			if (self.ammo_nails < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_NAILGUN)
+		{
+			self.current_weapon = WEAP_SUPER_NAILGUN;
+			if (self.ammo_nails < 2)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_SUPER_NAILGUN)
+		{
+			self.current_weapon = WEAP_GRENADE_LAUNCHER;
+			self.weaponmode = 0;
+			if (self.ammo_rockets < 1)
+				am = 1;
+		}
+		else if ((self.current_weapon == WEAP_GRENADE_LAUNCHER) && (self.weaponmode == 0))
+		{
+			if (self.playerclass != 11)
 			{
-				self.current_weapon = WEAP_SHOTGUN;
-				if ((self.ammo_shells < 1))
-				{
-					am = 1;
-				}
+				self.current_weapon = WEAP_GRENADE_LAUNCHER;
+				self.weaponmode = 1;
 			}
 			else
-			{
-				if ((self.current_weapon == WEAP_SHOTGUN))
-				{
-					self.current_weapon = WEAP_RAILGUN;
-					if ((self.ammo_nails < 1))
-					{
-						am = 1;
-					}
-				}
-				else
-				{
-					if ((self.current_weapon == WEAP_RAILGUN))
-					{
-						self.current_weapon = WEAP_TRANQ;
-						if ((self.ammo_shells < 1))
-						{
-							am = 1;
-						}
-					}
-					else
-					{
-						if ((self.current_weapon == WEAP_TRANQ))
-						{
-							self.current_weapon = WEAP_SNIPER_RIFLE;
-							if ((self.ammo_shells < 1))
-							{
-								am = 1;
-							}
-						}
-						else
-						{
-							if ((self.current_weapon == WEAP_SNIPER_RIFLE))
-							{
-								self.current_weapon = WEAP_AUTO_RIFLE;
-								if ((self.ammo_shells < 1))
-								{
-									am = 1;
-								}
-							}
-							else
-							{
-								if ((self.current_weapon == WEAP_AUTO_RIFLE))
-								{
-									self.current_weapon = WEAP_SUPER_SHOTGUN;
-									if ((self.ammo_shells < 2))
-									{
-										am = 1;
-									}
-								}
-								else
-								{
-									if ((self.current_weapon == WEAP_SUPER_SHOTGUN))
-									{
-										self.current_weapon = WEAP_NAILGUN;
-										if ((self.ammo_nails < 1))
-										{
-											am = 1;
-										}
-									}
-									else
-									{
-										if ((self.current_weapon == WEAP_NAILGUN))
-										{
-											self.current_weapon = WEAP_SUPER_NAILGUN;
-											if ((self.ammo_nails < 2))
-											{
-												am = 1;
-											}
-										}
-										else
-										{
-											if ((self.current_weapon == WEAP_SUPER_NAILGUN))
-											{
-												self.current_weapon = WEAP_GRENADE_LAUNCHER;
-												self.weaponmode = 0;
-												if ((self.ammo_rockets < 1))
-												{
-													am = 1;
-												}
-											}
-											else
-											{
-												if (((self.current_weapon == WEAP_GRENADE_LAUNCHER) && (self.weaponmode == 0)))
-												{
-													if ((self.playerclass != 11))
-													{
-														self.current_weapon = WEAP_GRENADE_LAUNCHER;
-														self.weaponmode = 1;
-													}
-													else
-													{
-														self.current_weapon = WEAP_ROCKET_LAUNCHER;
-													}
-													if ((self.ammo_rockets < 1))
-													{
-														am = 1;
-													}
-												}
-												else
-												{
-													if (((self.current_weapon == WEAP_GRENADE_LAUNCHER) && (self.weaponmode == 1)))
-													{
-														self.current_weapon = WEAP_ROCKET_LAUNCHER;
-														if ((self.ammo_rockets < 1))
-														{
-															am = 1;
-														}
-													}
-													else
-													{
-														if ((self.current_weapon == WEAP_ROCKET_LAUNCHER))
-														{
-															self.current_weapon = WEAP_LIGHTNING;
-															if ((self.ammo_cells < 1))
-															{
-																am = 1;
-															}
-														}
-														else
-														{
-															if ((self.current_weapon == WEAP_LIGHTNING))
-															{
-																self.current_weapon = WEAP_FLAMETHROWER;
-																if ((self.ammo_cells < 1))
-																{
-																	am = 1;
-																}
-															}
-															else
-															{
-																if ((self.current_weapon == WEAP_FLAMETHROWER))
-																{
-																	self.current_weapon = WEAP_INCENDIARY;
-																	self.weaponmode = 1;
-																	if ((self.ammo_rockets < 3))
-																	{
-																		am = 1;
-																	}
-																}
-																else
-																{
-																	if (((self.current_weapon == WEAP_INCENDIARY) && (self.weaponmode == 1)))
-																	{
-																		self.current_weapon = WEAP_INCENDIARY;
-																		self.weaponmode = 0;
-																		if ((self.ammo_rockets < 2))
-																		{
-																			am = 1;
-																		}
-																	}
-																	else
-																	{
-																		if (((self.current_weapon == WEAP_INCENDIARY) && (self.weaponmode == 0)))
-																		{
-																			self.current_weapon = WEAP_ASSAULT_CANNON;
-																			if ((self.ammo_cells < 7))
-																			{
-																				am = 1;
-																			}
-																			if ((self.ammo_shells < 1))
-																			{
-																				am = 1;
-																			}
-																		}
-																		else
-																		{
-																			if ((self.current_weapon == WEAP_ASSAULT_CANNON))
-																			{
-																				self.current_weapon = WEAP_HOOK;
-																				if (!allow_hook)
-																				{
-																					am = 1;
-																				}
-																			}
-																			else
-																			{
-																				if ((self.current_weapon == WEAP_HOOK))
-																				{
-																					self.current_weapon = WEAP_MEDIKIT;
-																				}
-																				else
-																				{
-																					if ((self.current_weapon == WEAP_BIOWEAPON))
-																					{
-																						self.current_weapon = WEAP_MEDIKIT;
-																					}
-																					else
-																					{
-																						if ((self.current_weapon == WEAP_MEDIKIT))
-																						{
-																							self.current_weapon = WEAP_AXE;
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+				self.current_weapon = WEAP_ROCKET_LAUNCHER;
+			if (self.ammo_rockets < 1)
+				am = 1;
 		}
-		if ((loopcount > 31))
+		else if ((self.current_weapon == WEAP_GRENADE_LAUNCHER) && (self.weaponmode == 1))
+		{
+			self.current_weapon = WEAP_ROCKET_LAUNCHER;
+			if (self.ammo_rockets < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_ROCKET_LAUNCHER)
+		{
+			self.current_weapon = WEAP_LIGHTNING;
+			if (self.ammo_cells < 1)	
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_LIGHTNING)
+		{
+			self.current_weapon = WEAP_FLAMETHROWER;
+			if (self.ammo_cells < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_FLAMETHROWER)
+		{
+			self.current_weapon = WEAP_INCENDIARY;
+			self.weaponmode = 1;
+			if (self.ammo_rockets < 3)
+				am = 1;
+		}
+		else if ((self.current_weapon == WEAP_INCENDIARY) && (self.weaponmode == 1))
+		{
+			self.current_weapon = WEAP_INCENDIARY;
+			self.weaponmode = 0;
+			if (self.ammo_rockets < 2)
+				am = 1;
+		}
+		else if ((self.current_weapon == WEAP_INCENDIARY) && (self.weaponmode == 0))
+		{
+			self.current_weapon = WEAP_ASSAULT_CANNON;
+			if (self.ammo_cells < 7)
+				am = 1;
+			if (self.ammo_shells < 1)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_ASSAULT_CANNON)
+		{
+			self.current_weapon = WEAP_HOOK;
+			if (!allow_hook)
+				am = 1;
+		}
+		else if (self.current_weapon == WEAP_HOOK)
+		{
+			self.current_weapon = WEAP_MEDIKIT;
+		}
+		else if (self.current_weapon == WEAP_BIOWEAPON)
+		{
+			self.current_weapon = WEAP_MEDIKIT;
+		}
+		else if (self.current_weapon == WEAP_MEDIKIT)
+		{
+			self.current_weapon = WEAP_AXE;
+		}									
+		if (loopcount > 31)
 		{
 			return;
 		}
 		loopcount = (loopcount + 1);
-		if (((self.weapons_carried & self.current_weapon) && (am == 0)))
+		if ((self.weapons_carried & self.current_weapon) && (am == 0))
 		{
-			if (((self.current_weapon != 2048) && (self.current_weapon != 16384)))
+			if ((self.current_weapon != 2048) && (self.current_weapon != 16384))
 			{
 				self.weaponmode = 0;
 			}
@@ -1446,7 +1331,7 @@ void () ImpulseCommands =
 				self.impulse = 0;
 				return;
 			}
-			if ((self.last_impulse == _G))
+			if ((self.last_impulse == 71))
 			{
 				StatusRes (self.impulse);
 				self.impulse = 0;
@@ -1465,7 +1350,7 @@ void () ImpulseCommands =
                 return;
 	}
 
-	if ((self.impulse == 239))
+	if (self.impulse == 239)
 	{
 		self.current_menu = 24;
 		self.current_menu_page = 1;
@@ -1476,7 +1361,7 @@ void () ImpulseCommands =
 	}
 
 
-	if (((cb_prematch || cease_fire) || round_over))
+	if ((cb_prematch || cease_fire) || round_over)
 	{
 		if (PreMatchImpulses ())
 		{
@@ -1490,7 +1375,7 @@ void () ImpulseCommands =
 		self.impulse = 0;
 		return;
 	}
-	if ((self.impulse == 171))
+	if (self.impulse == 171)
 	{
 		UseSpecialSkill ();
 		return;
@@ -1498,9 +1383,9 @@ void () ImpulseCommands =
 
 	if (tfvsdm)
 	{
-		if (((self.team_no == 1) || (self.team_no == 3)))
+		if ((self.team_no == 1) || (self.team_no == 3))
 		{
-			if (((self.impulse == 8) && (self.current_menu != 6)))
+			if ((self.impulse == 8) && (self.current_menu != 6))
 			{
 				self.current_menu = 6;
 				self.menu_count = 30;
@@ -1512,7 +1397,7 @@ void () ImpulseCommands =
 	}
 	else
 	{
-		if (((self.impulse == 8) && (self.current_menu != 6)))
+		if ((self.impulse == 8) && (self.current_menu != 6))
 		{
 			self.current_menu = 6;
 			self.menu_count = 30;
@@ -1522,7 +1407,7 @@ void () ImpulseCommands =
 	}
 	if ((self.impulse == 95) && !captainmode)
 	{
-		if ((clanbattle && !cb_prematch))
+		if (clanbattle && !cb_prematch)
 		{
 			sprint (self, 2, "Clan Battle in progress....\n");
 			self.impulse = 0;
@@ -1585,13 +1470,13 @@ void () ImpulseCommands =
 			self.impulse = 0;
 			return;
 		}
-		else if ((self.impulse == 150))
+		else if (self.impulse == 150)
 		{
 			TeamFortress_PrimeGrenade ();
 			self.impulse = 0;
 			return;
 		}
-		else if ((self.impulse == 151))
+		else if (self.impulse == 151)
 		{
 			TeamFortress_PrimeGrenade ();
 			self.impulse = 0;
@@ -2951,7 +2836,7 @@ float () DeadImpulses =
 {
 	local string st;
 
-	if ((self.impulse == yellowlamp))
+	if ((self.impulse == 136))
 	{
 		TeamFortress_ShowTF ();
 		self.impulse = 0;
@@ -2959,50 +2844,38 @@ float () DeadImpulses =
 	}
 	else
 	{
-		if ((self.impulse == 174))
+		if (self.impulse == 174)
 		{
 			TeamFortress_AutoZoomToggle ();
 			self.impulse = 0;
 			return (1);
 		}
-		else
+		else if (self.impulse == 137)
 		{
-			if ((self.impulse == bluelamp))
-			{
-				TeamFortress_DisplayLegalClasses ();
-				self.impulse = 0;
-				return (1);
-			}
-			else
-			{
-				if (((self.impulse > _d) && (self.impulse <= (_d + 11))))
-				{
-					TeamFortress_ChangeClass ((self.impulse - _d));
-					self.impulse = 0;
-					return (1);
-				}
-				else
-				{
-					if (((self.playerclass && (self.impulse == _c)) && !cb_prematch && !captainmode))
-					{
-						self.current_menu = 20;
-						self.menu_count = 30;
-						self.impulse = 0;
-						return (1);
-					}
-					else
-					{
-						if ((self.impulse == _G))
-						{
-							self.last_impulse = self.impulse;
-							return (1);
-						}
-					}
-				}
-			}
+			TeamFortress_DisplayLegalClasses ();
+			self.impulse = 0;
+			return (1);
+		}
+		else if ((self.impulse > 100) && (self.impulse <= (100 + 11)))
+		{
+			TeamFortress_ChangeClass(self.impulse - 100);
+			self.impulse = 0;
+			return (1);
+		}
+		else if ((self.playerclass && (self.impulse == _c)) && !cb_prematch && !captainmode)
+		{
+			self.current_menu = 20;
+			self.menu_count = 30;
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 71)
+		{
+			self.last_impulse = self.impulse;
+			return (1);
 		}
 	}
-	if ((self.impulse == 131))
+	if (self.impulse == 131)
 	{
 		TeamFortress_HelpMap ();
 		self.impulse = 0;
@@ -3010,212 +2883,176 @@ float () DeadImpulses =
 	}
 	else
 	{
-		if ((self.impulse == _w))
+		if (self.impulse == 119)
 		{
 			TeamFortress_StatusQuery ();
 			self.impulse = 0;
 			return (1);
 		}
-		else
+		else if (self.impulse == 140)
 		{
-			if ((self.impulse == 140))
+			if ((clanbattle == 1) && !cb_prematch)
 			{
-				if ((clanbattle == 1) && !cb_prematch)
-				{
-					sprint (self, 2, "Clan Battle in progress....\n");
-					self.impulse = 0;
-					return (1);
-				}
-				TeamFortress_TeamSet (1);
+				sprint (self, 2, "Clan Battle in progress....\n");
 				self.impulse = 0;
 				return (1);
 			}
+			TeamFortress_TeamSet (1);
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 141)
+		{
+			if ((clanbattle == 1) && !cb_prematch)
+			{
+				sprint (self, 2, "Clan Battle in progress....\n");
+				self.impulse = 0;
+				return (1);
+			}
+			TeamFortress_TeamSet (2);
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 142)
+		{
+			if ((clanbattle == 1) && !cb_prematch)
+			{
+				sprint (self, 2, "Clan Battle in progress....\n");
+				self.impulse = 0;
+				return (1);
+			}
+			TeamFortress_TeamSet (3);
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 143)
+		{
+			if ((clanbattle == 1) && !cb_prematch)
+			{
+				sprint (self, 2, "Clan Battle in progress....\n");
+				self.impulse = 0;
+				return (1);
+			}
+			TeamFortress_TeamSet (4);
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 145)
+		{
+			TeamFortress_TeamShowScores (0);
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 144)
+		{
+			TeamFortress_TeamShowMemberClasses (self);
+			self.impulse = 0;
+			return (1);
+		}
+		else if ((self.playerclass == PC_SCOUT) && (self.impulse == 159))
+		{
+			ScannerSwitch ();
+			self.impulse = 0;
+			return (1);
+		}
+		else if ((self.playerclass == PC_SCOUT) && (self.impulse == 162))
+		{
+			sprint (self, 2, "Scanner sound: ");
+			if (self.tf_items_flags & 4)
+			{
+				self.tf_items_flags = (self.tf_items_flags - 4);
+				sprint (self, 2, "Off\n");
+			}
 			else
 			{
-				if ((self.impulse == 141))
+				self.tf_items_flags = (self.tf_items_flags | 4);
+				sprint (self, 2, "On\n");
+			}
+			self.impulse = 0;
+			return (1);
+		}
+		else if ((self.playerclass == PC_SCOUT) && (self.impulse == 160))
+		{
+			sprint (self, 2, "Scanning for: ");
+			if ((self.tf_items_flags & 1))
+			{
+				self.tf_items_flags = (self.tf_items_flags - 1);
+				if ((self.tf_items_flags & 2))
 				{
-					if ((clanbattle == 1) && !cb_prematch)
-					{
-						sprint (self, 2, "Clan Battle in progress....\n");
-						self.impulse = 0;
-						return (1);
-					}
-					TeamFortress_TeamSet (2);
-					self.impulse = 0;
-					return (1);
+					sprint (self, 2, "Friendlies Only.\n");
 				}
 				else
 				{
-					if ((self.impulse == 142))
-					{
-						if ((clanbattle == 1) && !cb_prematch)
-						{
-							sprint (self, 2, "Clan Battle in progress....\n");
-							self.impulse = 0;
-							return (1);
-						}
-						TeamFortress_TeamSet (3);
-						self.impulse = 0;
-						return (1);
-					}
-					else
-					{
-						if ((self.impulse == 143))
-						{
-							if ((clanbattle == 1) && !cb_prematch)
-							{
-								sprint (self, 2, "Clan Battle in progress....\n");
-								self.impulse = 0;
-								return (1);
-							}
-							TeamFortress_TeamSet (4);
-							self.impulse = 0;
-							return (1);
-						}
-						else
-						{
-							if ((self.impulse == 145))
-							{
-								TeamFortress_TeamShowScores (0);
-								self.impulse = 0;
-								return (1);
-							}
-							else
-							{
-								if ((self.impulse == 144))
-								{
-									TeamFortress_TeamShowMemberClasses (self);
-									self.impulse = 0;
-									return (1);
-								}
-								else
-								{
-									if (((self.playerclass == PC_SCOUT) && (self.impulse == 159)))
-									{
-										ScannerSwitch ();
-										self.impulse = 0;
-										return (1);
-									}
-									else
-									{
-										if (((self.playerclass == PC_SCOUT) && (self.impulse == 162)))
-										{
-											sprint (self, 2, "Scanner sound: ");
-											if ((self.tf_items_flags & 4))
-											{
-												self.tf_items_flags = (self.tf_items_flags - 4);
-												sprint (self, 2, "Off\n");
-											}
-											else
-											{
-												self.tf_items_flags = (self.tf_items_flags | 4);
-												sprint (self, 2, "On\n");
-											}
-											self.impulse = 0;
-											return (1);
-										}
-										else
-										{
-											if (((self.playerclass == PC_SCOUT) && (self.impulse == 160)))
-											{
-												sprint (self, 2, "Scanning for: ");
-												if ((self.tf_items_flags & 1))
-												{
-													self.tf_items_flags = (self.tf_items_flags - 1);
-													if ((self.tf_items_flags & 2))
-													{
-														sprint (self, 2, "Friendlies Only.\n");
-													}
-													else
-													{
-														sprint (self, 2, "Nothing\n");
-													}
-												}
-												else
-												{
-													self.tf_items_flags = (self.tf_items_flags | 1);
-													if ((self.tf_items_flags & 2))
-													{
-														sprint (self, 2, "Friendlies and Enemies\n");
-													}
-													else
-													{
-														sprint (self, 2, "Enemies Only\n");
-													}
-												}
-												self.impulse = 0;
-												return (1);
-											}
-											else
-											{
-												if (((self.playerclass == PC_SCOUT) && (self.impulse == 161)))
-												{
-													sprint (self, 2, "Scanning for: ");
-													if ((self.tf_items_flags & 2))
-													{
-														self.tf_items_flags = (self.tf_items_flags - 2);
-														if ((self.tf_items_flags & 1))
-														{
-															sprint (self, 2, "Enemies Only.\n");
-														}
-														else
-														{
-															sprint (self, 2, "Nothing\n");
-														}
-													}
-													else
-													{
-														self.tf_items_flags = (self.tf_items_flags | 2);
-														if ((self.tf_items_flags & 1))
-														{
-															sprint (self, 2, "Friendlies and Enemies\n");
-														}
-														else
-														{
-															sprint (self, 2, "Friendlies Only\n");
-														}
-													}
-													self.impulse = 0;
-													return (1);
-												}
-												else
-												{
-													if ((self.impulse == 182))
-													{
-														st = infokey (self, "sbs");
-														if ((st == string_null))
-														{
-															st = infokey (self, "sbar_size");
-														}
-														self.StatusBarSize = stof (st);
-														if (((self.StatusBarSize > enter) || (self.StatusBarSize < 1)))
-														{
-															self.StatusBarSize = 3;
-														}
-														StatusBar_On ();
-														self.impulse = 0;
-														return (1);
-													}
-													else
-													{
-														if ((self.impulse == 183))
-														{
-															self.StatusBarSize = 0;
-															StatusBar_On ();
-															self.impulse = 0;
-															return (1);
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+					sprint (self, 2, "Nothing\n");
 				}
 			}
+			else
+			{
+				self.tf_items_flags = (self.tf_items_flags | 1);
+				if ((self.tf_items_flags & 2))
+				{
+					sprint (self, 2, "Friendlies and Enemies\n");
+				}
+				else
+				{
+					sprint (self, 2, "Enemies Only\n");
+				}
+			}
+			self.impulse = 0;
+			return (1);
+		}
+		else if ((self.playerclass == PC_SCOUT) && (self.impulse == 161))
+		{
+			sprint (self, 2, "Scanning for: ");
+			if (self.tf_items_flags & 2)
+			{
+				self.tf_items_flags = (self.tf_items_flags - 2);
+				if (self.tf_items_flags & 1)
+				{
+					sprint (self, 2, "Enemies Only.\n");
+				}
+				else
+				{
+					sprint (self, 2, "Nothing\n");
+				}
+			}
+			else
+			{
+				self.tf_items_flags = (self.tf_items_flags | 2);
+				if (self.tf_items_flags & 1)
+				{
+					sprint (self, 2, "Friendlies and Enemies\n");
+				}
+				else
+				{
+					sprint (self, 2, "Friendlies Only\n");
+				}
+			}
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 182)
+		{
+			st = infokey (self, "sbs");
+			if (st == string_null)
+			{
+				st = infokey (self, "sbar_size");
+			}
+			self.StatusBarSize = stof (st);
+			if ((self.StatusBarSize > enter) || (self.StatusBarSize < 1))
+			{
+				self.StatusBarSize = 3;
+			}
+			StatusBar_On ();
+			self.impulse = 0;
+			return (1);
+		}
+		else if (self.impulse == 183)
+		{
+			self.StatusBarSize = 0;
+			StatusBar_On ();
+			self.impulse = 0;
+			return (1);
 		}
 	}
 };
@@ -3251,7 +3088,7 @@ void () W_WeaponFrame =
 			{
 				if (self.impulse)
 				{
-					if ((self.last_impulse == _G))
+					if ((self.last_impulse == 71))
 					{
 						StatusRes (self.impulse);
 						self.impulse = 0;

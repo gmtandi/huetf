@@ -338,7 +338,7 @@ void () VoteAdmin =
 	{
 		f3 = _2;
 	}
-	f3 = (f3 / _d);
+	f3 = (f3 / 100);
 	f1 = TeamFortress_GetNoPlayers ();
 	f2 = (elect / f1);
 	if ((f2 > f3))
@@ -407,7 +407,7 @@ void () VoteYes =
 	{
 		f3 = _2;
 	}
-	f3 = (f3 / _d);
+	f3 = (f3 / 100);
 	f1 = TeamFortress_GetNoPlayers ();
 	f2 = (elect / f1);
 	if ((f2 >= f3))

@@ -1475,11 +1475,11 @@ void (float f, float c) WriteIntXXX =
 {
 	local float y;
 
-	if ((f >= _d))
+	if ((f >= 100))
 	{
-		y = floor ((f / _d));
+		y = floor ((f / 100));
 		WriteByte (1, (y + c));
-		f = (f - (y * _d));
+		f = (f - (y * 100));
 		y = floor ((f / enter));
 		WriteByte (1, (y + c));
 		f = (f - (y * enter));
@@ -1501,9 +1501,9 @@ void (float f, float c) WriteIntXXXX =
 		y = floor ((f / 1000));
 		WriteByte (1, (y + c));
 		f = (f - (y * 1000));
-		y = floor ((f / _d));
+		y = floor ((f / 100));
 		WriteByte (1, (y + c));
-		f = (f - (y * _d));
+		f = (f - (y * 100));
 		y = floor ((f / enter));
 		WriteByte (1, (y + c));
 		f = (f - (y * enter));
@@ -2825,7 +2825,7 @@ void () Menu_Engineer =
 	}
 	else
 	{
-		if ((self.ammo_cells >= _d))
+		if ((self.ammo_cells >= 100))
 		{
 			s_disp = "“‘ Build Ammo&Armor Dispenser   \n";
 		}
@@ -2859,7 +2859,7 @@ void (float inp) Menu_Engineer_Input =
 {
 	local entity te;
 
-	if ((((inp == 1) && (self.ammo_cells >= _d)) && (self.has_dispenser != 1)))
+	if ((((inp == 1) && (self.ammo_cells >= 100)) && (self.has_dispenser != 1)))
 	{
 		TeamFortress_Build (1);
 		ResetMenu ();

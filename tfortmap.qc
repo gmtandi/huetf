@@ -3141,8 +3141,8 @@ void () tfgoalitem_dropthink =
 						self.origin = self.camangle;
 						setorigin (self, self.origin);
 						self.velocity_z = 400;
-						self.velocity_x = (-50 + (random () * _d));
-						self.velocity_y = (-50 + (random () * _d));
+						self.velocity_x = (-50 + (random () * 100));
+						self.velocity_y = (-50 + (random () * 100));
 						self.goal_state = 2;
 						self.movetype = 6;
 						if (((self.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID)))
@@ -3196,8 +3196,8 @@ void (entity Item, float PAlive, entity P) tfgoalitem_drop =
 	Item.camangle = (Item.owner.origin - '0 0 8');
 	Item.camdist = 0;
 	Item.velocity_z = 400;
-	Item.velocity_x = (-50 + (random () * _d));
-	Item.velocity_y = (-50 + (random () * _d));
+	Item.velocity_x = (-50 + (random () * 100));
+	Item.velocity_y = (-50 + (random () * 100));
 	Item.goal_state = 2;
 	Item.movetype = 6;
 	if (((Item.goal_activation & 8192) || (toggleflags & TFLAG_FLAG_SOLID)))

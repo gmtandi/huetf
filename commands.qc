@@ -61,7 +61,7 @@ void (entity print) ShowFrags =
 		}
 		else
 		{
-			eff = ((te.real_frags / (te.real_frags + te.deaths)) * _d);
+			eff = ((te.real_frags / (te.real_frags + te.deaths)) * 100);
 			eff = rint (eff);
 		}
 		st = ftos (te.real_frags);
@@ -71,7 +71,7 @@ void (entity print) ShowFrags =
 		}
 		else
 		{
-			if ((te.real_frags < _d))
+			if ((te.real_frags < 100))
 			{
 				sprint3 (print, 2, "  ", st, "    ");
 			}
@@ -87,7 +87,7 @@ void (entity print) ShowFrags =
 		}
 		else
 		{
-			if ((te.teamkills < _d))
+			if ((te.teamkills < 100))
 			{
 				sprint2 (print, 2, st, "     ");
 			}
@@ -103,7 +103,7 @@ void (entity print) ShowFrags =
 		}
 		else
 		{
-			if ((te.deaths < _d))
+			if ((te.deaths < 100))
 			{
 				sprint2 (print, 2, st, "     ");
 			}
@@ -119,7 +119,7 @@ void (entity print) ShowFrags =
 		}
 		else
 		{
-			if ((eff < _d))
+			if ((eff < 100))
 			{
 				sprint2 (print, 2, st, "    ");
 			}
@@ -172,7 +172,7 @@ void () ShowFps =
 		fps = floor ((1000 / ((te.fAverageFrameTime / te.fFrameCount) * 1000)));
 		st = ftos (fps);
 		sprint3 (self, 2, " ", st, "     ");
-		r = fabs (((te.fAverageFrameTime * _d) / (time - te.real_time)));
+		r = fabs (((te.fAverageFrameTime * 100) / (time - te.real_time)));
 		st = ftos (r);
 		sprint2 (self, 2, st, "%       ");
 		sprint2 (self, 2, te.netname, "\n");
@@ -205,7 +205,7 @@ void () ShowStats =
 	}
 	else
 	{
-		eff = ((self.real_frags / (self.real_frags + self.deaths)) * _d);
+		eff = ((self.real_frags / (self.real_frags + self.deaths)) * 100);
 		eff = rint (eff);
 	}
 	st = ftos (eff);

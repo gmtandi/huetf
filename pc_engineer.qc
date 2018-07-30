@@ -266,7 +266,7 @@ void () TeamFortress_EngineerBuild =
 	}
 	if ((self.is_building == 0))
 	{
-		if ((((self.ammo_cells < _d) && !self.has_dispenser) && !self.has_sentry))
+		if ((((self.ammo_cells < 100) && !self.has_dispenser) && !self.has_sentry))
 		{
 			CenterPrint (self, "You don't have enough metal to \nbuild anything.\n\n");
 			return;
@@ -556,7 +556,7 @@ void () TeamFortress_FinishedBuilding =
 		teamsprint (self.team_no, self, " has built a Dispenser.\n");
 		if (!practice)
 		{
-			self.ammo_cells = (self.ammo_cells - _d);
+			self.ammo_cells = (self.ammo_cells - 100);
 		}
 		oldself.classname = "building_dispenser";
 		oldself.netname = "dispenser";
@@ -1016,7 +1016,7 @@ void (entity eng, string bld) DestroyBuilding =
 			{
 				oldself = self;
 				self = eng;
-				self.ammo_cells = (self.ammo_cells + _d);
+				self.ammo_cells = (self.ammo_cells + 100);
 				bound_other_ammo (self);
 				W_SetCurrentAmmo ();
 				self = oldself;

@@ -6,14 +6,14 @@ void () PrintMaps =
 	local float fl2;
 
 	fl1 = _d;
-	fl2 = (_d + _d);
+	fl2 = (_d + 100);
 	str2 = ftos (fl1);
 	str = infokey (world, str2);
 	sprint (self, 2, "maplist:\n");
 	while (((str != "") && (fl1 < fl2)))
 	{
 		fl1 = (fl1 + 1);
-		str2 = ftos ((fl1 - _d));
+		str2 = ftos ((fl1 - 100));
 		sprint5 (self, 2, "", str2, "‘ ", str, "\n");
 		str2 = ftos (fl1);
 		str = infokey (world, str2);

@@ -253,8 +253,8 @@ void () fire_fly =
 	newmis.solid = 1;
 	newmis.movetype = 6;
 	newmis.velocity = '0 0 1000';
-	newmis.velocity_x = ((random () * _d) - _2);
-	newmis.velocity_y = ((random () * _d) - _2);
+	newmis.velocity_x = ((random () * 100) - _2);
+	newmis.velocity_y = ((random () * 100) - _2);
 	newmis.velocity_z = (self.speed + (random () * 200));
 	newmis.classname = "fireball";
 	setmodel (newmis, "progs/lavaball.mdl");
