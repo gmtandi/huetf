@@ -4,6 +4,7 @@ float () CheckForReload;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_GrenadeLauncher;
+void () W_Attack_GrenadeLauncher;
 void () W_FireGrenade;
 void () PipebombTouch;
 void () GrenadeTouch;
@@ -12,9 +13,9 @@ void (float tno) increment_team_pipebombs;
 void (float tno) decrement_team_pipebombs;
 float (float tno) num_team_pipebombs;
 void (float tno) ExplodeOldPipebomb;
-float () W_Check_Reload_Grenade_Launcher;
-void () W_Reload_Grenade_Launcher_Start;
-void () W_Reload_Grenade_Launcher_Finish;
+float () W_Check_Reload_GrenadeLauncher;
+void () W_Reload_GrenadeLauncher_Start;
+void () W_Reload_GrenadeLauncher_Finish;
 void () player_glaunch1;
 void () player_glaunch2;
 void () player_glaunch3;
@@ -23,15 +24,16 @@ void () player_glaunch5;
 void () player_glaunch6;
 //=-=-=-=-=
 
-void () TeamFortress_GrenadeLauncher = {
+void () TeamFortress_GrenadeLauncher = 
+{
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
-	self.AttackFunction 			= W_FireGrenade;
-	self.CheckForReloadFunction 	= W_Check_Reload_Grenade_Launcher;
-	self.ReloadStartFunction    	= W_Reload_Grenade_Launcher_Start;
-	self.ReloadEndFunction 	    	= W_Reload_Grenade_Launcher_Start;
-	self.currentammo 				= self.ammo_rockets;
+	self.AttackFunction 		= W_Attack_GrenadeLauncher;
+	self.CheckForReloadFunction = W_Check_Reload_GrenadeLauncher;
+	self.ReloadStartFunction    = W_Reload_GrenadeLauncher_Start;
+	self.ReloadEndFunction 	    = W_Reload_GrenadeLauncher_Start;
+	self.currentammo 			= self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_rock.mdl";
@@ -41,16 +43,25 @@ void () TeamFortress_GrenadeLauncher = {
 	self.items = (self.items | 1024);	
 };
 
+void () W_Attack_GrenadeLauncher =
+{
+	if (CheckForReload ())
+		return;
+	player_glaunch1();
+	W_FireGrenade();
+	self.reload_grenade_launcher = (self.reload_grenade_launcher + 1);
+	self.StatusRefreshTime = (time + 0.1);
+	CheckForReload ();
+	Attack_Finished (0.6);
+};
+
 void () W_FireGrenade =
 {
 	if (!practice)
 	{
 		self.ammo_rockets = (self.ammo_rockets - 1);
 		self.currentammo = self.ammo_rockets;
-	}
-	if (CheckForReload ())
-		return;
-	player_glaunch1();
+	}	
 	sound (self, 1, "weapons/grenade.wav", 1, 1);
 	KickPlayer (-2, self);
 	newmis = spawn ();
@@ -108,10 +119,6 @@ void () W_FireGrenade =
 	setmodel (newmis, "progs/grenade2.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, self.origin);
-	self.reload_grenade_launcher = (self.reload_grenade_launcher + 1);
-	self.StatusRefreshTime = (time + 0.1);
-	CheckForReload ();
-	Attack_Finished (0.6);
 };
 
 void () PipebombTouch =
@@ -314,7 +321,7 @@ void (float tno) ExplodeOldPipebomb =
 	}
 };
 
-float () W_Check_Reload_Grenade_Launcher = 
+float () W_Check_Reload_GrenadeLauncher = 
 {
 	local float rt;
 	local entity tWeapon;
@@ -332,14 +339,14 @@ float () W_Check_Reload_Grenade_Launcher =
 		tWeapon.owner = self;
 		tWeapon.classname = "timer";
 		tWeapon.nextthink = (time + 4);
-		tWeapon.think = W_Reload_Grenade_Launcher_Finish;
+		tWeapon.think = W_Reload_GrenadeLauncher_Finish;
 		self.weaponmodel = "";
 		self.weaponframe = 0;
 		return (1);
 	}
 };
 
-void () W_Reload_Grenade_Launcher_Start = 
+void () W_Reload_GrenadeLauncher_Start = 
 {
 	local float rt;
 	local entity tWeapon;
@@ -375,7 +382,7 @@ void () W_Reload_Grenade_Launcher_Start =
 		tWeapon.owner = self;
 		tWeapon.classname = "timer";
 		tWeapon.nextthink = (time + rt);
-		tWeapon.think = W_Reload_Grenade_Launcher_Finish;
+		tWeapon.think = W_Reload_GrenadeLauncher_Finish;
 		self.weaponmodel = "";
 		self.weaponframe = 0;
 	}
@@ -385,7 +392,7 @@ void () W_Reload_Grenade_Launcher_Start =
 	}
 };
 
-void () W_Reload_Grenade_Launcher_Finish =
+void () W_Reload_GrenadeLauncher_Finish =
 {
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_rock.mdl";

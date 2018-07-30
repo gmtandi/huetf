@@ -7,20 +7,21 @@ void (float att_delay) Attack_Finished;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_AutoRifle;
+void () W_Attack_AutoRifle;
 void () W_FireAutoRifle;
 void (vector direction, float damage) FireSniperBullet;
-void () W_Attack_Auto_Rifle;
 void () player_autorifle1;
 void () player_autorifle2;
 void () player_autorifle3;
 //=-=-=-=-=
 
-void () TeamFortress_AutoRifle = {
+void () TeamFortress_AutoRifle = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload 				= 0;
-	self.AttackFunction 			= W_Attack_Auto_Rifle;
-	self.currentammo 				= self.ammo_shells;
+	self.needsReload 	= 0;
+	self.AttackFunction = W_Attack_AutoRifle;;
+	self.currentammo 	= self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_srifle.mdl";
@@ -28,6 +29,13 @@ void () TeamFortress_AutoRifle = {
 	}
 	self.items = (self.items | 256);
 	self.weapon = 2;
+};
+
+void () W_Attack_AutoRifle =
+{
+	player_autorifle1 ();
+	W_FireAutoRifle ();
+	Attack_Finished (0.1);
 };
 
 void () W_FireAutoRifle =
@@ -62,13 +70,6 @@ void (vector direction, float damage) FireSniperBullet =
 	}
 	ApplyMultiDamage ();
 };
-
-void () W_Attack_Auto_Rifle =
-{
-	player_autorifle1 ();
-	W_FireAutoRifle ();
-	Attack_Finished (0.1);
-}
 
 void () player_autorifle1 = [ 113, player_autorifle2 ]
 {

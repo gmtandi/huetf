@@ -9,9 +9,9 @@ void () W_FireShotgun;
 //=-=-=-=-=
 void  () TeamFortress_SuperShotgun;
 void  () W_FireSuperShotgun;
-float () W_Check_Reload_Super_Shotgun;
-void  () W_Reload_Super_Shotgun_Start;
-void  () W_Reload_Super_Shotgun_Finish;
+float () W_Check_Reload_SuperShotgun;
+void  () W_Reload_SuperShotgun_Start;
+void  () W_Reload_SuperShotgun_Finish;
 void  () player_supershot1;
 void  () player_supershot2;
 void  () player_supershot3;
@@ -21,14 +21,15 @@ void  () player_supershot6;
 
 //=-=-=-=-=
 
-void () TeamFortress_SuperShotgun = {
+void () TeamFortress_SuperShotgun = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 1;
-	self.AttackFunction 			= W_FireSuperShotgun;
-	self.CheckForReloadFunction 	= W_Check_Reload_Super_Shotgun;
-	self.ReloadStartFunction    	= W_Reload_Super_Shotgun_Start;
-	self.ReloadEndFunction 	    	= W_Reload_Super_Shotgun_Finish;
+	self.needsReload 			= 1;
+	self.AttackFunction 		= W_FireSuperShotgun;
+	self.CheckForReloadFunction = W_Check_Reload_SuperShotgun;
+	self.ReloadStartFunction    = W_Reload_SuperShotgun_Start;
+	self.ReloadEndFunction 	    = W_Reload_SuperShotgun_Finish;
 
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
@@ -68,7 +69,7 @@ void () W_FireSuperShotgun =
 
 };
 
-float () W_Check_Reload_Super_Shotgun =
+float () W_Check_Reload_SuperShotgun =
 {
 	local float rt;
 	local entity tWeapon;
@@ -90,14 +91,14 @@ float () W_Check_Reload_Super_Shotgun =
 		tWeapon.owner = self;
 		tWeapon.classname = "timer";
 		tWeapon.nextthink = (time + 3);
-		tWeapon.think = W_Reload_Super_Shotgun_Finish;
+		tWeapon.think = W_Reload_SuperShotgun_Finish;
 		self.weaponmodel = "";
 		self.weaponframe = 0;
 		return (1);
 	}
 };
 
-void () W_Reload_Super_Shotgun_Start =
+void () W_Reload_SuperShotgun_Start =
 {
 	local float rt;
 	local entity tWeapon;
@@ -133,7 +134,7 @@ void () W_Reload_Super_Shotgun_Start =
 		tWeapon.owner = self;
 		tWeapon.classname = "timer";
 		tWeapon.nextthink = (time + rt);
-		tWeapon.think = W_Reload_Super_Shotgun_Finish;
+		tWeapon.think = W_Reload_SuperShotgun_Finish;
 		self.weaponmodel = "";
 		self.weaponframe = 0;
 	}
@@ -143,7 +144,7 @@ void () W_Reload_Super_Shotgun_Start =
 	}
 }
 
-void () W_Reload_Super_Shotgun_Finish =
+void () W_Reload_SuperShotgun_Finish =
 {
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_shot2.mdl";

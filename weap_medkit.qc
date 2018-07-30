@@ -37,14 +37,15 @@ void () player_medikitd3;
 void () player_medikitd4;
 //=-=-=-=-=
 
-void () TeamFortress_Medikit = {
+void () TeamFortress_Medikit = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
+	self.needsReload 	= 0;
 	self.AttackFunction = W_Attack_Medikit;
-	self.currentammo = self.ammo_medikit;
-	self.weaponmodel = "progs/v_medi.mdl";
-	self.weaponframe = 0;
+	self.currentammo 	= self.ammo_medikit;
+	self.weaponmodel 	= "progs/v_medi.mdl";
+	self.weaponframe 	= 0;
 };
 
 void () W_Attack_Medikit =
@@ -74,7 +75,7 @@ void () W_Attack_Medikit =
 		}
 	}
 	Attack_Finished (0.5);
-}
+};
 
 void () W_FireMedikit =
 {

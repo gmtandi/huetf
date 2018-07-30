@@ -14,21 +14,22 @@ void (float att_delay) Attack_Finished;
 //=-=-=-=-= Local Functions
 void () TeamFortress_Spanner;
 void () W_FireSpanner;
-void () W_Spanner_Attack;
+void () W_Attack_Spanner;
 void () player_spanner1;
 void () player_spanner2;
 void () player_spanner3;
 void () player_spanner4;
 //=-=-=-=-= 
 
-void () TeamFortress_Spanner = {
+void () TeamFortress_Spanner = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
-	self.AttackFunction = W_Spanner_Attack;	
-	self.currentammo = self.ammo_cells;
-	self.weaponmodel = "progs/v_span.mdl";
-	self.weaponframe = 0;
+	self.needsReload 	= 0;
+	self.AttackFunction = W_Attack_Spanner;	
+	self.currentammo 	= self.ammo_cells;
+	self.weaponmodel 	= "progs/v_span.mdl";
+	self.weaponframe 	= 0;
 };
 
 void () W_FireSpanner =
@@ -171,7 +172,7 @@ void () W_FireSpanner =
 	}
 };
 
-void () W_Spanner_Attack = 
+void () W_Attack_Spanner = 
 {
 	Attack_Finished (0.5);
 	sound (self, 1, "weapons/ax1.wav", 1, 1);

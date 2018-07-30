@@ -11,18 +11,19 @@ void () W_PrintWeaponMessage;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_Lightning;
-void () W_FireLightning;
 void () W_Attack_Lightning;
+void () W_FireLightning;
 void () player_light1;
 void () player_light2;
 //=-=-=-=-=
 
-void () TeamFortress_Lightning = {
+void () TeamFortress_Lightning = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
+	self.needsReload 	= 0;
 	self.AttackFunction = W_Attack_Lightning;
-	self.currentammo = self.ammo_cells;
+	self.currentammo 	= self.ammo_cells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_light.mdl";
@@ -30,6 +31,13 @@ void () TeamFortress_Lightning = {
 	}
 	self.items = (self.items | 2048);
 	self.weapon = 64;	
+};
+
+void () W_Attack_Lightning = 
+{
+	player_light1 ();
+	Attack_Finished (0.1);
+	sound (self, 0, "weapons/lstart.wav", 1, 1);
 };
 
 void () W_FireLightning =
@@ -78,14 +86,6 @@ void () W_FireLightning =
 	WriteCoord (4, trace_endpos_z);
 	multicast (org, 1);
 	LightningDamage (self.origin, (trace_endpos + (v_forward * 4)), self, 30);
-};
-
-
-void () W_Attack_Lightning = 
-{
-	player_light1 ();
-	Attack_Finished (0.1);
-	sound (self, 0, "weapons/lstart.wav", 1, 1);
 };
 
 void () player_light1 = [ 105, player_light2 ]

@@ -14,15 +14,17 @@ void () player_nail1;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_SuperNailGun;
+void () W_Attack_SuperNailgun;
 void () W_FireSuperSpikes;
 //=-=-=-=-=
 
-void () TeamFortress_SuperNailGun = {
+void () TeamFortress_SuperNailGun = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload 				= 0;
-	self.AttackFunction 			= player_nail1;
-	self.currentammo = self.ammo_nails;
+	self.needsReload 	= 0;
+	self.AttackFunction = W_Attack_SuperNailgun;
+	self.currentammo 	= self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_nail2.mdl";
@@ -31,6 +33,12 @@ void () TeamFortress_SuperNailGun = {
 	self.items = (self.items | 512);
 	self.weapon = 8;
 };
+
+void () W_Attack_SuperNailgun =
+{
+	player_nail1();
+};
+
 
 void () W_FireSuperSpikes =
 {

@@ -16,7 +16,8 @@ void () player_tranq5;
 void () player_tranq6;
 //=-=-=-=-=
 
-void () TeamFortress_Tranquilizer = {
+void () TeamFortress_Tranquilizer = 
+{
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload 				= 0;

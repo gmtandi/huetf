@@ -15,12 +15,13 @@ void () player_srail5;
 void () player_srail6;
 //=-=-=-=-=
 
-void () TeamFortress_SniperRail = {
+void () TeamFortress_SniperRail = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload 				= 0;
-	self.AttackFunction 			= W_Attack_SniperRail;	
-	self.currentammo = self.ammo_shells;
+	self.needsReload 	= 0;
+	self.AttackFunction = W_Attack_SniperRail;	
+	self.currentammo 	= self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_srifle.mdl";

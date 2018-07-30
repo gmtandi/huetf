@@ -3906,20 +3906,15 @@ if (self.current_menu_type != 5) {
 			bprint(2, self.netname);
 			bprint(2, ".\n");
 
-
-		te = self;
-                temp = find (world, classname, "player");
-                while (temp != world) {
-			self = temp;
-                        temp.captain = 0;
-			ResetMenu();
-                        temp = find (temp, classname, "player");
-                }
-		self = te;
-
-
-
-
+			te = self;
+	        temp = find (world, classname, "player");
+	        while (temp != world) {
+				self = temp;
+	            temp.captain = 0;
+				ResetMenu();
+	            temp = find (temp, classname, "player");
+	        }
+			self = te;
 		}
 
 		if (self.current_menu_type == 0)
@@ -3930,7 +3925,5 @@ if (self.current_menu_type != 5) {
 		}
 	}
 
-self.impulse = 0;
+	self.impulse = 0;
 };
-
-

@@ -5,26 +5,28 @@ float () CheckForReload;
 
 //=-=-=-=-=
 void  () TeamFortress_Shotgun;
+void  () W_Attack_Shotgun;
 void  () W_FireShotgun;
 float () W_Check_Reload_Shotgun;
 void  () W_Reload_Shotgun_Start;
 void  () W_Reload_Shotgun_Finish;
-void () player_shot1;
-void () player_shot2;
-void () player_shot3;
-void () player_shot4;
-void () player_shot5;
-void () player_shot6;
+void  () player_shot1;
+void  () player_shot2;
+void  () player_shot3;
+void  () player_shot4;
+void  () player_shot5;
+void  () player_shot6;
 //=-=-=-=-=
 
-void () TeamFortress_Shotgun = {
+void () TeamFortress_Shotgun = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload 				= 1;
-	self.AttackFunction 			= W_FireShotgun;
-	self.CheckForReloadFunction 	= W_Check_Reload_Shotgun;
-	self.ReloadStartFunction    	= W_Reload_Shotgun_Start;
-	self.ReloadEndFunction 	   		= W_Reload_Shotgun_Finish;
+	self.needsReload 			= 1;
+	self.AttackFunction 		= W_Attack_Shotgun;
+	self.CheckForReloadFunction = W_Check_Reload_Shotgun;
+	self.ReloadStartFunction    = W_Reload_Shotgun_Start;
+	self.ReloadEndFunction 	   	= W_Reload_Shotgun_Finish;
 
 	self.currentammo = self.ammo_shells;
 	self.items = (self.items | 2048);
@@ -38,13 +40,23 @@ void () TeamFortress_Shotgun = {
 	
 };
 
+void () W_Attack_Shotgun =
+{
+	if (CheckForReload ())
+		return;
+	player_shot1 ();
+	W_FireShotgun();
+	self.reload_shotgun = (self.reload_shotgun + 1);
+	self.StatusRefreshTime = (time + 0.1);
+	CheckForReload ();
+	Attack_Finished (0.5);
+};
+
 void () W_FireShotgun =
 {
 	local vector dir;
 
-	if (CheckForReload ())
-		return;
-	player_shot1 ();
+	
 	sound (self, 1, "weapons/guncock.wav", 1, 1);
 	KickPlayer (-2, self);
 	if (!practice)
@@ -54,11 +66,7 @@ void () W_FireShotgun =
 	}
 	dir = aim (self, 100000);
 	deathmsg = 1;
-	FireBullets (6, dir, '0.04 0.04 0');
-	self.reload_shotgun = (self.reload_shotgun + 1);
-	self.StatusRefreshTime = (time + 0.1);
-	CheckForReload ();
-	Attack_Finished (0.5);
+	FireBullets (6, dir, '0.04 0.04 0');	
 };
 
 float () W_Check_Reload_Shotgun = 

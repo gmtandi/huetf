@@ -5,6 +5,7 @@ void (float att_delay) Attack_Finished;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_IncendiaryCannon;
+void () W_Attack_IncendiaryCannon;
 void () W_FireIncendiaryCannon;
 void () IncendiaryRadius;
 void () T_IncendiaryTouch;
@@ -19,9 +20,9 @@ void () TeamFortress_IncendiaryCannon =
 {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload 				= 0;
-	self.AttackFunction 			= W_FireIncendiaryCannon;	
-	self.currentammo 				= self.ammo_rockets;
+	self.needsReload 	= 0;
+	self.AttackFunction = W_Attack_IncendiaryCannon;	
+	self.currentammo 	= self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel 	= "progs/v_rock2.mdl";
@@ -29,6 +30,16 @@ void () TeamFortress_IncendiaryCannon =
 	}
 	self.items 				= (self.items | 1024);
 	self.weapon 			= 16;
+};
+
+void () W_Attack_IncendiaryCannon =
+{
+	player_incendiary1();
+	W_FireIncendiaryCannon();
+	if ((self.weaponmode == 1))
+		Attack_Finished (0.9);
+	else
+		Attack_Finished (1.2);
 };
 
 void () W_FireIncendiaryCannon =
@@ -54,7 +65,7 @@ void () W_FireIncendiaryCannon =
 			self.currentammo = self.ammo_rockets;
 		}
 	}
-	player_incendiary1();
+
 	newmis = spawn ();
 	newmis.owner = self;
 	sound (self, 1, "weapons/sgun1.wav", 1, 1);
@@ -80,11 +91,7 @@ void () W_FireIncendiaryCannon =
 	newmis.weapon = 33;
 	setmodel (newmis, "progs/missile.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
-	setorigin (newmis, ((self.origin + (v_forward * 8)) + '0 0 16'));
-	if ((self.weaponmode == 1))
-		Attack_Finished (0.9);
-	else
-		Attack_Finished (1.2);
+	setorigin (newmis, ((self.origin + (v_forward * 8)) + '0 0 16'));	
 };
 
 void () IncendiaryRadius =

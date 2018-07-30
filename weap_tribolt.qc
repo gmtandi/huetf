@@ -23,7 +23,8 @@ void () player_tribolt5;
 void () player_tribolt6;
 //=-=-=-=-=
 
-void () TeamFortress_Tribolt = {
+void () TeamFortress_Tribolt = 
+{
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;

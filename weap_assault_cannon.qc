@@ -10,8 +10,8 @@ void () W_PrintWeaponMessage;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_AssaultCannon;
+void () W_Attack_AssaultCannon;
 void () W_FireAssaultCannon;
-void () W_Attack_Assault_Cannon;
 void () player_assaultcannonup1;
 void () player_assaultcannonup2;
 void () player_assaultcannon1;
@@ -19,12 +19,13 @@ void () player_assaultcannon2;
 void () player_assaultcannondown1;
 //=-=-=-=-=
 
-void () TeamFortress_AssaultCannon = {
+void () TeamFortress_AssaultCannon = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
-	self.AttackFunction = W_Attack_Assault_Cannon;
-	self.currentammo = self.ammo_shells;
+	self.needsReload 	= 0;
+	self.AttackFunction = W_Attack_AssaultCannon;
+	self.currentammo 	= self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_asscan.mdl";
@@ -32,6 +33,23 @@ void () TeamFortress_AssaultCannon = {
 	}
 	self.items = (self.items | 256);
 	self.weapon = space;
+};
+
+void () W_Attack_AssaultCannon =
+{
+	if (self.ammo_cells < 7)
+	{
+		sprint (self, 1, "Insufficient cells to power up the Assault Cannon.\n");
+	}
+	else
+	{
+		self.ammo_cells = (self.ammo_cells - 7);
+		self.heat = 1;
+		self.immune_to_check = (time + 5);
+		self.tfstate = (self.tfstate | TFSTATE_AIMING);
+		TeamFortress_SetSpeed (self);
+		player_assaultcannonup1 ();
+	}
 };
 
 void () W_FireAssaultCannon =
@@ -56,22 +74,6 @@ void () W_FireAssaultCannon =
 	}
 };
 
-void () W_Attack_Assault_Cannon =
-{
-	if (self.ammo_cells < 7)
-	{
-		sprint (self, 1, "Insufficient cells to power up the Assault Cannon.\n");
-	}
-	else
-	{
-		self.ammo_cells = (self.ammo_cells - 7);
-		self.heat = 1;
-		self.immune_to_check = (time + 5);
-		self.tfstate = (self.tfstate | TFSTATE_AIMING);
-		TeamFortress_SetSpeed (self);
-		player_assaultcannonup1 ();
-	}
-}
 void () player_assaultcannonup1 = [ 103, player_assaultcannonup2 ]
 {
 	if ((!self.button0 || self.ammo_shells < 1) || intermission_running)

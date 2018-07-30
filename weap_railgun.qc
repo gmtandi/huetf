@@ -15,12 +15,13 @@ void () player_rail5;
 void () player_rail6;
 //=-=-=-=-=
 
-void () TeamFortress_RailGun = {
+void () TeamFortress_RailGun = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload 				= 0;
-	self.AttackFunction 			= W_Attack_Railgun;	
-	self.currentammo = self.ammo_nails;
+	self.needsReload 	= 0;
+	self.AttackFunction	= W_Attack_Railgun;	
+	self.currentammo 	= self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_rail.mdl";

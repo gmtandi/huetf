@@ -4,12 +4,13 @@ float () CheckForReload;
 
 //=-=-=-=-= Local Functions
 void () TeamFortress_RocketLauncher;
+void () W_Attack_RocketLauncher;
 void () W_FireRocket;
 void () MissileRadius;
 void () T_MissileTouch;
-float () W_Check_Reload_Rocket_Launcher;
-void () W_Reload_Rocket_Launcher_Start;
-void () W_Reload_Rocket_Launcher_Finish;
+float () W_Check_Reload_RocketLauncher;
+void () W_Reload_RocketLauncher_Start;
+void () W_Reload_RocketLauncher_Finish;
 void () player_rocket1;
 void () player_rocket2;
 void () player_rocket3;
@@ -22,10 +23,10 @@ void () TeamFortress_RocketLauncher = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
-	self.AttackFunction			= W_FireRocket;
-	self.CheckForReloadFunction = W_Check_Reload_Rocket_Launcher;
-	self.ReloadStartFunction    = W_Reload_Rocket_Launcher_Start;
-	self.ReloadEndFunction 	    = W_Reload_Rocket_Launcher_Finish;	
+	self.AttackFunction			= W_Attack_RocketLauncher;
+	self.CheckForReloadFunction = W_Check_Reload_RocketLauncher;
+	self.ReloadStartFunction    = W_Reload_RocketLauncher_Start;
+	self.ReloadEndFunction 	    = W_Reload_RocketLauncher_Finish;	
 
 	self.currentammo = self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
@@ -37,16 +38,25 @@ void () TeamFortress_RocketLauncher = {
 	self.weapon = 32;
 };
 
+void () W_Attack_RocketLauncher =
+{
+	if (CheckForReload ())
+		return;
+	player_rocket1 ();
+	W_FireRocket();
+	self.reload_rocket_launcher = (self.reload_rocket_launcher + 1);
+	self.StatusRefreshTime = (time + 0.1);
+	CheckForReload ();
+	Attack_Finished (0.8);
+};
+
 void () W_FireRocket =
 {
 	if (!practice)
 	{
 		self.ammo_rockets = (self.ammo_rockets - 1);
 		self.currentammo = self.ammo_rockets;
-	}
-	if (CheckForReload ())
-		return;
-	player_rocket1 ();
+	}	
 	sound (self, 1, "weapons/sgun1.wav", 1, 1);
 	KickPlayer (-2, self);
 	newmis = spawn ();
@@ -73,10 +83,6 @@ void () W_FireRocket =
 	setmodel (newmis, "progs/missile.mdl");
 	setsize (newmis, '0 0 0', '0 0 0');
 	setorigin (newmis, ((self.origin + (v_forward * 8)) + '0 0 16'));
-	self.reload_rocket_launcher = (self.reload_rocket_launcher + 1);
-	self.StatusRefreshTime = (time + 0.1);
-	CheckForReload ();
-	Attack_Finished (0.8);
 };
 
 void () MissileRadius =
@@ -140,7 +146,7 @@ void () T_MissileTouch =
 	MissileRadius ();
 };
 
-float () W_Check_Reload_Rocket_Launcher =
+float () W_Check_Reload_RocketLauncher =
 {
 	local float rt;
 	local entity tWeapon;
@@ -158,14 +164,14 @@ float () W_Check_Reload_Rocket_Launcher =
 		tWeapon.owner = self;
 		tWeapon.classname = "timer";
 		tWeapon.nextthink = (time + 5);
-		tWeapon.think = W_Reload_Rocket_Launcher_Finish;
+		tWeapon.think = W_Reload_RocketLauncher_Finish;
 		self.weaponmodel = "";
 		self.weaponframe = 0;
 		return (1);
 	}
 };
 
-void () W_Reload_Rocket_Launcher_Start =
+void () W_Reload_RocketLauncher_Start =
 {
 	local float rt;
 	local entity tWeapon;
@@ -201,7 +207,7 @@ void () W_Reload_Rocket_Launcher_Start =
 		tWeapon.owner = self;
 		tWeapon.classname = "timer";
 		tWeapon.nextthink = (time + rt);
-		tWeapon.think = W_Reload_Rocket_Launcher_Finish;
+		tWeapon.think = W_Reload_RocketLauncher_Finish;
 		self.weaponmodel = "";
 		self.weaponframe = 0;
 	}
@@ -211,7 +217,7 @@ void () W_Reload_Rocket_Launcher_Start =
 	}
 };
 
-void () W_Reload_Rocket_Launcher_Finish =
+void () W_Reload_RocketLauncher_Finish =
 {
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_rock2.mdl";

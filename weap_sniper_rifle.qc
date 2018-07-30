@@ -4,26 +4,27 @@ void (float att_delay) Attack_Finished;
 //=-=-=-=-= Local Functions
 void  () TeamFortress_SniperRifle;
 void  () W_FireSniperRifle;
-float () W_Check_Reload_Sniper_Rifle;
-void  () W_Reload_Sniper_Rifle_Start;
-void  () W_Reload_Sniper_Rifle_Finish;
+float () W_Check_Reload_SniperRifle;
+void  () W_Reload_SniperRifle_Start;
+void  () W_Reload_SniperRifle_Finish;
 void () player_sniperrifle1;
 void () player_sniperrifle2;
 void () player_sniperrifle3;
 void () player_sniperrifle4;
 void () player_sniperrifle5;
 void () player_sniperrifle6;
-void () W_Attack_Sniper_Rifle;
+void () W_Attack_SniperRifle;
 //=-=-=-=-=
 
-void () TeamFortress_SniperRifle = {
+void () TeamFortress_SniperRifle = 
+{
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
-	self.AttackFunction 			= W_Attack_Sniper_Rifle;
-	self.CheckForReloadFunction 	= W_Check_Reload_Sniper_Rifle;
-	self.ReloadStartFunction    	= W_Reload_Sniper_Rifle_Start;
-	self.ReloadEndFunction 	    	= W_Reload_Sniper_Rifle_Finish;
+	self.AttackFunction 		= W_Attack_SniperRifle;
+	self.CheckForReloadFunction = W_Check_Reload_SniperRifle;
+	self.ReloadStartFunction    = W_Reload_SniperRifle_Start;
+	self.ReloadEndFunction 	    = W_Reload_SniperRifle_Finish;
 	
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
@@ -33,6 +34,29 @@ void () TeamFortress_SniperRifle = {
 	}
 	self.items = (self.items | 256);
 	self.weapon = 1;
+};
+
+void () W_Attack_SniperRifle = 
+{
+	if (sniperpower) 
+	{
+		if (CheckForReload ())
+		{
+			return;
+		}
+		player_sniperrifle1 ();
+		W_FireSniperRifle ();
+		self.reload_sniper_rifle = (self.reload_sniper_rifle + 1);
+		self.StatusRefreshTime = (time + 0.1);
+		CheckForReload ();
+		Attack_Finished (0.8);
+	}
+	else
+	{
+		player_sniperrifle1 ();
+		W_FireSniperRifle ();
+		Attack_Finished (1.7);
+	}
 };
 
 void () W_FireSniperRifle = 
@@ -138,7 +162,7 @@ void () W_FireSniperRifle =
 	ApplyMultiDamage ();
 };
 
-float () W_Check_Reload_Sniper_Rifle =
+float () W_Check_Reload_SniperRifle =
 {
 	local float rt;
 	local entity tWeapon;
@@ -152,14 +176,14 @@ float () W_Check_Reload_Sniper_Rifle =
 		tWeapon.owner = self;
 		tWeapon.classname = "timer";
 		tWeapon.nextthink = (time + 5);
-		tWeapon.think = W_Reload_Sniper_Rifle_Finish;
+		tWeapon.think = W_Reload_SniperRifle_Finish;
 		self.weaponmodel = "";
 		self.weaponframe = 0;
 		return (1);
 	}
 };
 
-void () W_Reload_Sniper_Rifle_Start =
+void () W_Reload_SniperRifle_Start =
 {
 	local float rt;
 	local entity tWeapon;
@@ -201,30 +225,7 @@ void () W_Reload_Sniper_Rifle_Start =
 	}
 }
 
-void () W_Attack_Sniper_Rifle = 
-{
-	if (sniperpower) 
-	{
-		if (CheckForReload ())
-		{
-			return;
-		}
-		player_sniperrifle1 ();
-		W_FireSniperRifle ();
-		self.reload_sniper_rifle = (self.reload_sniper_rifle + 1);
-		self.StatusRefreshTime = (time + 0.1);
-		CheckForReload ();
-		Attack_Finished (0.8);
-	}
-	else
-	{
-		player_sniperrifle1 ();
-		W_FireSniperRifle ();
-		Attack_Finished (1.7);
-	}
-};
-
-void () W_Reload_Sniper_Rifle_Finish =
+void () W_Reload_SniperRifle_Finish =
 {
 	self.owner.tfstate = (self.owner.tfstate - (self.owner.tfstate & TFSTATE_RELOADING));
 	self.owner.weaponmodel = "progs/v_srifle.mdl";

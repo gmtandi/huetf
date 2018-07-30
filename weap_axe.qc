@@ -11,7 +11,7 @@ void (float att_delay) Attack_Finished;
 //=-=-=-=-= Local Functions
 void () TeamFortress_Axe;
 void () W_FireAxe;
-void () W_Axe_Attack;
+void () W_Attack_Axe;
 void () player_axe1;
 void () player_axe2;
 void () player_axe3;
@@ -30,12 +30,13 @@ void () player_axed3;
 void () player_axed4;
 //=-=-=-=-=
 
-void () TeamFortress_Axe = {
+void () TeamFortress_Axe = 
+{
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
-	self.AttackFunction = W_Axe_Attack;
-	self.currentammo = 0;
+	self.needsReload 	= 0;	
+	self.AttackFunction = W_Attack_Axe;
+	self.currentammo 	= 0;
 	if ((self.playerclass == PC_SPY))
 	{
 		if ((self.weaponmode == 0))
@@ -116,7 +117,7 @@ void () W_FireAxe =
 	}
 };
 
-void () W_Axe_Attack = {
+void () W_Attack_Axe = {
 	Attack_Finished (0.5);
 	sound (self, 1, "weapons/ax1.wav", 1, 1);
 	local float r = random ();
