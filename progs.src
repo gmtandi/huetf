@@ -36,6 +36,15 @@ weap_tranq.qc
 weap_tribolt.qc
 hook.qc
 weapons.qc
+gren_caltrops.qc
+gren_concussion.qc
+gren_emp.qc
+gren_flare.qc
+gren_gas.qc
+gren_mirv.qc
+gren_nail.qc
+gren_napalm.qc
+gren_normal.qc
 world.qc
 client.qc
 player.qc
@@ -46,7 +55,6 @@ tforttm.qc
 plats.qc
 misc.qc
 monsters.qc
-flare.qc
 sentry.qc
 monsters2.qc
 admin.qc

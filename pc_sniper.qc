@@ -1,6 +1,7 @@
-//=-=-=-=-=
+//=-=-=-=-= Local Functions
 void () TeamFortress_Sniper;
 void () SniperSight_Update;
+//=-=-=-=-= Local Functions
 
 void () TeamFortress_Sniper = {
 	if (!classrework) {
