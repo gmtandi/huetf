@@ -19,9 +19,9 @@ void () TeamFortress_IncendiaryCannon =
 {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload 		= 0;
-	self.AttackFunction 	= W_FireIncendiaryCannon;	
-	self.currentammo 		= self.ammo_rockets;
+	self.needsReload 				= 0;
+	self.AttackFunction 			= W_FireIncendiaryCannon;	
+	self.currentammo 				= self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel 	= "progs/v_rock2.mdl";
@@ -30,7 +30,6 @@ void () TeamFortress_IncendiaryCannon =
 	self.items 				= (self.items | 1024);
 	self.weapon 			= 16;
 };
-
 
 void () W_FireIncendiaryCannon =
 {

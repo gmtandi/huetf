@@ -337,4 +337,3 @@ float shortergrens;
 .float () CheckForReloadFunction;
 .void () ReloadStartFunction;
 .void () ReloadEndFunction;
-

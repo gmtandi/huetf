@@ -38,8 +38,8 @@ void () TeamFortress_FlameThrower =
 {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
-	self.AttackFunction = W_Attack_FlameThrower;	
+	self.needsReload 				= 0;
+	self.AttackFunction 			= W_Attack_FlameThrower;	
 	self.currentammo = self.ammo_cells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

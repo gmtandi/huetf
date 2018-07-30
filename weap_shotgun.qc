@@ -20,11 +20,11 @@ void () player_shot6;
 void () TeamFortress_Shotgun = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 1;
-	self.AttackFunction = W_FireShotgun;
-	self.CheckForReloadFunction = W_Check_Reload_Shotgun;
-	self.ReloadStartFunction    = W_Reload_Shotgun_Start;
-	self.ReloadEndFunction 	    = W_Reload_Shotgun_Finish;
+	self.needsReload 				= 1;
+	self.AttackFunction 			= W_FireShotgun;
+	self.CheckForReloadFunction 	= W_Check_Reload_Shotgun;
+	self.ReloadStartFunction    	= W_Reload_Shotgun_Start;
+	self.ReloadEndFunction 	   		= W_Reload_Shotgun_Finish;
 
 	self.currentammo = self.ammo_shells;
 	self.items = (self.items | 2048);

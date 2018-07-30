@@ -25,10 +25,10 @@ void () TeamFortress_SuperShotgun = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
-	self.AttackFunction = W_FireSuperShotgun;
-	self.CheckForReloadFunction = W_Check_Reload_Super_Shotgun;
-	self.ReloadStartFunction    = W_Reload_Super_Shotgun_Start;
-	self.ReloadEndFunction 	    = W_Reload_Super_Shotgun_Finish;
+	self.AttackFunction 			= W_FireSuperShotgun;
+	self.CheckForReloadFunction 	= W_Check_Reload_Super_Shotgun;
+	self.ReloadStartFunction    	= W_Reload_Super_Shotgun_Start;
+	self.ReloadEndFunction 	    	= W_Reload_Super_Shotgun_Finish;
 
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))

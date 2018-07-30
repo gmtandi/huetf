@@ -20,10 +20,10 @@ void () TeamFortress_SniperRifle = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
-	self.AttackFunction = W_Attack_Sniper_Rifle;
-	self.CheckForReloadFunction = W_Check_Reload_Sniper_Rifle;
-	self.ReloadStartFunction    = W_Reload_Sniper_Rifle_Start;
-	self.ReloadEndFunction 	    = W_Reload_Sniper_Rifle_Finish;
+	self.AttackFunction 			= W_Attack_Sniper_Rifle;
+	self.CheckForReloadFunction 	= W_Check_Reload_Sniper_Rifle;
+	self.ReloadStartFunction    	= W_Reload_Sniper_Rifle_Start;
+	self.ReloadEndFunction 	    	= W_Reload_Sniper_Rifle_Finish;
 	
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))

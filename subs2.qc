@@ -16,9 +16,10 @@ float () SUB_Zero =
 
 void () SUB_ResetWeaponFunctions =
 {
-	self.CheckForReloadFunction = SUB_Zero;
-	self.ReloadStartFunction    = SUB_Null;
-	self.ReloadEndFunction 	    = SUB_Null;
+	self.CheckForReloadFunction 	= SUB_Zero;
+	self.ReloadStartFunction    	= SUB_Null;
+	self.ReloadEndFunction 	    	= SUB_Null;
+	self.AttackFunction 			= SUB_Null;
 };
 
 void () SUB_Remove =

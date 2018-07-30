@@ -20,8 +20,8 @@ void () W_FireSuperSpikes;
 void () TeamFortress_SuperNailGun = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
-	self.AttackFunction = player_nail1;
+	self.needsReload 				= 0;
+	self.AttackFunction 			= player_nail1;
 	self.currentammo = self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

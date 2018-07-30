@@ -27,12 +27,11 @@ void () TeamFortress_GrenadeLauncher = {
 	SUB_ResetWeaponFunctions();
 	
 	self.needsReload = 1;
-	self.AttackFunction 		= W_FireGrenade;
-	self.CheckForReloadFunction = W_Check_Reload_Grenade_Launcher;
-	self.ReloadStartFunction    = W_Reload_Grenade_Launcher_Start;
-	self.ReloadEndFunction 	    = W_Reload_Grenade_Launcher_Start;	
-
-	self.currentammo = self.ammo_rockets;
+	self.AttackFunction 			= W_FireGrenade;
+	self.CheckForReloadFunction 	= W_Check_Reload_Grenade_Launcher;
+	self.ReloadStartFunction    	= W_Reload_Grenade_Launcher_Start;
+	self.ReloadEndFunction 	    	= W_Reload_Grenade_Launcher_Start;
+	self.currentammo 				= self.ammo_rockets;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_rock.mdl";

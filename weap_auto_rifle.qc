@@ -18,9 +18,9 @@ void () player_autorifle3;
 void () TeamFortress_AutoRifle = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
-	self.AttackFunction = W_Attack_Auto_Rifle;
-	self.currentammo = self.ammo_shells;
+	self.needsReload 				= 0;
+	self.AttackFunction 			= W_Attack_Auto_Rifle;
+	self.currentammo 				= self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_srifle.mdl";

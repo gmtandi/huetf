@@ -835,7 +835,7 @@ void () W_ChangeWeapon =
 	have_weapon = 1;
 	if ((self.impulse == 1))
 	{
-		if (!(it & ((((1 | 2) | 4) | 16) | 8)))
+		if (!(it & (WEAP_HOOK | WEAP_MEDIKIT | WEAP_SPANNER | WEAP_AXE)))
 		{
 			have_weapon = 0;
 		}
@@ -956,310 +956,178 @@ void () W_ChangeWeapon =
 			}
 			else
 			{
-				if ((self.impulse == 2))
+				if (self.impulse == 2)
 				{
 					if ((it & WEAP_SNIPER_RIFLE))
 					{
 						fl = WEAP_SNIPER_RIFLE;
-						if ((self.ammo_shells < 1))
+						if (self.ammo_shells < 1)
+							am = 1;
+					}
+					else if ((it & WEAP_SHOTGUN))
+					{
+						fl = WEAP_SHOTGUN;
+						if (self.ammo_shells < 1)
+							am = 1;
+					}
+					else if (it & WEAP_TRANQ)
+					{
+						fl = WEAP_TRANQ;
+						if (self.ammo_shells < 1)
+							am = 1;
+					}
+					else if (it & WEAP_RAILGUN)
+					{
+						fl = WEAP_RAILGUN;
+						if (self.ammo_nails < 1)
+							am = 1;
+					}
+					else if (it & WEAP_SNIPERRAIL)
+					{
+						fl = WEAP_SNIPERRAIL;
+						if (self.ammo_shells < 1)
+							am = 1;
+					}
+					else
+						have_weapon = 0;
+				}
+				else if (self.impulse == 3)
+				{
+					if (it & WEAP_AUTO_RIFLE)
+					{
+						fl = WEAP_AUTO_RIFLE;
+						if (self.ammo_shells < 1)
+							am = 1;
+					}
+					else
+					{
+						fl = WEAP_SUPER_SHOTGUN;
+						if (self.ammo_shells < 2)
+							am = 1;
+					}
+				}
+				else if (self.impulse == 4)
+				{
+					fl = WEAP_NAILGUN;
+					if ((self.ammo_nails < 1))
+						am = 1;
+				}
+				else if (self.impulse == 5)
+				{
+					if (it & WEAP_SUPER_NAILGUN)
+					{
+						fl = WEAP_SUPER_NAILGUN;
+						if (self.ammo_nails < 2)
+							am = 1;
+					}
+					else if (it & WEAP_FLAMETHROWER)
+					{
+						fl = WEAP_FLAMETHROWER;
+						if (self.ammo_cells < 1)
+							am = 1;
+					}
+				}
+				else if (self.impulse == 6)
+				{
+					if (it & WEAP_INCENDIARY)
+					{
+						fl = WEAP_INCENDIARY;
+						if (self.ammo_rockets < 2)
+							am = 1;
+						wm = 1;
+					}
+					else if (it & WEAP_GRENADE_LAUNCHER)
+					{
+						fl = WEAP_GRENADE_LAUNCHER;
+						if (self.ammo_rockets < 1)
+							am = 1;
+						wm = 0;
+					}						
+					else
+						have_weapon = 0;
+					
+				}
+				else if (self.impulse == 7)
+				{
+					if (it & WEAP_INCENDIARY)
+					{
+						fl = WEAP_INCENDIARY;
+						if (self.ammo_rockets < 3)
+							am = 1;
+						wm = 0;
+					}
+					else if (it & WEAP_ROCKET_LAUNCHER)
+					{
+						fl = WEAP_ROCKET_LAUNCHER;
+						if (self.ammo_rockets < 1)
+							am = 1;
+					}
+					else if (it & WEAP_ASSAULT_CANNON)
+					{
+						fl = WEAP_ASSAULT_CANNON;
+						if (self.ammo_shells < 1)
+							am = 1;
+						else if (self.ammo_cells < 7)
+							am = 2;						
+					}
+					else if (it & WEAP_GRENADE_LAUNCHER)
+					{
+						fl = WEAP_GRENADE_LAUNCHER;
+						wm = 1;
+						if (self.ammo_rockets < 1)
+							am = 1;
+					}
+					else if (it & WEAP_TRIBOLT)
+					{
+						fl = WEAP_TRIBOLT;		
+						if (self.ammo_rockets < 1)
 						{
 							am = 1;
 						}
 					}
 					else
 					{
-						if ((it & WEAP_SHOTGUN))
-						{
-							fl = WEAP_SHOTGUN;
-							if ((self.ammo_shells < 1))
-							{
-								am = 1;
-							}
-						}
-						else
-						{
-							if ((it & WEAP_TRANQ))
-							{
-								fl = WEAP_TRANQ;
-								if ((self.ammo_shells < 1))
-								{
-									am = 1;
-								}
-							}
-							else
-							{
-								if ((it & WEAP_RAILGUN))
-								{
-									fl = WEAP_RAILGUN;
-									if ((self.ammo_nails < 1))
-									{
-										am = 1;
-									}
-								}
-								else if ((it & WEAP_SNIPERRAIL))
-								{
-									fl = WEAP_SNIPERRAIL;
-									if ((self.ammo_shells < 1))
-									{
-										am = 1;
-									}
-								}
-								else
-								{
-									have_weapon = 0;
-								}
-							}
-						}
+						have_weapon = 0;
 					}
-				}
-				else
+				}			
+				else if (self.impulse == 8)
 				{
-					if ((self.impulse == 3))
+					fl = WEAP_LIGHTNING;
+					if (self.ammo_cells < 1)
+						am = 1;
+				}
+				else if (self.impulse == 176)
+				{
+					fl = WEAP_MEDIKIT;
+					if (it & 4)
+						usable = 1;
+				}
+				else if (self.impulse == 12)
+				{
+					fl = self.last_weapon;
+					if (it & self.last_weapon)
+						usable = 1;
+					if (((fl & (WEAP_SNIPER_RIFLE | WEAP_AUTO_RIFLE | WEAP_SHOTGUN | WEAP_SUPER_SHOTGUN | WEAP_ASSAULT_CANNON | WEAP_TRANQ | WEAP_SNIPERRAIL)) != 0) && (self.ammo_shells < 1))
+						am = 1;
+					else if (((fl & (WEAP_NAILGUN | WEAP_SUPER_NAILGUN | WEAP_RAILGUN | WEAP_SNIPERRAIL) != 0) && (self.ammo_nails < 1)))
+						am = 1;
+					else if (((fl & (WEAP_GRENADE_LAUNCHER | WEAP_ROCKET_LAUNCHER | WEAP_TRIBOLT)) != 0) && (self.ammo_rockets < 1))
+						am = 1;
+					else if (((fl & (WEAP_FLAMETHROWER | WEAP_LIGHTNING)) != 0) && (self.ammo_cells < 1))
+						am = 1;
+					else if ((fl & WEAP_INCENDIARY) != 0)
 					{
-						if ((it & WEAP_AUTO_RIFLE))
-						{
-							fl = WEAP_AUTO_RIFLE;
-							if ((self.ammo_shells < 1))
-							{
+						if (self.weaponmode == 1)
+							if (self.ammo_rockets < 2)
 								am = 1;
-							}
-						}
 						else
-						{
-							fl = WEAP_SUPER_SHOTGUN;
-							if ((self.ammo_shells < 2))
-							{
+							if (self.ammo_rockets < 3)
 								am = 1;
-							}
-						}
 					}
-					else
-					{
-						if ((self.impulse == 4))
-						{
-							fl = WEAP_NAILGUN;
-							if ((self.ammo_nails < 1))
-							{
-								am = 1;
-							}
-						}
-						else
-						{
-							if ((self.impulse == 5))
-							{
-								if ((it & WEAP_SUPER_NAILGUN))
-								{
-									fl = WEAP_SUPER_NAILGUN;
-									if ((self.ammo_nails < 2))
-									{
-										am = 1;
-									}
-								}
-								else
-								{
-									if ((it & WEAP_FLAMETHROWER))
-									{
-										fl = WEAP_FLAMETHROWER;
-										if ((self.ammo_cells < 1))
-										{
-											am = 1;
-										}
-									}
-								}
-							}
-							else
-							{
-								if ((self.impulse == 6))
-								{
-									if ((it & WEAP_INCENDIARY))
-									{
-										fl = WEAP_INCENDIARY;
-										if ((self.ammo_rockets < 2))
-										{
-											am = 1;
-										}
-										wm = 1;
-									}
-									else
-									{
-										if ((it & WEAP_GRENADE_LAUNCHER))
-										{
-											fl = WEAP_GRENADE_LAUNCHER;
-											if ((self.ammo_rockets < 1))
-											{
-												am = 1;
-											}
-											wm = 0;
-										}
-										else
-										{
-											have_weapon = 0;
-										}
-									}
-								}
-								else
-								{
-									if ((self.impulse == 7))
-									{
-										if ((it & WEAP_INCENDIARY))
-										{
-											fl = WEAP_INCENDIARY;
-											if ((self.ammo_rockets < 3))
-											{
-												am = 1;
-											}
-											wm = 0;
-										}
-										else
-										{
-											if ((it & WEAP_ROCKET_LAUNCHER))
-											{
-												fl = WEAP_ROCKET_LAUNCHER;
-												if ((self.ammo_rockets < 1))
-												{
-													am = 1;
-												}
-											}
-											else
-											{
-												if ((it & WEAP_ASSAULT_CANNON))
-												{
-													fl = WEAP_ASSAULT_CANNON;
-													if ((self.ammo_shells < 1))
-													{
-														am = 1;
-													}
-													else
-													{
-														if ((self.ammo_cells < 7))
-														{
-															am = 2;
-														}
-													}
-												}
-												else
-												{
-													if ((it & WEAP_GRENADE_LAUNCHER))
-													{
-														fl = WEAP_GRENADE_LAUNCHER;
-														wm = 1;
-														if ((self.ammo_rockets < 1))
-														{
-															am = 1;
-														}
-													}
-													else {
-														if ((it & WEAP_TRIBOLT))
-														{
-															fl = WEAP_TRIBOLT;		
-															if ((self.ammo_rockets < 1))
-															{
-																am = 1;
-															}
-															wm = 0;
-														}
-														else
-														{
-															have_weapon = 0;
-														}
-													}
-												}
-											}
-										}
-									}
-									else
-									{
-										if ((self.impulse == 8))
-										{
-											fl = WEAP_LIGHTNING;
-											if ((self.ammo_cells < 1))
-											{
-												am = 1;
-											}
-										}
-										else
-										{
-											if ((self.impulse == 176))
-											{
-												fl = WEAP_MEDIKIT;
-												if ((it & 4))
-												{
-													usable = 1;
-												}
-											}
-											else
-											{
-												if ((self.impulse == 12))
-												{
-													fl = self.last_weapon;
-													if ((it & self.last_weapon))
-													{
-														usable = 1;
-													}
-													if (((fl & (WEAP_SNIPER_RIFLE | WEAP_AUTO_RIFLE | WEAP_SHOTGUN | WEAP_SUPER_SHOTGUN | WEAP_ASSAULT_CANNON | WEAP_TRANQ | WEAP_SNIPERRAIL)) != 0) && (self.ammo_shells < 1))
-													{
-														am = 1;
-													}
-													else
-													{
-														if (((fl & (WEAP_NAILGUN | WEAP_SUPER_NAILGUN | WEAP_RAILGUN | WEAP_SNIPERRAIL) != 0) && (self.ammo_nails < 1)))
-														{
-															am = 1;
-														}
-														else
-														{
-															if (((fl & (WEAP_GRENADE_LAUNCHER | WEAP_ROCKET_LAUNCHER | WEAP_TRIBOLT)) != 0) && (self.ammo_rockets < 1))
-															{
-																am = 1;
-															}
-															else
-															{
-																if (((fl & (WEAP_FLAMETHROWER | WEAP_LIGHTNING)) != 0) && (self.ammo_cells < 1))
-																{
-																	am = 1;
-																}
-																else
-																{
-																	if ((fl & WEAP_INCENDIARY) != 0)
-																	{
-																		if (self.weaponmode == 1)
-																		{
-																			if (self.ammo_rockets < 2)
-																			{
-																				am = 1;
-																			}
-																		}
-																		else
-																		{
-																			if (self.ammo_rockets < 3)
-																			{
-																				am = 1;
-																			}
-																		}
-																	}
-																	else
-																	{
-																		if ((fl == WEAP_ASSAULT_CANNON) && (self.ammo_cells < 7))
-																		{
-																			am = 2;
-																		}
-																	}
-																}
-															}
-														}
-													}
-													if ((am == 0))
-													{
-														wm = self.last_weaponmode;
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+					else if ((fl == WEAP_ASSAULT_CANNON) && (self.ammo_cells < 7))
+						am = 2;
+					if ((am == 0))
+						wm = self.last_weaponmode;
 				}
 			}
 		}
@@ -1882,17 +1750,154 @@ void () ImpulseCommands =
 
 void () CommandImpulses =
 {
-	if ((self.impulse == 41))
+	if (self.impulse == 41)
 	{
 		Toggle_Tracking ();
 		self.impulse = 0;
 		return;
-	}
-	else
+	}	
+	else if (self.impulse == 42)
 	{
-		if ((self.impulse == 112))
+		if (self.classname != "observer")
 		{
-			if ((self.classname != "observer"))
+			if (clanbattle)
+			{
+				sprint (self, 2, "Clan Battle in progress....\n");
+				self.impulse = 0;
+				return;
+			}
+		}
+		if (self.playerclass || self.deadflag)
+		{
+			return;
+		}
+		Track_Player ();
+		self.last_impulse = self.impulse;
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 43)
+	{
+		if (self.classname != "observer")
+		{
+			if (clanbattle)
+			{
+				sprint (self, 2, "Clan Battle in progress....\n");
+				self.impulse = 0;
+				return;
+			}
+		}
+		if ((self.playerclass || self.deadflag))
+		{
+			return;
+		}
+		Track_Tfgoal ();
+		self.last_impulse = self.impulse;
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 44)
+	{
+		if (self.classname != "observer")
+		{
+			if (clanbattle)
+			{
+				sprint (self, 2, "Clan Battle in progress....\n");
+				self.impulse = 0;
+				return;
+			}
+		}
+		if (self.playerclass || self.deadflag)
+		{
+			return;
+		}
+		Track_Sentry ();
+		if (!self.tracking)
+		{
+			Toggle_Tracking ();
+		}
+		self.last_impulse = self.impulse;
+		self.impulse = 0;
+		return;
+	}	
+	else if (self.impulse == 72)
+	{
+		ShowFrags (self);
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 73)
+	{
+		ShowFps ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 74)
+	{
+		ShowStats ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 83)
+	{
+		VoteYes ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 84)
+	{
+		VoteNo ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 85)
+	{
+		PlayerBreak ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 86)
+	{
+		if (allow_flash == 1)
+		{
+			flash_toggle ();
+		}
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 88)
+	{
+		Commands ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 87)
+	{
+		ShowVersion ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 89)
+	{
+		ModStatus ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 82)
+	{
+		if (!stof (infokey (world, "adminlevel")))
+		{
+			sprint (self, 2, "Admins are not allowed on this server.\n");
+			self.impulse = 0;
+			return;
+		}
+		VoteAdmin ();
+		self.impulse = 0;
+		return;
+	}
+	else if (self.impulse == 112)
+	{
+			if (self.classname != "observer")
 			{
 				if (clanbattle)
 				{
@@ -1905,1269 +1910,939 @@ void () CommandImpulses =
 			{
 				return;
 			}
-			if ((self.tracking != 1))
+			if (self.tracking != 1)
 			{
 				return;
 			}
 			Pan_In (15);
 			self.impulse = 0;
 			return;
-		}
-		else
+	}
+	else if (self.impulse == 113)
+	{
+		if (self.classname != "observer")
 		{
-			if ((self.impulse == 113))
+			if (clanbattle)
 			{
-				if ((self.classname != "observer"))
-				{
-					if (clanbattle)
-					{
-						sprint (self, 2, "Clan Battle in progress....\n");
-						self.impulse = 0;
-						return;
-					}
-				}
-				if (self.playerclass)
-				{
-					return;
-				}
-				if ((self.tracking != 1))
-				{
-					return;
-				}
-				Pan_Out (15);
+				sprint (self, 2, "Clan Battle in progress....\n");
 				self.impulse = 0;
 				return;
 			}
-			else
+		}
+		if (self.playerclass)
+		{
+			return;
+		}
+		if (self.tracking != 1)
+		{
+			return;
+		}
+		Pan_Out (15);
+		self.impulse = 0;
+		return;
+	}
+	else if ((self.impulse == 180))
+	{
+		Drop_detpack ();
+		self.impulse = 0;
+		return;
+	}
+	else 
+	{
+		if ((self.is_admin != 1) && (self.is_admin != 3))
+		{
+			self.impulse = 0;
+			return;
+		}
+		else {																								
+			if (self.impulse == 78)
 			{
-				if ((self.impulse == 42))
+				if (self.is_admin != 3)
 				{
-					if ((self.classname != "observer"))
+					if (stof (infokey (world, "adminlevel")) < 2)
 					{
-						if (clanbattle)
-						{
-							sprint (self, 2, "Clan Battle in progress....\n");
-							self.impulse = 0;
-							return;
-						}
-					}
-					if ((self.playerclass || self.deadflag))
-					{
-						return;
-					}
-					Track_Player ();
-					self.last_impulse = self.impulse;
-					self.impulse = 0;
-					return;
-				}
-				else
-				{
-					if ((self.impulse == 43))
-					{
-						if ((self.classname != "observer"))
-						{
-							if (clanbattle)
-							{
-								sprint (self, 2, "Clan Battle in progress....\n");
-								self.impulse = 0;
-								return;
-							}
-						}
-						if ((self.playerclass || self.deadflag))
-						{
-							return;
-						}
-						Track_Tfgoal ();
-						self.last_impulse = self.impulse;
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
 						self.impulse = 0;
 						return;
 					}
-					else
+				}
+				Toggle_TFStrike ();
+				self.impulse = 0;
+				return;
+			}	
+			else if (self.impulse == 79)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
 					{
-						if ((self.impulse == 44))
-						{
-							if ((self.classname != "observer"))
-							{
-								if (clanbattle)
-								{
-									sprint (self, 2, "Clan Battle in progress....\n");
-									self.impulse = 0;
-									return;
-								}
-							}
-							if ((self.playerclass || self.deadflag))
-							{
-								return;
-							}
-							Track_Sentry ();
-							if (!self.tracking)
-							{
-								Toggle_Tracking ();
-							}
-							self.last_impulse = self.impulse;
-							self.impulse = 0;
-							return;
-						}
-						else
-						{
-							if ((self.impulse == 180))
-							{
-								Drop_detpack ();
-								self.impulse = 0;
-								return;
-							}
-							else
-							{
-								if ((self.impulse == _H))
-								{
-									ShowFrags (self);
-									self.impulse = 0;
-									return;
-								}
-								else
-								{
-									if ((self.impulse == _I))
-									{
-										ShowFps ();
-										self.impulse = 0;
-										return;
-									}
-									else
-									{
-										if ((self.impulse == _J))
-										{
-											ShowStats ();
-											self.impulse = 0;
-											return;
-										}
-										else
-										{
-											if ((self.impulse == _S))
-											{
-												VoteYes ();
-												self.impulse = 0;
-												return;
-											}
-											else
-											{
-												if ((self.impulse == _T))
-												{
-													VoteNo ();
-													self.impulse = 0;
-													return;
-												}
-												else
-												{
-													if ((self.impulse == _U))
-													{
-														PlayerBreak ();
-														self.impulse = 0;
-														return;
-													}
-													else
-													{
-														if ((self.impulse == _V))
-														{
-															if ((allow_flash == 1))
-															{
-																flash_toggle ();
-															}
-															self.impulse = 0;
-															return;
-														}
-														else
-														{
-															if ((self.impulse == _X))
-															{
-																Commands ();
-																self.impulse = 0;
-																return;
-															}
-															else
-															{
-																if ((self.impulse == _W))
-																{
-																	ShowVersion ();
-																	self.impulse = 0;
-																	return;
-																}
-																else
-																{
-																	if ((self.impulse == _Y))
-																	{
-																		ModStatus ();
-																		self.impulse = 0;
-																		return;
-																	}
-																	else
-																	{
-																		if ((self.impulse == _R))
-																		{
-																			if (!stof (infokey (world, "adminlevel")))
-																			{
-																				sprint (self, 2, "Admins are not allowed on this server.\n");
-																				self.impulse = 0;
-																				return;
-																			}
-																			VoteAdmin ();
-																			self.impulse = 0;
-																			return;
-																		}
-																		else
-																		{
-																			if (((self.is_admin != 1) && (self.is_admin != 3)))
-																			{
-																				self.impulse = 0;
-																				return;
-																			}
-																			else
-																			{
-																				if ((self.impulse == 192))
-																				{
-																					if ((self.is_admin != 3))
-																					{
-																						if (!stof (infokey (world, "adminlevel")))
-																						{
-																							sprint (self, 2, "Admins are not allowed on this server.\n");
-																							self.impulse = 0;
-																							return;
-																						}
-																					}
-																					Admin_CountPlayers ();
-																					self.impulse = 0;
-																					return;
-																				}
-																				else
-																				{
-																					if ((self.impulse == 218))
-																					{
-																						if ((self.is_admin != 3))
-																						{
-																							if ((stof (infokey (world, "adminlevel")) < 3))
-																							{
-																								sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																								self.impulse = 0;
-																								return;
-																							}
-																						}
-																						Calibrate_Level ();
-																						self.impulse = 0;
-																						return;
-																					}
-																					else
-																					{
-																						if ((self.impulse == 189))
-																						{
-																							if ((self.is_admin != 3))
-																							{
-																								if ((stof (infokey (world, "adminlevel")) < 3))
-																								{
-																									sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																									self.impulse = 0;
-																									return;
-																								}
-																							}
-																							Admin_CycleDeal ();
-																							self.impulse = 0;
-																							return;
-																						}
-																						else
-																						{
-																							if (((self.impulse == 190) && (self.admin_mode == 1)))
-																							{
-																								if ((self.is_admin != 3))
-																								{
-																									if ((stof (infokey (world, "adminlevel")) < 3))
-																									{
-																										sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																										self.impulse = 0;
-																										return;
-																									}
-																								}
-																								Admin_DoKick ();
-																								self.impulse = 0;
-																								return;
-																							}
-																							else
-																							{
-																								if (((self.impulse == 195) && (self.admin_mode == 1)))
-																								{
-																									if ((self.is_admin != 3))
-																									{
-																										if ((stof (infokey (world, "adminlevel")) < 3))
-																										{
-																											sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																											self.impulse = 0;
-																											return;
-																										}
-																									}
-																									Admin_CycleDeal ();
-																									self.impulse = 0;
-																									return;
-																								}
-																								else
-																								{
-																									if ((self.impulse == 198))
-																									{
-																										if ((self.is_admin != 3))
-																										{
-																											if ((stof (infokey (world, "adminlevel")) < 3))
-																											{
-																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																												self.impulse = 0;
-																												return;
-																											}
-																										}
-																										Admin_ListIPs ();
-																										self.impulse = 0;
-																										return;
-																									}
-																									else
-																									{
-																										if ((self.impulse == 200))
-																										{
-																											if ((self.is_admin != 3))
-																											{
-																												if (!stof (infokey (world, "adminlevel")))
-																												{
-																													sprint (self, 2, "Admins are not allowed on this server.\n");
-																													self.impulse = 0;
-																													return;
-																												}
-																											}
-																											if (((clanbattle == 1) && !cb_prematch))
-																											{
-																												sprint (self, 2, "Clan Battle in progress....\n");
-																												self.impulse = 0;
-																												return;
-																											}
-																											TimeDown (5);
-																											self.impulse = 0;
-																											return;
-																										}
-																										else
-																										{
-																											if ((self.impulse == 201))
-																											{
-																												if ((self.is_admin != 3))
-																												{
-																													if (!stof (infokey (world, "adminlevel")))
-																													{
-																														sprint (self, 2, "Admins are not allowed on this server.\n");
-																														self.impulse = 0;
-																														return;
-																													}
-																												}
-																												if (((clanbattle == 1) && !cb_prematch))
-																												{
-																													sprint (self, 2, "Clan Battle in progress....\n");
-																													self.impulse = 0;
-																													return;
-																												}
-																												TimeUp (5);
-																												self.impulse = 0;
-																												return;
-																											}
-																											else
-																											{
-																												if ((self.impulse == 228))
-																												{
-																													if ((self.is_admin != 3))
-																													{
-																														if (!stof (infokey (world, "adminlevel")))
-																														{
-																															sprint (self, 2, "Admins are not allowed on this server.\n");
-																															self.impulse = 0;
-																															return;
-																														}
-																													}
-																													if (((clanbattle == 1) && !cb_prematch))
-																													{
-																														sprint (self, 2, "Clan Battle in progress....\n");
-																														self.impulse = 0;
-																														return;
-																													}
-																													PmTimeDown (1);
-																													self.impulse = 0;
-																													return;
-																												}
-																												else
-																												{
-																													if ((self.impulse == 229))
-																													{
-																														if ((self.is_admin != 3))
-																														{
-																															if (!stof (infokey (world, "adminlevel")))
-																															{
-																																sprint (self, 2, "Admins are not allowed on this server.\n");
-																																self.impulse = 0;
-																																return;
-																															}
-																														}
-																														if (((clanbattle == 1) && !cb_prematch))
-																														{
-																															sprint (self, 2, "Clan Battle in progress....\n");
-																															self.impulse = 0;
-																															return;
-																														}
-																														PmTimeUp (1);
-																														self.impulse = 0;
-																														return;
-																													}
-																													else
-																													{
-																														if ((self.impulse == 96))
-																														{
-																															if ((self.is_admin != 3))
-																															{
-																																if (!stof (infokey (world, "adminlevel")))
-																																{
-																																	sprint (self, 2, "Admins are not allowed on this server.\n");
-																																	self.impulse = 0;
-																																	return;
-																																}
-																															}
-																															if (((clanbattle == 1) && !cb_prematch))
-																															{
-																																sprint (self, 2, "Clan Battle in progress....\n");
-																																self.impulse = 0;
-																																return;
-																															}
-																															CFTimeDown (1);
-																															self.impulse = 0;
-																															return;
-																														}
-																														else
-																														{
-																															if ((self.impulse == _a))
-																															{
-																																if ((self.is_admin != 3))
-																																{
-																																	if (!stof (infokey (world, "adminlevel")))
-																																	{
-																																		sprint (self, 2, "Admins are not allowed on this server.\n");
-																																		self.impulse = 0;
-																																		return;
-																																	}
-																																}
-																																if (((clanbattle == 1) && !cb_prematch))
-																																{
-																																	sprint (self, 2, "Clan Battle in progress....\n");
-																																	self.impulse = 0;
-																																	return;
-																																}
-																																CFTimeUp (1);
-																																self.impulse = 0;
-																																return;
-																															}
-																															else
-																															{
-																																if ((self.impulse == _b))
-																																{
-																																	if ((self.is_admin != 3))
-																																	{
-																																		if (!stof (infokey (world, "adminlevel")))
-																																		{
-																																			sprint (self, 2, "Admins are not allowed on this server.\n");
-																																			self.impulse = 0;
-																																			return;
-																																		}
-																																	}
-																																	if (((clanbattle == 1) && !cb_prematch))
-																																	{
-																																		sprint (self, 2, "Clan Battle in progress....\n");
-																																		self.impulse = 0;
-																																		return;
-																																	}
-																																	OverTimeDown (1);
-																																	self.impulse = 0;
-																																	return;
-																																}
-																																else
-																																{
-																																	if ((self.impulse == _c))
-																																	{
-																																		if ((self.is_admin != 3))
-																																		{
-																																			if (!stof (infokey (world, "adminlevel")))
-																																			{
-																																				sprint (self, 2, "Admins are not allowed on this server.\n");
-																																				self.impulse = 0;
-																																				return;
-																																			}
-																																		}
-																																		if (((clanbattle == 1) && !cb_prematch))
-																																		{
-																																			sprint (self, 2, "Clan Battle in progress....\n");
-																																			self.impulse = 0;
-																																			return;
-																																		}
-																																		OverTimeUp (1);
-																																		self.impulse = 0;
-																																		return;
-																																	}
-																																	else
-																																	{
-																																		if ((self.impulse == 202))
-																																		{
-																																			if ((self.is_admin != 3))
-																																			{
-																																				if (!stof (infokey (world, "adminlevel")))
-																																				{
-																																					sprint (self, 2, "Admins are not allowed on this server.\n");
-																																					self.impulse = 0;
-																																					return;
-																																				}
-																																			}
-																																			if (((clanbattle == 1) && !cb_prematch))
-																																			{
-																																				sprint (self, 2, "Clan Battle in progress....\n");
-																																				self.impulse = 0;
-																																				return;
-																																			}
-																																			pmtime = 0;
-																																			StartTimer ();
-																																			self.impulse = 0;
-																																			return;
-																																		}
-																																		else
-																																		{
-																																			if ((self.impulse == 204))
-																																			{
-																																				if ((self.is_admin != 3))
-																																				{
-																																					if (!stof (infokey (world, "adminlevel")))
-																																					{
-																																						sprint (self, 2, "Admins are not allowed on this server.\n");
-																																						self.impulse = 0;
-																																						return;
-																																					}
-																																				}
-																																				if (((clanbattle == 1) && !cb_prematch))
-																																				{
-																																					sprint (self, 2, "Clan Battle in progress....\n");
-																																					self.impulse = 0;
-																																					return;
-																																				}
-																																				FragsDown ();
-																																				self.impulse = 0;
-																																				return;
-																																			}
-																																			else
-																																			{
-																																				if ((self.impulse == 205))
-																																				{
-																																					if ((self.is_admin != 3))
-																																					{
-																																						if (!stof (infokey (world, "adminlevel")))
-																																						{
-																																							sprint (self, 2, "Admins are not allowed on this server.\n");
-																																							self.impulse = 0;
-																																							return;
-																																						}
-																																					}
-																																					if (((clanbattle == 1) && !cb_prematch))
-																																					{
-																																						sprint (self, 2, "Clan Battle in progress....\n");
-																																						self.impulse = 0;
-																																						return;
-																																					}
-																																					FragsUp ();
-																																					self.impulse = 0;
-																																					return;
-																																				}
-																																				else
-																																				{
-																																					if ((self.impulse == 207))
-																																					{
-																																						if ((self.is_admin != 3))
-																																						{
-																																							if ((stof (infokey (world, "adminlevel")) < 2))
-																																							{
-																																								sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																								self.impulse = 0;
-																																								return;
-																																							}
-																																						}
-																																						ClanMode ();
-																																						self.impulse = 0;
-																																						return;
-																																					}
-																																					else
-																																					{
-																																						if ((self.impulse == 208))
-																																						{
-																																							if ((self.is_admin != 3))
-																																							{
-																																								if (!stof (infokey (world, "adminlevel")))
-																																								{
-																																									sprint (self, 2, "Admins are not allowed on this server.\n");
-																																									self.impulse = 0;
-																																									return;
-																																								}
-																																							}
-																																							if (((clanbattle == 1) && !cb_prematch))
-																																							{
-																																								sprint (self, 2, "Clan Battle in progress....\n");
-																																								self.impulse = 0;
-																																								return;
-																																							}
-																																							RestartMap ();
-																																							self.impulse = 0;
-																																							return;
-																																						}
-																																						else
-																																						{
-																																							if ((self.impulse == 214))
-																																							{
-																																								if ((self.is_admin != 3))
-																																								{
-																																									if (!stof (infokey (world, "adminlevel")))
-																																									{
-																																										sprint (self, 2, "Admins are not allowed on this server.\n");
-																																										self.impulse = 0;
-																																										return;
-																																									}
-																																								}
-																																								if (((clanbattle == 1) && !cb_prematch))
-																																								{
-																																									sprint (self, 2, "Clan Battle in progress....\n");
-																																									self.impulse = 0;
-																																									return;
-																																								}
-																																								ToggleSpecTalk ();
-																																								self.impulse = 0;
-																																								return;
-																																							}
-																																							else
-																																							{
-																																								if ((self.impulse == 216))
-																																								{
-																																									if ((self.is_admin != 3))
-																																									{
-																																										if ((stof (infokey (world, "adminlevel")) < 2))
-																																										{
-																																											sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																											self.impulse = 0;
-																																											return;
-																																										}
-																																									}
-																																									Toggle_TFvsDM ();
-																																									self.impulse = 0;
-																																									return;
-																																								}
-																																								else
-																																								{
-																																									if ((self.impulse == 94))
-																																									{
-																																										if ((self.is_admin != 3))
-																																										{
-																																											if ((stof (infokey (world, "adminlevel")) < 2))
-																																											{
-																																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																												self.impulse = 0;
-																																												return;
-																																											}
-																																										}
-																																										Toggle_Practice ();
-																																										self.impulse = 0;
-																																										return;
-																																									}
-																																									else
-																																									{
-																																										if ((self.impulse == _Q))
-																																										{
-																																											if ((self.is_admin != 3))
-																																											{
-																																												if ((stof (infokey (world, "adminlevel")) < 2))
-																																												{
-																																													sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																													self.impulse = 0;
-																																													return;
-																																												}
-																																											}
-																																											Toggle_SpeedCap ();
-																																											self.impulse = 0;
-																																											return;
-																																										}
-																																										else
-																																										{
-																																											if ((self.impulse == _P))
-																																											{
-																																												if ((self.is_admin != 3))
-																																												{
-																																													if ((stof (infokey (world, "adminlevel")) < 2))
-																																													{
-																																														sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																														self.impulse = 0;
-																																														return;
-																																													}
-																																												}
-																																												Toggle_Duel ();
-																																												self.impulse = 0;
-																																												return;
-																																											}
-																																											else
-																																											{
-																																												if ((self.impulse == _O))
-																																												{
-																																													if ((self.is_admin != 3))
-																																													{
-																																														if ((stof (infokey (world, "adminlevel")) < 2))
-																																														{
-																																															sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																															self.impulse = 0;
-																																															return;
-																																														}
-																																													}
-																																													Toggle_Rounds ();
-																																													self.impulse = 0;
-																																													return;
-																																												}
-																																												else
-																																												{
-																																													if ((self.impulse == _N))
-																																													{
-																																														if ((self.is_admin != 3))
-																																														{
-																																															if ((stof (infokey (world, "adminlevel")) < 2))
-																																															{
-																																																sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																self.impulse = 0;
-																																																return;
-																																															}
-																																														}
-																																														Toggle_TFStrike ();
-																																														self.impulse = 0;
-																																														return;
-																																													}
-																																													else
-																																													{
-																																														if ((self.impulse == 220))
-																																														{
-																																															if ((self.is_admin != 3))
-																																															{
-																																																if ((stof (infokey (world, "adminlevel")) < 2))
-																																																{
-																																																	sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																	self.impulse = 0;
-																																																	return;
-																																																}
-																																															}
-																																															if (((clanbattle == 1) && !cb_prematch))
-																																															{
-																																																sprint (self, 2, "Clan Battle in progress....\n");
-																																																self.impulse = 0;
-																																																return;
-																																															}
-																																															ResetSetup ();
-																																															self.impulse = 0;
-																																															return;
-																																														}
-																																														else
-																																														{
-																																															if ((self.impulse == 221))
-																																															{
-																																																if ((self.is_admin != 3))
-																																																{
-																																																	if (!stof (infokey (world, "adminlevel")))
-																																																	{
-																																																		sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																		self.impulse = 0;
-																																																		return;
-																																																	}
-																																																}
-																																																Toggle_Teamfrags ();
-																																																self.impulse = 0;
-																																																return;
-																																															}
-																																															else
-																																															{
-																																																if ((self.impulse == 222))
-																																																{
-																																																	if ((self.is_admin != 3))
-																																																	{
-																																																		if (!stof (infokey (world, "adminlevel")))
-																																																		{
-																																																			sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																			self.impulse = 0;
-																																																			return;
-																																																		}
-																																																	}
-																																																	Toggle_Fullts ();
-																																																	self.impulse = 0;
-																																																	return;
-																																																}
-																																																else
-																																																{
-																																																	if ((self.impulse == 223))
-																																																	{
-																																																		if ((self.is_admin != 3))
-																																																		{
-																																																			if (!stof (infokey (world, "adminlevel")))
-																																																			{
-																																																				sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																				self.impulse = 0;
-																																																				return;
-																																																			}
-																																																		}
-																																																		Toggle_Grapple ();
-																																																		self.impulse = 0;
-																																																		return;
-																																																	}
-																																																	else
-																																																	{
-																																																		if ((self.impulse == 217))
-																																																		{
-																																																			if ((self.is_admin != 3))
-																																																			{
-																																																				if (!stof (infokey (world, "adminlevel")))
-																																																				{
-																																																					sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																					self.impulse = 0;
-																																																					return;
-																																																				}
-																																																			}
-																																																			ToggleFlash ();
-																																																			self.impulse = 0;
-																																																			return;
-																																																		}
-																																																		else
-																																																		{
-																																																			if ((self.impulse == 224))
-																																																			{
-																																																				if ((self.is_admin != 3))
-																																																				{
-																																																					if ((stof (infokey (world, "adminlevel")) < 2))
-																																																					{
-																																																						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																						self.impulse = 0;
-																																																						return;
-																																																					}
-																																																				}
-																																																				if (((clanbattle == 1) && !cb_prematch))
-																																																				{
-																																																					sprint (self, 2, "Clan Battle in progress....\n");
-																																																					self.impulse = 0;
-																																																					return;
-																																																				}
-																																																				ClanSetup ();
-																																																				self.impulse = 0;
-																																																				return;
-																																																			}
-																																																			else
-																																																			{
-																																																				if ((self.impulse == 230))
-																																																				{
-																																																					if ((self.is_admin != 3))
-																																																					{
-																																																						if (!stof (infokey (world, "adminlevel")))
-																																																						{
-																																																							sprint (self, 2, "Admins are not allowed on this server.\n");
-																																																							self.impulse = 0;
-																																																							return;
-																																																						}
-																																																					}
-																																																					if (((clanbattle == 1) && !cb_prematch))
-																																																					{
-																																																						sprint (self, 2, "Clan Battle in progress....\n");
-																																																						self.impulse = 0;
-																																																						return;
-																																																					}
-																																																					Toggle_Gibs ();
-																																																					self.impulse = 0;
-																																																					return;
-																																																				}
-																																																				else
-																																																				{
-																																																					if ((self.impulse == 193))
-																																																					{
-																																																						if ((self.is_admin != 3))
-																																																						{
-																																																							if ((stof (infokey (world, "adminlevel")) < 2))
-																																																							{
-																																																								sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																								self.impulse = 0;
-																																																								return;
-																																																							}
-																																																						}
-																																																						Admin_CeaseFire ();
-																																																						self.impulse = 0;
-																																																						return;
-																																																					}
-																																																					else
-																																																					{
-																																																						if ((self.impulse == 215))
-																																																						{
-																																																							if ((self.is_admin != 3))
-																																																							{
-																																																								if ((stof (infokey (world, "adminlevel")) < 2))
-																																																								{
-																																																									sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																									self.impulse = 0;
-																																																									return;
-																																																								}
-																																																							}
-																																																							if (((clanbattle == 1) && !cb_prematch))
-																																																							{
-																																																								sprint (self, 2, "Clan Battle in progress....\n");
-																																																								self.impulse = 0;
-																																																								return;
-																																																							}
-																																																							ToggleFreeze ();
-																																																							self.impulse = 0;
-																																																							return;
-																																																						}
-																																																						else
-																																																						{
-																																																							if ((self.impulse == 231))
-																																																							{
-																																																								if ((self.is_admin != 3))
-																																																								{
-																																																									if ((stof (infokey (world, "adminlevel")) < 2))
-																																																									{
-																																																										sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																										self.impulse = 0;
-																																																										return;
-																																																									}
-																																																								}
-																																																								Toggle_Highlander ();
-																																																								self.impulse = 0;
-																																																								return;
-																																																							}
-																																																							else
-																																																							{
-																																																								if ((self.impulse == 206))
-																																																								{
-																																																									if ((self.is_admin != 3))
-																																																									{
-																																																										if ((stof (infokey (world, "adminlevel")) < 2))
-																																																										{
-																																																											sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																											self.impulse = 0;
-																																																											return;
-																																																										}
-																																																									}
-																																																									if (((clanbattle == 1) && !cb_prematch))
-																																																									{
-																																																										sprint (self, 2, "Clan Battle in progress....\n");
-																																																										self.impulse = 0;
-																																																										return;
-																																																									}
-																																																									ChangeTP ();
-																																																									self.impulse = 0;
-																																																									return;
-																																																								}
-																																																								else
-																																																								{
-																																																									if ((self.impulse == 213))
-																																																									{
-																																																										if ((self.is_admin != 3))
-																																																										{
-																																																											if ((stof (infokey (world, "adminlevel")) < 2))
-																																																											{
-																																																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																												self.impulse = 0;
-																																																												return;
-																																																											}
-																																																										}
-																																																										if (((clanbattle == 1) && !cb_prematch))
-																																																										{
-																																																											sprint (self, 2, "Clan Battle in progress....\n");
-																																																											self.impulse = 0;
-																																																											return;
-																																																										}
-																																																										GroundSpeed ();
-																																																										self.impulse = 0;
-																																																										return;
-																																																									}
-																																																									else
-																																																									{
-																																																										if ((self.impulse == 233))
-																																																										{
-																																																											if ((stof (infokey (world, "adminlevel")) < 2))
-																																																											{
-																																																												sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																												self.impulse = 0;
-																																																												return;
-																																																											}
-																																																											if (((clanbattle == 1) && !cb_prematch))
-																																																											{
-																																																												sprint (self, 2, "Clan Battle in progress....\n");
-																																																												self.impulse = 0;
-																																																												return;
-																																																											}
-																																																											Toggle_Grenpacks ();
-																																																											self.impulse = 0;
-																																																											return;
-																																																										}
-																																																										else
-																																																										{
-																																																											if ((self.impulse == 225))
-																																																											{
-																																																												if ((self.is_admin != 3))
-																																																												{
-																																																													if ((stof (infokey (world, "adminlevel")) < 2))
-																																																													{
-																																																														sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																														self.impulse = 0;
-																																																														return;
-																																																													}
-																																																												}
-																																																												if (((clanbattle == 1) && !cb_prematch))
-																																																												{
-																																																													sprint (self, 2, "Clan Battle in progress....\n");
-																																																													self.impulse = 0;
-																																																													return;
-																																																												}
-																																																												ToggleFbskins ();
-																																																												self.impulse = 0;
-																																																												return;
-																																																											}
-																																																											else
-																																																											{
-																																																												if ((self.impulse == 226))
-																																																												{
-																																																													if ((self.is_admin != 3))
-																																																													{
-																																																														if ((stof (infokey (world, "adminlevel")) < 2))
-																																																														{
-																																																															sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																															self.impulse = 0;
-																																																															return;
-																																																														}
-																																																													}
-																																																													if (((clanbattle == 1) && !cb_prematch))
-																																																													{
-																																																														sprint (self, 2, "Clan Battle in progress....\n");
-																																																														self.impulse = 0;
-																																																														return;
-																																																													}
-																																																													ToggleEnemy ();
-																																																													self.impulse = 0;
-																																																													return;
-																																																												}
-																																																												else
-																																																												{
-																																																													if ((self.impulse == 227))
-																																																													{
-																																																														if ((self.is_admin != 3))
-																																																														{
-																																																															if ((stof (infokey (world, "adminlevel")) < 2))
-																																																															{
-																																																																sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																self.impulse = 0;
-																																																																return;
-																																																															}
-																																																														}
-																																																														if (((clanbattle == 1) && !cb_prematch))
-																																																														{
-																																																															sprint (self, 2, "Clan Battle in progress....\n");
-																																																															self.impulse = 0;
-																																																															return;
-																																																														}
-																																																														TogglePointing ();
-																																																														self.impulse = 0;
-																																																														return;
-																																																													}
-																																																													else
-																																																													{
-																																																														if ((self.impulse == 235))
-																																																														{
-																																																															if ((self.is_admin != 3))
-																																																															{
-																																																																if ((stof (infokey (world, "adminlevel")) < 2))
-																																																																{
-																																																																	sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																	self.impulse = 0;
-																																																																	return;
-																																																																}
-																																																															}
-																																																															if (((clanbattle == 1) && !cb_prematch))
-																																																															{
-																																																																sprint (self, 2, "Clan Battle in progress....\n");
-																																																																self.impulse = 0;
-																																																																return;
-																																																															}
-																																																															Toggle_Detpack ();
-																																																															self.impulse = 0;
-																																																															return;
-																																																														}
-																																																														else
-																																																														{
-																																																															if ((self.impulse == 236))
-																																																															{
-																																																																if ((self.is_admin != 3))
-																																																																{
-																																																																	if ((stof (infokey (world, "adminlevel")) < 2))
-																																																																	{
-																																																																		sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																		self.impulse = 0;
-																																																																		return;
-																																																																	}
-																																																																}
-																																																																Toggle_flag_emu ();
-																																																																self.impulse = 0;
-																																																																return;
-																																																															}
-																																																															else
-																																																															{
-																																																																if ((self.impulse == 232))
-																																																																{
-																																																																	if ((self.is_admin != 3))
-																																																																	{
-																																																																		if ((stof (infokey (world, "adminlevel")) < 2))
-																																																																		{
-																																																																			sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																			self.impulse = 0;
-																																																																			return;
-																																																																		}
-																																																																	}
-																																																																	if (((clanbattle == 1) && !cb_prematch))
-																																																																	{
-																																																																		sprint (self, 2, "Clan Battle in progress....\n");
-																																																																		self.impulse = 0;
-																																																																		return;
-																																																																	}
-																																																																	Toggle_SentryType ();
-																																																																	self.impulse = 0;
-																																																																	return;
-																																																																}
-																																																																else
-																																																																{
-																																																																	if ((self.impulse == 191))
-																																																																	{
-																																																																		if ((self.is_admin != 3))
-																																																																		{
-																																																																			if ((stof (infokey (world, "adminlevel")) < 2))
-																																																																			{
-																																																																				sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																				self.impulse = 0;
-																																																																				return;
-																																																																			}
-																																																																		}
-																																																																		if (((clanbattle == 1) && !cb_prematch))
-																																																																		{
-																																																																			sprint (self, 2, "Clan Battle in progress....\n");
-																																																																			self.impulse = 0;
-																																																																			return;
-																																																																		}
-																																																																		Toggle_SentryFire ();
-																																																																		self.impulse = 0;
-																																																																		return;
-																																																																	}
-																																																																	else
-																																																																	{
-																																																																		if ((self.impulse == 234))
-																																																																		{
-																																																																			if ((self.is_admin != 3))
-																																																																			{
-																																																																				if ((stof (infokey (world, "adminlevel")) < 2))
-																																																																				{
-																																																																					sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																					self.impulse = 0;
-																																																																					return;
-																																																																				}
-																																																																			}
-																																																																			if (((clanbattle == 1) && !cb_prematch))
-																																																																			{
-																																																																				sprint (self, 2, "Clan Battle in progress....\n");
-																																																																				self.impulse = 0;
-																																																																				return;
-																																																																			}
-																																																																			Toggle_PipeDelay ();
-																																																																			self.impulse = 0;
-																																																																			return;
-																																																																		}
-																																																																		else
-																																																																		{
-																																																																			if ((self.impulse == 238))
-																																																																			{
-																																																																				if ((self.is_admin != 3))
-																																																																				{
-																																																																					if ((stof (infokey (world, "adminlevel")) < 2))
-																																																																					{
-																																																																						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																						self.impulse = 0;
-																																																																						return;
-																																																																					}
-																																																																				}
-																																																																				if (((clanbattle == 1) && !cb_prematch))
-																																																																				{
-																																																																					sprint (self, 2, "Clan Battle in progress....\n");
-																																																																					self.impulse = 0;
-																																																																					return;
-																																																																				}
-																																																																				Toggle_Frj ();
-																																																																				self.impulse = 0;
-																																																																				return;
-																																																																			}
-																																																																		}
-																																																																	}
-																																																																}
-																																																															}
-																																																														}
-																																																													}
-																																																												}
-																																																											}
-																																																										}
-																																																									}
-																																																								}
-																																																							}
-																																																						}
-																																																					}
-																																																				}
-																																																			}
-																																																		}
-																																																	}
-																																																}
-																																															}
-																																														}
-																																													}
-																																												}
-																																											}
-																																										}
-																																									}
-																																								}
-																																							}
-																																						}
-																																					}
-																																				}
-																																			}
-																																		}
-																																	}
-																																}
-																															}
-																														}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
 					}
 				}
+				Toggle_Rounds ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 80)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_Duel ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 81)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_SpeedCap ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 94)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_Practice ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 96)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				CFTimeDown (1);
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 97)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				CFTimeUp (1);
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 98)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				OverTimeDown (1);
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 99)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				OverTimeUp (1);
+				self.impulse = 0;
+				return;
+			}			
+			else if (self.impulse == 189)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 3)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Admin_CycleDeal ();
+				self.impulse = 0;
+				return;
+			}
+			else if ((self.impulse == 190) && (self.admin_mode == 1))
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 3)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Admin_DoKick ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 192)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Admin_CountPlayers ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 193)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Admin_CeaseFire ();
+				self.impulse = 0;
+				return;
+			}
+			else if ((self.impulse == 195) && (self.admin_mode == 1))
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 3)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Admin_CycleDeal ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 198)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 3)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Admin_ListIPs ();
+				self.impulse = 0;
+				return;
+			}			
+			else if (self.impulse == 200)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				TimeDown (5);
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 201)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				TimeUp (5);
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 202)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				pmtime = 0;
+				StartTimer ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 204)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				FragsDown ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 205)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				FragsUp ();
+				self.impulse = 0;
+				return;
+			}			
+			else if (self.impulse == 206)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				ChangeTP ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 207)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				ClanMode ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 208)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				RestartMap ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 213)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				GroundSpeed ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 214)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				ToggleSpecTalk ();
+				self.impulse = 0;
+				return;
+			}		
+			else if (self.impulse == 215)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				ToggleFreeze ();
+				self.impulse = 0;
+				return;
+			}
+			else if ((self.impulse == 216))
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_TFvsDM ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 217)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				ToggleFlash ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 218)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 3)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Calibrate_Level ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 220)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				ResetSetup ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 221)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_Teamfrags ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 222)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_Fullts ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 223)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_Grapple ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 224)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				ClanSetup ();
+				self.impulse = 0;
+				return;
+			}		
+			else if (self.impulse == 225)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				ToggleFbskins ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 226)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				ToggleEnemy ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 227)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				TogglePointing ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 228)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				PmTimeDown (1);
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 229)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				PmTimeUp (1);
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 230)
+			{
+				if (self.is_admin != 3)
+				{
+					if (!stof (infokey (world, "adminlevel")))
+					{
+						sprint (self, 2, "Admins are not allowed on this server.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				Toggle_Gibs ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 231)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_Highlander ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 233)
+			{
+				if (stof (infokey (world, "adminlevel")) < 2)
+				{
+					sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+					self.impulse = 0;
+					return;
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				Toggle_Grenpacks ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 235)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				Toggle_Detpack ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 236)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				Toggle_flag_emu ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 232)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				Toggle_SentryType ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 191)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				Toggle_SentryFire ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 234)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				Toggle_PipeDelay ();
+				self.impulse = 0;
+				return;
+			}
+			else if (self.impulse == 238)
+			{
+				if (self.is_admin != 3)
+				{
+					if (stof (infokey (world, "adminlevel")) < 2)
+					{
+						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+						self.impulse = 0;
+						return;
+					}
+				}
+				if ((clanbattle == 1) && !cb_prematch)
+				{
+					sprint (self, 2, "Clan Battle in progress....\n");
+					self.impulse = 0;
+					return;
+				}
+				Toggle_Frj ();
+				self.impulse = 0;
+				return;
 			}
 		}
-	}
+	}	
 };
 
 float () PreMatchImpulses =
@@ -3345,7 +3020,7 @@ float () DeadImpulses =
 		{
 			if ((self.impulse == 140))
 			{
-				if (((clanbattle == 1) && !cb_prematch))
+				if ((clanbattle == 1) && !cb_prematch)
 				{
 					sprint (self, 2, "Clan Battle in progress....\n");
 					self.impulse = 0;
@@ -3359,7 +3034,7 @@ float () DeadImpulses =
 			{
 				if ((self.impulse == 141))
 				{
-					if (((clanbattle == 1) && !cb_prematch))
+					if ((clanbattle == 1) && !cb_prematch)
 					{
 						sprint (self, 2, "Clan Battle in progress....\n");
 						self.impulse = 0;
@@ -3373,7 +3048,7 @@ float () DeadImpulses =
 				{
 					if ((self.impulse == 142))
 					{
-						if (((clanbattle == 1) && !cb_prematch))
+						if ((clanbattle == 1) && !cb_prematch)
 						{
 							sprint (self, 2, "Clan Battle in progress....\n");
 							self.impulse = 0;
@@ -3387,7 +3062,7 @@ float () DeadImpulses =
 					{
 						if ((self.impulse == 143))
 						{
-							if (((clanbattle == 1) && !cb_prematch))
+							if ((clanbattle == 1) && !cb_prematch)
 							{
 								sprint (self, 2, "Clan Battle in progress....\n");
 								self.impulse = 0;

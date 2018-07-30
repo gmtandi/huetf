@@ -18,8 +18,8 @@ void () player_srail6;
 void () TeamFortress_SniperRail = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
-	self.AttackFunction = W_Attack_SniperRail;	
+	self.needsReload 				= 0;
+	self.AttackFunction 			= W_Attack_SniperRail;	
 	self.currentammo = self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{

@@ -25,9 +25,9 @@ void () player_nail2;
 void () TeamFortress_NailGun = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;	
-	self.AttackFunction = player_nail1;
-	self.currentammo = self.ammo_nails;
+	self.needsReload 				= 0;	
+	self.AttackFunction 			= player_nail1;
+	self.currentammo 				= self.ammo_nails;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_nail.mdl";
@@ -36,7 +36,6 @@ void () TeamFortress_NailGun = {
 	self.items = (self.items | 512);
 	self.weapon = 4;
 };
-
 
 void () W_FireSpikes =
 {

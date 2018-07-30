@@ -19,9 +19,9 @@ void () player_tranq6;
 void () TeamFortress_Tranquilizer = {
 	SUB_ResetWeaponFunctions();
 	
-	self.needsReload = 0;
-	self.AttackFunction = W_Attack_Tranq;
-	self.currentammo = self.ammo_shells;
+	self.needsReload 				= 0;
+	self.AttackFunction 			= W_Attack_Tranq;
+	self.currentammo		 		= self.ammo_shells;
 	if (!(self.tfstate & TFSTATE_RELOADING))
 	{
 		self.weaponmodel = "progs/v_shot.mdl";
@@ -30,6 +30,7 @@ void () TeamFortress_Tranquilizer = {
 	self.items = (self.items | 256);
 	self.weapon = 1;
 };
+
 
 void () W_Attack_Tranq =
 {
