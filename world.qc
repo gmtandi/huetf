@@ -272,6 +272,7 @@ void () worldspawn =
 	precache_model2 ("progs/caltrop.mdl");
 	precache_sound ("doors/baseuse.wav");
 	precache_sound ("doors/medtry.wav");
+	precache_sound ("gren.wav");
 	precache_sound2 ("speech/saveme1.wav");
 	precache_sound2 ("speech/saveme2.wav");
 	precache_model2 ("progs/detpack2.mdl");

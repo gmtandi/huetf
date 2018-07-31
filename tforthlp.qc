@@ -3,18 +3,18 @@ void () TeamFortress_MOTD =
 {
 	local string ya;
 
-	if ((self.motd <= 20))
+	if (self.motd <= 20)
 	{
 		self.motd = (self.motd + 1);
 		return;
 	}
-	if ((self.motd == 21))
+	if (self.motd == 21)
 	{
-		if ((0 == 0))
+		if (0 == 0)
 		{
 			self.tfstate = (self.tfstate | TFSTATE_ZOOMOFF);
 		}
-		if (((teamplay != 0) && (self.team_no == 0)))
+		if ((teamplay != 0) && (self.team_no == 0))
 		{
 			stuffcmd (self, "color ");
 			ya = ftos (0);
@@ -36,37 +36,37 @@ void () TeamFortress_MOTD =
 			return;
 		}
 		sprint (self, 2, "binding aliases...\n");
-		TeamFortress_Alias ("inv", redlamp, 0);
-		TeamFortress_Alias ("showtf", yellowlamp, 0);
+		TeamFortress_Alias ("inv", 135, 0);
+		TeamFortress_Alias ("showtf", 136, 0);
 		TeamFortress_Alias ("autozoom", 174, 0);
-		TeamFortress_Alias ("changeclass", _c, 0);
+		TeamFortress_Alias ("changeclass", 99, 0);
 		TeamFortress_Alias ("changeteam", __, 0);
-		TeamFortress_Alias ("scout", (_d + 1), 0);
-		TeamFortress_Alias ("sniper", (_d + 2), 0);
-		TeamFortress_Alias ("soldier", (_d + 3), 0);
-		TeamFortress_Alias ("demoman", (_d + 4), 0);
-		TeamFortress_Alias ("medic", (_d + 5), 0);
-		TeamFortress_Alias ("hwguy", (_d + 6), 0);
-		TeamFortress_Alias ("pyro", (_d + 7), 0);
-		TeamFortress_Alias ("spy", (_d + 8), 0);
-		TeamFortress_Alias ("engineer", (_d + 9), 0);
-		TeamFortress_Alias ("randompc", (_d + enter), 0);
-		TeamFortress_Alias ("elect", _R, 0);
-		TeamFortress_Alias ("yes", _S, 0);
-		TeamFortress_Alias ("no", _T, 0);
-		TeamFortress_Alias ("break", _U, 0);
-		TeamFortress_Alias ("about", _W, 0);
-		TeamFortress_Alias ("modstatus", _Y, 0);
+		TeamFortress_Alias ("scout", (100 + 1), 0);
+		TeamFortress_Alias ("sniper", (100 + 2), 0);
+		TeamFortress_Alias ("soldier", (100 + 3), 0);
+		TeamFortress_Alias ("demoman", (100 + 4), 0);
+		TeamFortress_Alias ("medic", (100 + 5), 0);
+		TeamFortress_Alias ("hwguy", (100 + 6), 0);
+		TeamFortress_Alias ("pyro", (100 + 7), 0);
+		TeamFortress_Alias ("spy", (100 + 8), 0);
+		TeamFortress_Alias ("engineer", (100 + 9), 0);
+		TeamFortress_Alias ("randompc", (100 + enter), 0);
+		TeamFortress_Alias ("elect", 82, 0);
+		TeamFortress_Alias ("yes", 83, 0);
+		TeamFortress_Alias ("no", 84, 0);
+		TeamFortress_Alias ("break", 85, 0);
+		TeamFortress_Alias ("about", 87, 0);
+		TeamFortress_Alias ("modstatus", 89, 0);
 		return;
 	}
-	if ((self.motd <= _A))
+	if (self.motd <= 65)
 	{
 		self.motd = (self.motd + 1);
 	}
-	if ((self.motd == 30))
+	if (self.motd == 30)
 	{
-		TeamFortress_Alias ("showfrags", _H, 0);
-		TeamFortress_Alias ("showstats", _J, 0);
+		TeamFortress_Alias ("showfrags", 72, 0);
+		TeamFortress_Alias ("showstats", 74, 0);
 		TeamFortress_Alias ("detpipe", 170, 0);
 		TeamFortress_Alias ("reload", 173, 0);
 		TeamFortress_Alias ("scansound", 162, 0);
@@ -75,7 +75,7 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("scane", 160, 0);
 		return;
 	}
-	if ((self.motd == 35))
+	if (self.motd == 35)
 	{
 		TeamFortress_Alias ("primeone", 150, 0);
 		TeamFortress_Alias ("primetwo", 151, 0);
@@ -85,55 +85,55 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("-gren1", 152, 0);
 		TeamFortress_Alias ("-gren2", 152, 0);
 		TeamFortress_Alias ("showclasses", 144, 0);
-		TeamFortress_Alias ("query", _w, 0);
-		TeamFortress_Alias ("flash", _V, 0);
+		TeamFortress_Alias ("query", 119, 0);
+		TeamFortress_Alias ("flash", 86, 0);
 		return;
 	}
-	if ((self.motd == 40))
+	if (self.motd == 40)
 	{
 		TeamFortress_Alias ("dropammo", 172, 0);
 		TeamFortress_Alias ("dropitems", 194, 0);
-		TeamFortress_Alias ("showloc", _v, 0);
+		TeamFortress_Alias ("showloc", 118, 0);
 		TeamFortress_Alias ("special", 171, 0);
 		TeamFortress_Alias ("saveme", 181, 0);
 		TeamFortress_Alias ("discard", 184, 0);
 		TeamFortress_Alias ("id", 185, 0);
-		TeamFortress_Alias ("showfps", _I, 0);
+		TeamFortress_Alias ("showfps", 73, 0);
 		return;
 	}
-	if ((self.motd == minus))
+	if (self.motd == 45)
 	{
 		TeamFortress_Alias ("flaginfo", 23, 0);
 		TeamFortress_Alias ("maphelp", 131, 0);
-		TeamFortress_Alias ("commands", _X, 0);
+		TeamFortress_Alias ("commands", 88, 0);
 		TeamFortress_Alias ("tracking", 41, 0);
 		TeamFortress_Alias ("track_player", 42, 0);
 		TeamFortress_Alias ("track_tfgoal", 43, 0);
 		TeamFortress_Alias ("track_sentry", 44, 0);
-		TeamFortress_Alias ("pan_in", _p, 0);
-		TeamFortress_Alias ("pan_out", _q, 0);
+		TeamFortress_Alias ("pan_in", 112, 0);
+		TeamFortress_Alias ("pan_out", 113, 0);
 		stuffcmd (self, "bind 9 \"impulse 9\"\n");
 		stuffcmd (self, "bind 0 \"impulse 10\"\n");
 		return;
 	}
-	if ((self.motd == _4))
+	if (self.motd == 50)
 	{
 		TeamFortress_Alias ("sbar_on", 182, 0);
 		TeamFortress_Alias ("sbar_off", 183, 0);
-		TeamFortress_Alias ("sbar_200", _G, 1);
-		TeamFortress_Alias ("sbar_240", _G, 2);
-		TeamFortress_Alias ("sbar_300", _G, 3);
-		TeamFortress_Alias ("sbar_350", _G, 4);
-		TeamFortress_Alias ("sbar_384", _G, 5);
-		TeamFortress_Alias ("sbar_400", _G, 6);
-		TeamFortress_Alias ("sbar_480", _G, 7);
-		TeamFortress_Alias ("sbar_600", _G, 8);
-		TeamFortress_Alias ("sbar_768", _G, 9);
+		TeamFortress_Alias ("sbar_200", 71, 1);
+		TeamFortress_Alias ("sbar_240", 71, 2);
+		TeamFortress_Alias ("sbar_300", 71, 3);
+		TeamFortress_Alias ("sbar_350", 71, 4);
+		TeamFortress_Alias ("sbar_384", 71, 5);
+		TeamFortress_Alias ("sbar_400", 71, 6);
+		TeamFortress_Alias ("sbar_480", 71, 7);
+		TeamFortress_Alias ("sbar_600", 71, 8);
+		TeamFortress_Alias ("sbar_768", 71, 9);
 
 		TeamFortress_Alias ("bot", BOT_IMPULSE, 0);
 		return;
 	}
-	if ((self.motd == 60))
+	if ((self.motd == 55))
 	{
 		if (tfstrike)
 		{
@@ -155,7 +155,7 @@ void () TeamFortress_MOTD =
 			return;
 		}
 	}
-	if ((self.motd == _A))
+	if ((self.motd == 60))
 	{
 		TeamFortress_Alias ("disguise", 177, 0);
 		TeamFortress_Alias ("feign", 178, 0);
@@ -172,6 +172,27 @@ void () TeamFortress_MOTD =
 			}
 		}
 		self.get_aliases = 0;
+		return;
+	}
+	if ((self.motd == 65)) {
+		TeamFortress_AliasCmd ("+huetf_rjump", "impulse 7;+attack;+jump");
+		TeamFortress_AliasCmd ("-huetf_rjump", "-attack;-jump");
+		TeamFortress_AliasCmd ("huetf_antiemp", "discard; huetf_drop_toss; huetf_drop_toss; huetf_drop_toss; huetf_drop_ditch; huetf_drop_ditch; huetf_drop_ditch; huetf_drop_ditch");
+		TeamFortress_AliasCmd ("huetf_drop_ditch", "wait; dropammo; wait; impulse 1; wait");
+		TeamFortress_AliasCmd ("huetf_drop_toss", "wait; dropammo; wait; impulse 3; wait");
+		TeamFortress_AliasCmd ("huetf_drop_cell", "wait; dropammo; wait; impulse 4; wait");
+		TeamFortress_AliasCmd ("+huetf_g1", "primeone; huetf_play_count; wait; primeone; huetf_play_count; wait; primeone; huetf_play_count; wait; primeone; huetf_play_count;");
+		TeamFortress_AliasCmd ("-huetf_g1", "throwgren; wait; throwgren; wait; throwgren");
+		TeamFortress_AliasCmd ("+huetf_g2", "primetwo; huetf_play_count;wait; primetwo; huetf_play_count;wait; primetwo; huetf_play_count;wait; primetwo; huetf_play_count;");
+		TeamFortress_AliasCmd ("-huetf_g2", "throwgren; wait; throwgren; wait; throwgren");
+		TeamFortress_AliasCmd ("huetf_play_count","play gren.wav");
+		TeamFortress_AliasCmd ("huetf_g1","huetf_g1c1");
+		TeamFortress_AliasCmd ("huetf_g1c1","primeone;huetf_play_count;alias huetf_g1 huetf_g1c2");
+		TeamFortress_AliasCmd ("huetf_g1c2","throwgren; alias huetf_g1 huetf_g1c1");
+       	TeamFortress_AliasCmd ("huetf_g2","huetf_g2c1");
+        TeamFortress_AliasCmd ("huetf_g2c1","primetwo;huetf_play_count;alias huetf_g2 huetf_g2c2");
+        TeamFortress_AliasCmd ("huetf_g2c2","throwgren; alias huetf_g2 huetf_g2c1");
+		//stuffcmd(self, "msg_trigger huetf_play_count \"renade primed\"\n");
 	}
 };
 

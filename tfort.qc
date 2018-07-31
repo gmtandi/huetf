@@ -32,6 +32,7 @@ void () TeamFortress_DisplayDetectionItems;
 void () BioInfection_Decay;
 void () BioInfection_MonsterDecay;
 void (string halias, float himpulse1, float himpulse2) TeamFortress_Alias;
+void (string halias, string command) TeamFortress_AliasCmd;
 float (vector veca, vector vecb) crossproduct;
 void (entity pl, float fr, float type) TF_AddFrags;
 void (entity p) TeamFortress_ExecClassScript;
@@ -2758,6 +2759,15 @@ void (string halias, float himpulse1, float himpulse2) TeamFortress_Alias =
 		imp = ftos (himpulse2);
 		stuffcmd (self, imp);
 	}
+	stuffcmd (self, "\"\n");
+};
+
+void (string halias, string command) TeamFortress_AliasCmd =
+{
+	stuffcmd (self, "alias ");
+	stuffcmd (self, halias);
+	stuffcmd (self, " \"");
+	stuffcmd (self, command);
 	stuffcmd (self, "\"\n");
 };
 

@@ -610,12 +610,12 @@ void () W_PrintWeaponMessage =
 	{
 		sprint (self, 1, "grappling hook selected\n");
 	}
-	else if (self.weaponmode == 0) && (self.playerclass != 11)
-	{
-		sprint (self, 1, "Normal grenade mode\n");
-	}
 	else if (self.current_weapon == WEAP_GRENADE_LAUNCHER)
 	{
+		if ((self.weaponmode == 0) && (self.playerclass != 11))
+		{
+			sprint (self, 1, "Normal grenade mode\n");
+		}
 		else
 		{
 			if (cb_prematch)
