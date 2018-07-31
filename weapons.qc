@@ -599,95 +599,53 @@ void () W_Attack =
 
 void () W_PrintWeaponMessage =
 {
-	if (((self.current_weapon == 16) && allow_hook))
+	if ((self.current_weapon == WEAP_AXE) && allow_hook)
 	{
 		if ((self.playerclass != 8))
 		{
 			sprint (self, 1, "Axe selected\n");
 		}
 	}
-	else
+	else if (self.current_weapon == WEAP_HOOK)
 	{
-		if ((self.current_weapon == 1))
-		{
-			sprint (self, 1, "grappling hook selected\n");
-		}
+		sprint (self, 1, "grappling hook selected\n");
+	}
+	else if (self.weaponmode == 0) && (self.playerclass != 11)
+	{
+		sprint (self, 1, "Normal grenade mode\n");
+	}
+	else if (self.current_weapon == WEAP_GRENADE_LAUNCHER)
+	{
 		else
 		{
-			if ((self.current_weapon == 2048))
+			if (cb_prematch)
 			{
-				if (((self.weaponmode == 0) && (self.playerclass != 11)))
-				{
-					sprint (self, 1, "Normal grenade mode\n");
-				}
-				else
-				{
-					if (cb_prematch)
-					{
-						sprint (self, 1, "Pipebomb mode not available in PreMatch\n");
-					}
-					else
-					{
-						if ((self.weaponmode == 1))
-						{
-							sprint (self, 1, "Pipebomb mode\n");
-						}
-					}
-				}
+				sprint (self, 1, "Pipebomb mode not available in PreMatch\n");
 			}
-			else
+			else if (self.weaponmode == 1)
 			{
-				if ((self.current_weapon == space))
-				{
-					sprint (self, 1, "Sniper rifle ready\n");
-				}
-				else
-				{
-					if ((self.current_weapon == 64))
-					{
-						sprint (self, 1, "rifle on fully auto\n");
-					}
-					else
-					{
-						if ((self.current_weapon == 262144))
-						{
-							sprint (self, 1, "Tranquiliser gun selected\n");
-						}
-						else
-						{
-							if ((self.current_weapon == 2))
-							{
-								sprint (self, 1, "BioWeapon readied\n");
-							}
-							else
-							{
-								if ((self.current_weapon == 4))
-								{
-									sprint (self, 1, "Medikit/Bioweapon readied\n");
-								}
-								else
-								{
-									if ((self.current_weapon == 16384))
-									{
-										if ((self.weaponmode == 0))
-										{
-											sprint (self, 1, "Heavy Incendiary Cannon\n");
-										}
-										else
-										{
-											if ((self.weaponmode == 1))
-											{
-												sprint (self, 1, "Light Incendiary Cannon\n");
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+				sprint (self, 1, "Pipebomb mode\n");
 			}
 		}
+	}
+	else if (self.current_weapon == WEAP_SNIPER_RIFLE)
+	{
+		sprint (self, 1, "Sniper rifle ready\n");
+	}
+	else if (self.current_weapon == WEAP_AUTO_RIFLE)
+	{
+		sprint (self, 1, "rifle on fully auto\n");
+	}
+	else if (self.current_weapon == WEAP_INCENDIARY)
+	{
+		if (self.weaponmode == 0)
+		{
+			sprint (self, 1, "Heavy Incendiary Cannon\n");
+		}
+		else if (self.weaponmode == 1)
+		{
+			sprint (self, 1, "Light Incendiary Cannon\n");
+		}		
 	}
 };
 
