@@ -1,3 +1,47 @@
+float () GetPlayerCount
+{
+	local entity te;
+	local float tmp;
+	te = find (world, classname, "player");
+	while (te != world) {
+		if (te.playerclass) {
+			tmp = tmp + 1;
+		}
+		te = find (te, classname, "player");
+	}
+	return tmp;
+}
+
+string () GetPlayersName
+{
+	local entity te;
+	local float tmp = 0;
+	local float tmp2 = 0;
+        local string st = "";
+
+	while (tmp < number_of_teams) {
+		tmp = tmp + 1;
+		tmp2 = 0;
+		te = find (world, classname, "player");
+		while (te != world) {
+			if (te.team_no == tmp && te.playerclass) {
+				tmp2 = 1;
+				st = strcat (st, "_");
+				if (strlen(te.netname) <= 26) {
+					st = strcat( st, te.netname );
+				} else {
+					st = strcat( st, substr(te.netname,0,25));
+				}
+			}
+			te = find (te, classname, "player");
+		}
+		if (tmp2 == 1 && tmp != number_of_teams) {
+			st = strcat ( st, "_VS");
+		}
+	}
+        return (st);
+};
+
 void () AutoRecord =
 {
 	local float i;
@@ -17,17 +61,17 @@ void () AutoRecord =
 		{
 			calltimeofday ();
 
+			localcmd (ftos (t.tf_items)); // year
+			localcmd ("-");
 			localcmd (ftos (t.armorclass + 1)); // month
 			localcmd ("-");
 			localcmd (ftos (t.tp_grenades_2)); // day
-			localcmd ("-");
-			localcmd (ftos (t.tf_items)); // year
 			localcmd ("_");
 			localcmd (ftos (t.tp_grenades_1)); // hour
 			localcmd ("-");
 			localcmd (ftos (t.no_grenades_2)); // minute
-			localcmd ("-");
-			localcmd (ftos (t.no_grenades_1)); // second
+//			localcmd ("-");
+//			localcmd (ftos (t.no_grenades_1)); // second
 		}
 	}
 
@@ -68,6 +112,11 @@ void () AutoRecord =
 					{
 						if (clanbattle)
 						{
+							if (GetPlayerCount() < 8) {
+								localcmd (GetPlayersName());
+								localcmd ("\n");
+								return;
+							}
 							localcmd ("clan");
 						}
 					}
