@@ -2338,7 +2338,8 @@ void () Menu_Intro =
 	}
 	else
 	{
-		CenterPrint (self, "Welcome to Hue Team Fortress 1.45\nŸ\nhttp://github.com/gmtandi/huetf\n\nBased on OzTF 1.45\nDecompiled by Andi\nThe Brazilian QWTF Community 2017\n");
+		CenterPrint (self, "Welcome to Oz Team Fortress 1.45\nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\nhttp://ap.qgl.org/mercury/\n");
+//		CenterPrint (self, "Welcome to Hue Team Fortress 1.45\nŸ\nhttp://github.com/gmtandi/huetf\n\nBased on OzTF 1.45\nDecompiled by Andi\nThe Brazilian QWTF Community 2017\n");
 	}
 };
 

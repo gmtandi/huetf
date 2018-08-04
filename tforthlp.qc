@@ -26,7 +26,8 @@ void () TeamFortress_MOTD =
 		{
 			sprint (self, 2, "\n\n\n");
 		}
-		sprint (self, 2, "Hue Team Fortress v1.45\nhttp://github.com/gmtandi/huetf\n");
+                sprint (self, 2, "Oz Team Fortress v1.45\nhttp://ap.qgl.org/mercury/\n");
+//		sprint (self, 2, "Hue Team Fortress v1.45\nhttp://github.com/gmtandi/huetf\n");
 		self.menu_displaytime = 0;
 		self.current_menu = 5;
 		self.menu_count = 30;

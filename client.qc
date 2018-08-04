@@ -271,8 +271,8 @@ void () DecodeLevelParms =
 
 	if (!(toggleflags & 256))
 	{
-
-		localcmd ("serverinfo huetf 1.45\n");
+		localcmd ("serverinfo oztf 1.45\n");
+//		localcmd ("serverinfo huetf 1.45\n");
 		Initialise_Teams();
 
 		flagem_checked = 0;
