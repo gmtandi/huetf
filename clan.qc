@@ -1,7 +1,7 @@
 float () GetPlayerCount
 {
 	local entity te;
-	local float tmp;
+	local float tmp = 0;
 	te = find (world, classname, "player");
 	while (te != world) {
 		if (te.playerclass) {
@@ -27,10 +27,10 @@ string () GetPlayersName
 			if (te.team_no == tmp && te.playerclass) {
 				tmp2 = 1;
 				st = strcat (st, "_");
-				if (strlen(te.netname) <= 26) {
+				if (strlen(te.netname) <= 13) {
 					st = strcat( st, te.netname );
 				} else {
-					st = strcat( st, substr(te.netname,0,25));
+					st = strcat( st, substr(te.netname,0,12));
 				}
 			}
 			te = find (te, classname, "player");
@@ -52,7 +52,7 @@ void () AutoRecord =
 	{
 		return;
 	}
-	localcmd ("record ");
+	localcmd ("record \"");
 
 	t = find (world, classname, "prematch");
 	if ((t != world))
@@ -112,9 +112,9 @@ void () AutoRecord =
 					{
 						if (clanbattle)
 						{
-							if (GetPlayerCount() < 8) {
+							if (GetPlayerCount() < 9) {
 								localcmd (GetPlayersName());
-								localcmd ("\n");
+								localcmd ("\"\n");
 								return;
 							}
 							localcmd ("clan");
@@ -135,7 +135,7 @@ void () AutoRecord =
 			localcmd ("_vs");
 		}
 	}
-	localcmd ("\n");
+	localcmd ("\"\n");
 };
 
 void () MatchOvertime =
