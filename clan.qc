@@ -61,11 +61,11 @@ void () AutoRecord =
 		{
 			calltimeofday ();
 
-			localcmd (ftos (t.tf_items)); // year
+			localcmd (ftos (t.tp_grenades_2)); // day
 			localcmd ("-");
 			localcmd (ftos (t.armorclass + 1)); // month
 			localcmd ("-");
-			localcmd (ftos (t.tp_grenades_2)); // day
+			localcmd (ftos (t.tf_items)); // year
 			localcmd ("_");
 			localcmd (ftos (t.tp_grenades_1)); // hour
 			localcmd ("-");
