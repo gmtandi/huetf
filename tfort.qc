@@ -3052,6 +3052,7 @@ void (entity Viewer, float pc, float rpc) TeamFortress_PrintClassName =
 void () TeamFortress_RemoveTimers =
 {
 	local entity te;
+	local string message;
 
 	self.leg_damage = 0;
 	self.is_undercover = 0;
@@ -3108,17 +3109,17 @@ void () TeamFortress_RemoveTimers =
 			}
 			if (((CTF_Map == 1) && (te.goal_no == 1)))
 			{
-				bprint (2, self.netname);
-				bprint (2, " лост the блуе flag!\n");
+				message = strcat(message, self.netname);		
+				message = strcat(message, " лост the блуе flag!\n");
+				bprint (2, message);
 			}
-			else
+			else if (((CTF_Map == 1) && (te.goal_no == 2)))
 			{
-				if (((CTF_Map == 1) && (te.goal_no == 2)))
-				{
-					bprint (2, self.netname);
-					bprint (2, " лост the ред flag!\n");
-				}
+				message = strcat(message, self.netname);
+				message = strcat(message, " лост the ред flag!\n");
+				bprint (2, message);
 			}
+
 		}
 		te = find (te, classname, "item_tfgoal");
 	}
