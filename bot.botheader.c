@@ -279,6 +279,7 @@ void (entity client, string s1) CenterPrint =
 	if (client.ishuman)
 	{
 		hue_centerprint (client, s1);
+		client.StatusRefreshTime = (time + 1.5);
 	}
 };
 
@@ -287,6 +288,7 @@ void (entity client, string s1, string s2) CenterPrint2 =
 	if (client.ishuman)
 	{
 		hue_centerprint (client, s1, s2);
+		client.StatusRefreshTime = (time + 1.5);
 	}
 };
 
@@ -295,6 +297,7 @@ void (entity client, string s1, string s2, string s3) CenterPrint3 =
 	if (client.ishuman)
 	{
 		hue_centerprint (client, s1, s2, s3);
+		client.StatusRefreshTime = (time + 1.5);
 	}
 };
 
