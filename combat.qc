@@ -229,6 +229,8 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	local float olddmsg;
 	local float no_damage;
 	local float moment;
+	local float prevHealth;
+	local float prevArmor;
 
 	if ((targ.takedamage == 0))
 	{
@@ -362,6 +364,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 			targ.armorclass = 0;
 			targ.items = (targ.items - (targ.items & ((8192 | 16384) | 32768)));
 		}
+		prevArmor = targ.armorvalue;
 		targ.armorvalue = (targ.armorvalue - save);
 		take = ceil ((damage - save));
 	}
@@ -481,7 +484,10 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		}
 		else
 		{
+			prevHealth = targ.health;
 			targ.health = (targ.health - take);
+			if (take > prevHealth)
+				take = prevHealth + prevArmor;
 		}
 	}
 	if (((attacker.classname == "player") && (((targ.classname == "player") || (targ.classname == "building_sentrygun")) || (targ.classname == "building_dispenser"))))
@@ -500,7 +506,8 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 				{
 					if ((teamplay & 8192))
 					{
-						TF_T_Damage (attacker, world, world, (take / 2), 1, 0);
+						take = take/2;
+						TF_T_Damage (attacker, world, world, take, 1, 0);
 					}
 				}
 			}
@@ -515,7 +522,8 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 				{
 					if ((teamplay & 2048))
 					{
-						TF_T_Damage (attacker, world, world, (take / 2), 1, 0);
+						take = take/2;
+						TF_T_Damage (attacker, world, world, take, 1, 0);
 					}
 				}
 			}
@@ -525,6 +533,9 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	if ((no_damage == 1))
 	{
 		return;
+	}
+	if (attacker.classname == "player" || targ.classname == "player") {
+		LogEventDamage(attacker, targ, inflictor, take + save);
 	}
 	if ((targ.armorvalue < 1))
 	{

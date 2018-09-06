@@ -5,6 +5,7 @@ constants.qc
 qw.qc
 bot.botheader.c
 subs.qc
+events.qc
 unknown1.qc
 subs2.qc
 combat.qc
