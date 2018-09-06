@@ -329,6 +329,7 @@ if (!captainmode) {
 }
 	self.playerclass = 0;
 	self.team_no = tno;
+	
 	self.immune_to_check = (time + 5);
 	if (((toggleflags & 128) || (toggleflags & 2048)))
 	{

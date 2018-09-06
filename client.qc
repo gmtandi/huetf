@@ -1317,6 +1317,7 @@ void () player_touch;
 
 void () PutClientInServer =
 {
+
 	local string st;
 	local float iszoom;
 	local entity spot;
@@ -1376,6 +1377,12 @@ void () PutClientInServer =
 	{
 		if ((self.nextpc != 0))
 		{
+
+			if (self.playerclass != self.nextpc && self.playerclass != 0) {
+				local float timeplayed = time - self.classtime;
+				LogEventChangeClass(self.playerclass, self.nextpc, timeplayed);
+			}
+			self.classtime = time;
 			self.playerclass = self.nextpc;
 			self.nextpc = 0;
 			if ((self.playerclass == enter))
@@ -2749,6 +2756,10 @@ void () ClientDisconnect =
 
 	fr = rint (self.frags);
 	st = ftos (fr);
+
+	local float timeplayed = time - self.classtime;
+	LogEventChangeClass(self.playerclass, 0, timeplayed);
+	
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
 
 	if (self.captain > 0 && self.captain < 5) {
