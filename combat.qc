@@ -548,6 +548,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 		{
 			deathmsg = 16;
 		}
+		LogEventKill(attacker, targ, inflictor);
 		Killed (targ, attacker);
 		return;
 	}

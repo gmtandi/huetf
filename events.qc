@@ -1,35 +1,12 @@
 void (float previous, float next, float timeplayed) LogEventChangeClass = {
 
 	local string event;
-	local string previousClass;
-	local string nextClass;
-	local string classTime;
-	local string eventTime;
-
-	event = "{\"type\": \"changeclass\", ";
-
-	previousClass = "\"previousclass\":";
-	previousClass = strcat(previousClass, ftos(previous));
-	previousClass = strcat(previousClass, ", ");
-
-	nextClass = "\"nextClass\":";
-	nextClass = strcat(nextClass, ftos(next));
-	classTime = strcat(classTime, ", ");
-
-	classTime = "\"timePlayed\":";
-	classTime = strcat(classTime, ftos(timeplayed));
-	classTime = strcat(classTime, ", ");
-
-	eventTime = "\"time\":";
-	eventTime = strcat(eventTime, ftos(time));
-
-	event = strcat(event, previousClass);
-	event = strcat(event, classTime);
-	event = strcat(event, nextClass);
-	event = strcat(event, eventTime);
-
-	event = strcat(event, "},\n");
-
+	event = sprintf("{\"type\": \"changeClass\", \"previousClass\": %s, \"nextClass\": %s, \"timePlayed\": %s, \"time\": %s},\n",
+							ftos(previous),
+							ftos(next),
+							ftos(timeplayed),
+							ftos(time)
+							);
 	logevent(event);
 }
 
@@ -102,77 +79,91 @@ string (float code) GetWeaponName = {
 
 void (entity attacker, entity target, entity inflictor, float damage) LogEventDamage = {
 
-	local string event;
-	local string attackerId;
-	local string attackerPlayerClass;
-	local string attackerTeam;
-	local string targetId;
-	local string targetPlayerClass;
-	local string targetTeam;
-	local string inflictorId;
-	local string totalDamage;
-	local string eventTime;
-
-	if (attacker != target)
-		event = "{\"type\": \"damage\", ";
+	local string damageType;
+	if (attacker == target)
+		damageType = "damageSelf";
 	else if (attacker.team_no == target.team_no)
-		event = "{\"type\": \"damageSelf\", ";
+		damageType = "damageTeam";
 	else
-		event = "{\"type\": \"damageTeam\", ";
+		damageType = "damage";
 
-
-	attackerId = "\"attacker\":";
-	attackerId = strcat(attackerId, attacker.netname);
-	attackerId = strcat(attackerId, ", ");
-
-	attackerPlayerClass = "\"attackerClass\": ";
-	attackerPlayerClass = strcat(attackerPlayerClass, ftos(attacker.playerclass));
-	attackerPlayerClass = strcat(attackerPlayerClass, ", ");
-
-	attackerTeam = "\"attackerTeam\": ";
-	attackerTeam = strcat(attackerTeam, ftos(attacker.team_no));
-	attackerTeam = strcat(attackerTeam, ", ");
-
-	targetId = "\"target\": \"";
-	targetId = strcat(targetId, target.netname);
-	targetId = strcat(targetId, "\", ");
-
-	targetPlayerClass = "\"targetClass\": \"";
-	targetPlayerClass = strcat(targetPlayerClass, ftos(target.playerclass));
-	targetPlayerClass = strcat(targetPlayerClass, "\", ");
-
-	targetTeam = "\"targetTeam\": ";
-	targetTeam = strcat(targetTeam, ftos(target.team_no));
-	targetTeam = strcat(targetTeam, ", ");
-
-	inflictorId = "\"inflictor\": \"";
+	local string inflictorId;
 	if (inflictor.classname == "player") 
-		inflictorId = strcat(inflictorId, GetWeaponName(attacker.current_weapon));
+		inflictorId = GetWeaponName(attacker.current_weapon);
 	else
-		inflictorId = strcat(inflictorId, inflictor.classname);
-	inflictorId = strcat(inflictorId, "\", ");
+		inflictorId = inflictor.classname;
 
-	totalDamage = "\"damage\": "; 
-	totalDamage = strcat(totalDamage, ftos(damage));
-	totalDamage = strcat(totalDamage, ", ");
 
-	eventTime = "\"time\":";
-	eventTime = strcat(eventTime, ftos(time));
+	local string event;
+	local string part1;
+	local string part2;
 
-	event = strcat(event, attackerId);
-	event = strcat(event, attackerPlayerClass);
-	event = strcat(event, attackerTeam);
-	event = strcat(event, targetId);
-	event = strcat(event, targetPlayerClass);
-	event = strcat(event, targetTeam);
-	event = strcat(event, inflictorId);
-	event = strcat(event, totalDamage);
-	event = strcat(event, eventTime);
-	event = strcat(event, "},\n");
+	part1 = sprintf("{\"type\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
+					damageType, 
+					attacker.netname, 
+				   	ftos(attacker.playerclass), 
+				   	ftos(attacker.team_no), 
+				   	target.netname, 
+				   	ftos(target.playerclass), 
+				   	ftos(target.team_no));
+	part2 = sprintf("\"inflictor\": \"%s\", \"damage\": %s, \"time\": %s},\n", 
+					inflictorId,
+					ftos(damage),
+					ftos(time));
+
+	event = strcat(part1, part2);
+	logevent(event);
+}
+
+void (entity attacker, entity target, entity inflictor) LogEventKill = {
+
+	local string killType;
+	if (attacker == target)
+		killType = "killSelf";
+	else if (attacker.team_no == target.team_no)
+		killType = "killTeam";
+	else
+		killType = "kill";
+
+	local string inflictorId;
+	if (inflictor.classname == "player") 
+		inflictorId = GetWeaponName(attacker.current_weapon);
+	else
+		inflictorId = inflictor.classname;
+
+
+	local string event;
+	local string part1;
+	local string part2;
+
+	part1 = sprintf("{\"type\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
+					killType, 
+					attacker.netname, 
+				   	ftos(attacker.playerclass), 
+				   	ftos(attacker.team_no), 
+				   	target.netname, 
+				   	ftos(target.playerclass), 
+				   	ftos(target.team_no));
+	part2 = sprintf("\"inflictor\": \"%s\", \"time\": %s},\n", 
+					inflictorId,					
+					ftos(time));
+
+	event = strcat(part1, part2);
 	logevent(event);
 }
 
 
+void (entity player) LogGoal = {
+	local string event;
+	event = sprintf("{\"type\": \"goal\", \"player\": \"%s\", \"time\": %s},\n", player.netname, ftos(time));
+	logevent(event);
+}
+
+void (entity player) LogFumble = {
+	local string event;
+	event = sprintf("{\"type\": \"fumble\", \"player\": \"%s\", \"time\": %s},\n", player.netname, ftos(time));
+	logevent(event);
+}
 
  
 	
