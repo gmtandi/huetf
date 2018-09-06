@@ -1162,6 +1162,7 @@ if (self.captain == 0 && captainmode) {
       if (argv(0) == "test")
       {
                 bprint(2.00,"whazzup\n");
+logevent( "EVENT: \r\n");
             return 1;
       }
 
