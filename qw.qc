@@ -36,6 +36,7 @@ entity pteam4;
 .float up;
 .float sbar_type;
 .float playerclass;
+.string grenadename;
 .float classtime;
 .float cheat_check;
 .float nextpc;

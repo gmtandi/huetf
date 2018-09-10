@@ -88,6 +88,8 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 	local entity te;
 	local float save;
 	local float take;
+	local float prevHealth;
+	local float prevArmor;
 
 	if (!targ.takedamage)
 	{
@@ -128,6 +130,7 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 		targ.armorclass = 0;
 		targ.items = (targ.items - (targ.items & ((8192 | 16384) | 32768)));
 	}
+	prevArmor = targ.armorvalue;
 	targ.armorvalue = (targ.armorvalue - save);
 	take = ceil ((damage - save));
 	if ((targ.flags & 8))
@@ -194,15 +197,22 @@ void (entity targ, entity inflictor, entity attacker, float damage) T_Damage =
 	}
 	else
 	{
+		prevHealth = targ.health;
 		targ.health = (targ.health - take);
+		if (take > prevHealth)
+			take = prevHealth + prevArmor;
 	}
 	if ((targ.armorvalue < 1))
 	{
 		targ.armorclass = 0;
 		targ.armorvalue = 0;
 	}
+	if ((attacker.classname == "player" || targ.classname == "player") && (take + save > 0)) {
+		LogEventDamage(attacker, targ, inflictor, take + save);
+	}
 	if ((targ.health <= 0))
 	{
+		LogEventKill(attacker, targ, inflictor);
 		Killed (targ, attacker);
 		return;
 	}
@@ -534,7 +544,7 @@ void (entity targ, entity inflictor, entity attacker, float damage, float T_flag
 	{
 		return;
 	}
-	if (attacker.classname == "player" || targ.classname == "player") {
+	if ((attacker.classname == "player" || targ.classname == "player") && (take + save > 0)) {
 		LogEventDamage(attacker, targ, inflictor, take + save);
 	}
 	if ((targ.armorvalue < 1))

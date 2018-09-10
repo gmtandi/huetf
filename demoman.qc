@@ -69,6 +69,7 @@ void (vector org, entity shooter) MirvGrenadeLaunch =
 	newmis.movetype = enter;
 	newmis.solid = 2;
 	newmis.classname = "grenade";
+	newmis.grenadename = "mirvsinglegrenade";
 	newmis.weapon = enter;
 	newmis.touch = NormalGrenadeTouch;
 	newmis.think = NormalGrenadeExplode;
