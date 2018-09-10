@@ -72,6 +72,7 @@ void () NailGrenadeLaunchNail =
 		deathmsg = 9;
 		launch_spike (self.origin, v_forward);
 		newmis.touch = superspike_touch;
+		newmis.classname = "nailgrenspike";
 		newmis.weapon = 9;
 		i = (i + 1);
 	}

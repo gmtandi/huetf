@@ -200,8 +200,10 @@ void () NapalmGrenadeNetThink =
 		if (head.takedamage)
 		{
 			deathmsg = 15;
-
-			TF_T_Damage (head, self, self.owner, 20 * dam_mult, 2, 16);
+			local entity napalm;
+			napalm = spawn();
+			napalm.classname = "napalmfire";
+			TF_T_Damage (head, napalm, self.owner, 20 * dam_mult, 2, 16);
 			other = head;
 			Napalm_touch ();
 			if ((other.classname == "player"))
@@ -615,7 +617,10 @@ void () Napalm_touch =
 		if (((other.takedamage == 2) && (other.health > 0)))
 		{
 			deathmsg = 15;
-			TF_T_Damage (other, self, self.owner, 6, 2, 16);
+			local entity napalm;
+			napalm = spawn();
+			napalm.classname = "napalmfire";
+			TF_T_Damage (other, napalm, self.owner, 6, 2, 16);
 			if ((cb_prematch == 1))
 			{
 				return;

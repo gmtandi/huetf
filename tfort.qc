@@ -1128,6 +1128,7 @@ void () TeamFortress_GrenadePrimed =
 	{
 		newmis.touch = NormalGrenadeTouch;
 		newmis.think = NormalGrenadeExplode;
+		newmis.grenadename = "normalgrenade";
 		newmis.skin = 0;
 		newmis.avelocity = '300 300 300';
 		setmodel (newmis, "progs/hgren2.mdl");
@@ -1138,6 +1139,7 @@ void () TeamFortress_GrenadePrimed =
 		{
 			newmis.touch = ConcussionGrenadeTouch;
 			newmis.think = ConcussionGrenadeExplode;
+			newmis.grenadename = "concussiongrenade";
 			newmis.skin = 1;
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
@@ -1148,6 +1150,7 @@ else  if ((self.weapon == 11)) // impact grenade
 			newmis.weapon = 11;
 			newmis.touch = ConcussionGrenadeTouch;
 			newmis.think = ConcussionGrenadeExplode;
+			newmis.grenadename = "impactgrenade";
 			newmis.skin = 1;
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
@@ -1159,6 +1162,7 @@ else  if ((self.weapon == 11)) // impact grenade
 			{
 				newmis.touch = NailGrenadeTouch;
 				newmis.think = NailGrenadeExplode;
+				newmis.grenadename = "nailgrenade";
 				newmis.skin = 1;
 				newmis.avelocity = '0 300 0';
 				setmodel (newmis, "progs/biggren.mdl");
@@ -1169,6 +1173,7 @@ else  if ((self.weapon == 11)) // impact grenade
 				{
 					newmis.touch = MirvGrenadeTouch;
 					newmis.think = MirvGrenadeExplode;
+					newmis.grenadename = "mirvgrenade";
 					newmis.skin = 0;
 					newmis.avelocity = '0 300 0';
 					setmodel (newmis, "progs/biggren.mdl");
@@ -1179,6 +1184,7 @@ else  if ((self.weapon == 11)) // impact grenade
 					{
 						newmis.touch = NapalmGrenadeTouch;
 						newmis.think = NapalmGrenadeExplode;
+						newmis.grenadename = "napalmgrenade";
 						newmis.skin = 2;
 						newmis.avelocity = '0 300 0';
 						setmodel (newmis, "progs/biggren.mdl");
@@ -1190,6 +1196,7 @@ else  if ((self.weapon == 11)) // impact grenade
 							newmis.touch = FlareGrenadeTouch;
 							newmis.weapon = self.team_no;
 							newmis.think = FlareGrenadeExplode;
+							newmis.grenadename = "flaregrenade";
 							newmis.skin = 1;
 							newmis.avelocity = '300 300 300';
 							newmis.mdl = "flare";
@@ -1201,6 +1208,7 @@ else  if ((self.weapon == 11)) // impact grenade
 							{
 								newmis.touch = GasGrenadeTouch;
 								newmis.think = GasGrenadeExplode;
+								newmis.grenadename = "gasgrenade";
 								newmis.skin = 3;
 								newmis.avelocity = '300 300 300';
 								setmodel (newmis, "progs/grenade2.mdl");
@@ -1211,6 +1219,7 @@ else  if ((self.weapon == 11)) // impact grenade
 								{
 									newmis.touch = EMPGrenadeTouch;
 									newmis.think = EMPGrenadeExplode;
+									newmis.grenadename = "empgrenade";
 									newmis.skin = 4;
 									newmis.avelocity = '300 300 300';
 									setmodel (newmis, "progs/grenade2.mdl");
@@ -1221,6 +1230,7 @@ else  if ((self.weapon == 11)) // impact grenade
 									{
 										newmis.touch = CanisterTouch;
 										newmis.think = ScatterCaltrops;
+										newmis.grenadename = "caltropgrenade";
 										newmis.skin = 0;
 										newmis.avelocity = '0 0 0';
 									}
@@ -3347,6 +3357,7 @@ void (entity Gren) TeamFortress_ExplodePerson =
 	{
 		newmis.touch = NormalGrenadeTouch;
 		newmis.think = NormalGrenadeExplode;
+		newmis.grenadename = "normalgrenade";
 		newmis.skin = 0;
 		newmis.avelocity = '300 300 300';
 		setmodel (newmis, "progs/hgren2.mdl");
@@ -3357,6 +3368,7 @@ void (entity Gren) TeamFortress_ExplodePerson =
 		{
 			newmis.touch = ConcussionGrenadeTouch;
 			newmis.think = ConcussionGrenadeExplode;
+			newmis.grenadename = "concussiongrenade";
 			newmis.skin = 1;
 			newmis.avelocity = '300 300 300';
 			setmodel (newmis, "progs/hgren2.mdl");
@@ -3367,6 +3379,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
                         newmis.weapon = 11;
                         newmis.touch = ConcussionGrenadeTouch;
                         newmis.think = ConcussionGrenadeExplode;
+                        newmis.grenadename = "impactgrenade";
                         newmis.skin = 1;
                         newmis.avelocity = '300 300 300';
                         setmodel (newmis, "progs/hgren2.mdl");
@@ -3379,6 +3392,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 			{
 				newmis.touch = NailGrenadeTouch;
 				newmis.think = NailGrenadeExplode;
+				newmis.grenadename = "nailgrenade";
 				newmis.skin = 1;
 				newmis.avelocity = '0 300 0';
 				setmodel (newmis, "progs/biggren.mdl");
@@ -3389,6 +3403,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 				{
 					newmis.touch = MirvGrenadeTouch;
 					newmis.think = MirvGrenadeExplode;
+					newmis.grenadename = "mirvgrenade";
 					newmis.skin = 0;
 					newmis.avelocity = '0 300 0';
 					setmodel (newmis, "progs/biggren.mdl");
@@ -3399,6 +3414,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 					{
 						newmis.touch = NapalmGrenadeTouch;
 						newmis.think = NapalmGrenadeExplode;
+						newmis.grenadename = "napalmgrenade";
 						newmis.skin = 2;
 						newmis.avelocity = '0 300 0';
 						setmodel (newmis, "progs/biggren.mdl");
@@ -3408,6 +3424,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 						if ((Gren.weapon == 6))
 						{
 							sprint (Gren.owner, 2, "Flare lit.\n");
+							newmis.grenadename = "flaregrenade";
 							te = spawn ();
 							te.touch = SUB_Null;
 							te.think = RemoveFlare;
@@ -3425,6 +3442,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 							{
 								newmis.touch = GasGrenadeTouch;
 								newmis.think = GasGrenadeExplode;
+								newmis.grenadename = "gasgrenade";
 								newmis.skin = 2;
 								newmis.avelocity = '300 300 300';
 								setmodel (newmis, "progs/grenade2.mdl");
@@ -3435,6 +3453,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 								{
 									newmis.touch = EMPGrenadeTouch;
 									newmis.think = EMPGrenadeExplode;
+									newmis.grenadename = "empgrenade";
 									newmis.skin = 4;
 									newmis.avelocity = '300 300 300';
 									setmodel (newmis, "progs/grenade2.mdl");
@@ -3445,6 +3464,7 @@ else  if ((Gren.weapon == 11)) // impact grenade
 									{
 										newmis.touch = CaltropTouch;
 										newmis.think = ScatterCaltrops;
+										newmis.grenadename = "caltropgrenade";
 									}
 								}
 							}

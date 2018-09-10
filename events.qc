@@ -78,8 +78,16 @@ string (float code) GetWeaponName = {
 
 
 void (entity attacker, entity target, entity inflictor, float damage) LogEventDamage = {
-
+	local string event;
+	local string part1;
+	local string part2;
 	local string damageType;
+	local string attackername;
+	local string targetname;
+	local string inflictorId;
+
+	attackername = attacker.netname;
+	targetname = target.netname;
 	if (attacker == target)
 		damageType = "damageSelf";
 	else if (attacker.team_no == target.team_no)
@@ -87,37 +95,46 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 	else
 		damageType = "damage";
 
-	local string inflictorId;
+	
 	if (inflictor.classname == "player") 
 		inflictorId = GetWeaponName(attacker.current_weapon);
-	else
+	else {
 		inflictorId = inflictor.classname;
+		if (inflictorId == "worldspawn")
+			attackername = "world";
+		else if ((inflictorId == "grenade") && (inflictor.grenadename != ""))
+			inflictorId = inflictor.grenadename;
+	}
 
 
-	local string event;
-	local string part1;
-	local string part2;
+	if (target.netname != "") {
+		part1 = sprintf("{\"type\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
+						damageType, 
+						attackername, 
+					   	ftos(attacker.playerclass), 
+					   	ftos(attacker.team_no), 
+					   	target.netname, 
+					   	ftos(target.playerclass), 
+					   	ftos(target.team_no));
+		part2 = sprintf("\"inflictor\": \"%s\", \"damage\": %s, \"time\": %s},\n", 
+						inflictorId,
+						ftos(damage),
+						ftos(time));
 
-	part1 = sprintf("{\"type\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
-					damageType, 
-					attacker.netname, 
-				   	ftos(attacker.playerclass), 
-				   	ftos(attacker.team_no), 
-				   	target.netname, 
-				   	ftos(target.playerclass), 
-				   	ftos(target.team_no));
-	part2 = sprintf("\"inflictor\": \"%s\", \"damage\": %s, \"time\": %s},\n", 
-					inflictorId,
-					ftos(damage),
-					ftos(time));
-
-	event = strcat(part1, part2);
-	logevent(event);
+		event = strcat(part1, part2);
+		logevent(event);
+	}
 }
 
 void (entity attacker, entity target, entity inflictor) LogEventKill = {
 
 	local string killType;
+	local string attackername;
+	local string targetname;
+	local string inflictorId;
+
+	attackername = attacker.netname;
+	targetname = target.netname;
 	if (attacker == target)
 		killType = "killSelf";
 	else if (attacker.team_no == target.team_no)
@@ -125,11 +142,15 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 	else
 		killType = "kill";
 
-	local string inflictorId;
 	if (inflictor.classname == "player") 
 		inflictorId = GetWeaponName(attacker.current_weapon);
-	else
+	else {
 		inflictorId = inflictor.classname;
+		if (inflictorId == "worldspawn")
+			attackername = "world";
+		else if ((inflictorId == "grenade") && (inflictor.grenadename != ""))
+			inflictorId = inflictor.grenadename;
+	}
 
 
 	local string event;
@@ -138,10 +159,10 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 
 	part1 = sprintf("{\"type\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
 					killType, 
-					attacker.netname, 
+					attackername, 
 				   	ftos(attacker.playerclass), 
 				   	ftos(attacker.team_no), 
-				   	target.netname, 
+				   	targetname, 
 				   	ftos(target.playerclass), 
 				   	ftos(target.team_no));
 	part2 = sprintf("\"inflictor\": \"%s\", \"time\": %s},\n", 
@@ -164,7 +185,3 @@ void (entity player) LogFumble = {
 	event = sprintf("{\"type\": \"fumble\", \"player\": \"%s\", \"time\": %s},\n", player.netname, ftos(time));
 	logevent(event);
 }
-
- 
-	
-	
