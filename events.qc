@@ -1,7 +1,8 @@
-void (float previous, float next, float timeplayed) LogEventChangeClass = {
+void (entity player, float previous, float next, float timeplayed) LogEventChangeClass = {
 
 	local string event;
-	event = sprintf("{\"type\": \"changeClass\", \"previousClass\": %s, \"nextClass\": %s, \"timePlayed\": %s, \"time\": %s},\n",
+	event = sprintf("{\"type\": \"changeClass\", \"player\": \"%s\", \"previousClass\": %s, \"nextClass\": %s, \"timePlayed\": %s, \"time\": %s},\n",
+							player.netname,
 							ftos(previous),
 							ftos(next),
 							ftos(timeplayed),
@@ -174,14 +175,20 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 }
 
 
-void (entity player) LogGoal = {
+void (entity player) LogEventGoal = {
 	local string event;
 	event = sprintf("{\"type\": \"goal\", \"player\": \"%s\", \"time\": %s},\n", player.netname, ftos(time));
 	logevent(event);
 }
 
-void (entity player) LogFumble = {
+void (entity player) LogEventFumble = {
 	local string event;
 	event = sprintf("{\"type\": \"fumble\", \"player\": \"%s\", \"time\": %s},\n", player.netname, ftos(time));
+	logevent(event);
+}
+
+void (entity attacker) LogEventAttack = {
+	local string event;
+	event = sprintf("{\"type\": \"attack\", \"player\": \"%s\", \"inflictor\": \"%s\", \"time\": %s},\n", attacker.netname, GetWeaponName(attacker.current_weapon), ftos(time));
 	logevent(event);
 }

@@ -1010,6 +1010,7 @@ void () W_FireAssaultCannon =
 	{
 		FireBullets (4, dir, '0.1 0.1 0');
 	}
+	LogEventAttack(self);
 };
 
 void () s_explode1 = [ 0, s_explode2 ]
@@ -2983,6 +2984,9 @@ void () W_Attack =
 			}
 		}
 	}
+	//Assault cannon's fire behaves differently
+	if (self.current_weapon != 32768)
+		LogEventAttack(self);
 };
 
 void () W_PrintWeaponMessage =

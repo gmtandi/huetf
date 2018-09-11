@@ -1043,7 +1043,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 						tfs_winner = Player.team_no;
 					}
 				}
-				LogGoal(Player);
+				LogEventGoal(Player);
 				TeamFortress_TeamIncreaseScore (Player.team_no, Goal.count);
 				TeamFortress_TeamShowScores (2);
 			}
@@ -2996,7 +2996,7 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 		}
 		te = find (te, classname, "player");
 	}
-	LogFumble(AP);
+	LogEventFumble(AP);
 	if (((method == 0) || (method == 2)))
 	{
 		te = find (world, classname, "player");

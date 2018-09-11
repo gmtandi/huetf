@@ -42,6 +42,18 @@ void () Commands =
 	}
 };
 
+void () MapEndSequence =
+{
+	local entity player;
+	player = find (world, classname, "player");	
+	while (player) 
+	{
+		local float timeplayed = time - player.classtime;
+		LogEventChangeClass(player, player.playerclass, 0, timeplayed);
+		player = find (player, classname, "player");
+	}
+}
+
 void (entity print) ShowFrags =
 {
 	local entity te;
