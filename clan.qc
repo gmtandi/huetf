@@ -275,6 +275,7 @@ void () StartMatch =
 		TeamFortress_RemoveTimers ();
 		self.frags = 0;
 		self.real_frags = 0;
+		self.classtime = time;
 		setspawnparms (self);
 		PutClientInServer ();
 		self = oldself;

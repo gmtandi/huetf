@@ -30,6 +30,7 @@ void () CTF_FlagCheck;
 string nextmap;
 float intermission_running;
 float intermission_exittime;
+void () MapEndSequence;
 
 void () updateMaxClients = {
 	float playersCount = PlayerCount();
@@ -886,6 +887,7 @@ void () execute_changelevel =
 	WriteAngle (2, pos.mangle_x);
 	WriteAngle (2, pos.mangle_y);
 	WriteAngle (2, pos.mangle_z);
+	MapEndSequence();
 	localcmd ("serverinfo status Standby\n");
 	other = find (world, classname, "player");
 	while ((other != world))
@@ -1380,7 +1382,7 @@ void () PutClientInServer =
 
 			if (self.playerclass != self.nextpc && self.playerclass != 0) {
 				local float timeplayed = time - self.classtime;
-				LogEventChangeClass(self.playerclass, self.nextpc, timeplayed);
+				LogEventChangeClass(self, self.playerclass, self.nextpc, timeplayed);
 			}
 			self.classtime = time;
 			self.playerclass = self.nextpc;
@@ -2758,7 +2760,7 @@ void () ClientDisconnect =
 	st = ftos (fr);
 
 	local float timeplayed = time - self.classtime;
-	LogEventChangeClass(self.playerclass, 0, timeplayed);
+	LogEventChangeClass(self, self.playerclass, 0, timeplayed);
 	
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
 
