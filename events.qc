@@ -103,6 +103,8 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 		inflictorId = inflictor.classname;
 		if (inflictorId == "worldspawn")
 			attackername = "world";
+		else if (inflictorId == "building_sentrygun")
+			attackername = attacker.real_owner.netname;
 		else if ((inflictorId == "grenade") && (inflictor.grenadename != ""))
 			inflictorId = inflictor.grenadename;
 	}
@@ -149,6 +151,8 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 		inflictorId = inflictor.classname;
 		if (inflictorId == "worldspawn")
 			attackername = "world";
+		else if (inflictorId == "building_sentrygun")
+			attackername = attacker.real_owner.netname;
 		else if ((inflictorId == "grenade") && (inflictor.grenadename != ""))
 			inflictorId = inflictor.grenadename;
 	}
