@@ -887,7 +887,9 @@ void () execute_changelevel =
 	WriteAngle (2, pos.mangle_x);
 	WriteAngle (2, pos.mangle_y);
 	WriteAngle (2, pos.mangle_z);
-	MapEndSequence();
+	if (!printedEndGame) 
+		MapEndSequence();
+	printedEndGame = 0;
 	localcmd ("serverinfo status Standby\n");
 	other = find (world, classname, "player");
 	while ((other != world))

@@ -274,10 +274,10 @@ void () StartMatch =
 		}
 		TeamFortress_RemoveTimers ();
 		self.frags = 0;
-		self.real_frags = 0;
-		self.classtime = time;
+		self.real_frags = 0;		
 		setspawnparms (self);
 		PutClientInServer ();
+		self.classtime = time;
 		self = oldself;
 		te = find (te, classname, "player");
 	}

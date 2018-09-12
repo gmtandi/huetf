@@ -333,3 +333,4 @@ float classrework;
 .float reload_sniper_rifle;
 float headshots;
 float shortergrens;
+float printedEndGame = 0;
