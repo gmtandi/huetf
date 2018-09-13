@@ -311,6 +311,7 @@ void (string str) freestr = #123;
 string (vector v1) locationname = #124;
 void (string str) logevent = #125;
 string (string str, ...) sprintf = #126;
+string () timemillis = #127;
 
 //void(string str) conprint = #95;   // prints to server console only (no redirects)
 string (string str) readcmd = #96; // executes command on server, but result is returned by this function instead of writing to the console
@@ -335,3 +336,4 @@ void () nextCaptain;
 void () randomizeCaptains;
 void () disableCaptain;
 void () randomizeTeams;
+float gametime;

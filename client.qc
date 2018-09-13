@@ -1383,10 +1383,10 @@ void () PutClientInServer =
 		{
 
 			if (self.playerclass != self.nextpc && self.playerclass != 0) {
-				local float timeplayed = time - self.classtime;
+				local float timeplayed = gametime - self.classtime;
 				LogEventChangeClass(self, self.playerclass, self.nextpc, timeplayed);
 			}
-			self.classtime = time;
+			self.classtime = gametime;
 			self.playerclass = self.nextpc;
 			self.nextpc = 0;
 			if ((self.playerclass == enter))
@@ -2761,7 +2761,7 @@ void () ClientDisconnect =
 	fr = rint (self.frags);
 	st = ftos (fr);
 
-	local float timeplayed = time - self.classtime;
+	local float timeplayed = gametime - self.classtime;
 	LogEventChangeClass(self, self.playerclass, 0, timeplayed);
 	
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
