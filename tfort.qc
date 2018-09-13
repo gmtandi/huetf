@@ -251,7 +251,7 @@ void (float inp) TeamFortress_ChangeClass =
 		self.playerclass = 0;
 	}
 	self.nextpc = 0;
-	self.classtime = time;
+	self.classtime = gametime;
 	self.takedamage = 2;
 	self.movetype = 3;
 	self.flags = (8 | 512);

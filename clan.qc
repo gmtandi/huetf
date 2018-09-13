@@ -236,6 +236,7 @@ void () MatchThink =
 		}
 		bprint (2, " remaining\n");
 	}
+	gametime++;
 	self.nextthink = (time + 1);
 };
 
@@ -251,8 +252,11 @@ void () StartMatch =
 	local entity oldself;
 	local entity gren;
 
-	lightstyle (0, "m");
+	lightstyle (0, "m");	
 	bprint (2, "MATCH BEGINS NOW\n");
+	gametime = 0;
+	canLog = 1;
+	LogEventGameStart();
 	team4score = 0;
 	team3score = 0;
 	team2score = 0;
@@ -277,7 +281,7 @@ void () StartMatch =
 		self.real_frags = 0;		
 		setspawnparms (self);
 		PutClientInServer ();
-		self.classtime = time;
+		self.classtime = gametime;
 		self = oldself;
 		te = find (te, classname, "player");
 	}

@@ -48,10 +48,11 @@ void () MapEndSequence =
 	player = find (world, classname, "player");	
 	while (player) 
 	{
-		local float timeplayed = time - player.classtime;
+		local float timeplayed = gametime - player.classtime;
 		LogEventChangeClass(player, player.playerclass, 0, timeplayed);
 		player = find (player, classname, "player");
 	}
+	LogEventGameEnd();
 }
 
 void (entity print) ShowFrags =
