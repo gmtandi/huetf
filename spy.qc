@@ -946,10 +946,8 @@ void () GasGrenadeMakeGas =
 			dam_mult = 1;
 			if (shortergrens)
 				dam_mult = 1.33;
-			local entity gas;
-			gas = spawn();
-			gas.classname = "gas";
-			TF_T_Damage (te, gas, self.owner, enter * dam_mult, (1 | 2), 0);
+
+			TF_T_Damage (te, world, self.owner, enter * dam_mult, (1 | 2), 0);
 			if ((te.tfstate & 16384))
 			{
 				timer = find (world, classname, "timer");
