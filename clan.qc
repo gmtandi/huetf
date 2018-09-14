@@ -256,7 +256,7 @@ void () StartMatch =
 	bprint (2, "MATCH BEGINS NOW\n");
 	gametime = 0;
 	canLog = 1;
-	//LogEventGameStart();
+	LogEventGameStart();
 	team4score = 0;
 	team3score = 0;
 	team2score = 0;
