@@ -67,9 +67,15 @@ void () AutoRecord =
 			localcmd ("-");
 			localcmd (ftos (t.tf_items)); // year
 			localcmd ("_");
-			localcmd (ftos (t.tp_grenades_1)); // hour
+			if (t.tp_grenades_1 < 10)
+				localcmd (strcat("0", ftos(t.tp_grenades_1)));
+			else
+				localcmd (ftos (t.tp_grenades_1)); // hour
 			localcmd ("-");
-			localcmd (ftos (t.no_grenades_2)); // minute
+			if (t.no_grenades_2 < 10)
+				localcmd (strcat("0", ftos(t.no_grenades_2)));
+			else
+				localcmd (ftos (t.no_grenades_2)); // minute
 //			localcmd ("-");
 //			localcmd (ftos (t.no_grenades_1)); // second
 		}
