@@ -52,6 +52,7 @@ void () MapEndSequence =
 		LogEventChangeClass(player, player.playerclass, 0, timeplayed);
 		player = find (player, classname, "player");
 	}
+	LogEventTeamScores();
 	LogEventGameEnd();
 }
 
