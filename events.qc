@@ -287,22 +287,22 @@ void () LogEventTeamScores = {
 	}
 
 	local string teamscores;
-	teamscores = sprintf("\"team1score\": %s", ftos(team1score));
+	teamscores = sprintf("\"team1Score\": %s", ftos(team1score));
 	if (number_of_teams > 1)
-		teamscores = strcat(teamscores, sprintf(", \"team2score\": %s", ftos(team2score)));
+		teamscores = strcat(teamscores, sprintf(", \"team2Score\": %s", ftos(team2score)));
 	if (number_of_teams > 2)
-		teamscores = strcat(teamscores, sprintf(", \"team3score\": %s", ftos(team3score)));
+		teamscores = strcat(teamscores, sprintf(", \"team3Score\": %s", ftos(team3score)));
 	if (number_of_teams > 3)
-		teamscores = strcat(teamscores, sprintf(", \"team4score\": %s", ftos(team4score)));
+		teamscores = strcat(teamscores, sprintf(", \"team4Score\": %s", ftos(team4score)));
 
 	local string teamnames;
-	teamnames = sprintf("\"team1name\": \"%s\"", GetTeamName(1));
+	teamnames = sprintf("\"team1Name\": \"%s\"", GetTeamName(1));
 	if (number_of_teams > 1)
-		teamnames = strcat(teamnames, sprintf(", \"team2name\": \"%s\"", GetTeamName(2)));
+		teamnames = strcat(teamnames, sprintf(", \"team2Name\": \"%s\"", GetTeamName(2)));
 	if (number_of_teams > 2)
-		teamnames = strcat(teamnames, sprintf(", \"team3name\": \"%s\"", GetTeamName(3)));
+		teamnames = strcat(teamnames, sprintf(", \"team3Name\": \"%s\"", GetTeamName(3)));
 	if (number_of_teams > 3)
-		teamnames = strcat(teamnames, sprintf(", \"team4name\": \"%s\"", GetTeamName(4)));
+		teamnames = strcat(teamnames, sprintf(", \"team4Name\": \"%s\"", GetTeamName(4)));
 
 	local string event;
 	event = sprintf(",\n{\"type\": \"teamScores\", %s, %s, \"winningTeam\": %s, \"time\": %s, \"gameTimeStamp\": %s}", teamscores, teamnames, ftos(winning_team), ftos(gametime), timemillis());
