@@ -54,6 +54,7 @@ void () MapEndSequence =
 	}
 	LogEventTeamScores();
 	LogEventGameEnd();
+	canLog = 0;
 }
 
 void (entity print) ShowFrags =
