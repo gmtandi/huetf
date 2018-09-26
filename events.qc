@@ -173,6 +173,9 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 	if (canLog == 0)
 		return;
 
+	if ((target.classname != "player") && (target.classname != "building_sentrygun"))
+		return;
+	
 	local string killKind;
 	local string attackername;
 	local string targetname;
