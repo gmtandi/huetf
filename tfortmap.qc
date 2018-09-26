@@ -2996,7 +2996,10 @@ void (entity Item, entity AP, float method) tfgoalitem_RemoveFromPlayer =
 		}
 		te = find (te, classname, "player");
 	}
-	LogEventFumble(AP);
+	//Flag?
+	if ((Item.goal_activation & 1))
+		LogEventFumble(AP);
+	
 	if (((method == 0) || (method == 2)))
 	{
 		te = find (world, classname, "player");
