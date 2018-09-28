@@ -339,7 +339,10 @@ void () StartMatch =
 	localcmd ("\n");
 	if (rounds)
 	{
-		StartRound ();
+		if (infokey(world, "quadmode") != "on")
+			StartRound ();
+		else
+			StartQuadRound ();
 	}
 };
 

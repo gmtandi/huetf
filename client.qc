@@ -12,6 +12,7 @@ void () TeamFortress_SetupRespawn;
 float (float pc) IsLegalClass;
 void () CeaseFire_think;
 void () StartRound;
+void () StartQuadRound;
 void () RemoveVotes;
 void (string halias, float himpulse1, float himpulse2) TeamFortress_Alias;
 void (entity p) CheckAutoKick;
@@ -524,6 +525,7 @@ void () DecodeLevelParms =
 				allow_grenpack = 0;
 			}
 			st = infokey (world, "round_time");
+			if (infokey(world, "quadmode") != "on")
 			round_over = 1;
 			te = spawn ();
 			te.owner = world;
@@ -1373,7 +1375,8 @@ void () PutClientInServer =
 	{
 		iszoom = 1;
 	}
-	if (round_active)
+
+	if (round_active && infokey(world, "quadmode") != "on")
 	{
 		self.playerclass = 0;
 	}
@@ -2388,6 +2391,7 @@ void () Admin_Aliases =
 	TeamFortress_Alias ("flag_model", 236, 0);
 	TeamFortress_Alias ("frjump", 238, 0);
 	TeamFortress_Alias ("adminmenu", 239, 0);
+	TeamFortress_Alias ("quadmode", 240, 0);
 	TeamFortress_Alias ("rounds", _O, 0);
 	TeamFortress_Alias ("duel", _P, 0);
 	TeamFortress_Alias ("speedcap", _Q, 0);
