@@ -805,6 +805,11 @@ float () ConsoleCmd =
 															ClanMode ();
 															return (1);
 														}
+														else if ((argv (0) == "quadmode"))
+														{
+															QuadMode ();
+															return (1);
+														}
 														else
 														{
 															if ((argv (0) == "tfvsdm"))

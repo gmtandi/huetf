@@ -678,6 +678,31 @@ void () ChangeTP =
 	bprint (2, desc);
 };
 
+void () QuadMode =
+{
+	local string st;
+
+	st = infokey (world, "quadmode");
+	if ((st == "on"))
+	{
+		st = "off";
+		localcmd ("localinfo clan off\n");
+		localcmd ("localinfo quadmode off\n");
+		localcmd ("rounds off");
+	}
+	else
+	{
+		st = "on";
+		localcmd ("localinfo clan on\n");
+		localcmd ("localinfo quadmode on\n");
+		localcmd ("rounds 2\n");
+		localcmd ("localinfo round_time 10\n");
+		bprint (2, "Map Restart needed to take affect!\n");
+	}
+	bprint3 (2, "Quad Mode set to ", st, "\n");
+};
+
+
 void () ClanMode =
 {
 	local string st;
@@ -1037,6 +1062,7 @@ void () Toggle_Quad =
 	localcmd ("localinfo sentrytype 0\n");
 	localcmd ("localinfo pipedelay on\n");
 	localcmd ("localinfo clan on\n");
+	localcmd ("localinfo quad on\n");
 	localcmd ("localinfo teamfrags on\n");
 	localcmd ("localinfo fullteamscore off\n");
 	localcmd ("localinfo grapple off\n");

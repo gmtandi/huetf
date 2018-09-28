@@ -86,6 +86,7 @@ float round_active;
 float round_over;
 float tfs_winner;
 float num_hostages;
+float quad_winner;
 float toggleflags;
 float respawn_delay_time;
 float number_of_teams;
