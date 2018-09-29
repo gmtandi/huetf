@@ -1405,7 +1405,7 @@ void () PutClientInServer =
 	}
 	if ((self.tfstate & 8))
 	{
-		if (round_active)
+		if (round_active && infokey(world, "quadmode") != "on")
 		{
 			self.playerclass = 0;
 		}
@@ -1511,7 +1511,7 @@ void () PutClientInServer =
 	if (!self.playerclass && !captainmode)
 	{
 		self.modelindex = modelindex_null;
-		if ((round_active || (self.playerclass == -1)))
+		if (((round_active && infokey(world, "quadmode") != "on") || (self.playerclass == -1)))
 		{
 			self.current_menu = 0;
 		}
@@ -1754,7 +1754,7 @@ void () PlayerDeathThink =
 		self.button2 = 0;
 		return;
 	}
-	if ((round_active && !duel))
+	if ((round_active && infokey(world, "quadmode") != "on" && !duel))
 	{
 		if ((self.respawn_time <= time))
 		{

@@ -153,7 +153,7 @@ void (float inp) TeamFortress_ChangeClass =
 
 	if (!self.playerclass)
 	{
-		if (round_active)
+		if (round_active && infokey(world, "quadmode") != "on")
 		{
 			if (!IsLegalClass (inp))
 			{
@@ -3162,7 +3162,7 @@ void () TeamFortress_RemoveTimers =
 	}
 	self.item_list = 0;
 	CenterPrint (self, "\n");
-	if (!round_active)
+	if (!round_active && infokey(world, "quadmode") != "on")
 	{
 		self.menu_count = 30;
 		self.current_menu = 1;

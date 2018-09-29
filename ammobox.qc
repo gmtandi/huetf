@@ -476,7 +476,7 @@ void () Drop_detpack =
 	}
 	else
 	{
-		if (round_active)
+		if (round_active && infokey(world, "quadmode") != "on")
 		{
 			bprint2 (2, self.netname, " dropped the bomb!\n");
 		}

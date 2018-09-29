@@ -1038,7 +1038,7 @@ void (entity Goal, entity Player, entity AP, float addb) Apply_Results =
 							bprint (2, " seconds\n");
 						}
 					}
-					if (round_active)
+					if (round_active && infokey(world, "quadmode") != "on")
 					{
 						tfs_winner = Player.team_no;
 					}
