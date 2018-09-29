@@ -53,11 +53,13 @@ void () QuadRoundThink =
 	local float fl;
 
 	if (rounds < 2) {
-		if (quad_winner != CheckWinningTeam()) {
-			quad_winner = CheckWinningTeam();
-			self.think = QuadRoundOver;
-			self.nextthink = (time + 0.1);
-			return;
+		if (CheckWinningTeam() != 0) {
+			if (quad_winner != CheckWinningTeam()) {
+				quad_winner = CheckWinningTeam();
+				self.think = QuadRoundOver;
+				self.nextthink = (time + 0.1);
+				return;
+			}
 		}
 	}
 
@@ -90,7 +92,8 @@ void () QuadRoundThink =
 		}
 		if (!self.cnt)
 		{
-			bprint (2, "ROUND TIME OVER\nNext round begins in 30 seconds\n");
+			if (rounds > 1)
+				bprint (2, "ROUND TIME OVER\nNext round begins in 10 seconds\n");
 
 			self.think = QuadRoundOver;
 			self.nextthink = (time + 0.1);
@@ -336,6 +339,7 @@ void () StartQuadRound =
 
 	if ((rounds == 1))
 	{
+		quad_winner = CheckWinningTeam();
 		if ((quad_winner == 0))
 		{
 			bprint (2, "Round Drawn!\n");
@@ -486,7 +490,7 @@ void () StartQuadRound =
 	{
 		fl = enter;
 	}
-	te.cnt2 = fl;
+	te.cnt2 = 10;
 	st = infokey (world, "round_time");
 	te.cnt = stof (st);
 	quad_winner = CheckWinningTeam();	
@@ -496,6 +500,6 @@ void () StartQuadRound =
 	}
 	else {
 		te.think = QuadRoundInit;
-		te.nextthink = (time + 25); 
+		te.nextthink = (time + 1); 
 	}
 };

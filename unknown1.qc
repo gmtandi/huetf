@@ -838,7 +838,7 @@ void () RefreshStatusBar =
 	self.StatusRefreshTime = (time + 0.2);
 	msg_entity = self;
 	Status_StartWrite ();
-	if (round_active)
+	if (round_active && infokey(world, "quadmode") != "on")
 	{
 		if (!self.ScannerOn)
 		{
@@ -1968,7 +1968,7 @@ void () Player_Menu =
 															{
 																if ((self.playerclass == 0))
 																{
-																	if (round_active && !captainmode)
+																	if (round_active && !captainmode && infokey(world, "quadmode") != "on")
 																	{
 																		return;
 																	}

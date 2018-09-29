@@ -5924,7 +5924,7 @@ void () W_WeaponFrame =
 		}
 	}
 
-	if (round_active)
+	if (round_active && infokey(world, "quadmode") != "on")
 	{
 		st = GetTeamName (self.team_no);
 		if ((st == "observe"))
@@ -5979,7 +5979,7 @@ void () W_WeaponFrame =
 					{
 						if (!self.playerclass)
 						{
-							if (round_active || !captainmode)
+							if ((round_active && infokey(world, "quadmode") != "on") || !captainmode)
 							{
 								return;
 							}
