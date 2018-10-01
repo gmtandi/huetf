@@ -63,9 +63,6 @@ void () QuadRoundThink =
 		}
 	}
 
-//		if (infokey(world,"debug") == "on")
-//			bprint (2, sprintf("3. min: %s sec: %s\n", ftos(self.cnt), ftos(self.cnt2)));
-
 	if ((self.cnt == -1))
 	{
 		return;
@@ -73,9 +70,6 @@ void () QuadRoundThink =
 
 	if ( self.cnt == stof(infokey (world, "round_time")) - 1 && self.cnt2 == 59 )
 	{
-//		if (infokey(world,"debug") == "on")
-//			bprint (2, sprintf("1. min: %s sec: %s\n", ftos(self.cnt), ftos(self.cnt2)));
-
 		localcmd ("serverinfo status \"");
 		tmp = ftos (self.cnt + 1);
 		localcmd (tmp);
@@ -84,9 +78,6 @@ void () QuadRoundThink =
 
 	if ((self.cnt2 == -1))
 	{
-//		if (infokey(world,"debug") == "on")
-//			bprint (2, sprintf("2. min: %s sec: %s\n", ftos(self.cnt), ftos(self.cnt2)));
-
 		localcmd ("serverinfo status \"");
 		tmp = ftos (self.cnt);
 		localcmd (tmp);
