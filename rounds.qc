@@ -1,5 +1,3 @@
-//=-=-=-=-=
-
 float () CheckWinner =
 {
 	local float team1alive;
@@ -354,6 +352,7 @@ void () RoundBegin =
 		self = oldself;
 		te = find (te, classname, "player");
 	}
+                       
 	bprint (2, "ROUND BEGINS NOW\n");
 	round_active = 1;
 	round_over = 0;
@@ -451,6 +450,10 @@ void () RoundInit =
 		{
 			if ((p.netname != ""))
 			{
+				if ((infokey (world, "status") != "Countdown"))
+				{
+					localcmd ("serverinfo status Countdown\n");
+				}
 				CenterPrint3 (p, "Round begins in: ", num, " second(s).\n");
 				cease_fire = 0;
 				if (duel)
