@@ -74,13 +74,12 @@ void () QuadRoundThink =
 		self.cnt2 = 59;
 		self.cnt = (self.cnt - 1);
 		
-
+		localcmd ("serverinfo status \"");
+		tmp = ftos (self.cnt + 1);
+		localcmd (tmp);
+		localcmd (" min left\"\n");
 	}
-	localcmd (sprintf("timelimit %s\n", ftos(self.cnt + 1)));
-	localcmd ("serverinfo status \"");
-	tmp = ftos (self.cnt);
-	localcmd (tmp);
-	localcmd (" min left\"\n");
+	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time")) ) ));
 	if (!self.cnt2)
 	{
 		if (((self.cnt == 1) || (self.cnt == 5)))
@@ -97,6 +96,9 @@ void () QuadRoundThink =
 		{
 			if (rounds > 1)
 				bprint (2, "ROUND TIME OVER\nNext round begins in 10 seconds\n");
+
+			lightstyle (0, "e");
+			localcmd("serverinfo status Countdown\n");
 
 			self.think = QuadRoundOver;
 			self.nextthink = (time + 0.1);
@@ -125,6 +127,7 @@ void () QuadRoundBegin =
 	local entity te;
 	local entity oldself;
 	local string st;
+	local string tmp;
 	local float bomber;
 	local float counter;
 
@@ -198,7 +201,14 @@ void () QuadRoundBegin =
 		self = oldself;
 		te = find (te, classname, "player");
 	}
-	bprint (2, "ROUND BEGINS NOW\n");
+	lightstyle (0, "m");
+	bprint (2, "QUAD ROUND BEGINS NOW\n");
+
+	localcmd ("serverinfo status \"");
+	tmp = ftos (self.cnt + 1);
+	localcmd (tmp);
+	localcmd (" min left\"\n");
+
 	round_active = 1;
 	round_over = 0;
 	if (speedcap)
@@ -230,7 +240,7 @@ void () QuadRoundBegin =
 			self.cnt = counter;
 		}
 	}
-	localcmd (sprintf("timelimit %s\n", ftos(self.cnt + 1)));
+	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time"))  + 1 ) ));
 	self.think = QuadRoundThink;
 	self.nextthink = (time + 0.1);
 };
@@ -340,6 +350,7 @@ void () StartQuadRound =
 	local entity oldself;
 	local entity gren;
 	local entity p;
+
 
 	if ((rounds == 1))
 	{
@@ -499,10 +510,14 @@ void () StartQuadRound =
 	te.cnt = stof (st);
 	quad_winner = CheckWinningTeam();	
 	if (rounds > 1) {
+		lightstyle (0, "e");
+		localcmd("serverinfo status Countdown\n");
 		te.think = QuadRoundBegin;
 		te.nextthink = (time + 0.01);
 	}
 	else {
+		lightstyle (0, "e");
+		localcmd("serverinfo status Countdown\n");
 		te.think = QuadRoundInit;
 		te.nextthink = (time + 1); 
 	}

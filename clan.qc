@@ -272,6 +272,7 @@ void () StartMatch =
 	team2frags = 0;
 	team1frags = 0;
 	te = find (world, classname, "player");
+
 	while (te)
 	{
 		oldself = self;
@@ -339,6 +340,10 @@ void () StartMatch =
 	st = ftos (f1);
 	localcmd (st);
 	localcmd ("\n");
+
+	st = infokey(world, "quadmode");
+
+
 	if (rounds)
 	{
 		if (infokey(world, "quadmode") != "on")
@@ -409,10 +414,10 @@ void () PreMatch_Think =
 		if ((self.cnt2 == enter))
 		{
 			lightstyle (0, "e");
-			if ((infokey (world, "status") != "Countdown"))
-			{
+//			if ((infokey (world, "status") != "Countdown"))
+//			{
 				localcmd ("serverinfo status Countdown\n");
-			}
+//			}
 			if ((stof (infokey (world, "demo_auto_left")) > 0))
 			{
 				AutoRecord ();
