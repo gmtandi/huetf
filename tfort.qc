@@ -196,7 +196,7 @@ void (float inp) TeamFortress_ChangeClass =
 			inp = 11;
 		}
 		self.nextpc = inp;
-		if (rounds)
+		if (rounds && infokey (world, "quadmode") != "on")
 		{
 			sprint (self, 2, "Next Round, you will return as a ");
 		}
@@ -2777,7 +2777,7 @@ else
 	}
 	if (self.playerclass)
 	{
-		if (rounds)
+		if (rounds && infokey (world, "quadmode") != "on")
 		{
 			self.armorvalue = self.maxarmor;
 			self.ammo_detpack = self.maxammo_detpack;
