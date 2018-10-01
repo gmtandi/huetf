@@ -68,16 +68,19 @@ void () QuadRoundThink =
 		return;
 	}
 	if (!cease_fire)
-		self.cnt2 = (self.cnt2 - 0.5);
+		self.cnt2 = (self.cnt2 - 1);
 	if ((self.cnt2 == -1))
 	{
 		self.cnt2 = 59;
 		self.cnt = (self.cnt - 1);
-		localcmd ("serverinfo status \"");
-		tmp = ftos (self.cnt);
-		localcmd (tmp);
-		localcmd (" min left\"\n");
+		
+
 	}
+	localcmd (sprintf("timelimit %s\n", ftos(self.cnt + 1)));
+	localcmd ("serverinfo status \"");
+	tmp = ftos (self.cnt);
+	localcmd (tmp);
+	localcmd (" min left\"\n");
 	if (!self.cnt2)
 	{
 		if (((self.cnt == 1) || (self.cnt == 5)))
@@ -114,7 +117,7 @@ void () QuadRoundThink =
 			bprint (2, " remaining\n");
 		}
 	}
-	self.nextthink = (time + 0.5);
+	self.nextthink = (time + 1);
 };
 
 void () QuadRoundBegin =
@@ -204,7 +207,7 @@ void () QuadRoundBegin =
 	}
 	if (!self.cnt)
 	{
-		self.cnt = stof(infokey (world, "round_time")) - 1;
+		self.cnt = stof(infokey (world, "round_time")) - 1;		
 		self.cnt2 = 60;
 	}
 	else
@@ -227,6 +230,7 @@ void () QuadRoundBegin =
 			self.cnt = counter;
 		}
 	}
+	localcmd (sprintf("timelimit %s\n", ftos(self.cnt + 1)));
 	self.think = QuadRoundThink;
 	self.nextthink = (time + 0.1);
 };

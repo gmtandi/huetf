@@ -319,8 +319,10 @@ void () StartMatch =
 		st = ftos (te.cnt);
 		localcmd (st);
 		localcmd (" min left\"\n");
-		te.think = MatchThink;
-		te.nextthink = (time + 1);
+		if (infokey(world, "quadmode") != "on") {
+			te.think = MatchThink;
+			te.nextthink = (time + 1);
+		}		
 	}
 	st = infokey (world, "spectalk");
 	f2 = stof (st);
