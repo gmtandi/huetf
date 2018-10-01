@@ -695,7 +695,7 @@ void () QuadMode =
 		st = "on";
 		localcmd ("localinfo clan on\n");
 		localcmd ("localinfo quadmode on\n");
-		localcmd ("rounds 2\n");
+		localcmd ("localinfo rounds 2\n");
 		localcmd ("timelimit 0\n");
 		localcmd ("localinfo round_time 10\n");
 		bprint (2, "Map Restart needed to take affect!\n");
