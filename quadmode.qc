@@ -63,23 +63,43 @@ void () QuadRoundThink =
 		}
 	}
 
+//		if (infokey(world,"debug") == "on")
+//			bprint (2, sprintf("3. min: %s sec: %s\n", ftos(self.cnt), ftos(self.cnt2)));
+
 	if ((self.cnt == -1))
 	{
 		return;
 	}
-	if (!cease_fire)
-		self.cnt2 = (self.cnt2 - 1);
-	if ((self.cnt2 == -1))
+
+	if ( self.cnt == stof(infokey (world, "round_time")) - 1 && self.cnt2 == 59 )
 	{
-		self.cnt2 = 59;
-		self.cnt = (self.cnt - 1);
-		
+//		if (infokey(world,"debug") == "on")
+//			bprint (2, sprintf("1. min: %s sec: %s\n", ftos(self.cnt), ftos(self.cnt2)));
+
 		localcmd ("serverinfo status \"");
 		tmp = ftos (self.cnt + 1);
 		localcmd (tmp);
 		localcmd (" min left\"\n");
 	}
-	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time")) ) ));
+
+	if ((self.cnt2 == -1))
+	{
+//		if (infokey(world,"debug") == "on")
+//			bprint (2, sprintf("2. min: %s sec: %s\n", ftos(self.cnt), ftos(self.cnt2)));
+
+		localcmd ("serverinfo status \"");
+		tmp = ftos (self.cnt);
+		localcmd (tmp);
+		localcmd (" min left\"\n");
+
+		self.cnt2 = 59;
+		self.cnt = (self.cnt - 1);		
+	}
+
+	if (!cease_fire)
+		self.cnt2 = (self.cnt2 - 1);
+
+	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time")) + 1 ) ));
 	if (!self.cnt2)
 	{
 		if (((self.cnt == 1) || (self.cnt == 5)))
@@ -119,6 +139,7 @@ void () QuadRoundThink =
 			bprint (2, " remaining\n");
 		}
 	}
+	gametime++;
 	self.nextthink = (time + 1);
 };
 
@@ -202,13 +223,12 @@ void () QuadRoundBegin =
 		te = find (te, classname, "player");
 	}
 	lightstyle (0, "m");
-	bprint (2, "QUAD ROUND BEGINS NOW\n");
 
 	localcmd ("serverinfo status \"");
-	tmp = ftos (self.cnt + 1);
-	localcmd (tmp);
-	localcmd (" min left\"\n");
+	localcmd ("Starting\"\n");
 
+
+	bprint (2, "QUAD ROUND BEGINS NOW\n");
 	round_active = 1;
 	round_over = 0;
 	if (speedcap)
