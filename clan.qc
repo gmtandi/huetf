@@ -425,7 +425,7 @@ void () PreMatch_Think =
 		tmp = strcat(tmp, mapname);
 		tmp = strcat(tmp, "\b]:\b");
 
-		tmp = strcat(tmp, "\n\bTeam1 :\b ");
+/*		tmp = strcat(tmp, "\n\bTeam1 :\b ");
 		tmp = strcat(tmp, infokey(world, "team1"));
 
 		tmp = strcat(tmp, " \bTeam2 :\b ");
@@ -482,6 +482,8 @@ void () PreMatch_Think =
 			tmp = strcat(tmp, "on");
 		else
 			tmp = strcat(tmp, "off");
+
+*/
 
 		strcat(tmp, "\n");
 
