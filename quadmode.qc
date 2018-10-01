@@ -90,7 +90,7 @@ void () QuadRoundThink =
 	if (!cease_fire)
 		self.cnt2 = (self.cnt2 - 1);
 
-	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time")) + 1 ) ));
+	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time")) ) ));
 	if (!self.cnt2)
 	{
 		if (((self.cnt == 1) || (self.cnt == 5)))
@@ -251,7 +251,7 @@ void () QuadRoundBegin =
 			self.cnt = counter;
 		}
 	}
-	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time"))  + 1 ) ));
+//	localcmd (sprintf("timelimit %s\n", ftos( stof(infokey (world, "round_time"))  ) ));
 	self.think = QuadRoundThink;
 	self.nextthink = (time + 0.1);
 };
