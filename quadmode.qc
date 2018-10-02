@@ -537,18 +537,20 @@ void () StartQuadRound =
 };
 
 void () EndRound = {
-	if (infokey(world,"status") != "Countdown" && infokey(world,"status") != "Standby") {
-		if (rounds > 1) {
-			bprint (2, "ROUND TIME OVER\nNext round begins in 10 seconds\n");
+	if (infokey(world, "quadmode") == "on") {
+		if (infokey(world,"status") != "Countdown" && infokey(world,"status") != "Standby") {
+			if (rounds > 1) {
+				bprint (2, "ROUND TIME OVER\nNext round begins in 10 seconds\n");
 
-				lightstyle (0, "e");
-				localcmd("serverinfo status Countdown\n");
+					lightstyle (0, "e");
+					localcmd("serverinfo status Countdown\n");
 
-				self.think = QuadRoundOver;
-				self.nextthink = (time + 0.1);
-		}
-		else if (rounds == 1) {
-			StartQuadRound();
+					self.think = QuadRoundOver;
+					self.nextthink = (time + 0.1);
+			}
+			else if (rounds == 1) {
+				StartQuadRound();
+			}
 		}
 	}
 };
