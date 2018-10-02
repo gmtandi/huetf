@@ -200,14 +200,17 @@ void () MatchThink =
 		localcmd (" min left\"\n");
 	}
 
-	if ((self.cnt2 == -1))
-	{
-		self.cnt2 = 59;
-		self.cnt = (self.cnt - 1);
+	if (self.cnt2 == 1) {
 		localcmd ("serverinfo status \"");
 		tmp = ftos (self.cnt + 1);
 		localcmd (tmp);
 		localcmd (" min left\"\n");
+	}
+
+	if ((self.cnt2 == -1))
+	{
+		self.cnt2 = 59;
+		self.cnt = (self.cnt - 1);
 	}
 	if (!self.cnt2)
 	{
