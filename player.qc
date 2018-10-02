@@ -1315,7 +1315,7 @@ void () PlayerDie =
 		}
 	}
 	self.weaponmodel = "";
-	if (rounds)
+	if (rounds && infokey(world, "quadmode") != "on")
 	{
 		self.respawn_time = (time + 1);
 	}
