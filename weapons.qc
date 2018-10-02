@@ -58,6 +58,7 @@ void () ChangeTP;
 void () ClanMode;
 void () QuadMode;
 void () EndRound;
+void () PlayerReady;
 void () RestartMap;
 void () GroundSpeed;
 void () StartTimer;
@@ -1745,7 +1746,7 @@ void () W_FireTriBolt =
 void () SniperRail_Touch =
 {
 	local vector org;
-	local float damage = 90
+	local float damage = 90;
 
 	if ((other == self.owner))
 	{
@@ -4411,6 +4412,24 @@ void () CommandImpulses =
 														self.impulse = 0;
 														return;
 													}
+													else if ((self.impulse == 241))
+													{			
+														if (infokey(world, "quadmode") != "on")
+														{
+															sprint (self, 2, "Not in Quad mode, can't use 'ready'.\n");
+															self.impulse = 0;
+															return;																																																																					
+														}
+														if (((clanbattle == 1) && !cb_prematch))
+														{
+															sprint (self, 2, "Match already in progress...\n");
+															self.impulse = 0;
+															return;
+														}
+														PlayerReady();																																				self.impulse = 0;
+														self.impulse = 0;
+														return;
+													}
 													else
 													{
 														if ((self.impulse == _V))
@@ -4772,9 +4791,15 @@ void () CommandImpulses =
 																																				self.impulse = 0;
 																																				return;
 																																			}
-																																			pmtime = 0;
-																																			StartTimer ();
-																																			self.impulse = 0;
+																																			if (infokey(world, "quadmode") != "on") {
+																																				pmtime = 0;
+																																				StartTimer ();
+																																				self.impulse = 0;
+																																			}
+																																			else {
+																																				PlayerReady();
+																																				self.impulse = 0;
+																																			}
 																																			return;
 																																		}
 																																		else
@@ -5463,22 +5488,7 @@ void () CommandImpulses =
 																																																																				QuadMode();
 																																																																				self.impulse = 0;
 																																																																				return;
-																																																																			}
-																																																																			else if ((self.impulse == 241))
-																																																																			{
-																																																																				if ((self.is_admin != 3))
-																																																																				{
-																																																																					if ((stof (infokey (world, "adminlevel")) < 2))
-																																																																					{
-																																																																						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
-																																																																						self.impulse = 0;
-																																																																						return;
-																																																																					}
-																																																																				}
-																																																																				EndRound();
-																																																																				self.impulse = 0;
-																																																																				return;
-																																																																			}
+																																																																			}																																																																			
 																																																																		}
 																																																																	}
 																																																																}

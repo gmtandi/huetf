@@ -2392,7 +2392,6 @@ void () Admin_Aliases =
 	TeamFortress_Alias ("frjump", 238, 0);
 	TeamFortress_Alias ("adminmenu", 239, 0);
 	TeamFortress_Alias ("quadmode", 240, 0);
-	TeamFortress_Alias ("endround", 241, 0);
 	TeamFortress_Alias ("rounds", _O, 0);
 	TeamFortress_Alias ("duel", _P, 0);
 	TeamFortress_Alias ("speedcap", _Q, 0);
