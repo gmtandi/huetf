@@ -380,7 +380,7 @@ void () StartQuadRound =
 			{
 				if ((quad_winner == 2))
 				{
-					bprint (2, "Red Team!\n");
+					bprint (2, "Red Team Wins!\n");
 				}
 				else
 				{
@@ -531,5 +531,22 @@ void () StartQuadRound =
 		localcmd("serverinfo status Countdown\n");
 		te.think = QuadRoundInit;
 		te.nextthink = (time + 1); 
+	}
+};
+
+void () EndRound = {
+	if (infokey(world,"status") != "Countdown" && infokey(world,"status") != "Standby") {
+		if (rounds > 1) {
+			bprint (2, "ROUND TIME OVER\nNext round begins in 10 seconds\n");
+
+				lightstyle (0, "e");
+				localcmd("serverinfo status Countdown\n");
+
+				self.think = QuadRoundOver;
+				self.nextthink = (time + 0.1);
+		}
+		else if (rounds == 1) {
+			StartQuadRound();
+		}
 	}
 };

@@ -57,6 +57,7 @@ void () FragsUp;
 void () ChangeTP;
 void () ClanMode;
 void () QuadMode;
+void () EndRound;
 void () RestartMap;
 void () GroundSpeed;
 void () StartTimer;
@@ -5460,6 +5461,21 @@ void () CommandImpulses =
 																																																																					}
 																																																																				}
 																																																																				QuadMode();
+																																																																				self.impulse = 0;
+																																																																				return;
+																																																																			}
+																																																																			else if ((self.impulse == 241))
+																																																																			{
+																																																																				if ((self.is_admin != 3))
+																																																																				{
+																																																																					if ((stof (infokey (world, "adminlevel")) < 2))
+																																																																					{
+																																																																						sprint (self, 2, "You have limited Access, You cannot use this command.\n");
+																																																																						self.impulse = 0;
+																																																																						return;
+																																																																					}
+																																																																				}
+																																																																				EndRound();
 																																																																				self.impulse = 0;
 																																																																				return;
 																																																																			}
