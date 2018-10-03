@@ -676,11 +676,24 @@ void () StopTimer =
 	localcmd ("serverinfo status Normal\n");
 };
 
+void () ResetBreakAndReady = {
+	local entity te;
+	te = find (world, classname, "player");
+	while (te != world) {
+		te.bvote = 0;
+		te.is_ready = 0;
+		v_break = 0;
+		v_ready = 0;
+		te = find (te, classname, "player");
+	}	
+}
+
 void () PlayerBreak =
 {
 	local float f1;
 	local float f2;
 	local string tmp;
+	local entity te;
 
 	if (intermission_running)
 	{
@@ -699,6 +712,10 @@ void () PlayerBreak =
 		}
 		return;
 	}
+	if (infokey(world, "quadmode") == "on" && (infokey (world, "status") == "Countdown" || infokey (world, "status") == "Standby")) {
+		sprint (self, 2, "You cannot break at this time.\n");
+		return;
+	} 
 	tmp = infokey (world, "votetime");
 	f1 = (stof (tmp) * 60);
 	if ((f1 > time))
@@ -727,7 +744,10 @@ void () PlayerBreak =
 		v_break = (v_break - 1);
 		return;
 	}
-	if (clanbattle)
+	if (infokey(world, "quadmode") == "on") {
+		bprint2 (3, self.netname, " votes for ending the round\n");
+	}
+	else if (clanbattle)
 	{
 		bprint2 (3, self.netname, " votes for stopping the match\n");
 	}
@@ -741,6 +761,12 @@ void () PlayerBreak =
 	f2 = (floor ((f1 / 2)) + 1);
 	if ((v_break >= f2))
 	{
+		if (infokey(world, "quadmode") == "on") {
+			bprint (2, "Round ended by majority vote\n");
+			ResetBreakAndReady();
+			EndRound();
+			return;
+		}
 		if (clanbattle)
 		{
 			bprint (2, "Match stopped by majority vote\n");
@@ -766,6 +792,95 @@ void () PlayerBreak =
 	}
 };
 
+void () PlayerReady =
+{
+	local float f1;
+	local float f2;
+	local string tmp;
+	local entity te;
+
+	if (infokey(world, "quadmode") == "on" && (infokey (world, "status") == "Countdown")) {
+		sprint (self, 2, "Use 'break' to stop the countdown.\n");
+		return;
+	}
+	if (infokey(world, "quadmode") == "on" && (infokey (world, "status") != "Standby")) {
+		sprint (self, 2, "You cannot do this after the match has started.\n");
+		return;
+	}
+	if (self.team_no == 0) {
+		sprint (self, 2, "You must join a team first.\n");
+		return;
+	}
+	if (self.playerclass == 0) {
+		sprint (self, 2, "You must choose a class first.\n");
+		return;
+	}	
+	if (intermission_running)
+	{
+		return;
+	}
+	if ((self.classname != "player"))
+	{
+		return;
+	}
+	tmp = infokey (world, "votetime");
+	f1 = (stof (tmp) * 60);
+	if ((f1 > time))
+	{
+		sprint (self, 2, "You cannot be ready at this time.\n");
+		return;
+	}
+	if ((self.allowvote > time))
+	{
+		return;
+	}
+	self.allowvote = (time + 3);
+	if (self.is_ready)
+	{
+		bprint2 (2, self.netname, " is NOT ready anymore\n ");
+		self.is_ready = 0;
+		v_ready = (v_ready - 1);
+		return;
+	}
+	self.is_ready = 1;
+	v_ready = v_ready + 1;
+	bprint2 (3, self.netname, " is ready to start the match\n");
+	f1 = TeamFortress_GetNoPlayers ();
+	if (v_ready == f1 )
+	{
+		bprint (2, "All players ready, starting match\n");
+		pmtime = 0;
+		ResetBreakAndReady();
+		StartTimer ();
+		return;
+	}
+	if ((v_ready != 0))
+	{
+		local string players_not_ready = "Not ready: ";
+		local float first = 1;
+		te = find (world, classname, "player");
+		while (te != world) {
+			if (te.is_ready == 0) {
+				if (!first)
+					players_not_ready = strcat(players_not_ready, ", ");
+				else
+					first = 0;						
+				players_not_ready = strcat(players_not_ready, te.netname);
+			}
+			te = find (te, classname, "player");
+		}	
+		players_not_ready = strcat(players_not_ready, "\n");
+		bprint(1, players_not_ready);
+		te = find (world, classname, "player");
+		while (te != world) {
+			if (te.is_ready == 0)
+				sprint (te, 2, "If you are ready, type 'ready' in the console\n");
+			te = find (te, classname, "player");
+		}
+		return;
+	}
+};
+
 void () RemoveVotes =
 {
 	if (self.bvote)
@@ -782,6 +897,12 @@ void () RemoveVotes =
 		bprint (3, "vote\n");
 		self.bvote = 0;
 		v_break = (v_break - 1);
+	}
+	if (self.is_ready)
+	{
+		bprint2 (2, self.netname, " is NOT ready anymore\n ");
+		self.is_ready = 0;
+		v_ready = (v_ready - 1);
 	}
 	if (elect)
 	{

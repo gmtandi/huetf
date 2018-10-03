@@ -56,6 +56,7 @@ void () TeamFortress_MOTD =
 		TeamFortress_Alias ("yes", _S, 0);
 		TeamFortress_Alias ("no", _T, 0);
 		TeamFortress_Alias ("break", _U, 0);
+		TeamFortress_Alias ("ready", 241, 0);
 		TeamFortress_Alias ("about", _W, 0);
 		TeamFortress_Alias ("modstatus", _Y, 0);
 		return;
