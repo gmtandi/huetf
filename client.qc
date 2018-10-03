@@ -551,6 +551,7 @@ void () DecodeLevelParms =
 	if (!self.playerclass)
 	{
 		self.playerclass = parm12;
+		self.classtime = gametime;
 	}
 	if (parm13)
 	{
@@ -1379,6 +1380,7 @@ void () PutClientInServer =
 	if (round_active && infokey(world, "quadmode") != "on")
 	{
 		self.playerclass = 0;
+		self.classtime = gametime;
 	}
 	else
 	{
@@ -1419,11 +1421,14 @@ void () PutClientInServer =
 				{
 					self.playerclass = (1 + floor ((random () * (enter - 1))));
 				}
+				if (self.playerclass != oldclass)
+					self.classtime = gametime;
 			}
 			else
 			{
 				sprint (self, 2, "All classes disabled, returning to Observer mode.\n");
 				self.playerclass = 0;
+				self.classtime = gametime;
 			}
 			self.tfstate = 8;
 			TeamFortress_ExecClassScript (self);
