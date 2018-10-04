@@ -1,3 +1,12 @@
+void (entity player) LogEventPlayerStart = {
+ 	if (canLog == 0)
+		return;
+
+	local string event;
+	event = sprintf(",\n{\"type\": \"playerStart\", \"player\": \"%s\", \"classtime\": %s, \"time\": %s, \"gameTimeStamp\": %s}", player.netname, ftos(player.classtime), ftos(gametime), timemillis());
+	logevent(event);
+}
+
 void () LogEventGameStart = {
  	if (canLog == 0)
 		return;
@@ -20,9 +29,6 @@ void (entity player, float previous, float next, float timeplayed) LogEventChang
 	if (canLog == 0)
 		return;
 	local string event;
-	//forcing reset to gametime
-	player.classtime = gametime;
-	//
 	event = sprintf(",\n{\"type\": \"changeClass\", \"player\": \"%s\", \"previousClass\": %s, \"nextClass\": %s, \"team\": %s, \"timePlayed\": %s, \"time\": %s, \"gameTimeStamp\": %s}",
 							player.netname,
 							ftos(previous),
