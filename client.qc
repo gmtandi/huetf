@@ -551,7 +551,6 @@ void () DecodeLevelParms =
 	if (!self.playerclass)
 	{
 		self.playerclass = parm12;
-		self.classtime = gametime;
 	}
 	if (parm13)
 	{
@@ -1360,7 +1359,7 @@ void () PutClientInServer =
 	self.mapcount = _d;
 	self.gravity = 1;
 	self.camdist = 0;
-	DecodeLevelParms ();
+	DecodeLevelParms ();	
 	if (self.team_no && !captainmode)
 	{
 		if (!self.playerclass)
@@ -1380,7 +1379,6 @@ void () PutClientInServer =
 	if (round_active && infokey(world, "quadmode") != "on")
 	{
 		self.playerclass = 0;
-		self.classtime = gametime;
 	}
 	else
 	{
@@ -1390,8 +1388,8 @@ void () PutClientInServer =
 			if (self.playerclass != self.nextpc && self.playerclass != 0) {
 				local float timeplayed = gametime - self.classtime;
 				LogEventChangeClass(self, self.playerclass, self.nextpc, timeplayed);
+				self.classtime = gametime;
 			}
-			self.classtime = gametime;
 			self.playerclass = self.nextpc;
 			self.nextpc = 0;
 			if ((self.playerclass == enter))
@@ -1421,14 +1419,11 @@ void () PutClientInServer =
 				{
 					self.playerclass = (1 + floor ((random () * (enter - 1))));
 				}
-				if (self.playerclass != oldclass)
-					self.classtime = gametime;
 			}
 			else
 			{
 				sprint (self, 2, "All classes disabled, returning to Observer mode.\n");
 				self.playerclass = 0;
-				self.classtime = gametime;
 			}
 			self.tfstate = 8;
 			TeamFortress_ExecClassScript (self);
@@ -2772,6 +2767,7 @@ void () ClientDisconnect =
 
 	local float timeplayed = gametime - self.classtime;
 	LogEventChangeClass(self, self.playerclass, 0, timeplayed);
+	self.classtime = gametime;
 	
 	bprint4 (2, self.netname, " left the game with ", st, " frags\n");
 

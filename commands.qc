@@ -48,8 +48,11 @@ void () MapEndSequence =
 	player = find (world, classname, "player");	
 	while (player) 
 	{
-		local float timeplayed = gametime - player.classtime;
-		LogEventChangeClass(player, player.playerclass, 0, timeplayed);
+		if (player.playerclass != 0) {
+			local float timeplayed = gametime - player.classtime;
+			LogEventChangeClass(player, player.playerclass, 0, timeplayed);
+			player.classtime = gametime;
+		}
 		player = find (player, classname, "player");
 	}
 	LogEventTeamScores();

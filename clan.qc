@@ -299,8 +299,11 @@ void () StartMatch =
 		self.frags = 0;
 		self.real_frags = 0;		
 		setspawnparms (self);
-		PutClientInServer ();
+		if (infokey(world, "quadmode") != "on")
+			PutClientInServer ();
+		LogEventPlayerStart(self);
 		self.classtime = gametime;
+		LogEventPlayerStart(self);
 		self = oldself;
 		te = find (te, classname, "player");
 	}
