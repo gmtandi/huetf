@@ -310,7 +310,6 @@ string (string str , float size) newstr = #122;
 void (string str) freestr = #123;
 string (vector v1) locationname = #124;
 void (string str) logevent = #125;
-string (string str, ...) sprintf = #126;
 string () timemillis = #127;
 
 //void(string str) conprint = #95;   // prints to server console only (no redirects)
@@ -337,3 +336,6 @@ void () randomizeCaptains;
 void () disableCaptain;
 void () randomizeTeams;
 float gametime;
+
+// enable qw in fteextensions
+#define QUAKEWORLD

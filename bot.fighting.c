@@ -856,7 +856,7 @@ void () AttackVisible =
 		fDistance = vlen ((self.origin - self.target1.origin));
 		LeadAim (fDistance);
 		GotoLocation (self.target1.origin);
-		DodgeEnemy ();
+		DodgeEnemy (fDistance);
 		self.button0 = 1;
 		UseGren ();
 	}
@@ -865,7 +865,7 @@ void () AttackVisible =
 		fDistance = vlen ((self.origin - self.target1.origin));
 		LeadAim (fDistance);
 		GotoLocation (self.target1.origin);
-		DodgeEnemy ();
+		DodgeEnemy (fDistance);
 		UseGren ();
 		return;
 	}
@@ -895,7 +895,7 @@ void () AttackVisible =
 				}
 			}
 		}
-		DodgeEnemy ();
+		DodgeEnemy (fDistance);
 		if ((self.flags & FL_ONGROUND))
 		{
 			vlen (self.velocity);
@@ -919,7 +919,7 @@ void () AttackVisible =
 		fDistance = vlen ((self.origin - self.target1.origin));
 		LeadAim (fDistance);
 		GotoLocation (self.target1.origin);
-		DodgeEnemy ();
+		DodgeEnemy (fDistance);
 		if ((fDistance > BOT_IMPULSE))
 		{
 			if ((self.flags & FL_ONGROUND))

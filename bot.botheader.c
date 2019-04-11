@@ -117,7 +117,6 @@ string () PickAName;
 float (float y1, float y2) angcomp;
 
 void (entity client, ...) hue_sprint = #24;
-void (...) bprint = #23;
 void (...) bprint2 = #23;
 void (...) bprint3 = #23;
 void (...) bprint4 = #23;
@@ -125,8 +124,6 @@ void (...) bprint5 = #23;
 void (...) bprint6 = #23;
 void (...) bprint7 = #23;
 void (...) bprint8 = #23;
-
-void (...) dprint = #25;
 
 void (entity client, string s, ...) hue_centerprint = #73;
 
@@ -143,96 +140,6 @@ void (float to, float f) hue_WriteAngle = #57;
 void (float to, string s) hue_WriteString = #58; 
 void (float to, entity s) hue_WriteEntity = #59; 
 string(entity e, string key) hue_infokey = #80; 
-
-string (entity e, string s) infokey =
-{
-	if (((e == world) || (e.ishuman == TRUE)))
-	{
-		return (hue_infokey (e, s));
-	}
-	if ((e.classname == "player"))
-	{
-		if ((s == "bottomcolor"))
-		{
-			return (ftos (e.fPants));
-		}
-		if ((s == "skin"))
-		{
-			if ((self.playerclass == 1))
-			{
-				return ("tf_scout");
-			}
-			else
-			{
-				if ((self.playerclass == BOT_FIGHTING))
-				{
-					return ("tf_snipe");
-				}
-				else
-				{
-					if ((self.playerclass == BOT_AI_FOLLOW))
-					{
-						return ("tf_sold");
-					}
-					else
-					{
-						if ((self.playerclass == BOT_MOVING))
-						{
-							return ("tf_demo");
-						}
-						else
-						{
-							if ((self.playerclass == BOT_AI_GRAPPLE))
-							{
-								return ("tf_medic");
-							}
-							else
-							{
-								if ((self.playerclass == BOT_AI_FLEE))
-								{
-									return ("tf_hwguy");
-								}
-								else
-								{
-									if ((self.playerclass == BOT_AI_BLAST))
-									{
-										return ("tf_pyro");
-									}
-									else
-									{
-										if ((self.playerclass == BOT_DEFEND))
-										{
-											return ("tf_spy");
-										}
-										else
-										{
-											return ("tf_eng");
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if ((s == "team"))
-		{
-			return (GetTeamName (e.team_no));
-		}
-	}
-
-	return "";
-};
-
-
-void (entity client, float level, string s1) sprint =
-{
-	if (client.ishuman)
-	{
-		hue_sprint (client, level, s1);
-	}
-};
 
 void (entity client, float level, string s1, string s2) sprint2 =
 {
@@ -301,14 +208,6 @@ void (entity client, string s1, string s2, string s3) CenterPrint3 =
 	}
 };
 
-void (entity client, string s1) centerprint =
-{
-	if (client.ishuman)
-	{
-		hue_centerprint (client, s1);
-	}
-};
-
 void (entity client, string s1, string s2) centerprint2 =
 {
 	if (client.ishuman)
@@ -355,112 +254,4 @@ void (entity client, string s1, string s2, string s3, string s4, string s5, stri
 	{
 		hue_centerprint (client, s1, s2, s3, s4, s5, s6, s7);
 	}
-};
-
-
-void (entity client, string s) stuffcmd =
-{
-	if (client.ishuman)
-	{
-		hue_stuffcmd (client, s);
-	}
-};
-
-void (entity e) setspawnparms =
-{
-	if (e.ishuman)
-	{
-		hue_setspawnparms (e);
-	}
-	else
-	{
-		SetNewParms ();
-	}
-};
-
-vector (entity e, float sped) aim =
-{
-	e.missile_speed = sped;
-	return (hue_aim (e, sped));
-};
-
-void (entity e, float chan, string samp, float vol, float atten) sound =
-{
-	if ((e.classname == "player"))
-	{
-		e.f_sound = (time + 0.5);
-	}
-	hue_sound (e, chan, samp, vol, atten);
-};
-
-void (float to, float f) WriteByte =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteByte (to, f);
-};
-
-void (float to, float f) WriteChar =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteChar (to, f);
-};
-
-void (float to, float f) WriteShort =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteShort (to, f);
-};
-
-void (float to, float f) WriteLong =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteLong (to, f);
-};
-
-void (float to, float f) WriteCoord =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteCoord (to, f);
-};
-
-void (float to, float f) WriteAngle =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteAngle (to, f);
-};
-
-void (float to, string s) WriteString =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteString (to, s);
-};
-
-void (float to, entity s) WriteEntity =
-{
-	if (((to == MSG_ONE) && (msg_entity.ishuman != 1)))
-	{
-		return;
-	}
-	hue_WriteEntity (to, s);
 };

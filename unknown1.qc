@@ -799,7 +799,6 @@ void (float f1, float f2, float f3, float f4, float f5, float f6, float f7) W7C;
 void (float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) W8C;
 */
 
-void (string str) WriteStr;
 void (float f1, float len) WriteRep;
 
 void (float f, float c) WriteIntXX;
@@ -820,7 +819,14 @@ void () RefreshStatusBar =
 	local float x;
 	local entity te;
 	local float num;
-
+	local string str;
+	local float r;
+	r = (self.StatusBarRes + self.StatusBarSize)/2;
+	while ((r > 0))
+	{
+		str = strcat(str, "\n");
+		r = (r - 1);
+	}
 	if (self.current_menu)
 	{
 		return;
@@ -837,7 +843,6 @@ void () RefreshStatusBar =
 //	self.StatusRefreshTime = (time + 1.5);
 	self.StatusRefreshTime = (time + 0.2);
 	msg_entity = self;
-	Status_StartWrite ();
 	if (round_active && infokey(world, "quadmode") != "on")
 	{
 		if (!self.ScannerOn)
@@ -845,18 +850,16 @@ void () RefreshStatusBar =
 			if ((self.is_undercover != 2))
 			{
 				te = find (te, classname, "round");
-				WriteIntXX (te.cnt, COLOR_WHITE);
-				WriteByte (1, dperiod);
-				WriteIntXX (te.cnt2, COLOR_WHITE);
-				WriteSpace (4);
+				str = strcat(str, ftos(dperiod));
+				str = strcat(str, "    ");
 			}
 		}
 		if (tfstrike)
 		{
 			if (self.is_detpacking)
 			{
-                                WriteStr ("setting BOMB");
-				WriteSpace (13);
+                str = strcat(str, "setting BOMB");
+                str = strcat(str, "             ");				
 			}
 		}
 	}
@@ -864,7 +867,6 @@ void () RefreshStatusBar =
 	{
 		if (!self.playerclass)
 		{
-			Status_EndWrite ();
 			return;
 		}
 		else
@@ -883,14 +885,14 @@ void () RefreshStatusBar =
 					{
 						if ((te.team_no == 1))
 						{
-							WriteStr ("Blue ");
+							str = strcat(str, "Blue ");
 							x = 5;
 						}
 						else
 						{
 							if ((te.team_no == 2))
 							{
-								WriteStr ("Red ");
+								str = strcat(str, "Red ");
 								x = 4;
 							}
 							else
@@ -898,14 +900,14 @@ void () RefreshStatusBar =
 								if ((te.team_no == 3))
 								{
 
-									WriteStr ("Yellow ");
+									str = strcat(str, "Yellow ");
 									x = 7;
 								}
 								else
 								{
 									if ((te.team_no == 4))
 									{
-										WriteStr ("Green ");
+										str = strcat(str, "Green ");
 										x = 6;
 									}
 								}
@@ -913,84 +915,84 @@ void () RefreshStatusBar =
 						}
 						if ((te.playerclass == 1))
 						{
-							WriteStr ("Scout");
+							str = strcat(str, "Scout");
 							x = (x + 5);
 						}
 						else
 						{
 							if ((te.playerclass == 2))
 							{
-								WriteStr ("Sniper");
+								str = strcat(str, "Sniper");
 								x = (x + 6);
 							}
 							else
 							{
 								if ((te.playerclass == 3))
 								{
-									WriteStr ("Soldier");
+									str = strcat(str, "Soldier");
 									x = (x + 7);
 								}
 								else
 								{
 									if ((te.playerclass == 4))
 									{
-										WriteStr ("Demoman");
+										str = strcat(str, "Demoman");
 										x = (x + 7);
 									}
 									else
 									{
 										if ((te.playerclass == 5))
 										{
-											WriteStr ("Medic");
+											str = strcat(str, "Medic");
 											x = (x + 5);
 										}
 										else
 										{
 											if ((te.playerclass == 6))
 											{
-												WriteStr ("HWGuy");
+												str = strcat(str, "HWGuy");
 												x = (x + 5);
 											}
 											else
 											{
 												if ((te.playerclass == 7))
 												{
-													WriteStr ("Pyro");
+													str = strcat(str, "Pyro");
 													x = (x + 4);
 												}
 												else
 												{
 													if ((te.playerclass == 8))
 													{
-														WriteStr ("Spy");
+														str = strcat(str, "Spy");
 														x = (x + 3);
 													}
 													else
 													{
 														if ((te.playerclass == 9))
 														{
-															WriteStr ("Engineer");
+															str = strcat(str, "Engineer");
 															x = (x + 8);
 														}
 														else
 														{
 															if ((te.playerclass == 11))
 															{
-																WriteStr ("Civilian");
+																str = strcat(str, "Civilian");
 																x = (x + 8);
 															}
 															else
 															{
 																if ((te.playerclass == 13))
 																{
-																	WriteStr ("Sentry Gun");
+																	str = strcat(str, "Sentry Gun");
 																	x = (x + enter);
 																}
 																else
 																{
 																	if ((te.playerclass == 14))
 																	{
-																		WriteStr ("Goal Item");
+																		str = strcat(str, "Goal Item");
 																		x = (x + 8);
 																	}
 																}
@@ -1007,15 +1009,20 @@ void () RefreshStatusBar =
 					}
 					else
 					{
-						WriteStr ("No Blips");
+						str = strcat(str, "No Blips");
 						x = (x + 8);
 					}
 					if (x)
 					{
-						WriteSpace ((COLOR_GREEN - x));
+						local float i = (18 - x);
+						while (i)
+						{
+							str = strcat(str, " ");
+							i = (i - 1);
+						}
 					}
-					WriteStr ("Range: ");
-					WriteIntXXX (te.health, COLOR_WHITE);
+					str = strcat(str, "Range: ");
+					str = strcat(str, ftos(te.health));
 				}
 			}
 			else if ((sniperpower) && (self.playerclass == 2)) {
@@ -1028,8 +1035,8 @@ void () RefreshStatusBar =
 			            st = strcat(st, " (max)");
 			        }
 			    }
-			    WriteStr(st);
-			    WriteSpace (18);
+			    str = strcat(str, st);
+			    str = strcat(str, "                  ");
 			}
 			else
 			{
@@ -1037,8 +1044,8 @@ void () RefreshStatusBar =
 				{
 					if (self.is_detpacking)
 					{
-						WriteStr ("setting detpack");
-						WriteSpace (15);
+						str = strcat(str, "setting detpack");
+						str = strcat(str, "               ");
 					}
 				}
 				else
@@ -1049,36 +1056,36 @@ void () RefreshStatusBar =
 						{
 							if ((self.is_undercover == 2))
 							{
-								WriteStr ("going undercover");
-								WriteSpace (14);
+								str = strcat(str, "going undercover");
+								str = strcat(str, "              ");
 							}
 							else
 							{
 								x = 0;
 								if ((self.undercover_team == 1))
 								{
-									WriteStr ("Blue ");
+									str = strcat(str, "Blue ");
 									x = 5;
 								}
 								else
 								{
 									if ((self.undercover_team == 2))
 									{
-										WriteStr ("Red ");
+										str = strcat(str, "Red ");
 										x = 4;
 									}
 									else
 									{
 										if ((self.undercover_team == 3))
 										{
-											WriteStr ("Yellow ");
+											str = strcat(str, "Yellow ");
 											x = 7;
 										}
 										else
 										{
 											if ((self.undercover_team == 4))
 											{
-												WriteStr ("Green ");
+												str = strcat(str, "Green ");
 												x = 6;
 											}
 										}
@@ -1086,56 +1093,56 @@ void () RefreshStatusBar =
 								}
 								if ((self.undercover_skin == 1))
 								{
-									WriteStr ("Scout");
+									str = strcat(str, "Scout");
 									x = (x + 5);
 								}
 								else
 								{
 									if ((self.undercover_skin == 2))
 									{
-										WriteStr ("Sniper");
+										str = strcat(str, "Sniper");
 										x = (x + 6);
 									}
 									else
 									{
 										if ((self.undercover_skin == 3))
 										{
-											WriteStr ("Soldier");
+											str = strcat(str, "Soldier");
 											x = (x + 7);
 										}
 										else
 										{
 											if ((self.undercover_skin == 4))
 											{
-												WriteStr ("Demoman");
+												str = strcat(str, "Demoman");
 												x = (x + 7);
 											}
 											else
 											{
 												if ((self.undercover_skin == 5))
 												{
-													WriteStr ("Medic");
+													str = strcat(str, "Medic");
 													x = (x + 5);
 												}
 												else
 												{
 													if ((self.undercover_skin == 6))
 													{
-														WriteStr ("HWGuy");
+														str = strcat(str, "HWGuy");
 														x = (x + 5);
 													}
 													else
 													{
 														if ((self.undercover_skin == 7))
 														{
-															WriteStr ("Pyro");
+															str = strcat(str, "Pyro");
 															x = (x + 4);
 														}
 														else
 														{
 															if ((self.undercover_skin == 9))
 															{
-																WriteStr ("Engineer");
+																str = strcat(str, "Engineer");
 																x = (x + 8);
 															}
 														}
@@ -1147,7 +1154,12 @@ void () RefreshStatusBar =
 								}
 								if (x)
 								{
-									WriteSpace ((30 - x));
+									local float i = (30 - x);
+									while (i)
+									{
+										str = strcat(str, " ");
+										i = (i - 1);
+									}
 								}
 							}
 						}
@@ -1164,35 +1176,35 @@ void () RefreshStatusBar =
 								{
 									te = find (te, classname, "building_sentrygun");
 								}
-								WriteStr ("Sentry: ");
-								WriteIntXXX (te.health, COLOR_WHITE);
+								str = strcat(str, "Sentry: ");
+								str = strcat(str, ftos(te.health));
 								x = (x + 11);
 								if (!(self.sbar_type & 1))
 								{
 									if (((te.ammo_rockets == 0) && (te.ammo_shells == 0)))
 									{
-										WriteStr (" no ammo");
+										str = strcat(str, " no ammo");
 										x = (x + 8);
 									}
 									else
 									{
 										if (!te.ammo_shells)
 										{
-											WriteStr (" no shells");
+											str = strcat(str, " no shells");
 											x = (x + enter);
 										}
 										else
 										{
 											if ((!te.ammo_rockets && (te.weapon == 3)))
 											{
-												WriteStr (" no rockets");
+												str = strcat(str, " no rockets");
 												x = (x + 11);
 											}
 											else
 											{
 												if ((te.health != te.max_health))
 												{
-													WriteStr (" damaged");
+													str = strcat(str, " damaged");
 													x = (x + 8);
 												}
 											}
@@ -1201,13 +1213,13 @@ void () RefreshStatusBar =
 								}
 								else
 								{
-									WriteByte (1, slash);
-									WriteIntXXX (te.ammo_shells, COLOR_WHITE);
+									str = strcat(str, "/");
+									str = strcat(str, ftos(te.ammo_shells));
 									x = (x + 4);
 									if ((te.weapon == 3))
 									{
-										WriteByte (1, slash);
-										WriteIntXX (te.ammo_rockets, COLOR_WHITE);
+										str = strcat(str, "/");
+										str = strcat(str, ftos(te.ammo_rockets));
 										x = (x + 3);
 									}
 								}
@@ -1219,22 +1231,32 @@ void () RefreshStatusBar =
 								{
 									newmis = find (newmis, classname, "building_dispenser");
 								}
-								WriteStr (" Disp:");
-								WriteIntXXX (newmis.health, COLOR_WHITE);
+								str = strcat(str, " Disp:");
+								str = strcat(str, ftos(newmis.health));
 								x = (x + 9);
 							}
 							if (((x >= 0) && (x < 35)))
 							{
-								WriteSpace ((35 - x));
+								local float i = (35 - x);
+								while (i)
+								{
+									str = strcat(str, " ");
+									i = (i - 1);
+								}
 							}
 						}
 						else
 						{
 							if ((self.playerclass == 5))
 							{
-								WriteStr("Medikit:");
-								WriteIntXXX (self.ammo_medikit, COLOR_WHITE);
-								WriteSpace (19);
+								str = strcat(str, "Medikit:");
+								str = strcat(str, ftos(self.ammo_medikit));
+								local float i = (19 - x);
+								while (i)
+								{
+									str = strcat(str, " ");
+									i = (i - 1);
+								}
 							}
 						}
 					}
@@ -1242,28 +1264,27 @@ void () RefreshStatusBar =
 			}
 		}
 	}
-	WriteByte (1, enter);
+	str = strcat(str, "\n");
 	if ((number_of_teams == 2))
 	{
-		WriteStr("Blue:");
-		WriteIntXXXX (team1score, COLOR_WHITE);
-		WriteStr(" Red:");
-		WriteIntXXXX (team2score, COLOR_WHITE);
-		WriteStr(" ");
+		str = strcat(str, "Blue:");
+		str = strcat(str, ftos(team1score));
+		str = strcat(str, " Red:");
+		str = strcat(str, ftos(team2score));
+		str = strcat(str, " ");
 	}
 	else
 	{
-		WriteSIntXXXX (team1frags);
-		WriteByte (1, slash);
-		WriteSIntXXXX (team2frags);
-		WriteByte (1, slash);
-		WriteSIntXXXX (team3frags);
-		WriteByte (1, slash);
-		WriteSIntXXXX (team4frags);
+		str = strcat(str, ftos(team1frags));
+		str = strcat(str, "/");
+		str = strcat(str, ftos(team2frags));
+		str = strcat(str, "/");
+		str = strcat(str, ftos(team3frags));
+		str = strcat(str, "/");
+		str = strcat(str, ftos(team4frags));
 	}
 	if ((self.playerclass == 11))
 	{
-		Status_EndWrite ();
 		return;
 	}
 	if (!(self.sbar_type & 1))
@@ -1328,25 +1349,25 @@ void () RefreshStatusBar =
 		}
 		if ((num >= 0))
 		{
-			WriteStr("\sCLIP\s:"); //W7C (space, space, (_C | 128), (_L | 128), (_I | 128), (_P | 128), (dperiod | 128));
-			WriteIntXX (num, COLOR_WHITE);
+			str = strcat(str, "\sCLIP\s:"); //W7C (space, space, (_C | 128), (_L | 128), (_I | 128), (_P | 128), (dperiod | 128));
+			str = strcat(str, ftos(num));
 		}
 		else
 		{
-			WriteSpace (9);
+			str = strcat(str, "         ");
 		}
 	}
-        WriteStr(" \sG\s1:");//W4C (space, (_G | 128), (_1 | 128), dperiod);
-	WriteIntXX (self.no_grenades_1, COLOR_WHITE);
-	WriteStr(" \sG\s2:");//W4C (space, (_G | 128), (_2 | 128), dperiod);
-	WriteIntXX (self.no_grenades_2, COLOR_WHITE);
+    str = strcat(str, " \sG\s1:");//W4C (space, (_G | 128), (_1 | 128), dperiod);
+	str = strcat(str, ftos(self.no_grenades_1));
+	str = strcat(str, " \sG\s2:");//W4C (space, (_G | 128), (_2 | 128), dperiod);
+	str = strcat(str, ftos(self.no_grenades_2));
 
     if (self.StatusGrenTime > 0) {
-        WriteStr( strcat("\n\sGrenade\s: ", ftos(self.StatusGrenTime)) );
+        str = strcat(str, strcat("\n\sGrenade\s: ", ftos(self.StatusGrenTime)));
     }
+    str = strcat(str, "\n");
+    CenterPrint(self, str);
 
-
-	Status_EndWrite ();
 };
 
 void () Status_StartWrite =
@@ -1416,25 +1437,6 @@ void (float f1, float f2, float f3, float f4, float f5, float f6, float f7, floa
 };
 */
 
-void (string str) WriteStr = {
-
-   local float len;
-   local float i;
-   local string nwstr;
-
-   len = strlen (str);
-   for (i = 0; i < len - 1; i = i + 2)
-   {
-      nwstr = substr(str , i , 2);
-      WriteShort(1,str2short(nwstr));
-   }
-
-   if (i == len - 1)
-   {
-      nwstr = substr(str , i , 1);
-      WriteByte(1,str2byte(nwstr));
-   }
-};
 
 void (float f1, float len) WriteRep =
 {

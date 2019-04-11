@@ -3767,7 +3767,7 @@ void () TeamFortress_Regenerate =
 	}
 };
 
-float (vector veca, vector vecb) crossproduct =
+float (vector veca, vector vecb) crossproducttf =
 {
 	local float result;
 
