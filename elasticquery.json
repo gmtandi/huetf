@@ -1,0 +1,218 @@
+GET tf/_search
+{
+  "size": 0,
+  "aggs": {
+    "byGame": {
+      "filter": {
+        "term": {
+          "gameTimeStamp": 1537496791265
+        }
+      },
+      "aggs": {
+        "players": {
+          "filter": {
+            "term": {
+              "type": "changeClass"
+            }
+          },
+          "aggs": {
+            "index": {
+              "terms": {
+                "field": "player"
+              }
+            }
+          }
+        },
+        "attacking": {
+          "terms": {
+            "field": "attacker",
+            "size": "64"
+          },
+          "aggs": {
+            "damageDone": {
+              "filter": {
+                "term": {
+                  "type": "damage"
+                }
+              },
+              "aggs": {
+                "sumdmg": {
+                  "sum": {
+                    "field": "damage"
+                  }
+                }
+              }
+            },
+            "playerkills": {
+              "filter": {
+                "term": {
+                  "type": "kill"
+                }
+              }
+            },
+            "playersKilled": {
+              "filter": {
+                "term": {
+                  "type": "kill"
+                }
+              },
+              "aggs": {
+                "perPlayer": {
+                  "terms": {
+                    "field": "target"
+                  }
+                }
+              }
+            },
+            "shotsFired": {
+              "filter": {
+                "term": {
+                  "type": "attack"
+                }
+              },
+              "aggs": {
+                "perWeapon": {
+                  "terms": {
+                    "field": "inflictor"
+                  }
+                }
+              }
+            },
+            "shotsHit": {
+              "filter": {
+                "term": {
+                  "type": "damage"
+                }
+              },
+              "aggs": {
+                "perWeapon": {
+                  "terms": {
+                    "field": "inflictor"
+                  }
+                }
+              }
+            },
+            "fumbles": {
+              "filter": {
+                "term": {
+                  "type": "fumble"
+                }
+              }
+            },
+            "goals": {
+              "filter": {
+                "term": {
+                  "type": "goal"
+                }
+              }
+            }
+          }
+        },
+        "target": {
+          "terms": {
+            "field": "target"
+          },
+          "aggs": {
+            "damageTaken": {
+              "filter": {
+                "term": {
+                  "type": "damage"
+                }
+              },
+              "aggs": {
+                "sumdmg": {
+                  "sum": {
+                    "field": "damage"
+                  }
+                }
+              }
+            },
+            "playerdeaths": {
+              "filter": {
+                "term": {
+                  "type": "kill"
+                }
+              }
+            },
+            "playersKilledBy": {
+              "filter": {
+                "term": {
+                  "type": "kill"
+                }
+              },
+              "aggs": {
+                "perPlayer": {
+                  "terms": {
+                    "field": "attacker"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "player": {
+          "terms": {
+            "field": "player"
+          },
+          "aggs": {
+            "timePlayed": {
+              "filter": {
+                "term": {
+                  "type": "changeClass"
+                }
+              },
+              "aggs": {
+                "perClass": {
+                  "terms": {
+                    "field": "previousClass"
+                  },
+                  "aggs": {
+                    "timePlayed": {
+                      "sum": {
+                        "field": "timePlayed"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "fumbles": {
+          "filter": {
+            "term": {
+              "type": "fumble"
+            }
+          },
+          "aggs": {
+            "byPlayer": {
+              "terms": {
+                "field": "attacker",
+                "order": {
+                  "_count": "desc"
+                }
+              }
+            }
+          }
+        },
+        "goals": {
+          "filter": {
+            "term": {
+              "type": "goal"
+            }
+          },
+          "aggs": {
+            "byPlayer": {
+              "terms": {
+                "field": "attacker",
+                "order": {
+                  "_count": "desc"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
