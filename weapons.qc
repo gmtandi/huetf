@@ -1,6 +1,6 @@
 void () player_run;
 void () TeamFortress_DisplayDetectionItems;
-float (vector veca, vector vecb) crossproduct;
+float (vector veca, vector vecb) crossproducttf;
 void (vector org, float damage) SpawnBlood;
 void (entity rhook) Reset_Grapple;
 void () SuperDamageSound;
@@ -195,7 +195,7 @@ void () W_FireAxe =
 			makevectors (trace_ent.v_angle);
 			def = v_right;
 			makevectors (self.v_angle);
-			if ((crossproduct (def, v_forward) > 0))
+			if ((crossproducttf (def, v_forward) > 0))
 			{
 				deathmsg = 22;
 				TF_T_Damage (trace_ent, self, self, _x, (2 | 1), 0);

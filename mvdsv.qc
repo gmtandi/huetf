@@ -281,14 +281,14 @@ float () UserCmd =
 														localcmd (argv (1));
 													}
 													localcmd ("\n");
-													bprint ("\n");
+													bprint (2,"\n");
 													argv (1);
 													if (argv(1) == "none") {
 														bprint (2, "çServer Password removed!\n");
 													} else {
 														bprint3 (2, "çServer Password changed to \"", argv (1), "\"\n");
 													}
-													bprint ("\n");
+													bprint (2,"\n");
 													return (1);
 												}
 												if ((arg_num == 1))

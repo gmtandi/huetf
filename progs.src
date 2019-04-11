@@ -1,6 +1,7 @@
 qwprogs.dat
 
 defs.qc
+fteextensions.qc
 constants.qc
 qw.qc
 bot.botheader.c
