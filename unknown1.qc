@@ -821,7 +821,7 @@ void () RefreshStatusBar =
 	local float num;
 	local string str;
 	local float r;
-	r = (self.StatusBarRes + self.StatusBarSize)/2;
+	r = (self.StatusBarRes + self.StatusBarSize);
 	while ((r > 0))
 	{
 		str = strcat(str, "\n");
