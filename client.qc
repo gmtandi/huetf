@@ -251,8 +251,7 @@ void () DecodeLevelParms =
 	local string st;
 	local entity ent;
 	local entity te;
-	local float fl;
-	loadloc();
+	local float fl;	
 
 	if (serverflags)
 	{
@@ -274,6 +273,7 @@ void () DecodeLevelParms =
 
 	if (!(toggleflags & 256))
 	{
+		loadloc();
 		localcmd ("serverinfo oztf 1.45\n");
 //		localcmd ("serverinfo huetf 1.45\n");
 		Initialise_Teams();
