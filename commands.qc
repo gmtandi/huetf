@@ -692,7 +692,7 @@ void () QuadMode =
 		st = "off";
 		localcmd ("localinfo clan off\n");
 		localcmd ("localinfo quadmode off\n");
-		localcmd ("rounds off");
+		localcmd ("localinfo rounds 0");
 	}
 	else
 	{
