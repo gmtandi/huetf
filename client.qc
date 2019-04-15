@@ -2558,7 +2558,8 @@ void () ClientConnect =
 	local string st2;
 	local float res;
 	local string message;
-
+	bprint(2, ftos(time));
+	bprint(2, "-\n");
 	ClientInRankings();
 
 	st = infokey (self, "*FuhQuake");
