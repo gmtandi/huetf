@@ -42,106 +42,104 @@ string () GetPlayersName
         return (st);
 };
 
+string () GetGameFileName = {
+	local float i;
+	local string tmp;
+	local entity t;
+	local string str;
+
+	str = "";
+
+	t = find (world, classname, "prematch");
+	if ((t != world))
+	{		
+		calltimeofday ();
+
+		str = strcat(str, ftos (tod_year)); // year
+		str = strcat(str, "-");
+		str = strcat(str, ftos (tod_mon)); // month	
+		str = strcat(str, "-");		
+		str = strcat(str, ftos (tod_day)); // day
+		str = strcat(str, "_");
+		if (tod_hour < 10)
+			str = strcat(str, strcat("0", ftos(tod_hour)));
+		else
+			str = strcat(str, ftos (tod_hour)); // hour
+		str = strcat(str, "-");
+		if (tod_min < 10)
+			str = strcat(str, strcat("0", ftos(tod_min)));
+		else
+			str = strcat(str, ftos (tod_min)); // minute
+//			localcmd ("-");
+//			localcmd (ftos (t.no_grenades_1)); // second		
+	}
+
+	str = strcat(str, "_[");
+	str = strcat(str, mapname);
+	str = strcat(str, "]_");
+
+
+	if (tfvsdm)
+	{
+		str = strcat(str, "tfvsdm");
+	}
+	else if (tfstrike)
+	{
+		str = strcat(str, "tfstrike");
+	}
+	else if (duel)
+	{
+		str = strcat(str, "duel");
+	}
+	else if (speedcap)
+	{
+		str = strcat(str, "speedcap");
+	}			
+	else if (practice)
+	{
+		str = strcat(str, "practice");
+	}
+	else if (clanbattle)
+	{
+		if (GetPlayerCount() < 9) {
+			str = strcat(str, GetPlayersName());
+			return str;
+		}
+		str = strcat(str,"clan");
+	}						
+	
+	while ((i < number_of_teams))
+	{
+		i = (i + 1);
+		tmp = GetTeamName (i);
+		str = strcat(str,"_");
+		str = strcat(str,tmp);
+		if ((i < number_of_teams))
+		{
+			str = strcat(str, "_vs");
+		}
+	}
+	return str;
+}
+
 void () AutoRecord =
 {
 	local float i;
 	local string tmp;
 	local entity t;
-
+	local string str;
 	if ((infokey (world, "serverdemo") != string_null))
 	{
 		return;
 	}
-	localcmd ("record \"");
+	str = GetGameFileName();
+	localcmd("record \"");
+	localcmd(str);
+	localcmd("\"\n");
 
-	t = find (world, classname, "prematch");
-	if ((t != world))
-	{
-		if ((world.targetname != string_null))
-		{
-			calltimeofday ();
-
-			localcmd (ftos (t.tp_grenades_2)); // day
-			localcmd ("-");
-			localcmd (ftos (t.armorclass + 1)); // month
-			localcmd ("-");
-			localcmd (ftos (t.tf_items)); // year
-			localcmd ("_");
-			if (t.tp_grenades_1 < 10)
-				localcmd (strcat("0", ftos(t.tp_grenades_1)));
-			else
-				localcmd (ftos (t.tp_grenades_1)); // hour
-			localcmd ("-");
-			if (t.no_grenades_2 < 10)
-				localcmd (strcat("0", ftos(t.no_grenades_2)));
-			else
-				localcmd (ftos (t.no_grenades_2)); // minute
-//			localcmd ("-");
-//			localcmd (ftos (t.no_grenades_1)); // second
-		}
-	}
-
-	localcmd ("_[");
-	localcmd (mapname);
-	localcmd ("]_");
-
-
-	if (tfvsdm)
-	{
-		localcmd ("tfvsdm");
-	}
-	else
-	{
-		if (tfstrike)
-		{
-			localcmd ("tfstrike");
-		}
-		else
-		{
-			if (duel)
-			{
-				localcmd ("duel");
-			}
-			else
-			{
-				if (speedcap)
-				{
-					localcmd ("speedcap");
-				}
-				else
-				{
-					if (practice)
-					{
-						localcmd ("practice");
-					}
-					else
-					{
-						if (clanbattle)
-						{
-							if (GetPlayerCount() < 9) {
-								localcmd (GetPlayersName());
-								localcmd ("\"\n");
-								return;
-							}
-							localcmd ("clan");
-						}
-					}
-				}
-			}
-		}
-	}
-	while ((i < number_of_teams))
-	{
-		i = (i + 1);
-		tmp = GetTeamName (i);
-		localcmd ("_");
-		localcmd (tmp);
-		if ((i < number_of_teams))
-		{
-			localcmd ("_vs");
-		}
-	}
-	localcmd ("\"\n");
+	str = strcat(str,".json");
+	str = strcat("demos/",str);
+	logfilehandle = fopen(str,FILE_WRITE);
 };
 
 void () MatchOvertime =
@@ -657,6 +655,7 @@ void () StopTimer =
 	if ((infokey (world, "serverdemo") != string_null))
 	{
 		localcmd ("cancel\n");
+		fclose(logfilehandle);
 	}
 	if (cb_prematch)
 	{

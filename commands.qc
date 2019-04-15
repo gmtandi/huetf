@@ -55,6 +55,7 @@ void () MapEndSequence =
 		}
 		player = find (player, classname, "player");
 	}
+	fclose(logfilehandle);
 	LogEventTeamScores();
 	LogEventGameEnd();
 	canLog = 0;

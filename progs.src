@@ -1,5 +1,4 @@
 qwprogs.dat
-
 defs.qc
 fteextensions.qc
 constants.qc
@@ -16,6 +15,7 @@ track.qc
 stored.qc
 weapons.qc
 world.qc
+locfiles.qc
 client.qc
 player.qc
 doors.qc

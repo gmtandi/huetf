@@ -1115,25 +1115,6 @@ float () ConsoleCmd =
 	return (0);
 };
 
-void (float sec, float min, float hour, float day, float mon, float year, string date) timeofday =
-{
-	local entity t;
-
-	t = find (world, classname, "prematch");
-	if ((t != world))
-	{
-		t.no_grenades_1 = sec;
-		t.no_grenades_2 = min;
-		t.tp_grenades_1 = hour;
-		t.tp_grenades_2 = day;
-		t.armorclass = mon;
-		t.tf_items = year;
-		return;
-	}
-	dprint (date);
-	dprint ("\n");
-};
-
 void () UserInfo_Changed = {
 
    local string sk, st;

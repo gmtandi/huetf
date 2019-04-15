@@ -46,7 +46,7 @@ void () TeamFortress_SaveMe =
 					if ((self.health < (self.max_health/1.25)) || (self.armorvalue < (self.maxarmor/1.25))) {
 						dist = vlen(self.origin - te.origin);
 						if (dist < 2500) {
-							//locname = locationname(self.origin);
+							locname = getLocationName(self.origin);
 							if ((te.playerclass == 5) && (self.health < (self.max_health/1.25))) {
 								send = 1;
 								savememsg = strcat(self.netname," needs health");

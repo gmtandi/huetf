@@ -1,9 +1,27 @@
+string () ISOTimemillis = {
+	local string padding;
+    local string timeuse = strftime(0,"%Y-%m-%dT%H:%M:%S.");
+    local float randmillis = rint((random()*1000*random()));
+    if (randmillis < 10)
+        padding = "00";
+    else if (randmillis < 100)
+        padding = "0";
+    local string padded = strcat(padding, ftos(randmillis));
+    timeuse = strcat(timeuse, padded);
+    timeuse = strcat(timeuse, "Z");
+   	return timeuse;
+}
+
+void (string event) logevent = {
+	fputs(logfilehandle, event);
+}
+
 void (entity player) LogEventPlayerStart = {
  	if (canLog == 0)
 		return;
 
 	local string event;
-	event = sprintf(",\n{\"type\": \"playerStart\", \"player\": \"%s\", \"classtime\": %s, \"time\": %s, \"gameTimeStamp\": %s}", player.netname, ftos(player.classtime), ftos(gametime), timemillis());
+	event = sprintf(",\n{\"type\": \"playerStart\", \"player\": \"%s\", \"classtime\": %s, \"time\": %s, \"gameTimeStamp\": %s}", player.netname, ftos(player.classtime), ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
 
@@ -21,7 +39,7 @@ void () LogEventGameStart = {
 		player = find (player, classname, "player");
 	}
 
-	event = sprintf("{\"type\": \"gameStart\", \"map\": \"%s\", \"numPlayers\": %s, \"numTeams\": %s, \"time\": %s, \"gameTimeStamp\": %s}", mapname, ftos(numplayers), ftos(number_of_teams), ftos(gametime), timemillis());
+	event = sprintf("{\"type\": \"gameStart\", \"map\": \"%s\", \"numPlayers\": %s, \"numTeams\": %s, \"time\": %s, \"gameTimeStamp\": %s}", mapname, ftos(numplayers), ftos(number_of_teams), ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
 
@@ -36,7 +54,7 @@ void (entity player, float previous, float next, float timeplayed) LogEventChang
 							ftos(player.team_no),
 							ftos(timeplayed),
 							ftos(gametime),
-							timemillis()
+							ISOTimemillis()
 							);
 	logevent(event);
 }
@@ -167,7 +185,7 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 						inflictorId,
 						ftos(damage),
 						ftos(gametime),
-						timemillis()
+						ISOTimemillis()
 						);
 
 		event = strcat(part1, part2);
@@ -224,7 +242,7 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 	part2 = sprintf("\"inflictor\": \"%s\", \"time\": %s, \"gameTimeStamp\": %s}", 
 					inflictorId,					
 					ftos(gametime),
-					timemillis()
+					ISOTimemillis()
 					);
 
 	event = strcat(part1, part2);
@@ -236,7 +254,7 @@ void (entity player) LogEventGoal = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"goal\", \"attacker\": \"%s\", \"time\": %s, \"gameTimeStamp\": %s}", player.netname, ftos(gametime), timemillis());
+	event = sprintf(",\n{\"type\": \"goal\", \"attacker\": \"%s\", \"time\": %s, \"gameTimeStamp\": %s}", player.netname, ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
 
@@ -244,7 +262,7 @@ void (entity player) LogEventFumble = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"fumble\", \"attacker\": \"%s\", \"time\": %s, \"gameTimeStamp\": %s}", player.netname, ftos(gametime), timemillis());
+	event = sprintf(",\n{\"type\": \"fumble\", \"attacker\": \"%s\", \"time\": %s, \"gameTimeStamp\": %s}", player.netname, ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
 
@@ -252,7 +270,7 @@ void (entity attacker) LogEventAttack = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"attack\", \"attacker\": \"%s\", \"inflictor\": \"%s\", \"time\": %s, \"gameTimeStamp\": %s}", attacker.netname, GetWeaponName(attacker.current_weapon), ftos(gametime), timemillis());
+	event = sprintf(",\n{\"type\": \"attack\", \"attacker\": \"%s\", \"inflictor\": \"%s\", \"time\": %s, \"gameTimeStamp\": %s}", attacker.netname, GetWeaponName(attacker.current_weapon), ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
 
@@ -260,7 +278,7 @@ void () LogEventGameEnd = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"gameEnd\", \"time\": %s, \"gameTimeStamp\": %s}", ftos(gametime), timemillis());
+	event = sprintf(",\n{\"type\": \"gameEnd\", \"time\": %s, \"gameTimeStamp\": %s}", ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
 
@@ -317,6 +335,6 @@ void () LogEventTeamScores = {
 		teamnames = strcat(teamnames, sprintf(", \"team4Name\": \"%s\"", GetTeamName(4)));
 
 	local string event;
-	event = sprintf(",\n{\"type\": \"teamScores\", %s, %s, \"winningTeam\": %s, \"time\": %s, \"gameTimeStamp\": %s}", teamscores, teamnames, ftos(winning_team), ftos(gametime), timemillis());
+	event = sprintf(",\n{\"type\": \"teamScores\", %s, %s, \"winningTeam\": %s, \"time\": %s, \"gameTimeStamp\": %s}", teamscores, teamnames, ftos(winning_team), ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
