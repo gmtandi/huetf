@@ -308,9 +308,6 @@ float (string str) str2byte = #120;
 float (string str) str2short = #121;
 string (string str , float size) newstr = #122;
 void (string str) freestr = #123;
-string (vector v1) locationname = #124;
-void (string str) logevent = #125;
-string () timemillis = #127;
 
 //void(string str) conprint = #95;   // prints to server console only (no redirects)
 string (string str) readcmd = #96; // executes command on server, but result is returned by this function instead of writing to the console
@@ -319,7 +316,16 @@ string(string str, string substr) strstr = #98; // searches for substring in str
 //void(string dst, string src, float n) strncpy = #99;  // copies max n chars to dst
 void(string logname, float console, string text) logname = #100; // prints text to file 'logname', if console is non-zero, prints to the server console as well
 void(entity cl, string text) redirectcmd = #101;        // executes string on the console and redirects output to client (eg redirect(self, "status"))
-void() calltimeofday = #102;            // force server to call mod function timeofday
+
+void() calltimeofday						                        = #231;  // force server to call mod function timeofday
+
+//In order to make it more useful, this header includes a timeofday function which just grabs the values for you to use in your qc code straight after calling calltimeofday.
+float tod_sec, tod_min, tod_hour, tod_day, tod_mon, tod_year;
+
+//This function is to facilitate use, and need not be modified.
+void(float s, float mi, float h, float d, float mo, float y, string tmp_timeofday) timeofday =
+{ tod_sec = s; tod_min = mi; tod_hour = h; tod_day = d; tod_mon = (mo + 1); tod_year = y; };
+
 float (string s) findmap = #104;
 float(entity client, float level, float range, float start, float style, float footer) listmaps = #105;
 string(float id) findmapname = #106;
@@ -336,6 +342,7 @@ void () randomizeCaptains;
 void () disableCaptain;
 void () randomizeTeams;
 float gametime;
+float logfilehandle;
 
 // enable qw in fteextensions
 #define QUAKEWORLD

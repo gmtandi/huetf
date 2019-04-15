@@ -338,3 +338,6 @@ float headshots;
 float shortergrens;
 float printedEndGame;
 float canLog;
+float numlocs;
+typedef struct {vector pos; string desc;} loc_t;
+loc_t *locs;

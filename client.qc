@@ -252,6 +252,7 @@ void () DecodeLevelParms =
 	local entity ent;
 	local entity te;
 	local float fl;
+	loadloc();
 
 	if (serverflags)
 	{
@@ -824,6 +825,7 @@ void () IntermissionThink =
 			localcmd (st);
 			localcmd ("\n");
 		}
+		fclose(logfilehandle);
 	}
 	if (((!self.button0 && !self.button1) && !self.button2))
 	{
