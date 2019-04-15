@@ -20,43 +20,41 @@ void () PrintMaps =
 	}
 };
 
-float () UserCmd =
+float (string arg1, string arg2) ParseCmds =
 {
 	local float arg_num;
 	local float fl;
 	local string tmp;
-
-	arg_num = argc ();
-	if ((arg_num == 0))
-	{
-		return (0);
-	}
-	if ((argv (0) == "test"))
+	if (arg1)
+        arg_num = 1;
+    if (arg2)
+        arg_num = 2;
+	if ((arg1 == "test"))
 	{
 		sprint (self, 2, "whazzup\n");
 		return (1);
 	}
 	else
 	{
-		if ((argv (0) == "dlist"))
+		if ((arg1 == "dlist"))
 		{
 			stuffcmd (self, "cmd demolist");
 			if ((arg_num == 2))
 			{
 				stuffcmd (self, " ");
-				stuffcmd (self, argv (1));
+				stuffcmd (self, arg2);
 			}
 			stuffcmd (self, "\n");
 			return (1);
 		}
 		else
 		{
-			if ((argv (0) == "dl"))
+			if ((arg1 == "dl"))
 			{
 				if ((arg_num == 2))
 				{
 					stuffcmd (self, "cmd download demonum/");
-					stuffcmd (self, argv (1));
+					stuffcmd (self, arg2);
 					stuffcmd (self, "\n");
 					return (1);
 				}
@@ -70,7 +68,7 @@ float () UserCmd =
 			}
 			else
 			{
-				if ((argv (0) == "adminpwd"))
+				if ((arg1 == "adminpwd"))
 				{
 					if ((arg_num == 2))
 					{
@@ -84,7 +82,7 @@ float () UserCmd =
 							sprint (self, 2, "You cannot input password while electing.\n");
 							return (1);
 						}
-						Admin_Check (argv (1));
+						Admin_Check (arg2);
 						if ((self.is_admin == 3))
 						{
 							Admin_Aliases ();
@@ -109,7 +107,7 @@ float () UserCmd =
 				}
 				else
 				{
-					if ((argv (0) == "timelimit"))
+					if ((arg1 == "timelimit"))
 					{
 						if ((self.is_admin != 3))
 						{
@@ -119,13 +117,13 @@ float () UserCmd =
 						if ((arg_num == 2))
 						{
 							localcmd ("timelimit ");
-							localcmd (argv (1));
+							localcmd (arg2);
 							localcmd ("\n");
 							return (1);
 						}
 						if ((arg_num == 1))
 						{
-							tmp = infokey (world, argv (0));
+							tmp = infokey (world, arg1);
 							sprint (self, 2, "timelimit is ");
 							sprint (self, 2, "\"");
 							sprint (self, 2, tmp);
@@ -135,7 +133,7 @@ float () UserCmd =
 					}
 					else
 					{
-						if ((argv (0) == "prematch"))
+						if ((arg1 == "prematch"))
 						{
 							if ((self.is_admin != 3))
 							{
@@ -145,13 +143,13 @@ float () UserCmd =
 							if ((arg_num == 2))
 							{
 								localcmd ("prematch ");
-								localcmd (argv (1));
+								localcmd (arg2);
 								localcmd ("\n");
 								return (1);
 							}
 							if ((arg_num == 1))
 							{
-								tmp = infokey (world, argv (0));
+								tmp = infokey (world, arg1);
 								sprint (self, 2, "prematch is ");
 								sprint (self, 2, "\"");
 								sprint (self, 2, tmp);
@@ -161,7 +159,7 @@ float () UserCmd =
 						}
 						else
 						{
-							if ((argv (0) == "fraglimit"))
+							if ((arg1 == "fraglimit"))
 							{
 								if ((self.is_admin != 3))
 								{
@@ -171,13 +169,13 @@ float () UserCmd =
 								if ((arg_num == 2))
 								{
 									localcmd ("fraglimit ");
-									localcmd (argv (1));
+									localcmd (arg2);
 									localcmd ("\n");
 									return (1);
 								}
 								if ((arg_num == 1))
 								{
-									tmp = infokey (world, argv (0));
+									tmp = infokey (world, arg1);
 									sprint (self, 2, "fraglimit is ");
 									sprint (self, 2, "\"");
 									sprint (self, 2, tmp);
@@ -187,7 +185,7 @@ float () UserCmd =
 							}
 							else
 							{
-								if ((argv (0) == "teamplay"))
+								if ((arg1 == "teamplay"))
 								{
 									if ((self.is_admin != 3))
 									{
@@ -197,13 +195,13 @@ float () UserCmd =
 									if ((arg_num == 2))
 									{
 										localcmd ("teamplay ");
-										localcmd (argv (1));
+										localcmd (arg2);
 										localcmd ("\n");
 										return (1);
 									}
 									if ((arg_num == 1))
 									{
-										tmp = infokey (world, argv (0));
+										tmp = infokey (world, arg1);
 										sprint (self, 2, "teamplay is ");
 										sprint (self, 2, "\"");
 										sprint (self, 2, tmp);
@@ -213,7 +211,7 @@ float () UserCmd =
 								}
 								else
 								{
-									if ((argv (0) == "overtime"))
+									if ((arg1 == "overtime"))
 									{
 										if ((self.is_admin != 3))
 										{
@@ -223,13 +221,13 @@ float () UserCmd =
 										if ((arg_num == 2))
 										{
 											localcmd ("localinfo overtime ");
-											localcmd (argv (1));
+											localcmd (arg2);
 											localcmd ("\n");
 											return (1);
 										}
 										if ((arg_num == 1))
 										{
-											tmp = infokey (world, argv (0));
+											tmp = infokey (world, arg1);
 											sprint (self, 2, "overtime is ");
 											sprint (self, 2, "\"");
 											sprint (self, 2, tmp);
@@ -239,7 +237,7 @@ float () UserCmd =
 									}
 									else
 									{
-										if ((argv (0) == "cft"))
+										if ((arg1 == "cft"))
 										{
 											if ((self.is_admin != 3))
 											{
@@ -249,13 +247,13 @@ float () UserCmd =
 											if ((arg_num == 2))
 											{
 												localcmd ("localinfo cft ");
-												localcmd (argv (1));
+												localcmd (arg2);
 												localcmd ("\n");
 												return (1);
 											}
 											if ((arg_num == 1))
 											{
-												tmp = infokey (world, argv (0));
+												tmp = infokey (world, arg1);
 												sprint (self, 2, "ceasefire time is ");
 												sprint (self, 2, "\"");
 												sprint (self, 2, tmp);
@@ -265,7 +263,7 @@ float () UserCmd =
 										}
 										else
 										{
-											if ((argv (0) == "password"))
+											if ((arg1 == "password"))
 											{
 												if ((self.is_admin != 3))
 												{
@@ -275,18 +273,18 @@ float () UserCmd =
 												if ((arg_num == 2))
 												{
 													localcmd ("password ");
-													if (argv(1) == "none") {
+													if (arg2 == "none") {
 														localcmd ("\"\"");
 													} else {
-														localcmd (argv (1));
+														localcmd (arg2);
 													}
 													localcmd ("\n");
 													bprint (2,"\n");
-													argv (1);
-													if (argv(1) == "none") {
+													arg2;
+													if (arg2 == "none") {
 														bprint (2, "çServer Password removed!\n");
 													} else {
-														bprint3 (2, "çServer Password changed to \"", argv (1), "\"\n");
+														bprint3 (2, "çServer Password changed to \"", arg2, "\"\n");
 													}
 													bprint (2,"\n");
 													return (1);
@@ -300,7 +298,7 @@ float () UserCmd =
 											}
 											else
 											{
-												if ((argv (0) == "record"))
+												if ((arg1 == "record"))
 												{
 													if ((self.is_admin != 3))
 													{
@@ -310,7 +308,7 @@ float () UserCmd =
 													if ((arg_num == 2))
 													{
 														localcmd ("record ");
-														localcmd (argv (1));
+														localcmd (arg2);
 														localcmd ("\n");
 														return (1);
 													}
@@ -323,7 +321,7 @@ float () UserCmd =
 												}
 												else
 												{
-													if ((argv (0) == "easyrecord"))
+													if ((arg1 == "easyrecord"))
 													{
 														if ((self.is_admin != 3))
 														{
@@ -333,7 +331,7 @@ float () UserCmd =
 														if ((arg_num == 2))
 														{
 															localcmd ("easyrecord ");
-															localcmd (argv (1));
+															localcmd (arg2);
 															localcmd ("\n");
 															return (1);
 														}
@@ -345,7 +343,7 @@ float () UserCmd =
 													}
 													else
 													{
-														if ((argv (0) == "autorecord"))
+														if ((arg1 == "autorecord"))
 														{
 															if ((self.is_admin != 3))
 															{
@@ -355,7 +353,7 @@ float () UserCmd =
 															if ((arg_num == 2))
 															{
 																localcmd ("localinfo demo_auto_left ");
-																localcmd (argv (1));
+																localcmd (arg2);
 																localcmd ("\n");
 																return (1);
 															}
@@ -378,7 +376,7 @@ float () UserCmd =
 														}
 														else
 														{
-															if ((argv (0) == "cancel"))
+															if ((arg1 == "cancel"))
 															{
 																if ((self.is_admin != 3))
 																{
@@ -390,7 +388,7 @@ float () UserCmd =
 															}
 															else
 															{
-																if ((argv (0) == "stop"))
+																if ((arg1 == "stop"))
 																{
 																	if ((self.is_admin != 3))
 																	{
@@ -402,7 +400,7 @@ float () UserCmd =
 																}
 																else
 																{
-																	if ((argv (0) == "kick"))
+																	if ((arg1 == "kick"))
 																	{
 																		if ((self.is_admin != 3))
 																		{
@@ -414,7 +412,7 @@ float () UserCmd =
 																	}
 																	else
 																	{
-																		if ((argv (0) == "map"))
+																		if ((arg1 == "map"))
 																		{
 																			if (((self.is_admin != 1) && (self.is_admin != 3)))
 																			{
@@ -440,12 +438,12 @@ float () UserCmd =
 																			{
 																				bprint(2, self.netname);
 																				bprint(2, " Has changed the map to ");
-																				bprint(2, argv(1));
+																				bprint(2, arg2);
 																				bprint(2, "\n");
 																				MapEndSequence();
 																				printedEndGame = 1;
 																				localcmd ("map ");
-																				localcmd (argv (1));
+																				localcmd (arg2);
 																				localcmd ("\n");
 																				return (1);
 																			}
@@ -458,14 +456,14 @@ float () UserCmd =
 																		}
 																		else
 																		{
-																			if ((argv (0) == "maplist"))
+																			if ((arg1 == "maplist"))
 																			{
 																				PrintMaps ();
 																				return (1);
 																			}
 																			else
 																			{
-																				if (((argv (0) == "help") || (argv (0) == "list")))
+																				if (((arg1 == "help") || (arg1 == "list")))
 																				{
 																					sprint (self, 2, "Commands list:\n");
 																					sprint (self, 2, "cmd adminpwd\n");
@@ -510,6 +508,28 @@ float () UserCmd =
 	}
 	return (0);
 };
+
+float () UserCmd =
+{
+	float isProcessed;
+	string arg1, arg2;
+    arg1 = argv(0);
+    arg2 = argv(1);
+    isProcessed = ParseCmds(arg1, arg2);
+    return (isProcessed);
+}
+
+void (string cmd) SV_ParseClientCommand = {
+    float isProcessed;
+    tokenize(cmd);
+
+    isProcessed = ParseCmds(argv(0), argv(1));
+    
+    if (!isProcessed)
+    {
+        clientcommand(self, cmd);
+    }
+}
 
 float () ConsoleCmd =
 {

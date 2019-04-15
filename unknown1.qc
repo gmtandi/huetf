@@ -807,6 +807,16 @@ void (float f, float c) WriteIntXXXX;
 void (float f) WriteSIntXXXX;
 void (float i) WriteSpace;
 
+string (float num) WhiteSpaces = {
+	string str;
+	while (num)
+	{
+		str = strcat(str, " ");
+		num = (num - 1);
+	}
+	return str;
+}
+
 void (entity pl) Status_Refresh =
 {
     if (pl.StatusRefreshTime == time)
@@ -850,7 +860,9 @@ void () RefreshStatusBar =
 			if ((self.is_undercover != 2))
 			{
 				te = find (te, classname, "round");
+				str = strcat(str, WhiteSpaces(3 - strlen(ftos(te.cnt))));
 				str = strcat(str, ftos(dperiod));
+				str = strcat(str, WhiteSpaces(3 - strlen(ftos(te.cnt2))));
 				str = strcat(str, "    ");
 			}
 		}
@@ -1013,15 +1025,11 @@ void () RefreshStatusBar =
 						x = (x + 8);
 					}
 					if (x)
-					{
-						local float i = (18 - x);
-						while (i)
-						{
-							str = strcat(str, " ");
-							i = (i - 1);
-						}
+					{		
+						str = strcat(str, WhiteSpaces(18 - x));
 					}
 					str = strcat(str, "Range: ");
+					str = strcat(str, WhiteSpaces(4 - strlen(ftos(te.health))));
 					str = strcat(str, ftos(te.health));
 				}
 			}
@@ -1154,12 +1162,7 @@ void () RefreshStatusBar =
 								}
 								if (x)
 								{
-									local float i = (30 - x);
-									while (i)
-									{
-										str = strcat(str, " ");
-										i = (i - 1);
-									}
+									str = strcat(str, WhiteSpaces(30 - x));
 								}
 							}
 						}
@@ -1177,6 +1180,7 @@ void () RefreshStatusBar =
 									te = find (te, classname, "building_sentrygun");
 								}
 								str = strcat(str, "Sentry: ");
+								str = strcat(str, WhiteSpaces(4 - strlen(ftos(te.health))));
 								str = strcat(str, ftos(te.health));
 								x = (x + 11);
 								if (!(self.sbar_type & 1))
@@ -1214,11 +1218,13 @@ void () RefreshStatusBar =
 								else
 								{
 									str = strcat(str, "/");
+									str = strcat(str, WhiteSpaces(4 - strlen(ftos(te.ammo_shells))));
 									str = strcat(str, ftos(te.ammo_shells));
 									x = (x + 4);
 									if ((te.weapon == 3))
 									{
 										str = strcat(str, "/");
+										str = strcat(str, WhiteSpaces(3 - strlen(ftos(te.ammo_rockets))));
 										str = strcat(str, ftos(te.ammo_rockets));
 										x = (x + 3);
 									}
@@ -1232,17 +1238,13 @@ void () RefreshStatusBar =
 									newmis = find (newmis, classname, "building_dispenser");
 								}
 								str = strcat(str, " Disp:");
+								str = strcat(str, WhiteSpaces(4 - strlen(ftos(newmis.health))));
 								str = strcat(str, ftos(newmis.health));
 								x = (x + 9);
 							}
 							if (((x >= 0) && (x < 35)))
 							{
-								local float i = (35 - x);
-								while (i)
-								{
-									str = strcat(str, " ");
-									i = (i - 1);
-								}
+								str = strcat(str, WhiteSpaces(35 - x));
 							}
 						}
 						else
@@ -1250,13 +1252,8 @@ void () RefreshStatusBar =
 							if ((self.playerclass == 5))
 							{
 								str = strcat(str, "Medikit:");
-								str = strcat(str, ftos(self.ammo_medikit));
-								local float i = (19 - x);
-								while (i)
-								{
-									str = strcat(str, " ");
-									i = (i - 1);
-								}
+								str = strcat(str, WhiteSpaces(4 - strlen(ftos(self.ammo_medikit))));
+								str = strcat(str, WhiteSpaces(19 - x));
 							}
 						}
 					}
@@ -1267,24 +1264,33 @@ void () RefreshStatusBar =
 	str = strcat(str, "\n");
 	if ((number_of_teams == 2))
 	{
+		local float i = 0;
 		str = strcat(str, "Blue:");
+		str = strcat(str, WhiteSpaces(5 - strlen(ftos(team1score))));
 		str = strcat(str, ftos(team1score));
 		str = strcat(str, " Red:");
+		str = strcat(str, WhiteSpaces(5 - strlen(ftos(team2score))));
 		str = strcat(str, ftos(team2score));
 		str = strcat(str, " ");
 	}
 	else
 	{
+		str = strcat(str, WhiteSpaces(5 - strlen(ftos(team1frags))));
 		str = strcat(str, ftos(team1frags));
 		str = strcat(str, "/");
+		str = strcat(str, WhiteSpaces(5 - strlen(ftos(team2frags))));
 		str = strcat(str, ftos(team2frags));
 		str = strcat(str, "/");
+		str = strcat(str, WhiteSpaces(5 - strlen(ftos(team3frags))));
 		str = strcat(str, ftos(team3frags));
 		str = strcat(str, "/");
+		str = strcat(str, WhiteSpaces(5 - strlen(ftos(team4frags))));
 		str = strcat(str, ftos(team4frags));
 	}
 	if ((self.playerclass == 11))
 	{
+		str = strcat(str, "\n");
+    	CenterPrint(self, str);
 		return;
 	}
 	if (!(self.sbar_type & 1))
@@ -1350,6 +1356,7 @@ void () RefreshStatusBar =
 		if ((num >= 0))
 		{
 			str = strcat(str, "\sCLIP\s:"); //W7C (space, space, (_C | 128), (_L | 128), (_I | 128), (_P | 128), (dperiod | 128));
+			str = strcat(str, WhiteSpaces(2 - strlen(ftos(num))));
 			str = strcat(str, ftos(num));
 		}
 		else
@@ -1358,8 +1365,10 @@ void () RefreshStatusBar =
 		}
 	}
     str = strcat(str, " \sG\s1:");//W4C (space, (_G | 128), (_1 | 128), dperiod);
+    str = strcat(str, WhiteSpaces(2 - strlen(ftos(self.no_grenades_1))));
 	str = strcat(str, ftos(self.no_grenades_1));
 	str = strcat(str, " \sG\s2:");//W4C (space, (_G | 128), (_2 | 128), dperiod);
+	str = strcat(str, WhiteSpaces(2 - strlen(ftos(self.no_grenades_2))));
 	str = strcat(str, ftos(self.no_grenades_2));
 
     if (self.StatusGrenTime > 0) {
