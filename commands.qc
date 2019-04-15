@@ -926,7 +926,7 @@ void () Toggle_Rounds =
 	local string st;
 
 	st = infokey (world, "rounds");
-	if ((st == "off"))
+	if ((st == "off") || st == "0")
 	{
 		st = "on";
 		localcmd ("localinfo rounds on\n");
@@ -934,7 +934,7 @@ void () Toggle_Rounds =
 	else
 	{
 		st = "off";
-		localcmd ("localinfo rounds off\n");
+		localcmd ("localinfo rounds 0\n");
 	}
 	bprint3 (2, "Rounds set to ", st, "\n");
 };
