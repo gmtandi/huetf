@@ -658,7 +658,8 @@ void () StopTimer =
 	if ((infokey (world, "serverdemo") != string_null))
 	{
 		localcmd ("cancel\n");
-		fclose(logfilehandle);
+		if (logfilehandle > 0)
+			fclose(logfilehandle);
 	}
 	if (cb_prematch)
 	{

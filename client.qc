@@ -825,7 +825,8 @@ void () IntermissionThink =
 			localcmd (st);
 			localcmd ("\n");
 		}
-		fclose(logfilehandle);
+		if (logfilehandle > 0)
+			fclose(logfilehandle);
 	}
 	if (((!self.button0 && !self.button1) && !self.button2))
 	{

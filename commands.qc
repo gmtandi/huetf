@@ -54,10 +54,11 @@ void () MapEndSequence =
 			player.classtime = gametime;
 		}
 		player = find (player, classname, "player");
-	}
-	fclose(logfilehandle);
+	}	
 	LogEventTeamScores();
 	LogEventGameEnd();
+	if (logfilehandle > 0)
+		fclose(logfilehandle);
 	canLog = 0;
 }
 
