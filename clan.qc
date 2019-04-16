@@ -1,3 +1,5 @@
+string (string text) clearString;
+
 float () GetPlayerCount
 {
 	local entity te;
@@ -103,6 +105,7 @@ string () GetGameFileName = {
 	{
 		if (GetPlayerCount() < 9) {
 			str = strcat(str, GetPlayersName());
+			str = clearString(str);
 			return str;
 		}
 		str = strcat(str,"clan");
@@ -119,6 +122,7 @@ string () GetGameFileName = {
 			str = strcat(str, "_vs");
 		}
 	}
+	str = clearString(str);
 	return str;
 }
 
@@ -138,7 +142,6 @@ void () AutoRecord =
 	localcmd("\"\n");
 
 	str = strcat(str,".json");
-	str = strcat("demos/",str);
 	logfilehandle = fopen(str,FILE_WRITE);
 };
 
