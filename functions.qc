@@ -145,3 +145,15 @@ void () randomizeTeams = {
                 te = find (te, classname, "player");
         }
 };
+
+string (string text) clearString = {
+	local float i;
+	string specialChars[58] = {"�", "", "","","","","","","","	","","","","","","","","","",""," ","?","","‚","ƒ","„","…","†","‡","ˆ","‰","Š","‹","Œ","","Ž","","","‘","œ","","ž","Ÿ", "<", ">", "|", ":", "*", "?", "\\", "/", "\"", "&", "~", "`", ",", " ", "."};
+	text = strconv(1,1,1,text);
+	text = strireplace("__", "_", text);
+	for (i = 0; i < 58; i++) {
+		text = strireplace(specialChars[i], "", text);
+	}
+
+	return text;
+}
