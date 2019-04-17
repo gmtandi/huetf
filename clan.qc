@@ -136,14 +136,15 @@ void () AutoRecord =
 	{
 		return;
 	}
-	str = GetGameFileName();
+	str = strzone(GetGameFileName());
 	localcmd("record \"");
 	localcmd(str);
 	localcmd("\"\n");
 
 	str = strcat(str,".json");
-	str = strcat("json/",str);
+	str = strcat(str);
 	logfilehandle = fopen(str,FILE_WRITE);
+	strunzone(str);
 };
 
 void () MatchOvertime =
