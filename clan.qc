@@ -142,6 +142,7 @@ void () AutoRecord =
 	localcmd("\"\n");
 
 	str = strcat(str,".json");
+	str = strcat("json/",str);
 	logfilehandle = fopen(str,FILE_WRITE);
 };
 

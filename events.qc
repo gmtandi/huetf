@@ -12,8 +12,8 @@ string () ISOTimemillis = {
    	return timeuse;
 }
 
-void (string event) logevent = {
-	fputs(logfilehandle, event);
+void (string evt) logevent = {
+	fputs(logfilehandle, evt);
 }
 
 void (entity player) LogEventPlayerStart = {
@@ -38,7 +38,7 @@ void () LogEventGameStart = {
 		numplayers++;
 		player = find (player, classname, "player");
 	}
-
+	local string teststr = "aaabde";
 	event = sprintf("{\"type\": \"gameStart\", \"map\": \"%s\", \"numPlayers\": %s, \"numTeams\": %s, \"time\": %s, \"gameTimeStamp\": %s}", mapname, ftos(numplayers), ftos(number_of_teams), ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
