@@ -1,6 +1,6 @@
 # huetf
 
-This project aims to improve OzTF 1.45 for the Brazilian QWTF Community - yes, we still play QWTF in 2017.
+This project aims to improve OzTF 1.45 for the Brazilian QWTF Community - yes, we still play QWTF in 2019.
 
 As the creator of the mod don't have source code for the OzTF 1.45 version, we had to decompile from original qwprogs.dat file.
 
