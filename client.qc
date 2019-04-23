@@ -878,7 +878,7 @@ void () IntermissionThink =
 void () execute_changelevel =
 {
 	local entity pos;
-
+	localcmd("stop\n");
 	dprint ("execute_changelevel()\n");
 	intermission_running = 1;
 	intermission_exittime = (time + 5);

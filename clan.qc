@@ -136,6 +136,7 @@ void () AutoRecord =
 	{
 		return;
 	}
+	localcmd("stop\n");
 	str = strzone(GetGameFileName());
 	localcmd("record \"");
 	localcmd(str);
@@ -629,7 +630,7 @@ void () StartTimer =
 		lightstyle (0, "e");
 		if ((stof (infokey (world, "demo_auto_left")) > 0))
 		{
-			AutoRecord ();
+			//AutoRecord (); - bugs fte
 		}
 		localcmd ("serverinfo status Countdown\n");
 		p = find (world, classname, "player");
