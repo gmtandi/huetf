@@ -42,6 +42,7 @@ quadmode.qc
 ammobox.qc
 tfort.qc
 tforthlp.qc
+cp.qc
 halflife.qc //halflife
 newents.qc //soccer
 tfortmap.qc
