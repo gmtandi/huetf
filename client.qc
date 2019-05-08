@@ -2405,10 +2405,6 @@ void () Admin_Aliases =
 
 void () PlayerPostThink =
 {
-	local float g;
-	local float speedpos;
-	local float speedneg;
-	local float fdmg;
 
         if (BotPostFrame ())
         {
@@ -2436,85 +2432,6 @@ void () PlayerPostThink =
 	if ((self.view_ofs == '0 0 0'))
 	{
 		return;
-	}
-	if (self.deadflag)
-	{
-		if ((self.impulse && !self.has_disconnected))
-		{
-			if (DeadImpulses ())
-			{
-				return;
-			}
-			CommandImpulses ();
-			self.impulse = 0;
-		}
-		self.movetype = 6;
-		return;
-	}
-	if (self.playerclass)
-	{
-		WaterMove ();
-		if ((self.flags & 512))
-		{
-			if ((gspeed >= 1))
-			{
-				speedpos = (0 + (self.maxspeed * gspeed));
-				speedneg = (0 - (self.maxspeed * gspeed));
-				if ((self.velocity_y > speedpos))
-				{
-					self.velocity_y = speedpos;
-				}
-				if ((self.velocity_y < speedneg))
-				{
-					self.velocity_y = speedneg;
-				}
-				if ((self.velocity_x > speedpos))
-				{
-					self.velocity_x = speedpos;
-				}
-				if ((self.velocity_x < speedneg))
-				{
-					self.velocity_x = speedneg;
-				}
-			}
-			if (((self.jump_flag < -300) && (self.health > 0)))
-			{
-				if ((self.watertype == -3))
-				{
-					sound (self, 4, "player/h2ojump.wav", 1, 1);
-				}
-				else
-				{
-					if ((self.jump_flag < -650))
-					{
-						if ((infokey (world, "fallbunny") != "off"))
-						{
-							fdmg = 5;
-							fdmg = ((fdmg * (self.jump_flag / 300)) * -1);
-							if ((self.playerclass == 1))
-							{
-								fdmg = (fdmg / 2);
-							}
-							else
-							{
-								if ((self.playerclass == 6))
-								{
-									fdmg = (fdmg * 1.5);
-								}
-							}
-							fdmg = rint (fdmg);
-							TF_T_Damage (self, world, world, fdmg, 1, 0);
-							self.deathtype = "falling";
-						}
-						sound (self, 2, "player/land2.wav", 1, 1);
-					}
-					else
-					{
-						sound (self, 2, "player/land.wav", 1, 1);
-					}
-				}
-			}
-		}
 	}
 	else
 	{
@@ -3797,3 +3714,96 @@ void (entity targ, entity attacker) ClientObituary =
 		}
 	}
 };
+
+
+void() SV_RunClientCommand = {
+
+	runstandardplayerphysics(self);
+
+	local float g;
+	local float speedpos;
+	local float speedneg;
+	local float fdmg;
+
+
+	if (self.deadflag)
+	{
+		if ((self.impulse && !self.has_disconnected))
+		{
+			if (DeadImpulses ())
+			{
+				return;
+			}
+			CommandImpulses ();
+			self.impulse = 0;
+		}
+		self.movetype = 6;
+		return;
+	}
+	if (self.playerclass)
+	{
+		WaterMove ();
+		if ((self.flags & 512))
+		{
+			if ((gspeed >= 1))
+			{
+				speedpos = (0 + (self.maxspeed * gspeed));
+				speedneg = (0 - (self.maxspeed * gspeed));
+				if ((self.velocity_y > speedpos))
+				{
+					self.velocity_y = speedpos;
+				}
+				if ((self.velocity_y < speedneg))
+				{
+					self.velocity_y = speedneg;
+				}
+				if ((self.velocity_x > speedpos))
+				{
+					self.velocity_x = speedpos;
+				}
+				if ((self.velocity_x < speedneg))
+				{
+					self.velocity_x = speedneg;
+				}
+			}
+			if (((self.jump_flag < -300) && (self.health > 0)))
+			{
+				if ((self.watertype == -3))
+				{
+					sound (self, 4, "player/h2ojump.wav", 1, 1);
+				}
+				else
+				{
+					if ((self.jump_flag < -650))
+					{
+						if ((infokey (world, "fallbunny") != "off"))
+						{
+							fdmg = 5;
+							fdmg = ((fdmg * (self.jump_flag / 300)) * -1);
+							if ((self.playerclass == 1))
+							{
+								fdmg = (fdmg / 2);
+							}
+							else
+							{
+								if ((self.playerclass == 6))
+								{
+									fdmg = (fdmg * 1.5);
+								}
+							}
+							fdmg = rint (fdmg);
+							TF_T_Damage (self, world, world, fdmg, 1, 0);
+							self.deathtype = "falling";
+						}
+						sound (self, 2, "player/land2.wav", 1, 1);
+					}
+					else
+					{
+						sound (self, 2, "player/land.wav", 1, 1);
+					}
+				}
+			}
+		}
+	}
+};
+
