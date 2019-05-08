@@ -2433,7 +2433,7 @@ void () PlayerPostThink =
 	{
 		return;
 	}
-	else
+	if (!self.playerclass)
 	{
 		if ((self.impulse == 171))
 		{
