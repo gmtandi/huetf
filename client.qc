@@ -1891,6 +1891,7 @@ void () PlayerJump =
 	}
 	self.flags = (self.flags - (self.flags & 4096));
 	self.button2 = 0;
+
 	sound (self, 4, "player/plyrjmp8.wav", 1, 1);
 	te = find (world, classname, "timer");
 	while ((((te.owner != self) || (te.think != ConcussionGrenadeTimer)) && (te != world)))
@@ -1930,7 +1931,8 @@ void () PlayerJump =
         {
                 self.velocity_z = (self.velocity_z + 270);
         }
-	return;	return;
+	return;
+
 };
 .float dmgtime;
 
@@ -2410,6 +2412,21 @@ void () PlayerPostThink =
         {
                 return;
         }
+
+	if (self.deadflag)
+	{
+		if ((self.impulse && !self.has_disconnected))
+		{
+			if (DeadImpulses ())
+			{
+				return;
+			}
+			CommandImpulses ();
+			self.impulse = 0;
+		}
+		self.movetype = 6;
+		return;
+	}
 
 	if ((self.motd <= _A))
 	{
@@ -3726,20 +3743,6 @@ void() SV_RunClientCommand = {
 	local float fdmg;
 
 
-	if (self.deadflag)
-	{
-		if ((self.impulse && !self.has_disconnected))
-		{
-			if (DeadImpulses ())
-			{
-				return;
-			}
-			CommandImpulses ();
-			self.impulse = 0;
-		}
-		self.movetype = 6;
-		return;
-	}
 	if (self.playerclass)
 	{
 		WaterMove ();
@@ -3805,5 +3808,20 @@ void() SV_RunClientCommand = {
 			}
 		}
 	}
+
+
+	if ( input_buttons&2 && input_movevalues_z == -400 ) {
+		if (self.waterlevel == 2 && (vlen(self.velocity) > (self.maxspeed)))
+			self.velocity = self.velocity * 0.95;
+		else if (self.waterlevel > 1 && (vlen(self.velocity) > (self.maxspeed * 0.615))) {
+			local float origz = self.velocity_z;
+			self.velocity = self.velocity*((self.maxspeed * 0.615)/vlen(self.velocity));
+			self.velocity_z = origz;
+		}
+
+	}
+
+
+
 };
 
