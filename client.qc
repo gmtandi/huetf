@@ -3810,7 +3810,7 @@ void() SV_RunClientCommand = {
 	}
 
 
-	if ( input_buttons&2 && input_movevalues_z == -400 ) {
+	if ( input_buttons&2 && input_movevalues_z == -400  && !CF_GetSetting("swimjumpmovedown", "sjm", "off") ) {
 		if (self.waterlevel == 2 && (vlen(self.velocity) > (self.maxspeed)))
 			self.velocity = self.velocity * 0.95;
 		else if (self.waterlevel > 1 && (vlen(self.velocity) > (self.maxspeed * 0.615))) {
@@ -3820,7 +3820,6 @@ void() SV_RunClientCommand = {
 		}
 
 	}
-
 
 
 };
