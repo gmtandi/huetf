@@ -1374,6 +1374,27 @@ void () RefreshStatusBar =
     if (self.StatusGrenTime > 0) {
         str = strcat(str, strcat("\n\sGrenade\s: ", ftos(self.StatusGrenTime)));
     }
+    te = find(world,classname, "func_controlpoint");
+    while (te != world) {
+    	if (te.cp_active) {
+    		str = strcat(str, "\nControl: ");
+    		if (te.team_no == 0) {
+    			str = strcat(str, "none");
+    		}
+    		else {
+    			str = strcat(str, GetTeamName(te.team_no));
+    		}
+    		if (te.team ) {
+	    		str = strcat(str, " Contest: ");
+	    		str = strcat(str, GetTeamName(te.team));
+	    		str = strcat(str, " ");
+	    		str = strcat(str, ftos(ceil(te.power_full)));
+	    		str = strcat(str, "%");
+    		}
+    		break;    		
+    	}
+    	te = find(world,classname, "func_controlpoint");
+    }
     str = strcat(str, "\n");
     CenterPrint(self, str);
 
@@ -1585,7 +1606,7 @@ void () StatusBar_On =
 	{
 		if (self.StatusBarSize)
 		{
-			self.StatusRefreshTime = (time + 0.2);
+			self.StatusRefreshTime = (time + 0.01);
 		}
 	}
 };
