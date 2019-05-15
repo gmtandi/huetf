@@ -154,10 +154,10 @@ void (vector wishvel) SV_Accelerate =
 	wishvel = normalize (wishvel);
 	currentspeed = (self.velocity * wishvel);
 	addspeed = (wishspd - currentspeed);
-	if ((addspeed <= 0))
+	/*if ((addspeed <= 0))
 	{
 		return;
-	}
+	}*/
 	accelspeed = ((sv_accelerate * wishspd) * frametime);
 	if ((accelspeed > addspeed))
 	{

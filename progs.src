@@ -65,6 +65,7 @@ bot.ai.c
 
 reloadweapon.qc
 spect.qc
+login.qc
 mvdsv.qc
 misc2.qc
 functions.qc

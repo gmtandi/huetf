@@ -341,3 +341,4 @@ float canLog;
 float numlocs;
 typedef struct {vector pos; string desc;} loc_t;
 loc_t *locs;
+.string nickname;

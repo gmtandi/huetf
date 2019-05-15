@@ -20,15 +20,18 @@ void () PrintMaps =
 	}
 };
 
-float (string arg1, string arg2) ParseCmds =
+float (string arg1, string arg2, string arg3) ParseCmds =
 {
 	local float arg_num;
 	local float fl;
 	local string tmp;
+	entity pl;
 	if (arg1)
         arg_num = 1;
     if (arg2)
         arg_num = 2;
+    if (arg3)
+        arg_num = 3;
 	if ((arg1 == "test"))
 	{
 		sprint (self, 2, "whazzup\n");
@@ -68,7 +71,39 @@ float (string arg1, string arg2) ParseCmds =
 			}
 			else
 			{
-				if ((arg1 == "adminpwd"))
+				if (arg1 == "login") {
+					if (arg_num == 3) {
+						if (self.nickname) {
+							sprint (self, 2, "You are already logged in\n");
+							return (1);
+						}
+						else {
+							login(self,arg2,arg3);
+							return(1);
+						}
+					}
+					else {
+						sprint (self, 2, "Missing username/password\n");
+						return (1);
+					}
+				}
+				if (arg1 == "who") {
+					pl = find (world, classname, "player");
+					string msg;
+					while (pl) {
+						msg = strcat(msg, infokey(pl,"name"));
+						msg = strcat(msg, " - ");
+						if (pl.nickname != string_null)
+							msg = strcat(msg, pl.nickname);
+						else
+							msg = strcat(msg, "NOT LOGGED IN");
+						msg = strcat(msg, "\n");
+						sprint(self, 2, msg);						
+						pl = find (pl, classname, "player");
+					}
+					return (1);
+				}
+				else if ((arg1 == "adminpwd"))
 				{
 					if ((arg_num == 2))
 					{
@@ -512,10 +547,11 @@ float (string arg1, string arg2) ParseCmds =
 float () UserCmd =
 {
 	float isProcessed;
-	string arg1, arg2;
+	string arg1, arg2, arg3;
     arg1 = argv(0);
     arg2 = argv(1);
-    isProcessed = ParseCmds(arg1, arg2);
+    arg3 = argv(2);
+    isProcessed = ParseCmds(arg1, arg2, arg3);
     return (isProcessed);
 }
 
@@ -523,7 +559,7 @@ void (string cmd) SV_ParseClientCommand = {
     float isProcessed;
     tokenize(cmd);
 
-    isProcessed = ParseCmds(argv(0), argv(1));
+    isProcessed = ParseCmds(argv(0), argv(1), argv(2));
     
     if (!isProcessed)
     {
