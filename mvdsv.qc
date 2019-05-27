@@ -73,12 +73,12 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 			{
 				if (arg1 == "login") {
 					if (arg_num == 3) {
-						if (self.nickname) {
+						if (self.login) {
 							sprint (self, 2, "You are already logged in\n");
 							return (1);
 						}
 						else {
-							login(self,arg2,arg3);
+							performLogin(self,arg2,arg3);
 							return(1);
 						}
 					}
@@ -93,8 +93,8 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 					while (pl) {
 						msg = strcat(msg, infokey(pl,"name"));
 						msg = strcat(msg, " - ");
-						if (pl.nickname != string_null)
-							msg = strcat(msg, pl.nickname);
+						if (pl.login != string_null)
+							msg = strcat(msg, pl.login);
 						else
 							msg = strcat(msg, "NOT LOGGED IN");
 						msg = strcat(msg, "\n");
