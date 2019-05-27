@@ -436,6 +436,16 @@ void () DecodeLevelParms =
 
         shortergrens = CF_GetSetting("shgrens", "shortergrens", "off");
 
+        loginRequired = CF_GetSetting("loginrequired", "logreq", "on");
+
+        loginUrl = infokey(world, "loginurl");
+
+        webpageUrl = infokey(world, "webpageurl");
+
+        if (loginRequired && (!loginUrl || !webpageUrl))
+        	loginRequired = 0;
+
+
 
 		st = infokey (world, "rounds");
 		if ((st == "on"))
@@ -2561,6 +2571,7 @@ void () ClientConnect =
 	message = strcat(message, " entered the game\n");
 	bprint (2, message);
 	stuffcmd (self, "say -d\n");
+	sprint(self,2, "Login required, please use \"cmd login <login> <secret>\" \nbefore joining the game\n");
 
 	if ((0 == 0))
 	{
@@ -2683,7 +2694,6 @@ void () ClientConnect =
 	{
 		sprint (self, 2, "CURRENTLY IN PREMATCH TIME\n");
 	}
-
 };
 
 void () ClientDisconnect =

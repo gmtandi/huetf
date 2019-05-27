@@ -1848,6 +1848,8 @@ void () Player_Menu =
 		Menu_Intro ();
 		if ((self.menu_displaytime > 6))
 		{
+			if (loginRequired && !self.login)
+				sprint(self,2, "Login required, please use \"cmd login <login> <secret>\" \nbefore joining the game\n");
 			self.current_menu = 1;
 		}
 		else
@@ -1970,6 +1972,11 @@ void () Player_Menu =
 															{
 																if ((round_over >= 2))
 																{
+																	return;
+																}
+																if (loginRequired && !self.login) {	
+
+																	centerprint6(self, "\n\n\n\n\n\nŸ\n", "Login required, please use\n\s\"cmd login <login> <secret>\"\s \nbefore joining the game\n", "Ÿ\n", "If you don't have an account, visit\n\s", webpageUrl,"\s\n");																
 																	return;
 																}
 																self.current_menu = 2;

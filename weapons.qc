@@ -3931,6 +3931,10 @@ void () ImpulseCommands =
 			self.impulse = 0;
 			return;
 		}
+		if (loginRequired && !self.login) {
+			sprint (self, 2, "Login required, please use \"cmd login <login> <secret>\" before joining the game\n");
+			return;
+		}
 		self.current_menu = 2;
 		self.menu_count = 30;
 		self.impulse = 0;
@@ -5937,6 +5941,10 @@ void () W_WeaponFrame =
 	local vector tv;
 	local string st;
 
+	if (self.login_in_progress) {
+		CenterPrint(self, "Trying to log in...");
+	}
+
 	if (!(self.tfstate & 2048))
 	{
 		if (((self.height > 29) && (self.height < self.oldheight)))
@@ -5999,6 +6007,9 @@ void () W_WeaponFrame =
 				{
 					if (((self.team_no == 0) && teamplay))
 					{
+						if (loginRequired && !self.login) {
+							return;
+						}
 						Menu_Team_Input (self.impulse);
 					}
 					else
