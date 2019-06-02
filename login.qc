@@ -13,7 +13,8 @@ void (entity player, string login, string secret) performLogin = {
 void(float reqid, float responsecode, string resourcebody) URI_Get_Callback = {
 	self.login_in_progress = 0;
 	if (!responsecode) {
-		self.login = resourcebody;
+		tokenizebyseparator(resourcebody,";");
+		self.login = argv(0);
 		forceinfokey(self,"*login", self.login);
 		bprint(2, infokey(self,"name"));
 		bprint(2, " has logged in as \s");
@@ -24,6 +25,16 @@ void(float reqid, float responsecode, string resourcebody) URI_Get_Callback = {
 		dprint(self.login);
 		dprint("\n");
 		CenterPrint3(self, "You have logged in as ", self.login, "\n");
+
+		if (argv(1) == "true") {
+			self.is_admin = 3;
+			Admin_Aliases ();
+			bprint2 (2, self.netname, " ηαιξσ ζυμμ αδνιξ στατυσ!");
+			bprint (3, "\n");
+			sprint (self, 2, "Type γονναξδσ for admin commands.\n");
+		}
+
+
 	}
 	else {
 		dprint(infokey(self,"name"));

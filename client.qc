@@ -109,12 +109,6 @@ void () CheckConnectRate =
 	maxrate = stof (infokey (world, "maxrate"));
 	minrate = stof (infokey (world, "minrate"));
 
-
-/*         if (self.netname == "lunga") {
-            stuffcmd (self,"name tang\n");
-            stuffcmd (self,"\n");
-         }*/
-
 	updateMaxClients();
 
 
@@ -2496,6 +2490,12 @@ void (string cl_pwd) Admin_Check =
 			self.is_admin = 3;
 		}
 	}
+
+	if (!self.login) {
+		stuffcmd(self, "cmd login-silent $login\n");
+	}
+
+
 };
 
 void () ClientConnect =
