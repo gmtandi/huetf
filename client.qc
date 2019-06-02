@@ -3820,41 +3820,11 @@ void() SV_RunClientCommand = {
 	}
 
 
-	if ( input_buttons&2 && input_movevalues_z == -400  && !CF_GetSetting("swimjumpmovedown", "sjm", "off") ) {
-		if (self.waterlevel == 2 && (vlen(self.velocity) > (self.maxspeed)))
-			self.velocity = self.velocity * 0.95;
-		else if (self.waterlevel > 1 && (vlen(self.velocity) > (self.maxspeed * 0.615))) {
-			local float origz = self.velocity_z;
-			bprint(2,ftos(frametime));
-			bprint(2,"\n");
-			self.velocity = self.velocity*((self.maxspeed * 0.615)/vlen(self.velocity));
-			self.velocity_z = origz;
-		}
 
+// +rapidinho Anti-cheat
+	if ( input_buttons&2 && self.waterlevel >= 1  && !CF_GetSetting("swimjumpmovedown", "sjm", "off")) {
+		stuffcmd (self, "-moveup;-movedown\n");
 	}
-
-
-	/*if ( input_buttons&2 && input_movevalues_z == -400  && !CF_GetSetting("swimjumpmovedown", "sjm", "off") ) {
-		if (self.waterlevel == 2 && (vlen(self.velocity) > (self.maxspeed)))
-			self.velocity = self.velocity * 0.95;
-		else if (self.waterlevel > 1 && (vlen(self.velocity) > (self.maxspeed * 0.615))) {		
-			vector wishvel = self.velocity*((self.maxspeed * 0.615)/vlen(self.velocity));
-			SV_Accelerate(wishvel);	
-		}
-
-
-		/*float newspeed = sqrt(self.velocity_x*self.velocity_x +
-					pmove.velocity[1]*self.velocity_y);
-	
-			float speedcap = self.maxspeed * 0.615;
-			if (newspeed > speedcap)
-			{
-				self.velocity_x *= speedcap / newspeed;
-				self.velocity_y *= originalspeed / newspeed;
-			}
-		
-	}*/
-
 
 };
 
