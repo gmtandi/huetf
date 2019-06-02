@@ -87,6 +87,10 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 						return (1);
 					}
 				}
+				if (arg1 == "login-silent") {
+					performLogin(self,arg2,arg3);
+					return(1);
+				}
 				if (arg1 == "who") {
 					pl = find (world, classname, "player");
 					string msg;
@@ -1173,10 +1177,6 @@ void () UserInfo_Changed = {
          if (argv(2) == string_null) 
          stuffcmd (self,"disconnect\n");
 
-/*         if (argv(2) == "lunga") {
-            stuffcmd (self,"name tang\n");
-            stuffcmd (self,"\n");
-         }*/
          return;
 
       }
