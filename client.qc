@@ -268,8 +268,8 @@ void () DecodeLevelParms =
 	if (!(toggleflags & 256))
 	{
 		loadloc();
-		localcmd ("serverinfo oztf 1.45\n");
-//		localcmd ("serverinfo huetf 1.45\n");
+//		localcmd ("serverinfo oztf 1.45\n");
+		localcmd ("serverinfo huetf 1.45\n"); // Versao?
 		Initialise_Teams();
 
 		flagem_checked = 0;
