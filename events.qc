@@ -1,3 +1,5 @@
+string (string text) clearString;
+
 string () ISOTimemillis = {
 	local string padding;
     local string timeuse = strftime(0,"%Y-%m-%dT%H:%M:%S.");
@@ -16,10 +18,8 @@ string (entity pl) getEntityNameOrLogin = {
 	if (loginRequired)
 		return pl.login;
 	else
-		return pl.netname;
+		return clearString(pl.netname);
 }
-
-
 
 void (string evt) logevent = {
 	fputs(logfilehandle, evt);
@@ -47,7 +47,7 @@ void () LogEventGameStart = {
 		numplayers++;
 		player = find (player, classname, "player");
 	}
-	local string teststr = "aaabde";
+
 	event = sprintf("{\"type\": \"gameStart\", \"map\": \"%s\", \"numPlayers\": %s, \"numTeams\": %s, \"time\": %s, \"gameTimeStamp\": \"%s\"}", mapname, ftos(numplayers), ftos(number_of_teams), ftos(gametime), ISOTimemillis());
 	logevent(event);
 }
