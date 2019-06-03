@@ -95,6 +95,7 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 					pl = find (world, classname, "player");
 					string msg;
 					while (pl) {
+						msg = string_null;
 						msg = strcat(msg, infokey(pl,"name"));
 						msg = strcat(msg, " - ");
 						if (pl.login != string_null)
