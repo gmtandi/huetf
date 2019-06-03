@@ -35,7 +35,7 @@ string () GetPlayersName
 					plname = te.netname;
 				st = strcat (st, "_");
 				if (strlen(plname) <= 13) {
-					st = strcat( st, te.netname );
+					st = strcat( st, plname );
 				} else {
 					st = strcat( st, substr(plname,0,12));
 				}
