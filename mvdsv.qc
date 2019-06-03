@@ -73,7 +73,7 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 			{
 				if (arg1 == "login") {
 					if (arg_num == 3) {
-						if (self.login) {
+						if (self.login != string_null) {
 							sprint (self, 2, "You are already logged in\n");
 							return (1);
 						}
@@ -477,7 +477,7 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 																				bprint(2, "\n");
 																				MapEndSequence();
 																				printedEndGame = 1;
-																				localcmd ("map ");
+																				localcmd ("changelevel ");
 																				localcmd (arg2);
 																				localcmd ("\n");
 																				return (1);

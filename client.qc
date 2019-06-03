@@ -2571,7 +2571,10 @@ void () ClientConnect =
 	message = strcat(message, " entered the game\n");
 	bprint (2, message);
 	stuffcmd (self, "say -d\n");
-	sprint(self,2, "Login required, please use \"cmd login <login> <secret>\" \nbefore joining the game\n");
+	if (infokey(self,"*login"))
+		self.login = infokey(self,"*login");
+	if (self.login == string_null)
+		sprint(self,2, "Login required, please use \"cmd login <login> <secret>\" \nbefore joining the game\n");
 
 	if ((0 == 0))
 	{
