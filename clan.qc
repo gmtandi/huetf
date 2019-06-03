@@ -19,7 +19,8 @@ string () GetPlayersName
 	local entity te;
 	local float tmp = 0;
 	local float tmp2 = 0;
-        local string st = "";
+    local string st = "";
+    local string plname;
 
 	while (tmp < number_of_teams) {
 		tmp = tmp + 1;
@@ -28,11 +29,15 @@ string () GetPlayersName
 		while (te != world) {
 			if (te.team_no == tmp && te.playerclass) {
 				tmp2 = 1;
+				if (loginRequired)
+					plname = te.login;
+				else
+					plname = te.netname;
 				st = strcat (st, "_");
-				if (strlen(te.netname) <= 13) {
+				if (strlen(plname) <= 13) {
 					st = strcat( st, te.netname );
 				} else {
-					st = strcat( st, substr(te.netname,0,12));
+					st = strcat( st, substr(plname,0,12));
 				}
 			}
 			te = find (te, classname, "player");
@@ -59,10 +64,21 @@ string () GetGameFileName = {
 
 		str = strcat(str, ftos (tod_year)); // year
 		str = strcat(str, "-");
-		str = strcat(str, ftos (tod_mon)); // month	
+
+		if (tod_mon < 10)
+			str = strcat(str, strcat("0", ftos(tod_mon)));
+		else
+			str = strcat(str, ftos (tod_mon)); // month
+
 		str = strcat(str, "-");		
-		str = strcat(str, ftos (tod_day)); // day
+		
+		if (tod_day < 10)
+			str = strcat(str, strcat("0", ftos(tod_day)));
+		else
+			str = strcat(str, ftos (tod_day)); // day
+		
 		str = strcat(str, "_");
+		
 		if (tod_hour < 10)
 			str = strcat(str, strcat("0", ftos(tod_hour)));
 		else
