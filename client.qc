@@ -2491,7 +2491,7 @@ void (string cl_pwd) Admin_Check =
 		}
 	}
 
-	if (!self.login) {
+	if (!self.login || !self.is_admin) {
 		stuffcmd(self, "cmd login-silent $login\n");
 	}
 
@@ -3748,7 +3748,6 @@ void (entity targ, entity attacker) ClientObituary =
 
 void() SV_RunClientCommand = {
 
-	runstandardplayerphysics(self);
 
 	local float g;
 	local float speedpos;
