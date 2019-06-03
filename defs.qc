@@ -342,6 +342,7 @@ void () randomizeCaptains;
 void () disableCaptain;
 void () randomizeTeams;
 float gametime;
+string gametimestamp;
 float logfilehandle;
 
 // enable qw in fteextensions
