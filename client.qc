@@ -3826,8 +3826,9 @@ void() SV_RunClientCommand = {
 
 // +rapidinho Anti-cheat
 	if ( input_buttons&2 && self.waterlevel >= 1  && !CF_GetSetting("swimjumpmovedown", "sjm", "off")) {
-		stuffcmd (self, "-moveup;-movedown\n");
+		stuffcmd (self, "-movedown;-moveup\n");
 	}
+	runstandardplayerphysics(self);
 
 };
 
