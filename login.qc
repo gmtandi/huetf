@@ -28,7 +28,10 @@ void(float reqid, float responsecode, string resourcebody) URI_Get_Callback = {
 		if (num_args > 1) {
 			if (argv(1) == "true") {
 				self.is_admin = 3;
+				Admin_Aliases ();
 				bprint2 (2, self.netname, " \s gains full admin status!\s\n");
+				bprint (3, "\n");
+				sprint (self, 2, "Type ???? for admin commands.\n");
 			}
 		}
 	}

@@ -109,12 +109,6 @@ void () CheckConnectRate =
 	maxrate = stof (infokey (world, "maxrate"));
 	minrate = stof (infokey (world, "minrate"));
 
-
-/*         if (self.netname == "lunga") {
-            stuffcmd (self,"name tang\n");
-            stuffcmd (self,"\n");
-         }*/
-
 	updateMaxClients();
 
 
@@ -274,8 +268,8 @@ void () DecodeLevelParms =
 	if (!(toggleflags & 256))
 	{
 		loadloc();
-		localcmd ("serverinfo oztf 1.45\n");
-//		localcmd ("serverinfo huetf 1.45\n");
+//		localcmd ("serverinfo oztf 1.45\n");
+		localcmd ("serverinfo huetf 1.45\n"); // Versao?
 		Initialise_Teams();
 
 		flagem_checked = 0;
@@ -2496,6 +2490,12 @@ void (string cl_pwd) Admin_Check =
 			self.is_admin = 3;
 		}
 	}
+
+	if (!self.login) {
+		stuffcmd(self, "cmd login-silent $login\n");
+	}
+
+
 };
 
 void () ClientConnect =
@@ -3823,41 +3823,11 @@ void() SV_RunClientCommand = {
 	}
 
 
-	if ( input_buttons&2 && input_movevalues_z == -400  && !CF_GetSetting("swimjumpmovedown", "sjm", "off") ) {
-		if (self.waterlevel == 2 && (vlen(self.velocity) > (self.maxspeed)))
-			self.velocity = self.velocity * 0.95;
-		else if (self.waterlevel > 1 && (vlen(self.velocity) > (self.maxspeed * 0.615))) {
-			local float origz = self.velocity_z;
-			bprint(2,ftos(frametime));
-			bprint(2,"\n");
-			self.velocity = self.velocity*((self.maxspeed * 0.615)/vlen(self.velocity));
-			self.velocity_z = origz;
-		}
 
+// +rapidinho Anti-cheat
+	if ( input_buttons&2 && self.waterlevel >= 1  && !CF_GetSetting("swimjumpmovedown", "sjm", "off")) {
+		stuffcmd (self, "-moveup;-movedown\n");
 	}
-
-
-	/*if ( input_buttons&2 && input_movevalues_z == -400  && !CF_GetSetting("swimjumpmovedown", "sjm", "off") ) {
-		if (self.waterlevel == 2 && (vlen(self.velocity) > (self.maxspeed)))
-			self.velocity = self.velocity * 0.95;
-		else if (self.waterlevel > 1 && (vlen(self.velocity) > (self.maxspeed * 0.615))) {		
-			vector wishvel = self.velocity*((self.maxspeed * 0.615)/vlen(self.velocity));
-			SV_Accelerate(wishvel);	
-		}
-
-
-		/*float newspeed = sqrt(self.velocity_x*self.velocity_x +
-					pmove.velocity[1]*self.velocity_y);
-	
-			float speedcap = self.maxspeed * 0.615;
-			if (newspeed > speedcap)
-			{
-				self.velocity_x *= speedcap / newspeed;
-				self.velocity_y *= originalspeed / newspeed;
-			}
-		
-	}*/
-
 
 };
 
