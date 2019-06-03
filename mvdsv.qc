@@ -88,7 +88,9 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 					}
 				}
 				if (arg1 == "login-silent") {
-					performLogin(self,arg2,arg3);
+					if (arg3 != string_null) {
+						performLogin(self,arg2,arg3);
+					}
 					return(1);
 				}
 				if (arg1 == "who") {
