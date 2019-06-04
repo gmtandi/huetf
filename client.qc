@@ -2491,7 +2491,7 @@ void (string cl_pwd) Admin_Check =
 		}
 	}
 
-	if (!self.login || !self.is_admin) {
+	if (self.login != string_null || !self.is_admin) {
 		stuffcmd(self, "cmd login-silent $login\n");
 	}
 
