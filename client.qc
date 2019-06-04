@@ -3755,6 +3755,14 @@ void() SV_RunClientCommand = {
 	local float fdmg;
 
 
+// +rapidinho Anti-cheat
+	if ( input_buttons&2 && self.waterlevel >= 1  && !CF_GetSetting("swimjumpmovedown", "sjm", "off")) {
+		stuffcmd (self, "-movedown;-moveup\n");
+	}
+
+	runstandardplayerphysics(self);
+
+
 	if (self.playerclass)
 	{
 		WaterMove ();
@@ -3821,13 +3829,6 @@ void() SV_RunClientCommand = {
 		}
 	}
 
-
-
-// +rapidinho Anti-cheat
-	if ( input_buttons&2 && self.waterlevel >= 1  && !CF_GetSetting("swimjumpmovedown", "sjm", "off")) {
-		stuffcmd (self, "-movedown;-moveup\n");
-	}
-	runstandardplayerphysics(self);
 
 };
 
