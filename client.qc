@@ -2491,7 +2491,7 @@ void (string cl_pwd) Admin_Check =
 		}
 	}
 
-	if (!self.login || !self.is_admin) {
+	if (self.login != string_null || !self.is_admin) {
 		stuffcmd(self, "cmd login-silent $login\n");
 	}
 
@@ -3755,6 +3755,14 @@ void() SV_RunClientCommand = {
 	local float fdmg;
 
 
+// +rapidinho Anti-cheat
+	if ( input_buttons&2 && self.waterlevel >= 1  && !CF_GetSetting("swimjumpmovedown", "sjm", "off")) {
+		stuffcmd (self, "-movedown;-moveup\n");
+	}
+
+	runstandardplayerphysics(self);
+
+
 	if (self.playerclass)
 	{
 		WaterMove ();
@@ -3821,13 +3829,6 @@ void() SV_RunClientCommand = {
 		}
 	}
 
-
-
-// +rapidinho Anti-cheat
-	if ( input_buttons&2 && self.waterlevel >= 1  && !CF_GetSetting("swimjumpmovedown", "sjm", "off")) {
-		stuffcmd (self, "-movedown;-moveup\n");
-	}
-	runstandardplayerphysics(self);
 
 };
 
