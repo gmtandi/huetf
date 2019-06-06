@@ -49,7 +49,7 @@ void () LogEventGameStart = {
 		player = find (player, classname, "player");
 	}
 
-	event = sprintf("{\"type\": \"gameStart\", \"map\": \"%s\", \"numPlayers\": %s, \"numTeams\": %s, \"time\": %s, \"gameTimeStamp\": \"%s\"}", mapname, ftos(numplayers), ftos(number_of_teams), ftos(gametime), gametimestamp);
+	event = sprintf("{\"type\": \"gameStart\", \"map\": \"%s\", \"numPlayers\": %s, \"numTeams\": %s, \"time\": %s, \"demo\": \"%s\", \"gameTimeStamp\": \"%s\"}", mapname, ftos(numplayers), ftos(number_of_teams), ftos(gametime), cvar_string("serverdemo"), gametimestamp);
 	logevent(event);
 }
 
