@@ -5944,6 +5944,12 @@ void () W_WeaponFrame =
 	if (self.login_in_progress) {
 		CenterPrint(self, "Trying to log in...");
 	}
+	
+	if (loginRequired && !self.login) {
+		PrintLoginMessage();
+		self.impulse = 0;
+		return;
+	}
 
 	if (!(self.tfstate & 2048))
 	{
@@ -6007,9 +6013,6 @@ void () W_WeaponFrame =
 				{
 					if (((self.team_no == 0) && teamplay))
 					{
-						if (loginRequired && !self.login) {
-							return;
-						}
 						Menu_Team_Input (self.impulse);
 					}
 					else
