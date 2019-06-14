@@ -56,6 +56,9 @@ void () LogEventGameStart = {
 void (entity player, float previous, float next, float timeplayed) LogEventChangeClass = {
 	if (canLog == 0)
 		return;
+	if (previous == 0) {
+		return;
+	}
 	local string event;
 	event = sprintf(",\n{\"type\": \"changeClass\", \"player\": \"%s\", \"previousClass\": %s, \"nextClass\": %s, \"team\": %s, \"timePlayed\": %s, \"time\": %s, \"gameTimeStamp\": \"%s\"}",
 							getEntityNameOrLogin(player),
