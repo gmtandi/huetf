@@ -143,6 +143,8 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 		return;
 
 	local string event;
+	local string attackEvent;
+	local string targetEvent;
 	local string part1;
 	local string part2;
 	local string damageKind;
@@ -183,7 +185,7 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 
 
 	if (getEntityNameOrLogin(target) != "") {
-		part1 = sprintf(",\n{\"type\": \"damage\", \"kind\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
+		part1attack = sprintf(",\n{\"type\": \"damageDone\", \"kind\": \"%s\", \"player\": \"%s\", \"playerClass\": %s, \"playerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
 						damageKind, 
 						attackername, 
 					   	ftos(attacker.playerclass), 
@@ -191,6 +193,16 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 					   	getEntityNameOrLogin(target), 
 					   	ftos(target.playerclass), 
 					   	ftos(target.team_no));
+		part1target = sprintf(",\n{\"type\": \"damageTaken\", \"kind\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"player\": \"%s\", \"playerClass\": %s, \"playerTeam\": %s, ",
+						damageKind, 
+						attackername, 
+					   	ftos(attacker.playerclass), 
+					   	ftos(attacker.team_no), 
+					   	getEntityNameOrLogin(target), 
+					   	ftos(target.playerclass), 
+					   	ftos(target.team_no));
+
+
 		part2 = sprintf("\"inflictor\": \"%s\", \"damage\": %s, \"time\": %s, \"gameTimeStamp\": \"%s\"}", 
 						inflictorId,
 						ftos(damage),
@@ -198,7 +210,9 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 						gametimestamp
 						);
 
-		event = strcat(part1, part2);
+		attackEvent = strcat(part1attack, part2);
+		targetEvent = strcat(part1target, part2);
+		event = strcat(attackEvent, targetEvent);
 		logevent(event);
 	}
 }
@@ -238,10 +252,20 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 
 
 	local string event;
+	local string attackEvent;
+	local string targetEvent;
 	local string part1;
 	local string part2;
 
-	part1 = sprintf(",\n{\"type\": \"kill\", \"kind\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
+	part1attack = sprintf(",\n{\"type\": \"kill\", \"kind\": \"%s\", \"player\": \"%s\", \"playerClass\": %s, \"playerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
+					killKind,
+					attackername, 
+				   	ftos(attacker.playerclass), 
+				   	ftos(attacker.team_no), 
+				   	targetname, 
+				   	ftos(target.playerclass), 
+				   	ftos(target.team_no));
+	part1target = sprintf(",\n{\"type\": \"death\", \"kind\": \"%s\", \"attacker\": \"%s\", \"attackerClass\": %s, \"attackerTeam\": %s, \"player\": \"%s\", \"playerClass\": %s, \"playerTeam\": %s, ",
 					killKind,
 					attackername, 
 				   	ftos(attacker.playerclass), 
@@ -254,8 +278,9 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 					ftos(gametime),
 					gametimestamp
 					);
-
-	event = strcat(part1, part2);
+	attackEvent = strcat(part1attack, part2);
+	targetEvent = strcat(part1target, part2);
+	event = strcat(part1attack, part1target);
 	logevent(event);
 }
 
@@ -264,7 +289,11 @@ void (entity player) LogEventGoal = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"goal\", \"attacker\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", getEntityNameOrLogin(player), ftos(gametime), gametimestamp);
+	event = sprintf(",\n{\"type\": \"goal\", \"player\": \"%s\", \"playerClass\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", 
+		getEntityNameOrLogin(player), 
+		ftos(player.playerclass), 
+		ftos(gametime), 
+		gametimestamp);
 	logevent(event);
 }
 
@@ -272,7 +301,11 @@ void (entity player) LogEventFumble = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"fumble\", \"attacker\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", getEntityNameOrLogin(player), ftos(gametime), gametimestamp);
+	event = sprintf(",\n{\"type\": \"fumble\", \"player\": \"%s\", \"playerClass\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", 
+		getEntityNameOrLogin(player),
+		ftos(player.playerclass), 
+		ftos(gametime), 
+		gametimestamp);
 	logevent(event);
 }
 
@@ -280,7 +313,7 @@ void (entity attacker) LogEventAttack = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"attack\", \"attacker\": \"%s\", \"inflictor\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", getEntityNameOrLogin(attacker), GetWeaponName(attacker.current_weapon), ftos(gametime), gametimestamp);
+	event = sprintf(",\n{\"type\": \"attack\", \"player\": \"%s\", \"inflictor\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", getEntityNameOrLogin(attacker), GetWeaponName(attacker.current_weapon), ftos(gametime), gametimestamp);
 	logevent(event);
 }
 
