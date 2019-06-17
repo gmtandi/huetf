@@ -414,8 +414,11 @@ void () StartQuadRound =
 			p = find (p, classname, "player");
 		}
 		bprint (2, "Rounds Over! Use \"cmd map <mapname>\" to go to the nextmap\n");
+		MapEndSequence();
+		printedEndGame = 1;
 		return;
 	}
+	
 	if ((rounds > 1))
 	{
 		rounds = (rounds - 1);
