@@ -149,6 +149,8 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 	local string attackEvent;
 	local string targetEvent;
 	local string part1;
+	local string part1attack;
+	local string part1target;
 	local string part2;
 	local string damageKind;
 	local string attackername;
@@ -258,6 +260,8 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 	local string attackEvent;
 	local string targetEvent;
 	local string part1;
+	local string part1attack;
+	local string part1target;
 	local string part2;
 
 	part1attack = sprintf(",\n{\"type\": \"kill\", \"kind\": \"%s\", \"player\": \"%s\", \"playerClass\": %s, \"playerTeam\": %s, \"target\": \"%s\", \"targetClass\": %s, \"targetTeam\": %s, ",
@@ -283,7 +287,7 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 					);
 	attackEvent = strcat(part1attack, part2);
 	targetEvent = strcat(part1target, part2);
-	event = strcat(part1attack, part1target);
+	event = strcat(attackEvent, targetEvent);
 	logevent(event);
 }
 
