@@ -57,6 +57,7 @@ void () MapEndSequence =
 	}	
 	LogEventTeamScores();
 	LogEventGameEnd();
+	localcmd("stop\n");
 	if (logfilehandle > 0)
 		fclose(logfilehandle);
 	canLog = 0;
