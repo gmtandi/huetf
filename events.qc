@@ -60,7 +60,7 @@ void (entity player, float previous, float next, float timeplayed) LogEventChang
 		return;
 	}
 	local string event;
-	event = sprintf(",\n{\"type\": \"changeClass\", \"player\": \"%s\", \"previousClass\": %s, \"nextClass\": %s, \"team\": %s, \"timePlayed\": %s, \"time\": %s, \"gameTimeStamp\": \"%s\"}",
+	event = sprintf(",\n{\"type\": \"changeClass\", \"player\": \"%s\", \"playerClass\": %s, \"nextClass\": %s, \"team\": %s, \"timePlayed\": %s, \"time\": %s, \"gameTimeStamp\": \"%s\"}",
 							getEntityNameOrLogin(player),
 							ftos(previous),
 							ftos(next),
