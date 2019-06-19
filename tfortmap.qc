@@ -2188,7 +2188,9 @@ void (entity Goal, entity AP, float addb) DoResults =
 	}
 	if ((winners == 1))
 	{
+
 		TeamFortress_TeamShowScores (2);
+		LogEventGoal(AP);
 		te = find (world, classname, "observer");
 		while ((te != world))
 		{
