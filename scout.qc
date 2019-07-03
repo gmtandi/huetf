@@ -148,6 +148,7 @@ void () ConcussionGrenadeTimer =
 	local float pos;
 	local float concadjust;
 	local float stumble;
+	local string prevPos;
 
 	if ((self.owner.invincible_finished > time))
 	{
@@ -176,27 +177,29 @@ void () ConcussionGrenadeTimer =
 		newmis.cnt = 0;
 		setsize (newmis, '-8 -8 -8', '8 8 8');
 	}
-	self.health = (self.health - enter);
-	if ((self.owner.playerclass == 5))
-	{
-		self.health = (self.health - enter);
-	}
-	if ((self.health < 0))
-	{
-		self.health = 0;
-	}
+	concadjust = random();	
 	if (grentype)
 	{
 		self.nextthink = (time + 0.25);
 	}
 	else
 	{
-		concadjust = 1;
+		prevPos = vtos(self.owner.origin);
+		//concadjust = 1;		
 		self.nextthink = (time + (0.25 * concadjust));
 		if ((concadjust > 1))
 		{
 			self.health = (self.health - concadjust);
 		}
+	}
+	self.health = (self.health - enter*concadjust);
+	if ((self.owner.playerclass == 5))
+	{
+		self.health = (self.health - enter*concadjust);
+	}
+	if ((self.health < 0))
+	{
+		self.health = 0;
 	}
 	pos = pointcontents (self.owner.origin);
 	src_x = ((self.owner.origin_x + self.owner.maxs_x) + 2);
@@ -227,7 +230,7 @@ void () ConcussionGrenadeTimer =
 				}
 			}
 		}
-	}
+	}	
 	if ((self.health <= 0))
 	{
 		sprint (self.owner, 2, "Your head feels better now.\n");
