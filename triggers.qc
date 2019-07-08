@@ -424,7 +424,7 @@ void () teleport_touch =
 	{
 		if (((other.weapon == 1) && other.hook_out))
 		{
-			sound (other, 1, "weapons/bounce2.wav", 1, 1);
+			//sound (other, 1, "weapons/bounce2.wav", 1, 1);
 			other.on_hook = 0;
 			other.hook_out = 0;
 			other.fire_held_down = 0;
