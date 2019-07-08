@@ -8,8 +8,6 @@ void () player_touch =
 {
 	local entity Bio;
 	local entity te;
-	local float v1;
-	local float v2;
 	local float found;
 
 	if ((self.deadflag > 0))
@@ -726,8 +724,6 @@ void () player_assaultcannon2 = [ 104, player_assaultcannon1 ]
 
 void () player_assaultcannondown1 = [ 103, player_assaultcannondown1 ]
 {
-	local entity tcool;
-
 	if ((self.flags & 512))
 	{
 		if ((self.count == 1))
@@ -1267,7 +1263,6 @@ void () PlayerDie =
 {
 	local float i;
 	local entity te;
-	local string st;
 
 	if (self.hook_out)
 	{

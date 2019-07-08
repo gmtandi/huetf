@@ -29,8 +29,6 @@ void () monster_use =
 
 void () monster_death_use =
 {
-	local entity ent;
-
 	if ((self.flags & 1))
 	{
 		self.flags = (self.flags - 1);
@@ -49,8 +47,6 @@ void () monster_death_use =
 
 void () walkmonster_start_go =
 {
-	local entity etemp;
-
 	self.origin_z = (self.origin_z + 1);
 	droptofloor ();
 	if (!walkmove (0, 0))

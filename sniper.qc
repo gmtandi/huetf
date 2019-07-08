@@ -3,8 +3,6 @@ void () SniperSight_Update;
 
 void () TeamFortress_SniperWeapon =
 {
-	local float it;
-
 	self.impulse = 0;
 	if ((self.tfstate & 2))
 	{

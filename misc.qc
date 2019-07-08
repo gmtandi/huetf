@@ -531,8 +531,6 @@ void () bubble_bob =
 	local float rnd1;
 	local float rnd2;
 	local float rnd3;
-	local vector vtmp1;
-	local vector modi;
 
 	self.cnt = (self.cnt + 1);
 	if ((self.cnt == 4))

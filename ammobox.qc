@@ -420,7 +420,6 @@ void (float type) TeamFortress_DropAmmo =
 
 void () Drop_detpack =
 {
-	local entity te;
 	local string st;
 	local float tc;
 
@@ -488,9 +487,6 @@ void () Drop_detpack =
 
 void () TeamFortress_Discard =
 {
-	local float i;
-	local string st;
-
 	newmis = spawn ();
 	newmis.classname = "item_backpack";
 	if ((self.playerclass == 1))

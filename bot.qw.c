@@ -533,7 +533,6 @@ void (float whichteam, float whichClass) botConnect =
 	local float clientno;
 	local entity bot;
 	local entity uself;
-	local string g;
 
 	clientno = clientNextAvailable ();
 	uself = self;

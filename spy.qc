@@ -684,8 +684,6 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 
 void () TeamFortress_SpyGoUndercover =
 {
-	local entity te;
-
 	if ((self.effects & (8 | 4)))
 	{
 		sprint (self, 1, "You cannot disguise while glowing.\n");
@@ -861,7 +859,6 @@ void () GasGrenadeTouch =
 
 void () GasGrenadeExplode =
 {
-	local vector tmpv;
 	local entity te;
 	local float pos;
 
@@ -1021,7 +1018,6 @@ void () HallucinationTimer =
 	local float tmpy;
 	local float halltype;
 	local float halltype2;
-	local string st;
 
 	self.health = (self.health - 3);
 	if ((self.owner.playerclass == 5))
@@ -1406,7 +1402,6 @@ void (entity spy) Spy_RemoveDisguise =
 {
 	local string st;
 	local float tc;
-	local float reset;
 
 	if ((spy.playerclass == 8))
 	{

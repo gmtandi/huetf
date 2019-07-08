@@ -148,7 +148,6 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 	local string event;
 	local string attackEvent;
 	local string targetEvent;
-	local string part1;
 	local string part1attack;
 	local string part1target;
 	local string part2;
@@ -259,7 +258,6 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 	local string event;
 	local string attackEvent;
 	local string targetEvent;
-	local string part1;
 	local string part1attack;
 	local string part1target;
 	local string part2;

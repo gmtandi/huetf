@@ -226,8 +226,6 @@ void () NapalmGrenadeNetThink =
 
 void () NapalmGrenadeExplode =
 {
-	local float i;
-	local entity te;
 	local entity head;
 
 	sound (self, 0, "weapons/flmgrexp.wav", 1, 1);
@@ -449,7 +447,6 @@ void () QW_Flame_ResetTouch;
 void () WorldFlame_touch =
 {
 	local entity flame;
-	local vector dir;
 	local vector vtemp;
 
 	deathmsg = 15;
@@ -517,7 +514,6 @@ void () QW_Flame_ResetTouch =
 void () Flamer_stream_touch =
 {
 	local entity flame;
-	local vector dir;
 	local vector vtemp;
 
 	if ((other.classname == "fire"))
@@ -604,7 +600,6 @@ void () Flamer_stream_touch =
 void () Napalm_touch =
 {
 	local entity flame;
-	local vector dir;
 	local vector vtemp;
 
 	if ((other.classname == "fire"))
@@ -779,8 +774,6 @@ void () IncendiaryRadius =
 void () T_IncendiaryTouch =
 {
 	local float damg;
-	local entity head;
-	local vector org;
 
 	if ((other == self.owner))
 	{

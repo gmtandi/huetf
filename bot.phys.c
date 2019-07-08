@@ -6,9 +6,6 @@ float (float key) CL_KeyState =
 
 void () CL_KeyMove =
 {
-	local float anglespeed;
-	local vector view;
-
 	self.movevect = '0 0 0';
 	self.movevect_y = (self.movevect_y + (350 * CL_KeyState (KEY_MOVERIGHT)));
 	self.movevect_y = (self.movevect_y - (350 * CL_KeyState (KEY_MOVELEFT)));
@@ -477,7 +474,6 @@ void () PostPhysics =
 	local float back;
 	local float dst;
 	local float cflags;
-	local string g;
 
 	self = self.owner;
 	self.velocity = ((self.velocity - self.phys_obj.dest1) + self.phys_obj.velocity);
@@ -533,8 +529,6 @@ void () PostPhysics =
 
 void () SV_FlyMove =
 {
-	local vector r;
-
 	if ((self.phys_obj == world))
 	{
 		error ("No physics entity spawned!\nMake sure BotInit was called\n");
