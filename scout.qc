@@ -281,6 +281,7 @@ void () TeamFortress_Scan =
 	local float any_detected;
 
 	scanrange = _d;
+	list = world;
 	self.owner.impulse = 0;
 	self.owner.last_impulse = 0;
 	if ((self.owner.classname == "player"))

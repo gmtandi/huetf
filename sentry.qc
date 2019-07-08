@@ -491,9 +491,9 @@ float () OldSentry_FindTarget =
 	r = 0;
 	loopc = 0;
 	gotone = 0;
+	client = checkclient();
 	while (((loopc < 12) && (gotone == 0)))
 	{
-		client = checkclient ();
 		gotone = 1;
 		if (!client)
 		{

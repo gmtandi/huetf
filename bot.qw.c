@@ -496,6 +496,7 @@ void () BotInit =
 	local entity fisent;
 	local float numents;
 
+	numents = 0;
 	ent = nextent (world);
 	while ((ent.classname != "worldspawn"))
 	{

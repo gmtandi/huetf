@@ -128,6 +128,7 @@ void () W_Precache =
 	precache_sound ("weapons/tink1.wav");
 	precache_sound ("weapons/grenade.wav");
 	precache_sound ("weapons/bounce.wav");
+	precache_sound ("weapons/bounce2.wav");
 	precache_sound ("weapons/shotgn2.wav");
 	precache_sound ("wizard/wattack.wav");
 	precache_sound ("items/r_item1.wav");
@@ -883,6 +884,7 @@ void () W_FireSniperRifle =
 	local vector g;
 	local vector h;
 
+	dir = '0 0 0';
 	sound (self, 1, "weapons/sniper.wav", 1, 1);
 	KickPlayer (-2, self);
 	if (!practice)
@@ -1069,11 +1071,11 @@ void () MissileRadius =
 	dremove (self);
 };
 
-float (entity other, entity projectile, float damage) headshot_calc = 
+float (entity targ, entity projectile, float damage) headshot_calc = 
 {
 	if (headshots) {
 		local vector dist;
-		dist = projectile.origin - other.origin;
+		dist = projectile.origin - targ.origin;
 		if (vlen(dist) >=  HUETF_HEADSHOT_DISTANCE) {
 			return HUETF_HEADSHOT_MULTIPLIER * damage;
 		} 
@@ -3091,6 +3093,7 @@ void () W_ChangeWeapon =
 	it = self.weapons_carried;
 	fl = self.current_weapon;
 	am = 0;
+	wm = 0;
 	usable = 0;
 	have_weapon = 1;
 	if ((self.impulse == 1))
@@ -5647,6 +5650,7 @@ float () PreMatchImpulses =
 			}
 		}
 	}
+	return (1);
 };
 
 float () DeadImpulses =
@@ -5920,6 +5924,7 @@ float () DeadImpulses =
 			}
 		}
 	}
+	return (1);
 };
 
 void () W_WeaponFrame =
@@ -6080,7 +6085,7 @@ void () W_WeaponFrame =
 		                    Status_Refresh(self);
 		                }
 		            } else {
-		                local vector tv = self.velocity;
+		                tv = self.velocity;
 		                tv_z = 0;
 		                if (vlen(tv) <= 50) {
 		                    SniperSight_Create();

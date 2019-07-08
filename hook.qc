@@ -213,6 +213,7 @@ void () Service_Grapple =
 {
 	local vector hook_dir;
 
+	hook_dir = '0 0 0';
 	if (!self.button0)
 	{
 		self.fire_held_down = 0;

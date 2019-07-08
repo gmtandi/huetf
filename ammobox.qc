@@ -9,6 +9,7 @@ void () RemoveOldAmmobox =
 	local entity eold;
 	local float rt;
 
+	eold = world;
 	rt = (time + 999);
 	box = find (world, classname, "ammobox");
 	while ((box != world))
@@ -423,6 +424,7 @@ void () Drop_detpack =
 	local string st;
 	local float tc;
 
+	tc = 0;
 	if (!self.ammo_detpack)
 	{
 		return;

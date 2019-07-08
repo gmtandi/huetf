@@ -191,6 +191,7 @@ void () Track_Player =
 {
 	local float endloop;
 
+	endloop = 0;
 	self.goalentity = find (self.goalentity, classname, "player");
 	if ((self.goalentity == world))
 	{

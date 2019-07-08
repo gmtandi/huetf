@@ -729,7 +729,8 @@ void () weapon_touch =
 	local float old;
 	local entity stemp;
 	local float leave;
-
+	new = 0;
+	
 	if (!(other.flags & 8))
 	{
 		return;

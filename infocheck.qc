@@ -40,6 +40,7 @@ void () Calibrate_Level =
 	local float autoteam_time;
 	local entity ent;
 
+	autoteam_time = 0;
 	st = infokey (world, "max_pipebombs");
 	num_max_pipebombs = (stof (st) + 1);
 	if (((num_max_pipebombs < 11) || (num_max_pipebombs > 25)))

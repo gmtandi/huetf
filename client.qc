@@ -603,6 +603,7 @@ entity () FindIntermission =
 		return (spot);
 	}
 	objerror ("FindIntermission: no spot");
+	return (world);
 };
 
 entity (entity start_point) FindNextIntermission =
@@ -1000,7 +1001,7 @@ void () ClientKill =
 	}
 	if (self.playerclass)
 	{
-		local string message;
+		local string message = string_null;
 		message = strcat(message, self.netname);
 		message = strcat(message, " suicides\n");
 		bprint(1, message);
@@ -2492,7 +2493,7 @@ void (string cl_pwd) Admin_Check =
 
 };
 
-void () ClientConnect =
+void (optional float csqcactive) ClientConnect =
 {
 	local string st;
 	local string st2;

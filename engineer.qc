@@ -1006,7 +1006,7 @@ void (entity gun) Engineer_SentryGun_InsertAmmo = {
     }
 
     if ((shells + rockets) > 0) {
-        W_SetCurrentAmmo(self);
+        W_SetCurrentAmmo();
         ammo = "You insert ";
         if (shells > 0)
             ammo = strcat(ammo, strcat(ftos(floor(shells)), " shells"));

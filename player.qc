@@ -10,6 +10,7 @@ void () player_touch =
 	local entity te;
 	local float found;
 
+	te = world;
 	if ((self.deadflag > 0))
 	{
 		return;

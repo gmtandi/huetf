@@ -71,3 +71,24 @@
 #define HUETF_HEADSHOT_DISTANCE   25
 #define HUETF_HEADSHOT_MULTIPLIER 1.5
 
+// Defines for the playerclass
+#define PC_UNDEFINED		0
+
+#define PC_SCOUT		1
+#define PC_SNIPER		2
+#define PC_SOLDIER		3
+#define PC_DEMOMAN		4
+#define PC_MEDIC		5
+#define PC_HVYWEAP		6
+#define PC_PYRO			7
+#define PC_SPY			8
+#define PC_ENGINEER		9
+
+// Insert new class definitions here
+
+// PC_RANDOM _MUST_ be the third last class
+#define PC_RANDOM		10 	// Random playerclass
+#define PC_CIVILIAN		11	// Civilians are a special class. They cannot
+					// be chosen by players, only enforced by maps
+#define PC_LASTCLASS		12 	// Use this as the high-boundary for any loops
+					// through the playerclass.

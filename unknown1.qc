@@ -822,6 +822,10 @@ void () RefreshStatusBar =
 	local float num;
 	local string str;
 	local float r;
+	x = 0;
+
+	te = world;
+	str = string_null;
 	r = (self.StatusBarRes + self.StatusBarSize);
 	while ((r > 0))
 	{
@@ -2913,6 +2917,7 @@ void () Menu_EngineerFix_Dispenser =
 	local entity disp = self.building;
 	local string status;
 
+	status = string_null;
 	status = strcat(status,"Dispenser has ");
 	status = strcat(status,ftos (disp.health));
 	status = strcat(status," health");
@@ -3080,6 +3085,7 @@ void () Menu_EngineerFix_SentryGun =
 	local entity gun = self.building;
 	local string status;
 
+	status = string_null;
 	status = strcat(status,"Level ");
     status = strcat(status,ftos (gun.weapon));
 	status = strcat(status," Sentry Gun has ");
@@ -3476,6 +3482,7 @@ void () Menu_Admin =
 	local float f_tmp2;
 
 	self.impulse = 0;
+	s_menu1 = string_null;
 
 
 	if (self.current_menu_type == 0) {
@@ -3819,7 +3826,6 @@ if (self.current_menu_type != 5) {
 
 			randomizeCaptains();
 
-			local entity te;
 			te = find (world, classname, "player");
 			while (te != world)
 			{

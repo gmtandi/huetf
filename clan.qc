@@ -56,7 +56,7 @@ string () GetGameFileName = {
 	local string str;
 
 	str = "";
-
+	i = 0;
 	t = find (world, classname, "prematch");
 	if ((t != world))
 	{		
