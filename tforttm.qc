@@ -16,7 +16,6 @@ float () TeamFortress_TeamPutPlayerInTeam =
 	local float lowscore;
 	local float lowest;
 	local float likely_team;
-	local string st;
 
 	i = 1;
 	likely_team = (random () * number_of_teams);
@@ -1068,8 +1067,6 @@ float (float tno) TeamFortress_TeamGetIllegalClasses =
 
 float (float tno) TeamFortress_TeamIsCivilian =
 {
-	local entity te;
-
 	if ((tno == 1))
 	{
 		if ((civilianteams & 1))

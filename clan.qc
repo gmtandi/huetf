@@ -144,9 +144,6 @@ string () GetGameFileName = {
 
 void () AutoRecord =
 {
-	local float i;
-	local string tmp;
-	local entity t;
 	local string str;
 	if ((infokey (world, "serverdemo") != string_null))
 	{
@@ -718,7 +715,6 @@ void () PlayerBreak =
 	local float f1;
 	local float f2;
 	local string tmp;
-	local entity te;
 
 	if (intermission_running)
 	{
@@ -820,7 +816,6 @@ void () PlayerBreak =
 void () PlayerReady =
 {
 	local float f1;
-	local float f2;
 	local string tmp;
 	local entity te;
 

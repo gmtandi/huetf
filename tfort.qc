@@ -2334,7 +2334,6 @@ if (skins24b) {
 void (entity p) TeamFortress_SetSkin =
 {
 	local string st;
-	local float tn;
 
 	if (((p.playerclass == 8) && (p.undercover_skin != 0)))
 	{
@@ -2920,8 +2919,6 @@ float (entity Retriever, float WeaponType) TeamFortress_CanGetWeapon =
 
 void (entity Player, float Armorclass) TeamFortress_DescribeArmor =
 {
-	local string st;
-
 	if ((Armorclass == 0))
 	{
 		return;
@@ -3307,8 +3304,6 @@ void () TeamFortress_CheckClassStats =
 
 void () TeamFortress_AssaultWeapon =
 {
-	local float it;
-
 	self.impulse = 0;
 	if ((self.tfstate & 2))
 	{

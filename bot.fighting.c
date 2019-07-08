@@ -635,7 +635,6 @@ void (float fDistance) DodgeEnemy =
 void () DodgeEnemyGrenades =
 {
 	local entity possibleGrenade;
-	local vector DirToRun;
 
 	possibleGrenade = findradius (self.origin, 225);
 	while (possibleGrenade)
@@ -688,12 +687,8 @@ void () HandleGrens =
 {
 	local float fTime;
 	local float fDistance;
-	local float fExplodeTime;
 	local entity eGren;
 	local entity eTemp;
-	local float fHeightDif;
-	local float fGrenZVelocity;
-	local float fArc;
 
 	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
 	{
@@ -776,12 +771,8 @@ void () UseGren =
 {
 	local float fTime;
 	local float fDistance;
-	local float fExplodeTime;
 	local entity eGren;
 	local entity eTemp;
-	local float fHeightDif;
-	local float fGrenZVelocity;
-	local float fArc;
 
 	if (((self.tfstate & 1) || (self.tfstate & FL_PARTIALGROUND)))
 	{

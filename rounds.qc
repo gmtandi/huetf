@@ -82,8 +82,6 @@ float () CheckWinner =
 
 void () RoundOver =
 {
-	local string st;
-
 	round_over = 2;
 	if ((tfs_winner == -1))
 	{
@@ -256,7 +254,6 @@ void () RoundBegin =
 {
 	local entity te;
 	local entity oldself;
-	local string st;
 	local float bomber;
 	local float counter;
 

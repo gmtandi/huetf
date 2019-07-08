@@ -8,10 +8,6 @@
 
 void () UserInterface =
 {
-	local float iClass;
-	local entity bot;
-	local string strTemp;
-
 	if ((time < self.fBotMessageTime))
 	{
 		if ((self.fBotMessageCounter < 25))

@@ -151,7 +151,6 @@ void () Sentry_Target =
 void () OldSentry_Rotate =
 {
 	local float ay;
-	local entity gunhead;
 
 	self.effects = (self.effects - (self.effects & 8));
 	CheckSentry (self);
@@ -315,8 +314,6 @@ void () lvl3_oldsentry_atk3 = [ 6, lvl3_oldsentry_atk1 ]
 void () Sentry_Rotate =
 {
 	local float ay;
-	local entity gunhead;
-	local string st;
 
 	self.effects = (self.effects - (self.effects & 8));
 	CheckSentry (self);

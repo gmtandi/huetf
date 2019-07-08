@@ -54,9 +54,6 @@ void (vector whichway) frik_obstructed =
 	local vector vTemp;
 	local vector vTrueRight;
 	local vector vTrueLeft;
-	local vector disway;
-	local vector org;
-	local float dist;
 	local entity possibleTarget;
 
 	possibleTarget = findradius (self.origin, 64);

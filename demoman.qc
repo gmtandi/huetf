@@ -88,7 +88,6 @@ void (entity bowner) TeamFortress_SetBomb =
 	local string stimer;
 	local float timer;
 	local entity at_spot;
-	local float found_site;
 	local float bombarmtime;
 
 	bowner.is_detpacking = 0;
@@ -316,7 +315,6 @@ void () TeamFortress_DetpackSet =
 {
 	local entity countd;
 	local entity oldself;
-	local float skinno;
 	local string st;
 
 	self.is_detpacking = 0;
@@ -504,8 +502,6 @@ void () TeamFortress_DetpackTouch =
 {
 	local entity disarm;
 	local vector source;
-	local vector org;
-	local vector def;
 	local float defusetime;
 
 	CheckBelowBuilding (self);
