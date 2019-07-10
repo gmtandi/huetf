@@ -375,7 +375,6 @@ void () StartMatch =
 
 	st = infokey(world, "quadmode");
 
-
 	if (rounds)
 	{
 		if (infokey(world, "quadmode") != "on")

@@ -176,15 +176,15 @@ void () ConcussionGrenadeTimer =
 		newmis.cnt = 0;
 		setsize (newmis, '-8 -8 -8', '8 8 8');
 	}
-	concadjust = random();	
+	//concadjust = random();
+	concadjust = 1;
 	if (grentype)
 	{
 		self.nextthink = (time + 0.25);
 	}
 	else
 	{
-		prevPos = vtos(self.owner.origin);
-		//concadjust = 1;		
+		prevPos = vtos(self.owner.origin);			
 		self.nextthink = (time + (0.25 * concadjust));
 		if ((concadjust > 1))
 		{

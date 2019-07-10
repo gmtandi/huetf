@@ -686,7 +686,10 @@ void () ChangeTP =
 void () QuadMode =
 {
 	local string st;
-
+	if (clanbattle) {
+		sprint (self, 2,"Can't disable Quadmode, match in progress\n");
+		return;
+	}
 	st = infokey (world, "quadmode");
 	if ((st == "on"))
 	{
