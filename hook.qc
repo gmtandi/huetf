@@ -13,8 +13,6 @@ void (entity rhook) Reset_Grapple =
 
 void () Grapple_Track =
 {
-	local vector spray;
-
 	if ((!self.owner.on_hook || (self.owner.health <= 0)))
 	{
 		Reset_Grapple (self);
@@ -215,6 +213,7 @@ void () Service_Grapple =
 {
 	local vector hook_dir;
 
+	hook_dir = '0 0 0';
 	if (!self.button0)
 	{
 		self.fire_held_down = 0;

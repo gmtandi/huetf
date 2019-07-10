@@ -792,7 +792,7 @@ void () TeamFortress_PrimeGrenade =
 	local entity tGrenade;
 	local entity timer;
 
-
+	gtype = 0;
 	if ((self.playerclass == 11))
 	{
 		return;
@@ -2334,7 +2334,6 @@ if (skins24b) {
 void (entity p) TeamFortress_SetSkin =
 {
 	local string st;
-	local float tn;
 
 	if (((p.playerclass == 8) && (p.undercover_skin != 0)))
 	{
@@ -2920,8 +2919,6 @@ float (entity Retriever, float WeaponType) TeamFortress_CanGetWeapon =
 
 void (entity Player, float Armorclass) TeamFortress_DescribeArmor =
 {
-	local string st;
-
 	if ((Armorclass == 0))
 	{
 		return;
@@ -2956,94 +2953,36 @@ void (entity Retriever, entity Items) TeamFortress_AddBackpackItems =
 
 string (float pc) TeamFortress_GetClassName =
 {
-	if ((pc == 1))
-	{
-		return ("Scout");
-	}
-	else
-	{
-		if ((pc == 2))
-		{
-			return ("Sniper");
-		}
+
+	if (pc == PC_SCOUT)
+        return "Scout";
+    else if (pc == PC_SNIPER)
+        return "Sniper";
+    else if (pc == PC_SOLDIER)
+        return "Soldier";
+    else if (pc == PC_DEMOMAN)
+        return "Demolitions Man";
+    else if (pc == PC_MEDIC)
+        return "Combat Medic";
+    else if (pc == PC_HVYWEAP)
+        return "Heavy Weapons Guy";
+    else if (pc == PC_PYRO)
+        return "Pyro";
+    else if (pc == PC_SPY)
+        return "Spy";
+    else if (pc == PC_ENGINEER)
+        return "Engineer";
+    else if (pc == PC_CIVILIAN) {
+        if (tfvsdm == 1)
+			return ("Quake Soldier");		
 		else
-		{
-			if ((pc == 3))
-			{
-				return ("Soldier");
-			}
-			else
-			{
-				if ((pc == 4))
-				{
-					return ("Demolitions Man");
-				}
-				else
-				{
-					if ((pc == 5))
-					{
-						return ("Combat Medic");
-					}
-					else
-					{
-						if ((pc == 6))
-						{
-							return ("Heavy Weapons Guy");
-						}
-						else
-						{
-							if ((pc == 7))
-							{
-								return ("Pyro");
-							}
-							else
-							{
-								if ((pc == 8))
-								{
-									return ("Spy");
-								}
-								else
-								{
-									if ((pc == 9))
-									{
-										return ("Engineer");
-									}
-									else
-									{
-										if ((pc == 11))
-										{
-											if ((tfvsdm == 1))
-											{
-												return ("Quake Soldier");
-											}
-											else
-											{
-												return ("Civilian");
-											}
-										}
-										else
-										{
-											if ((pc == 0))
-											{
-												return ("Observer");
-											}
-											else
-											{
-												if ((pc == enter))
-												{
-													return ("Random Playerclass");
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+			return ("Civilian");
+    }
+    else if (pc == PC_UNDEFINED)
+        return "Observer";
+    else if (pc == PC_RANDOM)
+        return "Random Playerclass";
+    return "Unknown";
 };
 
 void (entity Viewer, float pc, float rpc) TeamFortress_PrintClassName =
@@ -3068,6 +3007,7 @@ void () TeamFortress_RemoveTimers =
 	self.is_undercover = 0;
 	self.is_building = 0;
 	self.building = world;
+	message = string_null;
 	if ((self.tfstate & 2048))
 	{
 		self.tfstate = (self.tfstate - 2048);
@@ -3307,8 +3247,6 @@ void () TeamFortress_CheckClassStats =
 
 void () TeamFortress_AssaultWeapon =
 {
-	local float it;
-
 	self.impulse = 0;
 	if ((self.tfstate & 2))
 	{

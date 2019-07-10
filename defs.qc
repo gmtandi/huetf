@@ -150,7 +150,7 @@ float deathmatch;
 .void() th_run;
 .void() th_missile;
 .void() th_melee;
-.void(entity attacker, float damage) th_pain;
+.void(optional entity attacker, optional float damage) th_pain;
 .void() th_die;
 .entity oldenemy;
 .float speed;

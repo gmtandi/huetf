@@ -1,13 +1,10 @@
 
 void () BotAI =
 {
-	local float area;
 	local string strTemp;
-	local float movementOK;
 	local float fTemp;
 	local entity eTemp;
 	local entity eGren;
-	local vector vTemp;
 
 	if ((self.health <= 0))
 	{

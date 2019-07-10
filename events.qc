@@ -1,7 +1,7 @@
 string (string text) clearString;
 
 string () ISOTimemillis = {
-	local string padding;
+	local string padding = string_null;
     local string timeuse = strftime(0,"%Y-%m-%dT%H:%M:%S.");
     local float randmillis = rint((random()*1000*random()));
     if (randmillis < 10)
@@ -40,7 +40,7 @@ void () LogEventGameStart = {
 		return;
 	local string event;
 	local entity player;
-	local float numplayers;
+	local float numplayers = 0;
 	player = find (world, classname, "player");	
 
 	while (player) 
@@ -148,7 +148,6 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 	local string event;
 	local string attackEvent;
 	local string targetEvent;
-	local string part1;
 	local string part1attack;
 	local string part1target;
 	local string part2;
@@ -259,7 +258,6 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 	local string event;
 	local string attackEvent;
 	local string targetEvent;
-	local string part1;
 	local string part1attack;
 	local string part1target;
 	local string part2;

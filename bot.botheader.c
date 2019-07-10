@@ -86,7 +86,6 @@ float sv_gravity;
 float sv_accelerate;
 float sv_maxspeed;
 float sv_stopspeed;
-entity fixer;
 float userid;
 float auto_bot_done;
 float (float tno) TeamFortress_TeamGetColor;

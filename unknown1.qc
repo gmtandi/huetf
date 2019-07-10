@@ -422,8 +422,6 @@ void (float dist) ai_painforward =
 
 void (float dist) ai_walk =
 {
-	local vector mtemp;
-
 	movedist = dist;
 	if ((self.classname == "monster_dragon"))
 	{
@@ -539,13 +537,6 @@ void () ai_run_slide =
 
 void (float dist) ai_run =
 {
-	local vector delta;
-	local float axis;
-	local float direct;
-	local float ang_rint;
-	local float ang_floor;
-	local float ang_ceil;
-
 	movedist = dist;
 	if ((self.enemy.health <= 0))
 	{
@@ -831,6 +822,10 @@ void () RefreshStatusBar =
 	local float num;
 	local string str;
 	local float r;
+	x = 0;
+
+	te = world;
+	str = string_null;
 	r = (self.StatusBarRes + self.StatusBarSize);
 	while ((r > 0))
 	{
@@ -1530,11 +1525,6 @@ void (float f, float c) WriteIntXXXX =
 void (float f) WriteSIntXXXX =
 {
 	local float i;
-	local float y;
-	local float b1;
-	local float b2;
-	local float b3;
-	local float b4;
 
 	if ((f >= 0))
 	{
@@ -2678,9 +2668,6 @@ void () Menu_Spy =
 
 void (float inp) Menu_Spy_Input =
 {
-	local float tc;
-	local string st;
-
 	if (((inp == 1) || (inp == 2)))
 	{
 		if ((self.effects & (8 | 4)))
@@ -2826,8 +2813,6 @@ void () Menu_Engineer =
 	local string s_action;
 	local string s_disp;
 	local string s_sentry;
-	local string s_tpent;
-	local string s_tpexit;
 	local string s_nothing;
 
 	s_action = "Action:                           \n";
@@ -2870,8 +2855,6 @@ void () Menu_Engineer =
 
 void (float inp) Menu_Engineer_Input =
 {
-	local entity te;
-
 	if ((((inp == 1) && (self.ammo_cells >= _d)) && (self.has_dispenser != 1)))
 	{
 		TeamFortress_Build (1);
@@ -2933,9 +2916,8 @@ void () Menu_EngineerFix_Dispenser =
 {
 	local entity disp = self.building;
 	local string status;
-	local float spaces;
-	local float i;
 
+	status = string_null;
 	status = strcat(status,"Dispenser has ");
 	status = strcat(status,ftos (disp.health));
 	status = strcat(status," health");
@@ -3102,9 +3084,8 @@ void () Menu_EngineerFix_SentryGun =
 {
 	local entity gun = self.building;
 	local string status;
-	local float spaces;
-	local float i;
 
+	status = string_null;
 	status = strcat(status,"Level ");
     status = strcat(status,ftos (gun.weapon));
 	status = strcat(status," Sentry Gun has ");
@@ -3485,10 +3466,11 @@ void () Menu_Admin =
 {
 	local string s_menu1;
 	local string s_menu2;
+	/* commenting this lines as we're not using them
 	local string s_menu3;
 	local string s_menu4;
 	local string s_menu5;
-	local string s_menu6;
+	local string s_menu6;*/
 	local string s_menu7;
 	local string s_menu8;
 	local string s_menu9;
@@ -3500,6 +3482,7 @@ void () Menu_Admin =
 	local float f_tmp2;
 
 	self.impulse = 0;
+	s_menu1 = string_null;
 
 
 	if (self.current_menu_type == 0) {
@@ -3843,7 +3826,6 @@ if (self.current_menu_type != 5) {
 
 			randomizeCaptains();
 
-			local entity te;
 			te = find (world, classname, "player");
 			while (te != world)
 			{

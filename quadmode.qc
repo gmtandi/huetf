@@ -39,8 +39,6 @@ float () CheckWinningTeam =
 
 void () QuadRoundOver =
 {
-	local string st;
-
 	round_over = 2;
 
 	self.think = StartQuadRound;
@@ -140,9 +138,6 @@ void () QuadRoundBegin =
 {
 	local entity te;
 	local entity oldself;
-	local string st;
-	local string tmp;
-	local float bomber;
 	local float counter;
 
 	te = find (world, classname, "func_breakable");
@@ -363,7 +358,7 @@ void () StartQuadRound =
 	local entity oldself;
 	local entity gren;
 	local entity p;
-
+	clanbattle = 1;
 
 	if ((rounds == 1))
 	{
@@ -414,6 +409,7 @@ void () StartQuadRound =
 			p = find (p, classname, "player");
 		}
 		bprint (2, "Rounds Over! Use \"cmd map <mapname>\" to go to the nextmap\n");
+		clanbattle = 0;
 		MapEndSequence();
 		printedEndGame = 1;
 		return;

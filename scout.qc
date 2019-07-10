@@ -143,11 +143,11 @@ void () ConcussionGrenadeExplode =
 
 void () ConcussionGrenadeTimer =
 {
-	local string st;
 	local vector src;
 	local float pos;
 	local float concadjust;
 	local float stumble;
+	local string prevPos;
 
 	if ((self.owner.invincible_finished > time))
 	{
@@ -176,27 +176,29 @@ void () ConcussionGrenadeTimer =
 		newmis.cnt = 0;
 		setsize (newmis, '-8 -8 -8', '8 8 8');
 	}
-	self.health = (self.health - enter);
-	if ((self.owner.playerclass == 5))
-	{
-		self.health = (self.health - enter);
-	}
-	if ((self.health < 0))
-	{
-		self.health = 0;
-	}
+	//concadjust = random();
+	concadjust = 1;
 	if (grentype)
 	{
 		self.nextthink = (time + 0.25);
 	}
 	else
 	{
-		concadjust = 1;
+		prevPos = vtos(self.owner.origin);			
 		self.nextthink = (time + (0.25 * concadjust));
 		if ((concadjust > 1))
 		{
 			self.health = (self.health - concadjust);
 		}
+	}
+	self.health = (self.health - enter*concadjust);
+	if ((self.owner.playerclass == 5))
+	{
+		self.health = (self.health - enter*concadjust);
+	}
+	if ((self.health < 0))
+	{
+		self.health = 0;
 	}
 	pos = pointcontents (self.owner.origin);
 	src_x = ((self.owner.origin_x + self.owner.maxs_x) + 2);
@@ -227,7 +229,7 @@ void () ConcussionGrenadeTimer =
 				}
 			}
 		}
-	}
+	}	
 	if ((self.health <= 0))
 	{
 		sprint (self.owner, 2, "Your head feels better now.\n");
@@ -268,7 +270,6 @@ void () ScannerSwitch =
 
 void () TeamFortress_Scan =
 {
-	local string power;
 	local entity list;
 	local float scancost;
 	local float scanrange;
@@ -278,16 +279,9 @@ void () TeamFortress_Scan =
 	local vector lightningvec;
 	local float enemy_detected;
 	local float any_detected;
-	local vector vf;
-	local vector vr;
-	local vector e;
-	local float res1;
-	local float res2;
-	local float res3;
-	local float vf_e_angle;
-	local float vr_e_angle;
 
 	scanrange = _d;
+	list = world;
 	self.owner.impulse = 0;
 	self.owner.last_impulse = 0;
 	if ((self.owner.classname == "player"))
@@ -450,7 +444,6 @@ void (entity inflictor, entity attacker, float bounce, entity ignore) T_RadiusBo
 	local entity head;
 	local entity te;
 	local vector org;
-	local string st;
 
 	head = findradius (inflictor.origin, (bounce + 40));
 	while (head)

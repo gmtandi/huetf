@@ -5,7 +5,6 @@ void () SpectatorThink;
 void () SpectatorConnect =
 {
 	local string st;
-	local float res;
 
 	self.playerclass = 0;
 	self.classname = "observer";
@@ -40,8 +39,6 @@ void () SpectatorDisconnect =
 
 void () SpectatorImpulseCommand =
 {
-	local vector cam;
-
 	if ((self.impulse == 239))
         {
                 self.current_menu = 24;
@@ -129,9 +126,6 @@ void () SpectatorImpulseCommand =
 
 void () SpectatorThink =
 {
-	local vector cam;
-
-
 	if (self.current_menu == 24) {
 		Menu_Admin ();
 		if (self.impulse > 0 && self.impulse < 11) {

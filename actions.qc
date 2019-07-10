@@ -5,6 +5,7 @@ void () TeamFortress_SaveMe =
 	local float dist;
 	local string savememsg,locname,needvalue;	
 
+	savememsg = string_null;
 	if ((self.last_sound < time))
 	{
 		if ((random () < 0.8))

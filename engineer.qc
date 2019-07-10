@@ -592,8 +592,6 @@ void () DispenserThink =
 void () TeamFortress_FinishedBuilding =
 {
 	local entity oldself;
-	local entity te;
-	local vector source;
 
 	if ((self.owner.is_building != 1))
 	{
@@ -818,7 +816,6 @@ void () Dispenser_Die =
 void (entity disp) Engineer_UseDispenser =
 {
 	local entity dist_checker;
-	local string st;
 
 	/*sprint (self, 2, "Dispenser has ");
 	st = ftos (disp.health);
@@ -1009,7 +1006,7 @@ void (entity gun) Engineer_SentryGun_InsertAmmo = {
     }
 
     if ((shells + rockets) > 0) {
-        W_SetCurrentAmmo(self);
+        W_SetCurrentAmmo();
         ammo = "You insert ";
         if (shells > 0)
             ammo = strcat(ammo, strcat(ftos(floor(shells)), " shells"));

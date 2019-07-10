@@ -9,6 +9,7 @@ void () RemoveOldAmmobox =
 	local entity eold;
 	local float rt;
 
+	eold = world;
 	rt = (time + 999);
 	box = find (world, classname, "ammobox");
 	while ((box != world))
@@ -420,10 +421,10 @@ void (float type) TeamFortress_DropAmmo =
 
 void () Drop_detpack =
 {
-	local entity te;
 	local string st;
 	local float tc;
 
+	tc = 0;
 	if (!self.ammo_detpack)
 	{
 		return;
@@ -488,9 +489,6 @@ void () Drop_detpack =
 
 void () TeamFortress_Discard =
 {
-	local float i;
-	local string st;
-
 	newmis = spawn ();
 	newmis.classname = "item_backpack";
 	if ((self.playerclass == 1))

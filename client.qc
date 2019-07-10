@@ -603,12 +603,12 @@ entity () FindIntermission =
 		return (spot);
 	}
 	objerror ("FindIntermission: no spot");
+	return (world);
 };
 
 entity (entity start_point) FindNextIntermission =
 {
 	local entity spot;
-	local float cyc;
 
 	if (deathmatch)
 	{
@@ -670,7 +670,6 @@ void () GotoNextMap =
 	local float nextlevel;
 	local string sl;
 	local string st;
-	local entity te;
 
 	if ((nextmap != mapname))
 	{
@@ -915,10 +914,6 @@ void () execute_changelevel =
 
 void () changelevel_touch =
 {
-	local entity pos;
-	local float ne;
-	local string st;
-
 	if ((other.classname != "player"))
 	{
 		return;
@@ -1006,7 +1001,7 @@ void () ClientKill =
 	}
 	if (self.playerclass)
 	{
-		local string message;
+		local string message = string_null;
 		message = strcat(message, self.netname);
 		message = strcat(message, " suicides\n");
 		bprint(1, message);
@@ -2498,9 +2493,8 @@ void (string cl_pwd) Admin_Check =
 
 };
 
-void () ClientConnect =
+void (optional float csqcactive) ClientConnect =
 {
-	local entity te;
 	local string st;
 	local string st2;
 	local float res;
@@ -2889,9 +2883,6 @@ void (entity targ, entity attacker) ClientObituary =
 	local string message;
 	local string deathstring;
 	local string deathstring2;
-	local float attackerteam;
-	local float targteam;
-	local entity te;
 
 	rnum = random ();
 	if (cb_prematch)
@@ -3747,9 +3738,6 @@ void (entity targ, entity attacker) ClientObituary =
 
 
 void() SV_RunClientCommand = {
-
-
-	local float g;
 	local float speedpos;
 	local float speedneg;
 	local float fdmg;

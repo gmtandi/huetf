@@ -138,7 +138,6 @@ void () Admin_DoKick =
 void () CeaseFire_think =
 {
 	local entity te;
-	local float temp;
 
 	if (!cease_fire)
 	{

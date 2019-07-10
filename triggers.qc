@@ -2,7 +2,6 @@
 entity stemp;
 entity otemp;
 entity s;
-entity old;
 void () TeamFortress_DetpackExplode;
 
 void () trigger_reactivate =
@@ -214,8 +213,6 @@ void () trigger_secret =
 
 void () counter_use =
 {
-	local string junk;
-
 	self.count = (self.count - 1);
 	if ((self.count < 0))
 	{
@@ -328,8 +325,6 @@ void (vector org) spawn_tfog =
 
 void () tdeath_touch =
 {
-	local entity spot;
-
 	if ((other == self.owner))
 	{
 		return;
@@ -429,7 +424,7 @@ void () teleport_touch =
 	{
 		if (((other.weapon == 1) && other.hook_out))
 		{
-			sound (other, 1, "weapons/bounce2.wav", 1, 1);
+			//sound (other, 1, "weapons/bounce2.wav", 1, 1);
 			other.on_hook = 0;
 			other.hook_out = 0;
 			other.fire_held_down = 0;

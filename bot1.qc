@@ -202,6 +202,7 @@ float () BotImpulseMenu =
 	{
 		return (BOT_AI_FOLLOW);
 	}
+	return 0;
 };
 
 float () BotImpulse =

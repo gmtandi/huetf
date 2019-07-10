@@ -496,6 +496,7 @@ void () BotInit =
 	local entity fisent;
 	local float numents;
 
+	numents = 0;
 	ent = nextent (world);
 	while ((ent.classname != "worldspawn"))
 	{
@@ -533,7 +534,6 @@ void (float whichteam, float whichClass) botConnect =
 	local float clientno;
 	local entity bot;
 	local entity uself;
-	local string g;
 
 	clientno = clientNextAvailable ();
 	uself = self;

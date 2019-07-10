@@ -1,5 +1,4 @@
 void (float tno) playerSetTeam = {
-	local entity te;
 	local string st;
 
 	TeamFortress_TeamSet (tno);

@@ -684,8 +684,6 @@ void (float issilent) TeamFortress_SpyFeignDeath =
 
 void () TeamFortress_SpyGoUndercover =
 {
-	local entity te;
-
 	if ((self.effects & (8 | 4)))
 	{
 		sprint (self, 1, "You cannot disguise while glowing.\n");
@@ -861,7 +859,6 @@ void () GasGrenadeTouch =
 
 void () GasGrenadeExplode =
 {
-	local vector tmpv;
 	local entity te;
 	local float pos;
 
@@ -1021,7 +1018,6 @@ void () HallucinationTimer =
 	local float tmpy;
 	local float halltype;
 	local float halltype2;
-	local string st;
 
 	self.health = (self.health - 3);
 	if ((self.owner.playerclass == 5))
@@ -1089,124 +1085,76 @@ void () HallucinationTimer =
 			{
 				stuffcmd (self.owner, "play weapons/r_exp3.wav\n");
 			}
+			else if ((halltype2 < 0.15))
+			{
+				stuffcmd (self.owner, "play weapons/rocket1i.wav\n");
+			}
+			else if ((halltype2 < 0.2))
+			{
+				stuffcmd (self.owner, "play weapons/sgun1.wav\n");
+			}
+			else if ((halltype2 < 0.25))
+			{
+				stuffcmd (self.owner, "play weapons/guncock.wav\n");
+			}
+			else if ((halltype2 < 0.3))
+			{
+				stuffcmd (self.owner, "play weapons/ric1.wav\n");
+			}
+			else if ((halltype2 < 0.35))
+			{
+				stuffcmd (self.owner, "play weapons/ric2.wav\n");
+			}
+			else if ((halltype2 < 0.4))
+			{
+				stuffcmd (self.owner, "play weapons/ric3.wav\n");
+			}
+			else if ((halltype2 < 0.45))
+			{
+				stuffcmd (self.owner, "play weapons/spike2.wav\n");
+			}
+			else if ((halltype2 < 0.5))
+			{
+				stuffcmd (self.owner, "play weapons/tink1.wav\n");
+			}
+			else if ((halltype2 < 0.55))
+			{
+				CenterPrint2 (self.owner, "\n\n\n", "Your team цаптуред the flag!!");
+				stuffcmd (self.owner, "play weapons/grenade.wav\n");
+			}
+			else if ((halltype2 < 0.6))
+			{
+				stuffcmd (self.owner, "play weapons/bounce.wav\n");
+			}
+			else if ((halltype2 < 0.65))
+			{
+				stuffcmd (self.owner, "play weapons/shotgn2.wav\n");
+			}
+			else if ((halltype2 < 0.7))
+			{
+				stuffcmd (self.owner, "play wizard/wattack.wav\n");
+			}
+			else if ((halltype2 < 0.75))
+			{
+				stuffcmd (self.owner, "play items/r_item1.wav\n");
+			}
+			else if ((halltype2 < 0.8))
+			{
+				stuffcmd (self.owner, "play items/r_item2.wav\n");
+			}
+			else if ((halltype2 < 0.85))
+			{
+				CenterPrint (self.owner, "You are on fire!\n");
+				stuffcmd (self.owner, "play weapons/lhit.wav\n");
+			}
+			else if ((halltype2 < 0.9))
+			{
+				stuffcmd (self.owner, "play misc/r_tele1.wav\n");
+			}
 			else
 			{
-				if ((halltype2 < 0.15))
-				{
-					stuffcmd (self.owner, "play weapons/rocket1i.wav\n");
-				}
-				else
-				{
-					if ((halltype2 < 0.2))
-					{
-						stuffcmd (self.owner, "play weapons/sgun1.wav\n");
-					}
-					else
-					{
-						if ((halltype2 < 0.25))
-						{
-							stuffcmd (self.owner, "play weapons/guncock.wav\n");
-						}
-						else
-						{
-							if ((halltype2 < 0.3))
-							{
-								stuffcmd (self.owner, "play weapons/ric1.wav\n");
-							}
-							else
-							{
-								if ((halltype2 < 0.35))
-								{
-									stuffcmd (self.owner, "play weapons/ric2.wav\n");
-								}
-								else
-								{
-									if ((halltype2 < 0.4))
-									{
-										stuffcmd (self.owner, "play weapons/ric3.wav\n");
-									}
-									else
-									{
-										if ((halltype2 < 0.45))
-										{
-											stuffcmd (self.owner, "play weapons/spike2.wav\n");
-										}
-										else
-										{
-											if ((halltype2 < 0.5))
-											{
-												stuffcmd (self.owner, "play weapons/tink1.wav\n");
-											}
-											else
-											{
-												if ((halltype2 < 0.55))
-												{
-													CenterPrint2 (self.owner, "\n\n\n", "Your team цаптуред the flag!!");
-													stuffcmd (self.owner, "play weapons/grenade.wav\n");
-												}
-												else
-												{
-													if ((halltype2 < 0.6))
-													{
-														stuffcmd (self.owner, "play weapons/bounce.wav\n");
-													}
-													else
-													{
-														if ((halltype2 < 0.65))
-														{
-															stuffcmd (self.owner, "play weapons/shotgn2.wav\n");
-														}
-														else
-														{
-															if ((halltype2 < 0.7))
-															{
-																stuffcmd (self.owner, "play wizard/wattack.wav\n");
-															}
-															else
-															{
-																if ((halltype2 < 0.75))
-																{
-																	stuffcmd (self.owner, "play items/r_item1.wav\n");
-																}
-																else
-																{
-																	if ((halltype2 < 0.8))
-																	{
-																		stuffcmd (self.owner, "play items/r_item2.wav\n");
-																	}
-																	else
-																	{
-																		if ((halltype2 < 0.85))
-																		{
-																			CenterPrint (self.owner, "You are on fire!\n");
-																			stuffcmd (self.owner, "play weapons/lhit.wav\n");
-																		}
-																		else
-																		{
-																			if ((halltype2 < 0.9))
-																			{
-																				stuffcmd (self.owner, "play misc/r_tele1.wav\n");
-																			}
-																			else
-																			{
-																				stuffcmd (self.owner, "play weapons/railgun.wav\n");
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+				stuffcmd (self.owner, "play weapons/railgun.wav\n");
+			}						
 		}
 		else
 		{
@@ -1229,70 +1177,43 @@ void () HallucinationTimer =
 			{
 				stuffcmd (self.owner, "play weapons/detpack.wav\n");
 			}
+			else if ((halltype2 < 0.2))
+			{
+				stuffcmd (self.owner, "play weapons/turrset.wav\n");
+			}
+			else if ((halltype2 < 0.3))
+			{
+				stuffcmd (self.owner, "play weapons/turrspot.wav\n");
+			}
+			else if ((halltype2 < 0.4))
+			{
+				stuffcmd (self.owner, "play weapons/turridle.wav\n");
+			}
+			else if ((halltype2 < 0.5))
+			{
+				stuffcmd (self.owner, "play weapons/sniper.wav\n");
+			}
+			else if ((halltype2 < 0.6))
+			{
+				CenterPrint2 (self.owner, "\n\n\n", "Your flag has been такен!!");
+				stuffcmd (self.owner, "play weapons/flmfire2.wav\n");
+			}
+			else if ((halltype2 < 0.7))
+			{
+				stuffcmd (self.owner, "play weapons/flmgrexp.wav\n");
+			}
+			else if ((halltype2 < 0.8))
+			{
+				stuffcmd (self.owner, "play misc/vapeur2.wav\n");
+			}
+			else if ((halltype2 < 0.9))
+			{
+				stuffcmd (self.owner, "play weapons/asscan1.wav\n");
+			}
 			else
 			{
-				if ((halltype2 < 0.2))
-				{
-					stuffcmd (self.owner, "play weapons/turrset.wav\n");
-				}
-				else
-				{
-					if ((halltype2 < 0.3))
-					{
-						stuffcmd (self.owner, "play weapons/turrspot.wav\n");
-					}
-					else
-					{
-						if ((halltype2 < 0.4))
-						{
-							stuffcmd (self.owner, "play weapons/turridle.wav\n");
-						}
-						else
-						{
-							if ((halltype2 < 0.5))
-							{
-								stuffcmd (self.owner, "play weapons/sniper.wav\n");
-							}
-							else
-							{
-								if ((halltype2 < 0.6))
-								{
-									CenterPrint2 (self.owner, "\n\n\n", "Your flag has been такен!!");
-									stuffcmd (self.owner, "play weapons/flmfire2.wav\n");
-								}
-								else
-								{
-									if ((halltype2 < 0.7))
-									{
-										stuffcmd (self.owner, "play weapons/flmgrexp.wav\n");
-									}
-									else
-									{
-										if ((halltype2 < 0.8))
-										{
-											stuffcmd (self.owner, "play misc/vapeur2.wav\n");
-										}
-										else
-										{
-											if ((halltype2 < 0.9))
-											{
-												stuffcmd (self.owner, "play weapons/asscan1.wav\n");
-											}
-											else
-											{
-												stuffcmd (self.owner, "play weapons/asscan2.wav\n");
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+				stuffcmd (self.owner, "play weapons/asscan2.wav\n");
 			}
-		}
-		if ((te != world))
-		{
 			dremove (te);
 		}
 	}
@@ -1406,7 +1327,6 @@ void (entity spy) Spy_RemoveDisguise =
 {
 	local string st;
 	local float tc;
-	local float reset;
 
 	if ((spy.playerclass == 8))
 	{

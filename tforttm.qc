@@ -16,9 +16,9 @@ float () TeamFortress_TeamPutPlayerInTeam =
 	local float lowscore;
 	local float lowest;
 	local float likely_team;
-	local string st;
 
 	i = 1;
+	lowscore = 0;
 	likely_team = (random () * number_of_teams);
 	likely_team = ceil (likely_team);
 	if ((likely_team == 0))
@@ -687,6 +687,7 @@ float () TeamFortress_NoTeams =
 	local float p;
 
 	i = 1;
+	no_teams = 0;
 	p = TeamFortress_GetNoPlayersClass (i);
 	while ((i <= number_of_teams))
 	{
@@ -705,6 +706,7 @@ float () TeamFortress_GetNoPlayers =
 	local float nump;
 	local entity search;
 
+	nump = 0;
 	search = find (world, classname, "player");
 	while ((search != world))
 	{
@@ -798,6 +800,7 @@ float () TeamFortress_CheckDraw =
 	local float no_teams;
 
 	i = 1;
+	score = 0;
 	score2 = 0;
 	result = 0;
 	no_teams = TeamFortress_NoTeams ();
@@ -1068,8 +1071,6 @@ float (float tno) TeamFortress_TeamGetIllegalClasses =
 
 float (float tno) TeamFortress_TeamIsCivilian =
 {
-	local entity te;
-
 	if ((tno == 1))
 	{
 		if ((civilianteams & 1))

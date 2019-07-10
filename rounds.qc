@@ -8,6 +8,13 @@ float () CheckWinner =
 	local float totalp;
 	local entity Player;
 
+	team1alive = 0;
+	team3alive = 0;
+	team2alive = 0;
+	team4alive = 0;
+	nump = 0;
+	totalp = 0;
+
 	if (tfs_winner)
 	{
 		return (tfs_winner);
@@ -82,8 +89,6 @@ float () CheckWinner =
 
 void () RoundOver =
 {
-	local string st;
-
 	round_over = 2;
 	if ((tfs_winner == -1))
 	{
@@ -229,6 +234,8 @@ float () tfs_givebomb =
 	local entity te;
 	local float the_one;
 
+	counter = 0;
+	the_one = 0;
 	te = find (world, classname, "player");
 	while ((te != world))
 	{
@@ -256,10 +263,11 @@ void () RoundBegin =
 {
 	local entity te;
 	local entity oldself;
-	local string st;
 	local float bomber;
 	local float counter;
 
+	bomber = 0;
+	counter = 0;
 	te = find (world, classname, "func_breakable");
 	while (te)
 	{

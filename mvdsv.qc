@@ -23,7 +23,6 @@ void () PrintMaps =
 float (string arg1, string arg2, string arg3) ParseCmds =
 {
 	local float arg_num;
-	local float fl;
 	local string tmp;
 	entity pl;
 	if (arg1)
@@ -322,7 +321,6 @@ float (string arg1, string arg2, string arg3) ParseCmds =
 													}
 													localcmd ("\n");
 													bprint (2,"\n");
-													arg2;
 													if (arg2 == "none") {
 														bprint (2, "çServer Password removed!\n");
 													} else {
@@ -1159,10 +1157,7 @@ float () ConsoleCmd =
 };
 
 void () UserInfo_Changed = {
-
-   local string sk, st;
-   local float arg_num, tc;
-
+	local float arg_num;
 
 	arg_num = argc(); // tmp has been tokanized in ChatMessage function
 

@@ -67,7 +67,6 @@ void (entity print) ShowFrags =
 {
 	local entity te;
 	local float eff;
-	local float ifrags;
 	local string st;
 
 	sprint (print, 2, "Ÿ\n");
@@ -687,7 +686,10 @@ void () ChangeTP =
 void () QuadMode =
 {
 	local string st;
-
+	if (clanbattle) {
+		sprint (self, 2,"Can't disable Quadmode, match in progress\n");
+		return;
+	}
 	st = infokey (world, "quadmode");
 	if ((st == "on"))
 	{
@@ -766,7 +768,6 @@ void () ToggleSpecTalk =
 
 void () GroundSpeed =
 {
-	local string tmp;
 	local string desc;
 
 	if ((gspeed == 0))
@@ -1353,7 +1354,6 @@ void () Toggle_Highlander =
 void () Toggle_SentryType =
 {
 	local string st;
-	local float fl;
 
 	if ((sgtype == 0))
 	{
@@ -1374,7 +1374,6 @@ void () Toggle_SentryType =
 void () Toggle_GrenType =
 {
 	local string st;
-	local float fl;
 
 	if ((grentype == 0))
 	{
