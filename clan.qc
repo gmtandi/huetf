@@ -157,6 +157,7 @@ void () AutoRecord =
 
 	str = strcat(str,".json");
 	str = strcat(str);
+	fclose(logfilehandle);
 	logfilehandle = fopen(str,FILE_WRITE);
 	strunzone(str);
 };
