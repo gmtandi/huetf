@@ -72,7 +72,7 @@ void (entity player, float previous, float next, float timeplayed) LogEventChang
 	logevent(event);
 }
 
-string (float code) GetWeaponName = {
+string (float code, float mode) GetWeaponName = {
 	if (code == 1) {
 		return "hook";
 	}
@@ -104,7 +104,10 @@ string (float code) GetWeaponName = {
 		return "supernailgun";
 	}
 	else if (code == 2048) {
-		return "grenadelauncher";
+		if (mode == 0)
+			return "grenadelauncher";
+		else if (mode == 1)
+			return "pipebomblauncher";
 	}
 	else if (code == 4096) {
 		return "flamethrower";
@@ -167,7 +170,7 @@ void (entity attacker, entity target, entity inflictor, float damage) LogEventDa
 
 	
 	if (inflictor.classname == "player") 
-		inflictorId = GetWeaponName(attacker.current_weapon);
+		inflictorId = GetWeaponName(attacker.current_weapon, attacker.weaponmode);
 	else {
 		inflictorId = inflictor.classname;
 		if ((inflictor.classname == "spike") && (attacker.playerclass == 3)) {
@@ -243,9 +246,15 @@ void (entity attacker, entity target, entity inflictor) LogEventKill = {
 		killKind = "enemy";
 
 	if (inflictor.classname == "player") 
-		inflictorId = GetWeaponName(attacker.current_weapon);
+		inflictorId = GetWeaponName(attacker.current_weapon, attacker.weaponmode);
 	else {
 		inflictorId = inflictor.classname;
+		if ((inflictor.classname == "spike") && (attacker.playerclass == 3)) {
+			inflictorId = "nailgrenspike";
+		}
+		else if ((inflictor.classname == "spike") && (attacker.playerclass == 5)) {
+			inflictorId = "superspike";
+		}
 		if (inflictorId == "worldspawn")
 			attackername = "world";
 		else if (inflictorId == "building_sentrygun")
@@ -318,7 +327,7 @@ void (entity attacker) LogEventAttack = {
 	if (canLog == 0)
 		return;
 	local string event;
-	event = sprintf(",\n{\"type\": \"attack\", \"player\": \"%s\", \"inflictor\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", getEntityNameOrLogin(attacker), GetWeaponName(attacker.current_weapon), ftos(gametime), gametimestamp);
+	event = sprintf(",\n{\"type\": \"attack\", \"player\": \"%s\", \"playerClass\": \"%s\", \"inflictor\": \"%s\", \"time\": %s, \"gameTimeStamp\": \"%s\"}", getEntityNameOrLogin(attacker), ftos(attacker.playerclass), GetWeaponName(attacker.current_weapon, attacker.weaponmode), ftos(gametime), gametimestamp);
 	logevent(event);
 }
 
